@@ -5,12 +5,22 @@
 
 \documentclass[sigconf,nonacm]{acmart}
 
+%% ---------- suppress acmart warnings for non-ACM use ----------
+\setcopyright{none}
+\settopmatter{printacmref=false}
+\makeatletter
+\@ifundefined{footnotetextcopyrightpermission}{}{%
+  \renewcommand\footnotetextcopyrightpermission[1]{}%
+}
+\makeatother
+\pagestyle{plain}
+
 %% ---------- packages ----------
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{booktabs}
-\usepackage{subcaption}
 \usepackage{enumitem}
+\usepackage{url}
 
 %% ---------- listings style ----------
 \lstset{
@@ -21,6 +31,7 @@
   stringstyle=\color{red!60!black},
   showstringspaces=false,
   breaklines=true,
+  breakatwhitespace=true,
   frame=single,
   framesep=3pt,
   xleftmargin=6pt,
@@ -30,6 +41,7 @@
   numbersep=5pt,
   aboveskip=8pt,
   belowskip=6pt,
+  columns=flexible,
 }
 
 %% ---------- metadata ----------
@@ -38,8 +50,6 @@
 \author{Krishna Chaitanya Balusu}
 \affiliation{%
   \institution{Independent Researcher}
-  \city{}
-  \state{}
   \country{United States}
 }
 \email{krishna@example.com}
@@ -86,6 +96,8 @@ debugging effectiveness.
 \ccsdesc[300]{Software and its engineering~Software post-development issues}
 
 \keywords{AI agents, observability, telemetry, distributed tracing, LLM monitoring, OpenTelemetry, multi-agent systems}
+
+\begin{document}
 
 \maketitle
 
@@ -268,18 +280,17 @@ conceptual architecture.
 
 \begin{figure}[t]
 \centering
-\fbox{\parbox{0.92\columnwidth}{\small
-\texttt{%
+\fbox{\parbox{0.92\columnwidth}{\small\ttfamily
 ~~Agent Framework (LangChain, CrewAI, ...)\\
-~~~~~~~~~~$\downarrow$  auto-instrumentation \\
+~~~~~~~~~~\textnormal{$\downarrow$}~~auto-instrumentation \\
 ~~Instrumentor Layer (BaseInstrumentor)\\
-~~~~~~~~~~$\downarrow$  AgentSpan, AgentEvent \\
+~~~~~~~~~~\textnormal{$\downarrow$}~~AgentSpan, AgentEvent \\
 ~~Core Telemetry (AgentTracer, AgentMetrics)\\
-~~~~~~~~~~$\downarrow$  export\_span() \\
+~~~~~~~~~~\textnormal{$\downarrow$}~~export\_span() \\
 ~~Exporter Layer (Console | JSON | OTLP)\\
-~~~~~~~~~~$\downarrow$\\
+~~~~~~~~~~\textnormal{$\downarrow$}\\
 ~~Backend (Grafana Tempo, Jaeger, Datadog, ...)
-}}}
+}}
 \caption{Layered architecture of \textsc{AgentTelemetry}.  Instrumentors are
 framework-specific; the core and exporter layers are framework-agnostic.}
 \label{fig:architecture}
@@ -319,7 +330,7 @@ type.
 Each \texttt{LLM\_CALL} span automatically estimates cost in USD based
 on the model name and token counts.  The tracer maintains a lookup table
 of per-million-token prices for major models (GPT-4o, GPT-4-turbo,
-Claude~3.5~Sonnet, Claude~Opus~4, etc.) and computes cost at span
+Claude 3.5 Sonnet, Claude Opus 4, etc.)\ and computes cost at span
 completion.  This enables aggregate cost dashboards without requiring
 external billing API integration.
 
@@ -343,7 +354,7 @@ agent-specific metadata.
 
 The context is serialized to a carrier dictionary containing three
 entries: (1)~a \texttt{traceparent} header in W3C format
-(\texttt{00-\{trace\_id\}-\{parent\_span\_id\}-01}); (2)~an
+(\texttt{00-<trace\_id>-<parent\_span\_id>-01}); (2)~an
 \texttt{agentstate} header carrying the source agent's name; and
 (3)~an optional \texttt{baggage} header for key-value metadata
 propagation.  The carrier can be transmitted via HTTP headers, message
@@ -711,8 +722,6 @@ contribute to its development.
 %% ====================================================================
 %% BIBLIOGRAPHY
 %% ====================================================================
-
-\bibliographystyle{ACM-Reference-Format}
 
 \begin{thebibliography}{20}
 
