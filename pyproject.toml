@@ -21,8 +21,11 @@ langchain = ["langchain-core>=0.1.0"]
 crewai = ["crewai>=0.1.0"]
 autogen = ["pyautogen>=0.2.0"]
 dspy = ["dspy-ai>=2.0.0"]
+claude_agent = ["anthropic>=0.20.0"]
+smolagents = ["smolagents>=1.0.0"]
+llamaindex = ["llama-index-core>=0.10.0"]
 all = [
-    "agenttelemetry[otlp,langchain,crewai,autogen,dspy]",
+    "agenttelemetry[otlp,langchain,crewai,autogen,dspy,claude_agent,smolagents,llamaindex]",
 ]
 dev = [
     "pytest>=7.0",
