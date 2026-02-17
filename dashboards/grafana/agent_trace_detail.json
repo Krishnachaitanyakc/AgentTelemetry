@@ -1,0 +1,1411 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_TEMPO",
+      "label": "Tempo",
+      "description": "Tempo datasource for distributed traces",
+      "type": "datasource",
+      "pluginId": "tempo",
+      "pluginName": "Tempo"
+    },
+    {
+      "name": "DS_PROMETHEUS",
+      "label": "Prometheus",
+      "description": "Prometheus datasource for AgentTelemetry metrics",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    },
+    {
+      "name": "DS_LOKI",
+      "label": "Loki",
+      "description": "Loki datasource for log-based event queries",
+      "type": "datasource",
+      "pluginId": "loki",
+      "pluginName": "Loki"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "10.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "tempo",
+      "name": "Tempo",
+      "version": "1.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "1.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "loki",
+      "name": "Loki",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "traces",
+      "name": "Traces",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "nodeGraph",
+      "name": "Node Graph",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "logs",
+      "name": "Logs",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "AgentTelemetry trace detail dashboard - deep dive into individual traces, spans, LLM calls, tool invocations, and inter-agent communication.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Agent Overview",
+      "tooltip": "Back to agent overview dashboard",
+      "type": "link",
+      "url": "/d/agent-overview/agenttelemetry-agent-overview"
+    }
+  ],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "id": 200,
+      "title": "Trace Summary",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "tempo",
+        "uid": "${DS_TEMPO}"
+      },
+      "description": "Total number of spans in the selected trace.",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "blue", "value": null }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 4, "x": 0, "y": 1 },
+      "id": 1,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["count"],
+          "fields": "/^spanID$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "datasource": { "type": "tempo", "uid": "${DS_TEMPO}" },
+          "queryType": "traceql",
+          "query": "{ rootServiceName=~\"$agent_name\" } | select(span.spanID)",
+          "filters": [
+            {
+              "id": "trace-id",
+              "tag": "traceID",
+              "operator": "=",
+              "value": ["$trace_id"],
+              "valueType": "string",
+              "scope": "intrinsic"
+            }
+          ],
+          "limit": 1000,
+          "tableType": "spans",
+          "refId": "A"
+        }
+      ],
+      "title": "Span Count",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "tempo",
+        "uid": "${DS_TEMPO}"
+      },
+      "description": "Number of LLM call spans in the selected trace.",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "purple", "value": null }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 4, "x": 4, "y": 1 },
+      "id": 2,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["count"],
+          "fields": "/^spanID$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "datasource": { "type": "tempo", "uid": "${DS_TEMPO}" },
+          "queryType": "traceql",
+          "query": "{ rootServiceName=~\"$agent_name\" && span.kind = \"llm_call\" }",
+          "filters": [
+            {
+              "id": "trace-id",
+              "tag": "traceID",
+              "operator": "=",
+              "value": ["$trace_id"],
+              "valueType": "string",
+              "scope": "intrinsic"
+            }
+          ],
+          "limit": 1000,
+          "tableType": "spans",
+          "refId": "A"
+        }
+      ],
+      "title": "LLM Calls in Trace",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "tempo",
+        "uid": "${DS_TEMPO}"
+      },
+      "description": "Number of tool call spans in the selected trace.",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "orange", "value": null }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 4, "x": 8, "y": 1 },
+      "id": 3,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["count"],
+          "fields": "/^spanID$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "datasource": { "type": "tempo", "uid": "${DS_TEMPO}" },
+          "queryType": "traceql",
+          "query": "{ rootServiceName=~\"$agent_name\" && span.kind = \"tool_call\" }",
+          "filters": [
+            {
+              "id": "trace-id",
+              "tag": "traceID",
+              "operator": "=",
+              "value": ["$trace_id"],
+              "valueType": "string",
+              "scope": "intrinsic"
+            }
+          ],
+          "limit": 1000,
+          "tableType": "spans",
+          "refId": "A"
+        }
+      ],
+      "title": "Tool Calls in Trace",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "tempo",
+        "uid": "${DS_TEMPO}"
+      },
+      "description": "Number of error spans in the selected trace.",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "red", "value": 1 }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 4, "x": 12, "y": 1 },
+      "id": 4,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["count"],
+          "fields": "/^spanID$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "datasource": { "type": "tempo", "uid": "${DS_TEMPO}" },
+          "queryType": "traceql",
+          "query": "{ rootServiceName=~\"$agent_name\" && status = error }",
+          "filters": [
+            {
+              "id": "trace-id",
+              "tag": "traceID",
+              "operator": "=",
+              "value": ["$trace_id"],
+              "valueType": "string",
+              "scope": "intrinsic"
+            }
+          ],
+          "limit": 1000,
+          "tableType": "spans",
+          "refId": "A"
+        }
+      ],
+      "title": "Errors in Trace",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "tempo",
+        "uid": "${DS_TEMPO}"
+      },
+      "description": "Total trace duration in milliseconds (root span duration).",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 5000 },
+              { "color": "red", "value": 30000 }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 4, "x": 16, "y": 1 },
+      "id": 5,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["max"],
+          "fields": "/^duration$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "datasource": { "type": "tempo", "uid": "${DS_TEMPO}" },
+          "queryType": "traceql",
+          "query": "{ rootServiceName=~\"$agent_name\" && span.kind = \"task\" } | select(duration)",
+          "filters": [
+            {
+              "id": "trace-id",
+              "tag": "traceID",
+              "operator": "=",
+              "value": ["$trace_id"],
+              "valueType": "string",
+              "scope": "intrinsic"
+            }
+          ],
+          "limit": 100,
+          "tableType": "spans",
+          "refId": "A"
+        }
+      ],
+      "title": "Trace Duration",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "tempo",
+        "uid": "${DS_TEMPO}"
+      },
+      "description": "Total estimated cost of all LLM calls within this trace.",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "mappings": [],
+          "noValue": "$0.0000",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 0.10 },
+              { "color": "red", "value": 1.00 }
+            ]
+          },
+          "unit": "currencyUSD",
+          "decimals": 4
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 4, "x": 20, "y": 1 },
+      "id": 6,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["sum"],
+          "fields": "/^llm\\.cost_usd$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "datasource": { "type": "tempo", "uid": "${DS_TEMPO}" },
+          "queryType": "traceql",
+          "query": "{ rootServiceName=~\"$agent_name\" && span.kind = \"llm_call\" } | select(span.llm.cost_usd)",
+          "filters": [
+            {
+              "id": "trace-id",
+              "tag": "traceID",
+              "operator": "=",
+              "value": ["$trace_id"],
+              "valueType": "string",
+              "scope": "intrinsic"
+            }
+          ],
+          "limit": 1000,
+          "tableType": "spans",
+          "refId": "A"
+        }
+      ],
+      "title": "Trace Total Cost",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 5 },
+      "id": 201,
+      "title": "Trace Timeline",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "tempo",
+        "uid": "${DS_TEMPO}"
+      },
+      "description": "Waterfall / Gantt chart view of all spans within the selected trace. Shows parent-child relationships, durations, and span kinds (task, llm_call, tool_call, reasoning, planning, retrieval, agent_comm).",
+      "gridPos": { "h": 12, "w": 24, "x": 0, "y": 6 },
+      "id": 7,
+      "options": {},
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "datasource": { "type": "tempo", "uid": "${DS_TEMPO}" },
+          "queryType": "traceql",
+          "query": "{ rootServiceName=~\"$agent_name\" }",
+          "filters": [
+            {
+              "id": "trace-id",
+              "tag": "traceID",
+              "operator": "=",
+              "value": ["$trace_id"],
+              "valueType": "string",
+              "scope": "intrinsic"
+            }
+          ],
+          "limit": 2000,
+          "tableType": "traces",
+          "refId": "A"
+        }
+      ],
+      "title": "Trace Waterfall",
+      "type": "traces"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 18 },
+      "id": 202,
+      "title": "Span Details",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "tempo",
+        "uid": "${DS_TEMPO}"
+      },
+      "description": "All spans in the trace with key attributes: name, span kind (task/llm_call/tool_call/reasoning/planning/retrieval/agent_comm), duration in ms, status, and agent name.",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "custom": {
+            "align": "auto",
+            "cellOptions": { "type": "auto" },
+            "filterable": true,
+            "inspect": true
+          },
+          "mappings": [
+            {
+              "options": {
+                "error": { "color": "red", "index": 0, "text": "ERROR" },
+                "ok": { "color": "green", "index": 1, "text": "OK" },
+                "unset": { "color": "blue", "index": 2, "text": "UNSET" },
+                "timeout": { "color": "orange", "index": 3, "text": "TIMEOUT" }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "spanID" },
+            "properties": [
+              { "id": "custom.width", "value": 130 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "span.name" },
+            "properties": [
+              { "id": "custom.width", "value": 250 },
+              { "id": "displayName", "value": "Span Name" }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "span.kind" },
+            "properties": [
+              { "id": "custom.width", "value": 120 },
+              { "id": "displayName", "value": "Kind" },
+              { "id": "custom.cellOptions", "value": {
+                "type": "color-text"
+              }}
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "duration" },
+            "properties": [
+              { "id": "custom.width", "value": 120 },
+              { "id": "unit", "value": "ms" },
+              { "id": "displayName", "value": "Duration (ms)" },
+              { "id": "custom.cellOptions", "value": {
+                "type": "color-background",
+                "mode": "gradient"
+              }},
+              { "id": "thresholds", "value": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "yellow", "value": 1000 },
+                  { "color": "orange", "value": 3000 },
+                  { "color": "red", "value": 10000 }
+                ]
+              }}
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "status" },
+            "properties": [
+              { "id": "custom.width", "value": 90 },
+              { "id": "displayName", "value": "Status" },
+              { "id": "custom.cellOptions", "value": {
+                "type": "color-text"
+              }}
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "span.agent.name" },
+            "properties": [
+              { "id": "custom.width", "value": 150 },
+              { "id": "displayName", "value": "Agent" }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "parentSpanID" },
+            "properties": [
+              { "id": "custom.width", "value": 130 }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 19 },
+      "id": 8,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": true,
+          "enablePagination": true,
+          "fields": [],
+          "reducer": ["count"],
+          "show": true
+        },
+        "showHeader": true,
+        "sortBy": [
+          { "desc": false, "displayName": "Duration (ms)" }
+        ]
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "datasource": { "type": "tempo", "uid": "${DS_TEMPO}" },
+          "queryType": "traceql",
+          "query": "{ rootServiceName=~\"$agent_name\" } | select(span.name, span.kind, duration, status, span.agent.name, parentSpanID)",
+          "filters": [
+            {
+              "id": "trace-id",
+              "tag": "traceID",
+              "operator": "=",
+              "value": ["$trace_id"],
+              "valueType": "string",
+              "scope": "intrinsic"
+            }
+          ],
+          "limit": 2000,
+          "tableType": "spans",
+          "refId": "A"
+        }
+      ],
+      "title": "Span Details Table",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 29 },
+      "id": 203,
+      "title": "LLM Call Details",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "tempo",
+        "uid": "${DS_TEMPO}"
+      },
+      "description": "Details of every LLM call span: model name, input/output tokens, total tokens, cost in USD, and latency. Corresponds to spans with kind=llm_call and attributes llm.model, llm.input_tokens, llm.output_tokens, llm.total_tokens, llm.cost_usd, llm.latency_ms.",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "custom": {
+            "align": "auto",
+            "cellOptions": { "type": "auto" },
+            "filterable": true,
+            "inspect": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "span.name" },
+            "properties": [
+              { "id": "custom.width", "value": 200 },
+              { "id": "displayName", "value": "Span Name" }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "span.llm.model" },
+            "properties": [
+              { "id": "custom.width", "value": 180 },
+              { "id": "displayName", "value": "Model" }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "span.llm.provider" },
+            "properties": [
+              { "id": "custom.width", "value": 120 },
+              { "id": "displayName", "value": "Provider" }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "span.llm.input_tokens" },
+            "properties": [
+              { "id": "custom.width", "value": 120 },
+              { "id": "displayName", "value": "Input Tokens" },
+              { "id": "unit", "value": "short" }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "span.llm.output_tokens" },
+            "properties": [
+              { "id": "custom.width", "value": 120 },
+              { "id": "displayName", "value": "Output Tokens" },
+              { "id": "unit", "value": "short" }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "span.llm.total_tokens" },
+            "properties": [
+              { "id": "custom.width", "value": 120 },
+              { "id": "displayName", "value": "Total Tokens" },
+              { "id": "unit", "value": "short" }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "span.llm.cost_usd" },
+            "properties": [
+              { "id": "custom.width", "value": 110 },
+              { "id": "displayName", "value": "Cost (USD)" },
+              { "id": "unit", "value": "currencyUSD" },
+              { "id": "decimals", "value": 6 },
+              { "id": "custom.cellOptions", "value": {
+                "type": "color-background",
+                "mode": "gradient"
+              }},
+              { "id": "thresholds", "value": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "yellow", "value": 0.01 },
+                  { "color": "red", "value": 0.10 }
+                ]
+              }}
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "span.llm.latency_ms" },
+            "properties": [
+              { "id": "custom.width", "value": 120 },
+              { "id": "displayName", "value": "Latency (ms)" },
+              { "id": "unit", "value": "ms" },
+              { "id": "custom.cellOptions", "value": {
+                "type": "color-background",
+                "mode": "gradient"
+              }},
+              { "id": "thresholds", "value": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "yellow", "value": 2000 },
+                  { "color": "red", "value": 5000 }
+                ]
+              }}
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "span.llm.temperature" },
+            "properties": [
+              { "id": "custom.width", "value": 100 },
+              { "id": "displayName", "value": "Temperature" },
+              { "id": "decimals", "value": 2 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "span.agent.name" },
+            "properties": [
+              { "id": "custom.width", "value": 130 },
+              { "id": "displayName", "value": "Agent" }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 30 },
+      "id": 9,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": true,
+          "enablePagination": true,
+          "fields": ["span.llm.input_tokens", "span.llm.output_tokens", "span.llm.total_tokens", "span.llm.cost_usd"],
+          "reducer": ["sum"],
+          "show": true
+        },
+        "showHeader": true,
+        "sortBy": [
+          { "desc": true, "displayName": "Cost (USD)" }
+        ]
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "datasource": { "type": "tempo", "uid": "${DS_TEMPO}" },
+          "queryType": "traceql",
+          "query": "{ rootServiceName=~\"$agent_name\" && span.kind = \"llm_call\" } | select(span.name, span.llm.model, span.llm.provider, span.llm.input_tokens, span.llm.output_tokens, span.llm.total_tokens, span.llm.cost_usd, span.llm.latency_ms, span.llm.temperature, span.agent.name)",
+          "filters": [
+            {
+              "id": "trace-id",
+              "tag": "traceID",
+              "operator": "=",
+              "value": ["$trace_id"],
+              "valueType": "string",
+              "scope": "intrinsic"
+            }
+          ],
+          "limit": 1000,
+          "tableType": "spans",
+          "refId": "A"
+        }
+      ],
+      "title": "LLM Call Details",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 40 },
+      "id": 204,
+      "title": "Tool Call Details",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "tempo",
+        "uid": "${DS_TEMPO}"
+      },
+      "description": "Details of every tool invocation span: tool name, success/failure, latency, error message if any. Corresponds to spans with kind=tool_call and attributes tool.name, tool.success, tool.latency_ms, tool.error.",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "custom": {
+            "align": "auto",
+            "cellOptions": { "type": "auto" },
+            "filterable": true,
+            "inspect": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "span.name" },
+            "properties": [
+              { "id": "custom.width", "value": 220 },
+              { "id": "displayName", "value": "Span Name" }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "span.tool.name" },
+            "properties": [
+              { "id": "custom.width", "value": 180 },
+              { "id": "displayName", "value": "Tool Name" }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "span.tool.success" },
+            "properties": [
+              { "id": "custom.width", "value": 100 },
+              { "id": "displayName", "value": "Success" },
+              { "id": "custom.cellOptions", "value": {
+                "type": "color-text"
+              }},
+              { "id": "mappings", "value": [
+                {
+                  "options": {
+                    "false": { "color": "red", "index": 0, "text": "FAILED" },
+                    "true": { "color": "green", "index": 1, "text": "OK" }
+                  },
+                  "type": "value"
+                }
+              ]}
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "span.tool.latency_ms" },
+            "properties": [
+              { "id": "custom.width", "value": 130 },
+              { "id": "displayName", "value": "Latency (ms)" },
+              { "id": "unit", "value": "ms" },
+              { "id": "custom.cellOptions", "value": {
+                "type": "color-background",
+                "mode": "gradient"
+              }},
+              { "id": "thresholds", "value": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "yellow", "value": 500 },
+                  { "color": "red", "value": 3000 }
+                ]
+              }}
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "span.tool.error" },
+            "properties": [
+              { "id": "custom.width", "value": 300 },
+              { "id": "displayName", "value": "Error" },
+              { "id": "custom.cellOptions", "value": {
+                "type": "color-text"
+              }},
+              { "id": "color", "value": { "fixedColor": "red", "mode": "fixed" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "span.tool.description" },
+            "properties": [
+              { "id": "custom.width", "value": 250 },
+              { "id": "displayName", "value": "Description" }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "duration" },
+            "properties": [
+              { "id": "custom.width", "value": 120 },
+              { "id": "displayName", "value": "Span Duration (ms)" },
+              { "id": "unit", "value": "ms" }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "span.agent.name" },
+            "properties": [
+              { "id": "custom.width", "value": 130 },
+              { "id": "displayName", "value": "Agent" }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 41 },
+      "id": 10,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": true,
+          "enablePagination": true,
+          "fields": [],
+          "reducer": ["count"],
+          "show": true
+        },
+        "showHeader": true,
+        "sortBy": [
+          { "desc": true, "displayName": "Latency (ms)" }
+        ]
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "datasource": { "type": "tempo", "uid": "${DS_TEMPO}" },
+          "queryType": "traceql",
+          "query": "{ rootServiceName=~\"$agent_name\" && span.kind = \"tool_call\" } | select(span.name, span.tool.name, span.tool.success, span.tool.latency_ms, span.tool.error, span.tool.description, duration, span.agent.name)",
+          "filters": [
+            {
+              "id": "trace-id",
+              "tag": "traceID",
+              "operator": "=",
+              "value": ["$trace_id"],
+              "valueType": "string",
+              "scope": "intrinsic"
+            }
+          ],
+          "limit": 1000,
+          "tableType": "spans",
+          "refId": "A"
+        }
+      ],
+      "title": "Tool Call Details",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 51 },
+      "id": 205,
+      "title": "Inter-Agent Communication",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "tempo",
+        "uid": "${DS_TEMPO}"
+      },
+      "description": "Node graph showing communication flow between agents. Nodes are agents; edges represent agent_comm spans with source (agent.interaction.source_agent) and target (agent.interaction.target_agent) attributes.",
+      "gridPos": { "h": 10, "w": 12, "x": 0, "y": 52 },
+      "id": 11,
+      "options": {
+        "nodes": {
+          "mainStatUnit": "ms"
+        },
+        "edges": {
+          "mainStatUnit": "short"
+        }
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "datasource": { "type": "tempo", "uid": "${DS_TEMPO}" },
+          "queryType": "traceql",
+          "query": "{ rootServiceName=~\"$agent_name\" && span.kind = \"agent_comm\" } | select(span.agent.interaction.source_agent, span.agent.interaction.target_agent, span.agent.interaction.type, duration, span.name)",
+          "filters": [
+            {
+              "id": "trace-id",
+              "tag": "traceID",
+              "operator": "=",
+              "value": ["$trace_id"],
+              "valueType": "string",
+              "scope": "intrinsic"
+            }
+          ],
+          "limit": 1000,
+          "tableType": "spans",
+          "refId": "A"
+        }
+      ],
+      "title": "Agent Communication Flow",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "span.agent.interaction.source_agent": "source",
+              "span.agent.interaction.target_agent": "target",
+              "span.agent.interaction.type": "detail__interaction_type",
+              "span.name": "detail__span_name",
+              "duration": "mainStat"
+            }
+          }
+        }
+      ],
+      "type": "nodeGraph"
+    },
+    {
+      "datasource": {
+        "type": "tempo",
+        "uid": "${DS_TEMPO}"
+      },
+      "description": "Table listing all inter-agent communication spans: source agent, target agent, interaction type, duration, and span name.",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "custom": {
+            "align": "auto",
+            "cellOptions": { "type": "auto" },
+            "filterable": true,
+            "inspect": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "span.agent.interaction.source_agent" },
+            "properties": [
+              { "id": "custom.width", "value": 160 },
+              { "id": "displayName", "value": "Source Agent" }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "span.agent.interaction.target_agent" },
+            "properties": [
+              { "id": "custom.width", "value": 160 },
+              { "id": "displayName", "value": "Target Agent" }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "span.agent.interaction.type" },
+            "properties": [
+              { "id": "custom.width", "value": 140 },
+              { "id": "displayName", "value": "Interaction Type" }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "span.name" },
+            "properties": [
+              { "id": "custom.width", "value": 250 },
+              { "id": "displayName", "value": "Span Name" }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "duration" },
+            "properties": [
+              { "id": "custom.width", "value": 120 },
+              { "id": "displayName", "value": "Duration (ms)" },
+              { "id": "unit", "value": "ms" }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "status" },
+            "properties": [
+              { "id": "custom.width", "value": 90 },
+              { "id": "displayName", "value": "Status" }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 10, "w": 12, "x": 12, "y": 52 },
+      "id": 12,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": true,
+          "enablePagination": true,
+          "fields": [],
+          "reducer": ["count"],
+          "show": true
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "datasource": { "type": "tempo", "uid": "${DS_TEMPO}" },
+          "queryType": "traceql",
+          "query": "{ rootServiceName=~\"$agent_name\" && span.kind = \"agent_comm\" } | select(span.name, span.agent.interaction.source_agent, span.agent.interaction.target_agent, span.agent.interaction.type, duration, status)",
+          "filters": [
+            {
+              "id": "trace-id",
+              "tag": "traceID",
+              "operator": "=",
+              "value": ["$trace_id"],
+              "valueType": "string",
+              "scope": "intrinsic"
+            }
+          ],
+          "limit": 1000,
+          "tableType": "spans",
+          "refId": "A"
+        }
+      ],
+      "title": "Agent Communication Table",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 62 },
+      "id": 206,
+      "title": "Events & Errors",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOKI}"
+      },
+      "description": "Error and warning events from AgentTelemetry spans, sourced from Loki. Shows event_type (error, warning, guardrail_triggered, cost_threshold), span name, agent name, and event attributes.",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "custom": {
+            "align": "auto",
+            "cellOptions": { "type": "auto" },
+            "filterable": true,
+            "inspect": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 63 },
+      "id": 13,
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": true,
+        "showCommonLabels": false,
+        "showLabels": true,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "datasource": { "type": "loki", "uid": "${DS_LOKI}" },
+          "editorMode": "code",
+          "expr": "{service_name=~\"$agent_name\"} |= \"$trace_id\" | json | event_type =~ \"error|warning|guardrail_triggered|cost_threshold\"",
+          "legendFormat": "",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Error & Warning Events",
+      "type": "logs"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOKI}"
+      },
+      "description": "All events associated with the selected trace including LLM start/end, tool start/end, agent messages, planning, retrieval, human feedback, and custom events.",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "custom": {
+            "align": "auto",
+            "cellOptions": { "type": "auto" },
+            "filterable": true,
+            "inspect": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 73 },
+      "id": 14,
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": true,
+        "showCommonLabels": false,
+        "showLabels": true,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "datasource": { "type": "loki", "uid": "${DS_LOKI}" },
+          "editorMode": "code",
+          "expr": "{service_name=~\"$agent_name\"} |= \"$trace_id\" | json",
+          "legendFormat": "",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "All Trace Events",
+      "type": "logs"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["agenttelemetry", "ai-agents", "llm", "traces", "detail"],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
+        "description": "Trace ID to inspect. Paste a full 32-character hex trace_id from AgentTelemetry.",
+        "hide": 0,
+        "label": "Trace ID",
+        "name": "trace_id",
+        "options": [],
+        "query": "",
+        "skipUrlSync": false,
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "definition": "label_values(agent_task_count_total, agent_name)",
+        "description": "Filter by agent name",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Agent",
+        "multi": true,
+        "name": "agent_name",
+        "options": [],
+        "query": {
+          "query": "label_values(agent_task_count_total, agent_name)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "Tempo",
+          "value": "Tempo"
+        },
+        "description": "Tempo datasource for traces",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Tempo Datasource",
+        "multi": false,
+        "name": "DS_TEMPO",
+        "options": [],
+        "query": "tempo",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "Prometheus",
+          "value": "Prometheus"
+        },
+        "description": "Prometheus datasource for metrics",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Prometheus Datasource",
+        "multi": false,
+        "name": "DS_PROMETHEUS",
+        "options": [],
+        "query": "prometheus",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "Loki",
+          "value": "Loki"
+        },
+        "description": "Loki datasource for logs/events",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Loki Datasource",
+        "multi": false,
+        "name": "DS_LOKI",
+        "options": [],
+        "query": "loki",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": ["5s", "10s", "30s", "1m", "5m"],
+    "time_options": ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d"]
+  },
+  "timezone": "browser",
+  "title": "AgentTelemetry - Trace Detail",
+  "uid": "agent-trace-detail",
+  "version": 1,
+  "weekStart": ""
+}

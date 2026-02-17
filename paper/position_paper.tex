@@ -1,0 +1,840 @@
+%%
+%% AgentTelemetry: Towards Unified Observability for Autonomous AI Agent Systems
+%% Position Paper — Target venue: ICSE 2027 SEIP / ASE 2027 Workshop
+%%
+
+\documentclass[sigconf,nonacm]{acmart}
+
+%% ---------- packages ----------
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{subcaption}
+\usepackage{enumitem}
+
+%% ---------- listings style ----------
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue!70!black}\bfseries,
+  commentstyle=\color{green!50!black},
+  stringstyle=\color{red!60!black},
+  showstringspaces=false,
+  breaklines=true,
+  frame=single,
+  framesep=3pt,
+  xleftmargin=6pt,
+  xrightmargin=4pt,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  numbersep=5pt,
+  aboveskip=8pt,
+  belowskip=6pt,
+}
+
+%% ---------- metadata ----------
+\title{AgentTelemetry: Towards Unified Observability for Autonomous AI Agent Systems}
+
+\author{Krishna Chaitanya Balusu}
+\affiliation{%
+  \institution{Independent Researcher}
+  \city{}
+  \state{}
+  \country{United States}
+}
+\email{krishna@example.com}
+
+\begin{abstract}
+Autonomous AI agents built on large language models are rapidly transitioning
+from research prototypes to production deployments, yet the observability
+infrastructure required to monitor, debug, and govern these systems remains
+fundamentally inadequate.  Existing observability standards such as
+OpenTelemetry were designed for request-response microservice architectures and
+lack semantic primitives for agent-specific phenomena including multi-step
+reasoning chains, tool invocation sequences, inter-agent delegation, and
+cost accumulation across LLM calls.  We present \textsc{AgentTelemetry}, an
+open-source, framework-agnostic observability library that introduces (1) a
+telemetry data model with nine agent-specific span kinds and semantic
+attribute conventions covering agent identity, LLM usage, tool execution, and
+inter-agent communication; (2) a W3C-compatible context propagation mechanism
+for end-to-end tracing across multi-agent topologies; (3) a privacy-first
+design in which prompt and completion capture is strictly opt-in; and (4) a
+pluggable instrumentor--exporter architecture supporting automatic telemetry
+collection from LangChain, CrewAI, AutoGen, and DSPy with export to console,
+JSON, and any OpenTelemetry Protocol (OTLP) backend.  We describe the system
+design, contrast it with existing approaches in the literature, and outline a
+preliminary evaluation plan measuring instrumentation overhead and
+debugging effectiveness.
+\end{abstract}
+
+\begin{CCSXML}
+<ccs2012>
+<concept>
+<concept_id>10011007.10011074.10011099</concept_id>
+<concept_desc>Software and its engineering~Software verification and validation</concept_desc>
+<concept_significance>500</concept_significance>
+</concept>
+<concept>
+<concept_id>10011007.10011074.10011111</concept_id>
+<concept_desc>Software and its engineering~Software post-development issues</concept_desc>
+<concept_significance>300</concept_significance>
+</concept>
+</ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Software and its engineering~Software verification and validation}
+\ccsdesc[300]{Software and its engineering~Software post-development issues}
+
+\keywords{AI agents, observability, telemetry, distributed tracing, LLM monitoring, OpenTelemetry, multi-agent systems}
+
+\maketitle
+
+%% ====================================================================
+%% 1. INTRODUCTION
+%% ====================================================================
+\section{Introduction}
+\label{sec:introduction}
+
+Large language model (LLM) based autonomous agents represent a paradigm shift
+in software architecture.  Unlike conventional services that receive a request,
+execute deterministic logic, and return a response, an LLM agent pursues a
+goal through an iterative cycle of reasoning, planning, tool use, and
+self-reflection---often delegating sub-tasks to other agents in a multi-agent
+topology~\cite{agentbench,agentboard}.  Frameworks such as LangChain,
+CrewAI, AutoGen, and DSPy have lowered the barrier to building such agents,
+and organizations are deploying them for customer support, code generation,
+data analysis, and autonomous operations~\cite{aiops_survey}.
+
+This proliferation has exposed a critical gap: \emph{there is no
+standardized observability infrastructure for AI agent systems}.
+Production teams cannot reliably answer fundamental questions about their
+agents: Why did the agent choose this tool over that one?  Where in the
+reasoning chain did the hallucination originate?  How much did this task
+cost across all LLM calls?  Which agent in the multi-agent pipeline is the
+bottleneck?
+
+The observability industry has converged on OpenTelemetry
+(OTel)~\cite{otel} as the standard for distributed tracing, metrics, and
+logging in microservice architectures.  However, OTel's data model was
+designed for request-response service interactions: its \texttt{SpanKind}
+enum (\texttt{SERVER}, \texttt{CLIENT}, \texttt{PRODUCER}, \texttt{CONSUMER},
+\texttt{INTERNAL}) has no representation for reasoning steps, LLM calls,
+tool invocations, or inter-agent messages.  Its semantic conventions
+define attributes for HTTP, gRPC, and database operations but not for
+token counts, model selection, prompt content, or cost estimation.
+
+Recent research has begun to address the observability of AI systems from
+various angles.  AgentSight~\cite{agentsight} uses eBPF to bridge the
+semantic gap between high-level agent intent and kernel-level system
+actions, providing security-focused monitoring.  NeMo
+Guardrails~\cite{nemo_guardrails} offers programmable runtime safety
+rails that intercept agent inputs and outputs.  DSPy
+Assertions~\cite{dspy_assertions} embed computational constraints into
+LLM pipelines to trigger self-refinement on violations.
+AgentBoard~\cite{agentboard} introduces fine-grained progress tracking
+across sub-goals in multi-turn agent tasks.  Agent-as-a-Judge~\cite{agent_as_judge}
+proposes using one agent to evaluate another's trajectory.
+These contributions address important facets---security monitoring, safety
+enforcement, constraint checking, evaluation, and trajectory
+assessment---but none provides a \emph{general-purpose telemetry framework}
+that unifies tracing, metrics, and context propagation specifically for
+agent workloads.
+
+In this paper, we present \textsc{AgentTelemetry}, an open-source library
+that fills this gap.  Our contributions are:
+\begin{enumerate}[leftmargin=*,nosep]
+    \item A \textbf{telemetry data model} with nine agent-specific span
+        kinds, semantic attribute conventions for agent identity, LLM
+        usage, tool execution, and inter-agent communication, and
+        built-in cost estimation.
+    \item A \textbf{context propagation protocol} compatible with the W3C
+        Trace Context standard, extended to carry agent-specific metadata
+        across multi-agent boundaries.
+    \item A \textbf{privacy-first design} in which prompt and completion
+        content is never captured unless the operator explicitly opts in.
+    \item A \textbf{pluggable instrumentor--exporter architecture} that
+        decouples framework-specific telemetry collection from backend
+        export, with concrete implementations for four major agent
+        frameworks and three export targets including OTLP.
+\end{enumerate}
+
+%% ====================================================================
+%% 2. MOTIVATION AND GAP ANALYSIS
+%% ====================================================================
+\section{Motivation and Gap Analysis}
+\label{sec:motivation}
+
+\subsection{The Agent Observability Problem}
+An LLM agent's execution produces a deeply nested, non-deterministic trace
+of cognitive operations.  Consider a multi-agent research assistant: a
+\emph{planner} agent decomposes a user question into sub-tasks, a
+\emph{researcher} agent performs web searches and retrieves documents, and
+a \emph{writer} agent synthesizes findings.  Each agent may invoke
+multiple LLM calls with different models and temperature settings, use
+various tools (web search, code execution, file I/O), and exchange messages
+with peer agents.  A single user request can produce dozens of spans
+across three or more agents, accumulating thousands of tokens and
+non-trivial cost.
+
+Debugging a failure in this pipeline---for example, the writer
+producing a factually incorrect summary---requires tracing backward
+through the writer's LLM calls to the researcher's retrieval results to
+the planner's task decomposition.  Without unified tracing across agent
+boundaries, operators resort to ad-hoc logging, which is inconsistent
+across frameworks, omits critical context, and scales poorly.
+
+\subsection{Why OpenTelemetry Is Necessary but Insufficient}
+OpenTelemetry provides a robust foundation for distributed tracing: trace
+and span identifiers, context propagation, exporters, and a rich
+ecosystem of backends.  \textsc{AgentTelemetry} is deliberately designed
+to be OTel-compatible; its spans map one-to-one to OTel spans when
+exported via the OTLP exporter.
+
+However, raw OTel lacks the \emph{semantic layer} needed for agent
+observability.  Table~\ref{tab:gap} summarizes the conceptual mapping
+and the gaps.  OTel's \texttt{SpanKind} has no equivalent for reasoning,
+planning, reflection, or retrieval steps.  Its semantic conventions lack
+attributes for token counts, model identity, cost, and agent role.
+Multi-agent context propagation requires carrying agent identity and
+delegation metadata that the W3C \texttt{traceparent} header does not encode.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Mapping of agent concepts to observability primitives.  Bold entries indicate novel contributions of \textsc{AgentTelemetry}.}
+\label{tab:gap}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Agent Concept} & \textbf{OTel Equivalent} & \textbf{AgentTelemetry} \\
+\midrule
+Agent            & Service         & \texttt{agent.name, .role} \\
+Task execution   & Trace           & \textbf{AgentTrace} \\
+Reasoning step   & (none)          & \textbf{REASONING span} \\
+LLM call         & (none)          & \textbf{LLM\_CALL span} \\
+Tool invocation  & (none)          & \textbf{TOOL\_CALL span} \\
+Planning         & (none)          & \textbf{PLANNING span} \\
+Self-reflection  & (none)          & \textbf{REFLECTION span} \\
+Retrieval (RAG)  & (none)          & \textbf{RETRIEVAL span} \\
+Agent message    & (none)          & \textbf{AGENT\_COMM span} \\
+Human-in-loop    & (none)          & \textbf{HUMAN\_INPUT span} \\
+Token count      & (none)          & \texttt{llm.input/output\_tokens} \\
+Cost             & (none)          & \texttt{llm.cost\_usd} \\
+Prompt content   & (none)          & \texttt{llm.prompt} (opt-in) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Limitations of Existing Approaches}
+AgentSight~\cite{agentsight} operates at the kernel level via eBPF,
+monitoring TLS-encrypted LLM traffic and system calls.  This provides
+valuable security insights but requires Linux-specific kernel support,
+cannot capture framework-level semantics (which tool was called, what
+the agent's reasoning was), and introduces a dependency on
+kernel-level instrumentation that many cloud deployments restrict.
+
+NeMo Guardrails~\cite{nemo_guardrails} and DSPy
+Assertions~\cite{dspy_assertions} focus on \emph{controlling} agent
+behavior through runtime constraints rather than \emph{observing} it.
+They provide valuable safety enforcement but do not produce structured
+telemetry suitable for dashboards, alerting, or post-hoc analysis.
+
+Evaluation frameworks such as AgentBoard~\cite{agentboard},
+AgentBench~\cite{agentbench}, and Agent-as-a-Judge~\cite{agent_as_judge}
+are designed for offline assessment of agent capabilities, not for
+continuous production monitoring.
+
+Monitoring and observability research for ML systems~\cite{ml_monitoring}
+has documented significant gaps in practice but has not proposed a
+concrete telemetry standard.  Safety evaluation
+frameworks~\cite{openagentsafety, toolemu} identify failure modes but do
+not address operational observability.
+
+\textsc{AgentTelemetry} occupies a distinct position: it is a
+\emph{production-oriented, framework-agnostic telemetry library} that
+provides structured observability primitives specifically designed for
+agent workloads, bridging the gap between existing distributed tracing
+standards and the unique requirements of autonomous AI systems.
+
+%% ====================================================================
+%% 3. DESIGN
+%% ====================================================================
+\section{System Design}
+\label{sec:design}
+
+\textsc{AgentTelemetry} is organized into three layers: a \emph{core
+telemetry model}, a \emph{framework instrumentor layer}, and an
+\emph{exporter layer}.  Figure~\ref{fig:architecture} describes the
+conceptual architecture.
+
+\begin{figure}[t]
+\centering
+\fbox{\parbox{0.92\columnwidth}{\small
+\texttt{%
+~~Agent Framework (LangChain, CrewAI, ...)\\
+~~~~~~~~~~$\downarrow$  auto-instrumentation \\
+~~Instrumentor Layer (BaseInstrumentor)\\
+~~~~~~~~~~$\downarrow$  AgentSpan, AgentEvent \\
+~~Core Telemetry (AgentTracer, AgentMetrics)\\
+~~~~~~~~~~$\downarrow$  export\_span() \\
+~~Exporter Layer (Console | JSON | OTLP)\\
+~~~~~~~~~~$\downarrow$\\
+~~Backend (Grafana Tempo, Jaeger, Datadog, ...)
+}}}
+\caption{Layered architecture of \textsc{AgentTelemetry}.  Instrumentors are
+framework-specific; the core and exporter layers are framework-agnostic.}
+\label{fig:architecture}
+\end{figure}
+
+\subsection{Telemetry Data Model}
+\label{sec:datamodel}
+
+\paragraph{Span Kinds.}
+The \texttt{AgentSpanKind} enumeration defines nine span types:
+\texttt{TASK} (root span for a complete task), \texttt{REASONING} (chain-of-thought),
+\texttt{LLM\_CALL} (language model invocation), \texttt{TOOL\_CALL}
+(function/tool execution), \texttt{PLANNING} (task decomposition),
+\texttt{REFLECTION} (self-critique), \texttt{RETRIEVAL} (RAG lookup),
+\texttt{AGENT\_COMM} (inter-agent message), and \texttt{HUMAN\_INPUT}
+(human-in-the-loop interaction).  Each kind maps to a distinct phase in
+the agent execution lifecycle and enables kind-specific dashboards and
+alerts.
+
+\paragraph{Semantic Attribute Conventions.}
+We define three attribute namespaces.  The \texttt{agent.*} namespace
+captures agent identity: \texttt{agent.name}, \texttt{agent.framework},
+\texttt{agent.framework.version}, \texttt{agent.role}, and
+\texttt{agent.task}.  The \texttt{llm.*} namespace captures LLM call
+metadata: \texttt{llm.model}, \texttt{llm.provider},
+\texttt{llm.input\_tokens}, \texttt{llm.output\_tokens},
+\texttt{llm.total\_tokens}, \texttt{llm.temperature},
+\texttt{llm.cost\_usd}, and \texttt{llm.latency\_ms}.  The
+\texttt{tool.*} namespace captures tool execution details:
+\texttt{tool.name}, \texttt{tool.description}, \texttt{tool.input},
+\texttt{tool.output}, \texttt{tool.success}, \texttt{tool.error}, and
+\texttt{tool.latency\_ms}.  Additional attributes for inter-agent
+interactions record source and target agent identifiers and interaction
+type.
+
+\paragraph{Cost Estimation.}
+Each \texttt{LLM\_CALL} span automatically estimates cost in USD based
+on the model name and token counts.  The tracer maintains a lookup table
+of per-million-token prices for major models (GPT-4o, GPT-4-turbo,
+Claude~3.5~Sonnet, Claude~Opus~4, etc.) and computes cost at span
+completion.  This enables aggregate cost dashboards without requiring
+external billing API integration.
+
+\paragraph{Events.}
+Spans can contain timestamped \texttt{AgentEvent} instances categorized
+by \texttt{EventType}: \texttt{LLM\_START}, \texttt{LLM\_END},
+\texttt{TOOL\_START}, \texttt{TOOL\_END}, \texttt{GUARDRAIL\_TRIGGERED},
+\texttt{COST\_THRESHOLD}, \texttt{ERROR}, \texttt{WARNING}, and others.
+Events provide fine-grained intra-span signals---for example, recording when
+a guardrail fires during an LLM call or when cumulative cost exceeds a
+configured threshold.
+
+\subsection{Context Propagation for Multi-Agent Systems}
+\label{sec:context}
+
+Multi-agent architectures require trace context to flow across agent
+boundaries so that spans from different agents share a single trace
+identity.  \textsc{AgentTelemetry} provides the \texttt{AgentContext}
+class, which follows the W3C Trace Context format and extends it with
+agent-specific metadata.
+
+The context is serialized to a carrier dictionary containing three
+entries: (1)~a \texttt{traceparent} header in W3C format
+(\texttt{00-\{trace\_id\}-\{parent\_span\_id\}-01}); (2)~an
+\texttt{agentstate} header carrying the source agent's name; and
+(3)~an optional \texttt{baggage} header for key-value metadata
+propagation.  The carrier can be transmitted via HTTP headers, message
+queue metadata, or any string-based transport.
+
+On the receiving side, \texttt{AgentContext.from\_carrier()} deserializes
+the context, and the receiving agent's tracer attaches it so that
+subsequent spans inherit the trace~ID and parent span reference.  This
+produces a unified trace tree that spans multiple agents, enabling
+operators to visualize the complete execution flow of a multi-agent
+task in a single trace viewer.
+
+\subsection{Privacy-First Design}
+\label{sec:privacy}
+
+LLM prompts and completions frequently contain sensitive information:
+user queries, personal data, proprietary documents, or internal system
+instructions.  Capturing this content in telemetry creates significant
+privacy and compliance risk.
+
+\textsc{AgentTelemetry} adopts a privacy-first posture: the
+\texttt{llm.prompt} and \texttt{llm.completion} attributes are defined in
+the semantic conventions but are \emph{never populated} unless the operator
+explicitly sets \texttt{capture\_content=True} when initializing the
+tracer.  This opt-in gate applies at both the tracer and instrumentor
+levels, providing defense in depth.
+
+When content capture is disabled, the telemetry still records all
+structural information---span kind, duration, token counts, cost, model
+identity, tool names, success/failure status---providing comprehensive
+observability without exposing sensitive content.  This design aligns
+with emerging regulatory requirements around AI system transparency and
+enables deployment in regulated industries (healthcare, finance) where
+data minimization is mandatory.
+
+\subsection{Metrics Collection}
+\label{sec:metrics}
+
+Complementing per-span trace data, the \texttt{AgentMetrics} class
+provides thread-safe aggregate metrics through three instrument types:
+counters (e.g., \texttt{agent.llm.call.count},
+\texttt{agent.cost.total\_usd}), histograms (e.g.,
+\texttt{agent.llm.latency\_ms}, \texttt{agent.tool.latency\_ms}), and
+gauges.  Each metric point carries a label set including
+\texttt{agent.name} and optional dimensions (model name, tool name),
+enabling multi-dimensional analysis.  The \texttt{summary()} method
+computes descriptive statistics (min, max, mean, p50, p95, p99) over
+histogram data, providing immediate insight into latency distributions
+without requiring an external analytics backend.
+
+%% ====================================================================
+%% 4. IMPLEMENTATION
+%% ====================================================================
+\section{Implementation}
+\label{sec:implementation}
+
+\subsection{Framework-Agnostic Instrumentor Architecture}
+\label{sec:instrumentor}
+
+The instrumentor layer is designed around a template method pattern.
+\texttt{BaseInstrumentor} is an abstract class that provides:
+
+\begin{enumerate}[leftmargin=*,nosep]
+    \item A default \texttt{AgentTracer} and \texttt{AgentMetrics}
+        instance, configured with the framework name.
+    \item Convenience methods \texttt{\_record\_llm\_metrics()} and
+        \texttt{\_record\_tool\_metrics()} that atomically update
+        counters and histograms for LLM and tool calls.
+    \item Abstract methods \texttt{instrument()} and
+        \texttt{uninstrument()} that subclasses implement with
+        framework-specific monkey-patching or callback registration.
+    \item A \texttt{capture\_content} flag that propagates the
+        privacy setting to the underlying tracer.
+\end{enumerate}
+
+Listing~\ref{lst:instrumentor_usage} shows the usage pattern.  The
+instrumentor applies patches transparently; user code interacts with
+the agent framework as normal and telemetry is collected automatically.
+
+\begin{lstlisting}[caption={Instrumentor usage: automatic telemetry
+  collection requires no changes to user code.},
+  label={lst:instrumentor_usage},float=t]
+from agenttelemetry.instrumentors.langchain \
+    import LangChainInstrumentor
+from agenttelemetry.exporters.otlp \
+    import OTLPExporter
+
+# One-time setup
+inst = LangChainInstrumentor()
+inst.tracer.add_exporter(
+    OTLPExporter(endpoint="otel-collector:4317")
+)
+inst.instrument()
+
+# Use LangChain normally -- spans are
+# captured and exported automatically
+agent = create_langchain_agent(...)
+result = agent.invoke("Summarize this paper")
+
+# Teardown
+inst.uninstrument()
+\end{lstlisting}
+
+\subsection{Supported Frameworks}
+\label{sec:frameworks}
+
+We target four major agent frameworks that collectively represent the
+majority of production agent deployments:
+
+\begin{description}[leftmargin=*,nosep,style=unboxed]
+    \item[LangChain/LangGraph.]  Callback-based instrumentation via
+        LangChain's \texttt{BaseCallbackHandler}.  Captures chain
+        invocations, LLM calls, tool calls, and retriever operations
+        as nested spans.
+    \item[CrewAI.]  Patches \texttt{Crew.kickoff()} and agent task
+        execution methods to capture multi-agent role assignments,
+        delegation events, and per-agent cost breakdowns.
+    \item[AutoGen.]  Hooks into the \texttt{ConversableAgent} message
+        handling and \texttt{GroupChat} orchestration to trace
+        inter-agent conversations and tool use within chat turns.
+    \item[DSPy.]  Wraps DSPy module \texttt{forward()} methods and
+        language model calls to capture the compilation--optimization
+        pipeline alongside runtime execution traces.
+\end{description}
+
+Each instrumentor produces spans with the same semantic conventions,
+ensuring that dashboards and alerts work identically regardless of the
+underlying framework.
+
+\subsection{Exporter Ecosystem}
+\label{sec:exporters}
+
+Three exporters are provided:
+
+\begin{description}[leftmargin=*,nosep,style=unboxed]
+    \item[ConsoleExporter.]  Formats spans as single-line summaries
+        showing status, span kind, name, duration, token counts, cost,
+        and tool success.  A verbose mode emits full JSON.  Designed
+        for development and debugging.
+    \item[JSONFileExporter.]  Writes spans as JSON Lines to a file,
+        enabling offline analysis, integration with log management
+        tools, and archival.
+    \item[OTLPExporter.]  Converts \texttt{AgentSpan} instances to
+        OpenTelemetry spans and exports them via gRPC to any
+        OTLP-compatible backend.  Agent-specific attributes are
+        preserved as OTel span attributes; agent events map to OTel
+        events.  This enables visualization in Grafana Tempo, Jaeger,
+        Zipkin, Datadog, Honeycomb, and other platforms with no
+        additional configuration.
+\end{description}
+
+The exporter interface is minimal---a single \texttt{export\_span(span)}
+method---making it straightforward to implement custom exporters for
+proprietary backends or specialized analytics pipelines.
+
+\subsection{Tracing API}
+\label{sec:tracing_api}
+
+The \texttt{AgentTracer} class is the primary user-facing API.  It
+provides context-manager methods (\texttt{start\_task},
+\texttt{start\_llm\_call}, \texttt{start\_tool\_call},
+\texttt{start\_reasoning}, \texttt{start\_planning},
+\texttt{start\_retrieval}, \texttt{start\_agent\_comm}) that create
+properly nested spans with automatic parent--child linking, timing,
+error capture, and cost estimation.  Spans are automatically exported
+to all registered exporters upon completion.  Listing~\ref{lst:tracing}
+illustrates direct API usage for custom agent implementations.
+
+\begin{lstlisting}[caption={Direct tracing API for custom agents.
+  Spans nest automatically via context managers.},
+  label={lst:tracing},float=t]
+tracer = AgentTracer(
+    agent_name="researcher",
+    framework="custom",
+    capture_content=False
+)
+tracer.add_exporter(ConsoleExporter())
+
+with tracer.start_task("Analyze dataset") as t:
+  with tracer.start_planning("decompose") as p:
+    pass  # planning logic
+  with tracer.start_llm_call(model="gpt-4o") as l:
+    l.set_attribute("llm.input_tokens", 1200)
+    l.set_attribute("llm.output_tokens", 450)
+    # cost auto-calculated on span end
+  with tracer.start_tool_call("sql_query") as tc:
+    tc.set_attribute("tool.input", "SELECT ...")
+    tc.set_attribute("tool.success", True)
+\end{lstlisting}
+
+%% ====================================================================
+%% 5. PRELIMINARY EVALUATION
+%% ====================================================================
+\section{Preliminary Evaluation}
+\label{sec:evaluation}
+
+As this is a position paper presenting the design and initial implementation
+of \textsc{AgentTelemetry}, we outline our planned evaluation rather than
+reporting completed experiments.
+
+\subsection{Instrumentation Overhead}
+\label{sec:overhead}
+
+We plan to measure the runtime overhead of \textsc{AgentTelemetry}
+instrumentation across the four supported frameworks.  The experimental
+design is as follows:
+
+\begin{itemize}[leftmargin=*,nosep]
+    \item \textbf{Workloads:}  Standard benchmark tasks from
+        AgentBench~\cite{agentbench} (code generation, web browsing,
+        database querying) executed with and without instrumentation.
+    \item \textbf{Metrics:}  Wall-clock time per task, peak memory usage,
+        and CPU utilization delta.
+    \item \textbf{Exporters:}  Overhead will be measured separately for
+        each exporter (console, JSON, OTLP) to isolate I/O costs.
+    \item \textbf{Hypothesis:}  We expect instrumentation overhead to be
+        dominated by LLM API latency (typically 500ms--5s per call),
+        making the microsecond-scale cost of span creation and
+        attribute setting negligible in practice ($<$0.1\% overhead).
+\end{itemize}
+
+\subsection{Debugging Effectiveness Case Study}
+\label{sec:case_study}
+
+We plan a controlled case study in which participants debug agent
+failures with and without \textsc{AgentTelemetry}.  The study will use
+a multi-agent research pipeline (planner $\rightarrow$ researcher
+$\rightarrow$ writer) with injected faults: (1)~a hallucinated retrieval
+result that propagates to the final output, (2)~a tool timeout that
+causes the agent to retry with degraded context, and (3)~a cost overrun
+caused by excessive LLM calls in a reasoning loop.
+
+For each fault, we will measure time-to-diagnosis and diagnostic accuracy
+with three conditions: (a)~framework-default logging only, (b)~\textsc{AgentTelemetry}
+with console export, and (c)~\textsc{AgentTelemetry} with OTLP export
+to a Grafana dashboard.  We hypothesize that structured telemetry with
+agent-specific span kinds will significantly reduce diagnostic time,
+particularly for cross-agent fault propagation scenarios.
+
+%% ====================================================================
+%% 6. RELATED WORK
+%% ====================================================================
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{System-Level Agent Monitoring.}
+AgentSight~\cite{agentsight} is the most closely related work.  It uses
+eBPF to monitor TLS-encrypted LLM traffic and correlate kernel events
+with agent intent.  While AgentSight provides deep system-level
+visibility with minimal overhead, it is restricted to Linux, requires
+kernel-level access often unavailable in containerized deployments,
+and cannot capture application-level semantics such as agent role,
+task decomposition, or framework-specific context.
+\textsc{AgentTelemetry} operates at the application level, providing
+richer semantic telemetry at the cost of requiring framework integration.
+The two approaches are complementary: AgentSight for security and
+system-level monitoring, \textsc{AgentTelemetry} for application-level
+observability.
+
+\paragraph{Runtime Safety and Constraints.}
+NeMo Guardrails~\cite{nemo_guardrails} provides programmable rails that
+intercept and validate agent behavior in real time.  DSPy
+Assertions~\cite{dspy_assertions} embed computational constraints into
+LLM pipelines, triggering self-refinement on violations.  Both systems
+enforce behavioral policies but do not produce the structured,
+exportable telemetry needed for dashboards, trend analysis, or SLO
+monitoring.  \textsc{AgentTelemetry}'s event system can record guardrail
+activations (\texttt{GUARDRAIL\_TRIGGERED} events) within spans,
+providing observability \emph{of} the guardrail system itself.
+
+\paragraph{Agent Evaluation and Benchmarking.}
+AgentBench~\cite{agentbench} evaluates LLMs as agents across eight
+environments.  AgentBoard~\cite{agentboard} provides fine-grained
+progress tracking across sub-goals.  Agent-as-a-Judge~\cite{agent_as_judge}
+uses agents to evaluate peer agents' trajectories.  These frameworks
+target offline evaluation and capability assessment, while
+\textsc{AgentTelemetry} targets continuous production monitoring.
+However, evaluation results from AgentBench can serve as benchmark
+workloads for measuring instrumentation overhead (Section~\ref{sec:overhead}).
+
+\paragraph{Agent Safety.}
+ToolEmu~\cite{toolemu} emulates tool execution in a sandbox for
+automated safety testing.  OpenAgentSafety~\cite{openagentsafety}
+evaluates agent safety across 350+ multi-turn tasks and found unsafe
+behavior in over 51\% of safety-vulnerable tasks.  These findings
+underscore the need for production monitoring: safety evaluation during
+development is necessary but not sufficient, and runtime observability
+is essential for detecting unsafe behaviors that emerge only in
+production contexts.
+
+\paragraph{ML System Monitoring.}
+Leest et al.~\cite{ml_monitoring} conducted focus groups documenting
+current ML monitoring practices and gaps, finding that practitioners
+lack standardized tools for ML-specific observability.  Their findings
+motivate our work: \textsc{AgentTelemetry} addresses this gap for the
+specific case of LLM-based agent systems.
+
+\paragraph{AIOps and Distributed Tracing.}
+The AIOps literature~\cite{aiops_survey, opsagent} has developed
+sophisticated techniques for anomaly detection, root cause analysis,
+and automated remediation in microservice architectures.  Systems like
+TraceDiag~\cite{tracediag} and DeepTraLog~\cite{deeptralog} analyze
+distributed traces for fault diagnosis.  \textsc{AgentTelemetry}'s OTLP
+export capability enables these existing AIOps tools to be applied
+directly to agent telemetry data, creating a bridge between the agent
+and AIOps research communities.
+
+\paragraph{Execution Tracing for Optimization.}
+Trace~\cite{trace_opt} treats agent workflows analogously to
+differentiable programs, tracing execution paths for automatic
+optimization.  While Trace focuses on optimization through gradient-like
+updates, \textsc{AgentTelemetry} focuses on observability through
+structured telemetry export.  The recorded execution paths could
+potentially be combined: \textsc{AgentTelemetry} traces feeding into
+Trace-style optimizers.
+
+%% ====================================================================
+%% 7. CONCLUSION AND FUTURE WORK
+%% ====================================================================
+\section{Conclusion and Future Work}
+\label{sec:conclusion}
+
+We have presented \textsc{AgentTelemetry}, an open-source framework for
+unified observability of autonomous AI agent systems.  By introducing
+agent-specific span kinds, semantic attribute conventions, W3C-compatible
+context propagation, and a privacy-first design, \textsc{AgentTelemetry}
+bridges the gap between existing distributed tracing standards and the
+unique requirements of LLM-based agent workloads.  Its pluggable
+instrumentor--exporter architecture enables automatic telemetry collection
+from major agent frameworks with export to any OTLP-compatible backend.
+
+Several directions for future work are planned:
+
+\begin{description}[leftmargin=*,nosep,style=unboxed]
+    \item[Semantic Convention Standardization.]  We plan to propose
+        \textsc{AgentTelemetry}'s semantic conventions as an OpenTelemetry
+        Semantic Conventions Enhancement Proposal (OTEP), working toward
+        an industry standard for agent telemetry.
+    \item[Adaptive Sampling.]  Intelligent trace sampling that
+        preferentially retains anomalous, high-cost, or failing traces
+        while reducing storage volume for routine
+        executions~\cite{sieve_sampling}.
+    \item[Agent-Aware Dashboards.]  Pre-built Grafana dashboards that
+        visualize agent-specific metrics: reasoning chain depth, tool
+        usage patterns, cost accumulation curves, and multi-agent
+        interaction graphs.
+    \item[Streaming Telemetry.]  Real-time span streaming for live
+        monitoring of long-running agent tasks, enabling operators to
+        intervene before failures compound.
+    \item[Safety Integration.]  First-class integration with NeMo
+        Guardrails~\cite{nemo_guardrails} and DSPy
+        Assertions~\cite{dspy_assertions} to record safety constraint
+        violations as structured telemetry events within agent traces.
+    \item[Causal Analysis.]  Applying causal inference techniques
+        from the AIOps literature~\cite{mulan} to agent telemetry for
+        automated root cause analysis of agent failures.
+\end{description}
+
+The growing deployment of autonomous AI agents in production environments
+demands observability infrastructure that matches the complexity of these
+systems.  \textsc{AgentTelemetry} provides a foundation for this
+infrastructure, and we invite the research and practitioner communities to
+contribute to its development.
+
+%% ====================================================================
+%% BIBLIOGRAPHY
+%% ====================================================================
+
+\bibliographystyle{ACM-Reference-Format}
+
+\begin{thebibliography}{20}
+
+\bibitem{agentsight}
+Y.~Zheng, Y.~Hu, T.~Yu, and A.~Quinn.
+\newblock {AgentSight}: System-Level Observability for {AI} Agents Using {eBPF}.
+\newblock {\em arXiv preprint arXiv:2508.02736}, 2025.
+
+\bibitem{nemo_guardrails}
+T.~Rebedea, R.~Dinu, M.~Sreedhar, C.~Parisien, and J.~Cohen.
+\newblock {NeMo Guardrails}: A Toolkit for Controllable and Safe {LLM}
+  Applications.
+\newblock In {\em Proc.\ EMNLP (Demo Track)}, 2023.
+
+\bibitem{dspy_assertions}
+A.~Singhvi, M.~Shetty, S.~Tan, C.~Potts, K.~Sen, M.~Zaharia, and O.~Khattab.
+\newblock {DSPy} Assertions: Computational Constraints for Self-Refining
+  Language Model Pipelines.
+\newblock In {\em Proc.\ COLM}, 2024.
+
+\bibitem{agentboard}
+C.~Ma, J.~Zhang, Z.~Zhu, C.~Yang, Y.~Yang, et~al.
+\newblock {AgentBoard}: An Analytical Evaluation Board of Multi-Turn {LLM}
+  Agents.
+\newblock In {\em Proc.\ ACL}, 2024.
+
+\bibitem{agent_as_judge}
+M.~Zhuge, C.~Zhao, D.~Ashley, et~al.
+\newblock Agent-as-a-Judge: Evaluate Agents with Agents.
+\newblock {\em arXiv preprint arXiv:2410.10934}, 2024.
+
+\bibitem{agentbench}
+X.~Liu, H.~Yu, H.~Zhang, et~al.
+\newblock {AgentBench}: Evaluating {LLMs} as Agents.
+\newblock In {\em Proc.\ ICLR}, 2024.
+
+\bibitem{openagentsafety}
+S.~Vijayvargiya, A.~B.~Soni, X.~Zhou, Z.~Z.~Wang, N.~Dziri, G.~Neubig, and
+  M.~Sap.
+\newblock {OpenAgentSafety}: A Comprehensive Framework for Evaluating
+  Real-World {AI} Agent Safety.
+\newblock {\em arXiv preprint arXiv:2507.06134}, 2025.
+
+\bibitem{toolemu}
+Y.~Ruan, H.~Dong, A.~Wang, S.~Pitis, et~al.
+\newblock {ToolEmu}: Identifying Risks of {LLM} Agents with an {LLM}-Emulated
+  Sandbox.
+\newblock In {\em Proc.\ ICLR}, 2024.
+
+\bibitem{ml_monitoring}
+J.~Leest, I.~Gerostathopoulos, P.~Lago, and C.~Raibulet.
+\newblock Monitoring and Observability of Machine Learning Systems: Current
+  Practices and Gaps.
+\newblock {\em arXiv preprint arXiv:2510.24142}, 2025.
+
+\bibitem{aiops_survey}
+L.~Zhang, T.~Jia, M.~Jia, Y.~Wu, A.~Liu, Y.~Yang, Z.~Wu, X.~Hu, P.~S.~Yu,
+  and Y.~Li.
+\newblock A Survey of {AIOps} in the Era of Large Language Models.
+\newblock {\em arXiv preprint arXiv:2507.12472}, 2025.
+
+\bibitem{opsagent}
+Y.~Luo, J.~Jiang, J.~Feng, L.~Tao, Q.~Zhang, X.~Wen, Y.~Sun, S.~Zhang, and
+  D.~Pei.
+\newblock From Observability Data to Diagnosis: An Evolving Multi-agent System
+  for Incident Management in Cloud Systems.
+\newblock {\em arXiv preprint arXiv:2510.24145}, 2025.
+
+\bibitem{otel}
+{OpenTelemetry Authors}.
+\newblock {OpenTelemetry Specification}, v1.30.
+\newblock \url{https://opentelemetry.io/docs/specs/otel/}, 2024.
+
+\bibitem{trace_opt}
+C.-A.~Cheng, A.~Nie, and A.~Swaminathan.
+\newblock Trace: Unlocking Efficient Optimization of Computational Workflows.
+\newblock {\em arXiv preprint arXiv:2406.16218}, 2024.
+
+\bibitem{tracediag}
+R.~Ding, C.~Zhang, L.~Wang, Y.~Xu, M.~Ma, W.~Zhang, S.~Qin, S.~Rajmohan,
+  Q.~Lin, and D.~Zhang.
+\newblock {TraceDiag}: Adaptive, Interpretable, and Efficient Root Cause
+  Analysis on Large-Scale Microservice Systems.
+\newblock In {\em Proc.\ ACM ESEC/FSE}, 2023.
+
+\bibitem{deeptralog}
+C.~Zhang, X.~Peng, C.~Sha, K.~Zhang, Z.~Fu, X.~Wu, Q.~Lin, and D.~Zhang.
+\newblock {DeepTraLog}: Trace-Log Combined Microservice Anomaly Detection
+  through Graph-based Deep Learning.
+\newblock In {\em Proc.\ ACM ICSE}, 2022.
+
+\bibitem{sieve_sampling}
+D.~Batavia, I.~Weber, et~al.
+\newblock {Sieve}: Attention-based Sampling of End-to-End Trace Data in
+  Distributed Microservice Systems.
+\newblock In {\em Proc.\ IEEE ICWS}, 2023.
+
+\bibitem{mulan}
+L.~Zheng, Z.~Chen, J.~He, and H.~Chen.
+\newblock {MULAN}: Multi-modal Causal Structure Learning for Root Cause
+  Analysis.
+\newblock In {\em Proc.\ NeurIPS}, 2024.
+
+\bibitem{rcagent}
+Z.~Wang, Z.~Liu, Y.~Zhang, A.~Zhong, J.~Wang, F.~Yin, L.~Fan, L.~Wu, and
+  Q.~Wen.
+\newblock {RCAgent}: Cloud Root Cause Analysis by Autonomous Agents with
+  Tool-Augmented {LLMs}.
+\newblock {\em arXiv preprint arXiv:2310.16340}, 2023.
+
+\bibitem{aiopsbench}
+Y.~Liu, C.~Pei, L.~Xu, et~al.
+\newblock {OpsEval}: A Comprehensive {IT} Operations Benchmark Suite for
+  {LLMs}.
+\newblock {\em arXiv preprint arXiv:2310.07637}, 2023.
+
+\bibitem{aioslab}
+{Microsoft Research}.
+\newblock {AIOpsLab}: A Holistic Framework to Evaluate {AI} Agents for Enabling
+  Autonomous Cloud Operations.
+\newblock {\em arXiv preprint arXiv:2407.12165}, 2024.
+
+\end{thebibliography}
+
+\end{document}
