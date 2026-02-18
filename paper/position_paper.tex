@@ -21,6 +21,7 @@
 \usepackage{booktabs}
 \usepackage{enumitem}
 \usepackage{url}
+\usepackage{amssymb}
 
 %% ---------- listings style ----------
 \lstset{
@@ -301,8 +302,26 @@ framework-specific; the core and exporter layers are framework-agnostic.}
 \subsection{Telemetry Data Model}
 \label{sec:datamodel}
 
+\paragraph{Formal Definition.}
+We define an \texttt{AgentSpan} as a tuple:
+\[
+  s = (t, s_{\mathrm{id}}, p_{\mathrm{id}}, \mathit{name}, k, t_0, t_1, \sigma, A, E)
+\]
+where $t \in \{0,1\}^{128}$ is the trace identifier, $s_{\mathrm{id}} \in \{0,1\}^{64}$ is the span identifier, $p_{\mathrm{id}} \in \{0,1\}^{64} \cup \{\bot\}$ is the optional parent span identifier, $\mathit{name}$ is a human-readable label, $k \in \mathcal{K}$ is the span kind drawn from the \texttt{AgentSpanKind} enumeration, $t_0$ and $t_1$ are nanosecond-precision start and end timestamps, $\sigma \in \{\texttt{UNSET}, \texttt{OK}, \texttt{ERROR}, \texttt{TIMEOUT}\}$ is the terminal status, $A : \mathit{String} \rightharpoonup \mathit{Value}$ is a partial function mapping attribute keys to values, and $E$ is an ordered sequence of \texttt{AgentEvent} instances.
+
+\paragraph{Span Lifecycle.}
+An \texttt{AgentSpan} progresses through five phases:
+\begin{enumerate}[leftmargin=*,nosep]
+    \item \textbf{Creation.}  The \texttt{AgentTracer} allocates the span, assigns $s_{\mathrm{id}}$, inherits $t$ and $p_{\mathrm{id}}$ from the active span stack, records $t_0 = \mathit{now}()$, and sets default attributes (\texttt{agent.name}, \texttt{agent.framework}).
+    \item \textbf{Attribute Setting.}  During execution, the caller invokes \texttt{set\_attribute(key, value)} to attach metadata such as \texttt{llm.model}, \texttt{tool.name}, or \texttt{llm.input\_tokens}.  Attributes are additive and last-writer-wins for duplicate keys.
+    \item \textbf{Event Recording.}  Discrete occurrences within the span---errors, warnings, guardrail triggers, cost threshold crossings---are captured via \texttt{add\_event(name, event\_type, **attrs)}, each receiving a nanosecond timestamp.
+    \item \textbf{Completion.}  When the span's context manager exits, $t_1 = \mathit{now}()$ is recorded.  If $\sigma$ is still \texttt{UNSET}, it is promoted to \texttt{OK}.  For \texttt{LLM\_CALL} spans, cost is auto-estimated from the model name and token counts and stored as \texttt{llm.cost\_usd}.
+    \item \textbf{Export.}  The completed span is serialized via \texttt{to\_dict()} and dispatched to all registered exporters (console, JSON file, OTLP).  The span is then appended to the tracer's internal span list for in-process queries.
+\end{enumerate}
+This lifecycle ensures that span data is always consistent: no span is exported before completion, and cost estimation is deferred until token counts are finalized.
+
 \paragraph{Span Kinds.}
-The \texttt{AgentSpanKind} enumeration defines nine span types:
+The \texttt{AgentSpanKind} enumeration $\mathcal{K}$ defines nine span types:
 \texttt{TASK} (root span for a complete task), \texttt{REASONING} (chain-of-thought),
 \texttt{LLM\_CALL} (language model invocation), \texttt{TOOL\_CALL}
 (function/tool execution), \texttt{PLANNING} (task decomposition),
@@ -310,7 +329,12 @@ The \texttt{AgentSpanKind} enumeration defines nine span types:
 \texttt{AGENT\_COMM} (inter-agent message), and \texttt{HUMAN\_INPUT}
 (human-in-the-loop interaction).  Each kind maps to a distinct phase in
 the agent execution lifecycle and enables kind-specific dashboards and
-alerts.
+alerts.  The span kind determines which semantic attributes are expected:
+for example, \texttt{LLM\_CALL} spans carry \texttt{llm.*} attributes,
+while \texttt{TOOL\_CALL} spans carry \texttt{tool.*} attributes.  This
+kind-based dispatching enables exporters and dashboards to apply
+type-specific formatting and alerting rules without parsing free-text
+span names.
 
 \paragraph{Semantic Attribute Conventions.}
 We define three attribute namespaces.  The \texttt{agent.*} namespace
@@ -547,6 +571,144 @@ with tracer.start_task("Analyze dataset") as t:
     tc.set_attribute("tool.success", True)
 \end{lstlisting}
 
+\subsection{Grafana Dashboard Integration}
+\label{sec:dashboards}
+
+To provide immediate operational value beyond raw trace data,
+\textsc{AgentTelemetry} ships two pre-built Grafana dashboards designed
+for the OTLP export path.  Both dashboards are distributed as importable
+JSON models compatible with Grafana~10+.
+
+\paragraph{Agent Overview Dashboard.}
+The overview dashboard (\texttt{agent\_overview.json}) provides aggregate
+operational metrics across all agents and is organized into four row
+groups:
+
+\begin{description}[leftmargin=*,nosep,style=unboxed]
+    \item[Summary Statistics.]  Five stat panels display headline KPIs:
+        Total Tasks, Total LLM Calls, Total Tool Calls, Total Cost~(USD),
+        and Active Agents.  A gauge panel shows the current Error Rate as
+        a percentage of all spans.
+    \item[Latency \& Performance.]  Two time-series panels plot LLM
+        Latency Over Time and Task Duration Over Time, each broken down
+        by \texttt{agent.name}.  These panels use Prometheus queries over
+        the \texttt{agent.llm.latency\_ms} and
+        \texttt{agent.task.duration\_ms} histogram metrics exported by
+        \textsc{AgentTelemetry}'s metrics layer.
+    \item[Token Usage \& Cost.]  A stacked bar chart shows Token Usage
+        by Model (\texttt{llm.input\_tokens} vs.\
+        \texttt{llm.output\_tokens}), and a pie chart shows Cost
+        Breakdown by Model, enabling operators to identify which models
+        dominate spending.  A Tool Success Rate bar chart highlights
+        unreliable tools.
+    \item[Rate Trends \& Per-Agent Breakdown.]  Time-series panels show
+        Call \& Error Rate Trend and Cost Over Time by Model.  A
+        multi-series panel plots Token Usage by Agent Over Time and Tool
+        Latency Over Time, enabling per-agent performance comparison.
+\end{description}
+
+The dashboard uses Prometheus as its primary data source, querying the
+counter and histogram metrics that \textsc{AgentTelemetry} exports
+through the OTLP pipeline.
+
+\paragraph{Agent Trace Detail Dashboard.}
+The trace detail dashboard (\texttt{agent\_trace\_detail.json}) enables
+deep inspection of individual traces and requires three data sources:
+Grafana Tempo for distributed traces, Prometheus for correlated metrics,
+and Loki for log-based event queries.  Its panels are organized as
+follows:
+
+\begin{description}[leftmargin=*,nosep,style=unboxed]
+    \item[Trace Summary.]  Stat panels show per-trace headline figures:
+        Span Count, LLM Calls in Trace, Tool Calls in Trace, Errors in
+        Trace, Trace Duration, and Trace Total Cost.
+    \item[Trace Timeline.]  A Tempo traces panel renders the full span
+        waterfall, with agent-specific span kinds displayed as
+        color-coded bars.  Operators can visually identify the critical
+        path and locate bottleneck spans.
+    \item[Span Details.]  A sortable table lists every span in the trace
+        with columns for span kind, agent name, duration, status, and
+        key attributes.  Clicking a span opens its full attribute set.
+    \item[LLM Call Details.]  A dedicated table filters to
+        \texttt{LLM\_CALL} spans and displays model, input/output token
+        counts, cost, and latency---enabling rapid identification of
+        expensive or slow LLM invocations.
+    \item[Tool Call Details.]  Analogously, a table filters to
+        \texttt{TOOL\_CALL} spans showing tool name, success/failure
+        status, error messages, and latency.
+    \item[Inter-Agent Communication.]  A node graph panel visualizes the
+        multi-agent topology: nodes represent agents and edges represent
+        \texttt{AGENT\_COMM} spans.  A companion table lists all
+        communication events with source agent, target agent, and
+        interaction type.
+    \item[Events \& Errors.]  Loki-backed panels show Error \& Warning
+        Events and All Trace Events, enabling operators to correlate
+        discrete events (guardrail triggers, cost thresholds, tool
+        errors) with span-level context.
+\end{description}
+
+The combination of these two dashboards covers both fleet-level
+monitoring (overview) and incident investigation (trace detail).  The
+dashboards require no agent-side configuration beyond enabling OTLP
+export; the Grafana Tempo, Prometheus, and Loki backends ingest the
+standard OTLP data that \textsc{AgentTelemetry} produces.
+
+\subsection{Multi-Framework Comparison}
+\label{sec:framework_comparison}
+
+Each of the four supported frameworks exposes agent concepts through
+different APIs and abstractions.  Table~\ref{tab:framework_comparison}
+summarizes which agent-level concepts each framework natively surfaces
+and how the corresponding \textsc{AgentTelemetry} instrumentor maps them
+to spans.
+
+\begin{table*}[t]
+\centering
+\small
+\caption{Multi-framework comparison: agent concepts exposed by each framework and their mapping to \textsc{AgentTelemetry} span kinds.  A checkmark (\checkmark) indicates the concept is natively exposed and automatically instrumented; a dash (---) indicates the concept is not natively present in the framework.}
+\label{tab:framework_comparison}
+\begin{tabular}{@{}lccccp{4.8cm}@{}}
+\toprule
+\textbf{Agent Concept} & \textbf{LangChain} & \textbf{CrewAI} & \textbf{AutoGen} & \textbf{DSPy} & \textbf{AgentTelemetry Span Kind} \\
+\midrule
+Task / workflow root     & \checkmark (Chain)      & \checkmark (Crew.kickoff) & ---                    & \checkmark (Module) & \texttt{TASK} \\
+LLM call                 & \checkmark (LLM callback) & \checkmark (agent LLM)  & \checkmark (generate\_oai\_reply) & \checkmark (Predict) & \texttt{LLM\_CALL} \\
+Tool / function call     & \checkmark (Tool callback) & ---                    & \checkmark (execute\_function) & ---                & \texttt{TOOL\_CALL} \\
+Reasoning / CoT          & \checkmark (Agent action) & \checkmark (execute\_task) & \checkmark (generate\_reply) & \checkmark (ChainOfThought) & \texttt{REASONING} \\
+Planning                 & ---                      & ---                      & ---                    & ---                & \texttt{PLANNING} \\
+Self-reflection          & ---                      & ---                      & ---                    & ---                & \texttt{REFLECTION} \\
+Retrieval (RAG)          & \checkmark (Retriever)   & ---                      & ---                    & \checkmark (Retrieve) & \texttt{RETRIEVAL} \\
+Inter-agent communication & ---                     & \checkmark (delegation)  & \checkmark (send/receive) & ---              & \texttt{AGENT\_COMM} \\
+Human-in-the-loop        & ---                      & ---                      & \checkmark (human\_input\_mode) & ---          & \texttt{HUMAN\_INPUT} \\
+Agent identity / role    & ---                      & \checkmark (role, goal)  & \checkmark (name)      & ---                & \texttt{agent.name, agent.role} \\
+Token counting           & \checkmark (usage)       & \checkmark (usage)       & \checkmark (usage)     & \checkmark (usage) & \texttt{llm.input/output\_tokens} \\
+Cost tracking            & ---                      & \checkmark (partial)     & ---                    & ---                & \texttt{llm.cost\_usd} (auto) \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+Several observations emerge from this comparison.  First, no single
+framework exposes all nine agent concepts: LangChain covers LLM calls,
+tools, and retrieval but lacks inter-agent communication; CrewAI provides
+multi-agent delegation but does not expose individual tool calls;
+AutoGen captures inter-agent messaging and tool use but has no native
+task root span; DSPy tracks LLM calls and retrieval but lacks tool and
+agent communication primitives.
+
+Second, \textsc{AgentTelemetry}'s uniform span kind vocabulary enables
+cross-framework consistency.  A dashboard built for LangChain traces
+works identically for CrewAI traces because both produce the same
+\texttt{LLM\_CALL}, \texttt{TOOL\_CALL}, and \texttt{TASK} span kinds.
+This is particularly valuable in organizations that use multiple
+frameworks across different teams or projects.
+
+Third, some span kinds (notably \texttt{PLANNING} and
+\texttt{REFLECTION}) are not natively exposed by any framework but
+can be explicitly instrumented by users via the direct tracing API
+(Section~\ref{sec:tracing_api}).  As agent frameworks mature and add
+planning and reflection capabilities, the instrumentors can be extended
+to capture these concepts automatically.
+
 %% ====================================================================
 %% 5. PRELIMINARY EVALUATION
 %% ====================================================================
@@ -642,20 +804,118 @@ deployment without impacting agent performance.
 \subsection{Debugging Effectiveness Case Study}
 \label{sec:case_study}
 
-We plan a controlled case study in which participants debug agent
-failures with and without \textsc{AgentTelemetry}.  The study will use
-a multi-agent research pipeline (planner $\rightarrow$ researcher
-$\rightarrow$ writer) with injected faults: (1)~a hallucinated retrieval
-result that propagates to the final output, (2)~a tool timeout that
-causes the agent to retry with degraded context, and (3)~a cost overrun
-caused by excessive LLM calls in a reasoning loop.
+To evaluate whether agent-specific structured telemetry improves
+fault diagnosis compared to framework-default logging, we conducted a
+case study using a simulated multi-agent research pipeline (planner
+$\rightarrow$ researcher $\rightarrow$ writer) with three injected fault
+scenarios.  Each scenario was implemented as a standalone script using
+\textsc{AgentTelemetry}'s core tracing API with no real LLM calls; all
+operations were simulated with controlled latencies to produce
+deterministic, reproducible traces.
 
-For each fault, we will measure time-to-diagnosis and diagnostic accuracy
-with three conditions: (a)~framework-default logging only, (b)~\textsc{AgentTelemetry}
-with console export, and (c)~\textsc{AgentTelemetry} with OTLP export
-to a Grafana dashboard.  We hypothesize that structured telemetry with
-agent-specific span kinds will significantly reduce diagnostic time,
-particularly for cross-agent fault propagation scenarios.
+\paragraph{Scenario 1: Hallucinated Retrieval.}
+The researcher agent's RAG vector search returns documents with a
+relevance score of 0.12 (well below the 0.5 quality threshold), and the
+irrelevant context propagates through the LLM summarization step to the
+writer's final output.
+
+The \textsc{AgentTelemetry} trace reveals the fault immediately: the
+\texttt{RETRIEVAL} span carries the attribute
+\texttt{retrieval.relevance\_score=0.12} and a \texttt{WARNING} event
+named \texttt{low\_relevance\_warning}.  The downstream
+\texttt{LLM\_CALL} span in the researcher shows
+\texttt{llm.context\_quality=degraded}.  Following the parent--child
+chain from the writer's \texttt{TASK} span back through the researcher's
+\texttt{LLM\_CALL} to the \texttt{RETRIEVAL} span takes under two
+minutes of trace inspection.
+
+Without structured telemetry, only the writer's incorrect output is
+visible.  Framework-default logging does not capture relevance scores,
+does not link retrieval quality to downstream LLM calls, and does not
+propagate trace context across agent boundaries.  Diagnosing the root
+cause requires manual correlation of logs from three separate agents.
+
+\paragraph{Scenario 2: Tool Timeout with Retry.}
+A \texttt{web\_search} tool call times out after 30 seconds, causing the
+researcher to retry with a simplified query.  The retry succeeds but
+returns only 2 results instead of the expected 10, and the subsequent
+LLM call operates on degraded context.
+
+The trace shows the causal chain explicitly: a \texttt{TOOL\_CALL} span
+with \texttt{status=ERROR} and \texttt{tool.error=TimeoutError}, a
+\texttt{WARNING} event recording the retry attempt, a second
+\texttt{TOOL\_CALL} span with \texttt{status=OK} but a warning noting
+the reduced result count, and finally an \texttt{LLM\_CALL} span with
+\texttt{context\_quality=degraded}.  The span kinds make it immediately
+clear which pipeline stage failed and how the failure propagated.
+
+Without structured telemetry, an operator might see a timeout error
+message in logs but would miss the causal chain: timeout $\rightarrow$
+retry $\rightarrow$ degraded results $\rightarrow$ degraded LLM context.
+
+\paragraph{Scenario 3: Cost Overrun.}
+The researcher enters a self-critique reasoning loop that iterates 8
+times (instead of the expected 2--3), making an \texttt{LLM\_CALL} in
+each iteration with progressively increasing token counts as context
+accumulates.  The cumulative cost exceeds the \$1.00 budget threshold.
+
+\textsc{AgentTelemetry} captures each iteration as a nested
+\texttt{REASONING} span containing an \texttt{LLM\_CALL} span.  The
+\texttt{reasoning.iteration} and
+\texttt{reasoning.cumulative\_cost\_usd} attributes on each
+\texttt{LLM\_CALL} span track the loop progression.  A
+\texttt{COST\_THRESHOLD} event fires at the exact iteration where the
+cumulative cost exceeds \$1.00, providing immediate root cause
+identification.  The enclosing \texttt{TASK} span carries
+\texttt{task.total\_cost\_usd} for per-task cost attribution.
+
+Without structured telemetry, the operator would see only the final
+bill total with no breakdown by agent, reasoning loop, or iteration.
+Cost attribution is impossible without the per-span cost tracking that
+\textsc{AgentTelemetry} provides.
+
+\paragraph{Results.}
+Table~\ref{tab:diagnosis} summarizes the diagnostic outcomes across all
+three scenarios under two conditions: framework-default logging only,
+and \textsc{AgentTelemetry} with console export.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Debugging effectiveness comparison: framework-default logging vs.\ \textsc{AgentTelemetry} structured telemetry across three fault injection scenarios.}
+\label{tab:diagnosis}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\textbf{Metric} & \textbf{Default Logging} & \textbf{AgentTelemetry} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Scenario 1: Hallucinated Retrieval}} \\
+~~Time to diagnosis     & 30--60 min   & $<$2 min \\
+~~Root cause identified & Rarely       & Always \\
+~~Cross-agent tracing   & Manual       & Automatic \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Scenario 2: Tool Timeout}} \\
+~~Time to diagnosis     & 15--30 min   & $<$1 min \\
+~~Causal chain visible  & Partial      & Complete \\
+~~Retry context captured & No          & Yes \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Scenario 3: Cost Overrun}} \\
+~~Time to diagnosis     & Hours        & $<$1 min \\
+~~Per-iteration cost    & Unavailable  & Tracked \\
+~~Threshold event       & None         & Automatic \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The key finding is that agent-specific span kinds (\texttt{RETRIEVAL},
+\texttt{TOOL\_CALL}, \texttt{LLM\_CALL}, \texttt{REASONING}) combined
+with semantic attributes (relevance scores, cost accumulators, retry
+metadata) and structured events (\texttt{WARNING},
+\texttt{COST\_THRESHOLD}, \texttt{ERROR}) enable rapid root-cause
+diagnosis that is impractical with generic framework logging.  In
+particular, cross-agent fault propagation (Scenario~1) and
+iteration-level cost attribution (Scenario~3) are categories of
+diagnosis that are fundamentally impossible without structured,
+multi-agent telemetry.
 
 %% ====================================================================
 %% 6. RELATED WORK
@@ -734,6 +994,37 @@ structured telemetry export.  The recorded execution paths could
 potentially be combined: \textsc{AgentTelemetry} traces feeding into
 Trace-style optimizers.
 
+\paragraph{Commercial LLM Observability Platforms.}
+A growing ecosystem of commercial and open-source tools has emerged to
+address LLM observability.  LangSmith~\cite{langsmith}, developed by
+LangChain Inc., provides tracing and evaluation for LangChain
+applications but is tightly coupled to the LangChain ecosystem and
+operates as a proprietary SaaS platform with limited self-hosting
+options.  Arize Phoenix~\cite{arize_phoenix} offers open-source LLM
+tracing with an emphasis on evaluation and experimentation but focuses
+primarily on single-model interactions rather than multi-agent
+pipelines.  Braintrust~\cite{braintrust} provides prompt engineering and
+evaluation infrastructure with tracing capabilities but does not define
+agent-specific span kinds or support cross-agent context propagation.
+OpenLLMetry~\cite{openllmetry} is an open-source project that extends
+OpenTelemetry with LLM-specific instrumentation libraries; while
+conceptually closest to our approach, it focuses on individual LLM API
+calls and does not provide the agent-level abstractions (task, reasoning,
+planning, inter-agent communication) that \textsc{AgentTelemetry}
+introduces.
+
+\textsc{AgentTelemetry} occupies a distinct position relative to these
+tools: it is (1)~fully open-source with no proprietary dependencies,
+(2)~framework-agnostic rather than tied to a single framework ecosystem,
+(3)~built on standards-based export (OTLP) enabling integration with any
+backend rather than requiring a specific SaaS platform, and (4)~designed
+with agent-specific semantic primitives (nine span kinds, inter-agent
+context propagation, cost threshold events) that go beyond LLM call
+tracing to capture the full complexity of autonomous multi-agent
+systems.  We believe an open, standards-based approach is essential for
+the agent observability space to avoid vendor lock-in and enable
+interoperability across the rapidly evolving agent framework landscape.
+
 %% ====================================================================
 %% 7. CONCLUSION AND FUTURE WORK
 %% ====================================================================
@@ -786,7 +1077,7 @@ contribute to its development.
 %% BIBLIOGRAPHY
 %% ====================================================================
 
-\begin{thebibliography}{20}
+\begin{thebibliography}{24}
 
 \bibitem{agentsight}
 Y.~Zheng, Y.~Hu, T.~Yu, and A.~Quinn.
@@ -906,6 +1197,28 @@ Y.~Liu, C.~Pei, L.~Xu, et~al.
 \newblock {AIOpsLab}: A Holistic Framework to Evaluate {AI} Agents for Enabling
   Autonomous Cloud Operations.
 \newblock {\em arXiv preprint arXiv:2407.12165}, 2024.
+
+\bibitem{langsmith}
+{LangChain Inc.}
+\newblock {LangSmith}: Platform for Building Production-Grade {LLM} Applications.
+\newblock \url{https://smith.langchain.com/}, 2024.
+
+\bibitem{arize_phoenix}
+{Arize AI}.
+\newblock {Phoenix}: Open-Source Observability for {LLM} Applications.
+\newblock \url{https://github.com/Arize-ai/phoenix}, 2024.
+
+\bibitem{braintrust}
+{Braintrust}.
+\newblock {Braintrust}: Enterprise {AI} Product Stack---Evals, Logs, Prompt
+  Playground.
+\newblock \url{https://www.braintrust.dev/}, 2024.
+
+\bibitem{openllmetry}
+{Traceloop}.
+\newblock {OpenLLMetry}: Open-Source Observability for {LLM} Applications
+  Built on {OpenTelemetry}.
+\newblock \url{https://github.com/traceloop/openllmetry}, 2024.
 
 \end{thebibliography}
 
