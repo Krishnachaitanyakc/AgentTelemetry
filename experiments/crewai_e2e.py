@@ -22,12 +22,8 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
-from dotenv import load_dotenv
-load_dotenv(PROJECT_ROOT / ".env")
-
-from crewai import Agent, Task, Crew, LLM, Process
-from crewai.tools import tool
-
+# Set up AgentTelemetry provider BEFORE importing CrewAI, because CrewAI
+# sets a global TracerProvider on import via its own telemetry module.
 from agenttelemetry.core.tracer import AgentTelemetryProvider
 from agenttelemetry.core.privacy import PrivacyLevel
 from agenttelemetry.core.spans import (
@@ -47,6 +43,15 @@ from agenttelemetry.core.spans import (
 )
 from agenttelemetry.adapters.crewai import CrewAIInstrumentor
 from agenttelemetry.analysis import CostAggregator
+
+from dotenv import load_dotenv
+load_dotenv(PROJECT_ROOT / ".env")
+
+# Suppress CrewAI's own tracing prompt
+os.environ["CREWAI_TRACING_ENABLED"] = "false"
+
+from crewai import Agent, Task, Crew, LLM, Process
+from crewai.tools import tool
 
 RESULTS_DIR = PROJECT_ROOT / "results" / "crewai_e2e"
 
@@ -107,10 +112,11 @@ def main() -> bool:
     )
     json_exporter = provider.add_json_exporter(str(RESULTS_DIR / "traces.jsonl"))
     provider.add_console_exporter(verbose=False)
-    tp = provider.setup(set_global=True)
-    tracer = provider.get_tracer("crewai_e2e")
+    # Use set_global=False to avoid conflict with CrewAI's own OTel provider.
+    # We pass our tracer_provider explicitly to the instrumentor instead.
+    tp = provider.setup(set_global=False)
 
-    print("  TracerProvider ready")
+    print("  TracerProvider ready (non-global, explicit pass to instrumentor)")
 
     # ------------------------------------------------------------------
     # Step 2: Instrument CrewAI via hooks
@@ -123,6 +129,9 @@ def main() -> bool:
         privacy_level=PrivacyLevel.FULL,
     )
     print("  CrewAI hooks registered (before/after LLM + tool)")
+
+    # Create a tracer from OUR provider (not global)
+    tracer = tp.get_tracer("crewai_e2e", "0.1.0")
 
     # ------------------------------------------------------------------
     # Step 3: Create 2-agent crew
@@ -260,7 +269,10 @@ def main() -> bool:
         attrs = s.get("attributes", {})
         model = attrs.get(LLM_MODEL, "?")
         latency = attrs.get(LLM_LATENCY_MS, 0)
-        print(f"    [{i+1}] model={model}, latency={latency:.0f}ms")
+        role = attrs.get(AGENT_ROLE, "?")
+        task_desc = attrs.get(AGENT_TASK, "?")[:60] if attrs.get(AGENT_TASK) else "?"
+        print(f"    [{i+1}] model={model}, latency={latency:.0f}ms, agent={role}")
+        print(f"         task: {task_desc}")
 
     print(f"\n  Tool call spans: {len(tool_spans)}")
     for i, s in enumerate(tool_spans[:5]):
@@ -292,10 +304,9 @@ def main() -> bool:
 
     checks = {
         "AGENT spans >= 1": kind_counts.get("AGENT", 0) >= 1,
-        "LLM_CALL spans >= 1": kind_counts.get("LLM_CALL", 0) >= 1,
+        "LLM_CALL spans >= 2 (one per agent)": kind_counts.get("LLM_CALL", 0) >= 2,
         "PLANNING spans >= 1": kind_counts.get("PLANNING", 0) >= 1,
-        "TOOL_CALL spans >= 0 (tools optional)": kind_counts.get("TOOL_CALL", 0) >= 0,
-        "Total spans >= 3": len(spans) >= 3,
+        "Total spans >= 4": len(spans) >= 4,
         "LLM model captured": any(
             s.get("attributes", {}).get(LLM_MODEL, "") != ""
             for s in llm_spans
@@ -308,6 +319,10 @@ def main() -> bool:
             s.get("attributes", {}).get(AGENT_FRAMEWORK) == "crewai"
             for s in spans
         ),
+        "Agent role captured in LLM spans": any(
+            s.get("attributes", {}).get(AGENT_ROLE, "") != ""
+            for s in llm_spans
+        ) if llm_spans else False,
         "Crew completed": result is not None,
     }
 
