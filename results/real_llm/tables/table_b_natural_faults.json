@@ -1,0 +1,94 @@
+[
+  {
+    "model": "claude-3-5-sonnet",
+    "anomaly_count": 0,
+    "anomalies": [],
+    "hallucination_count": 0
+  },
+  {
+    "model": "claude-haiku-4-5",
+    "anomaly_count": 0,
+    "anomalies": [],
+    "hallucination_count": 0
+  },
+  {
+    "model": "claude-opus-4-5",
+    "anomaly_count": 0,
+    "anomalies": [],
+    "hallucination_count": 0
+  },
+  {
+    "model": "claude-opus-4-6",
+    "anomaly_count": 0,
+    "anomalies": [],
+    "hallucination_count": 0
+  },
+  {
+    "model": "claude-sonnet-4-5",
+    "anomaly_count": 0,
+    "anomalies": [],
+    "hallucination_count": 0
+  },
+  {
+    "model": "claude-sonnet-4-6",
+    "anomaly_count": 0,
+    "anomalies": [],
+    "hallucination_count": 0
+  },
+  {
+    "model": "gpt-4.1-mini",
+    "anomaly_count": 0,
+    "anomalies": [],
+    "hallucination_count": 0
+  },
+  {
+    "model": "gpt-4.1-nano",
+    "anomaly_count": 1,
+    "anomalies": [
+      {
+        "type": "infinite_retry",
+        "severity": "medium"
+      }
+    ],
+    "hallucination_count": 0
+  },
+  {
+    "model": "gpt-4.1",
+    "anomaly_count": 0,
+    "anomalies": [],
+    "hallucination_count": 0
+  },
+  {
+    "model": "gpt-4o-mini",
+    "anomaly_count": 2,
+    "anomalies": [
+      {
+        "type": "infinite_retry",
+        "severity": "medium"
+      },
+      {
+        "type": "infinite_retry",
+        "severity": "medium"
+      }
+    ],
+    "hallucination_count": 0
+  },
+  {
+    "model": "gpt-4o",
+    "anomaly_count": 0,
+    "anomalies": [],
+    "hallucination_count": 0
+  },
+  {
+    "model": "o3-mini",
+    "anomaly_count": 0,
+    "anomalies": [],
+    "hallucination_count": 0
+  },
+  {
+    "model": "o4-mini",
+    "anomaly_count": 0,
+    "anomalies": [],
+    "hallucination_count": 0
+  }
+]

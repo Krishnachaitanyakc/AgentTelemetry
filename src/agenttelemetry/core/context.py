@@ -1,102 +1,106 @@
 """Context propagation for multi-agent tracing.
 
-Enables trace context to flow across agent boundaries so that spans from
-different agents in a multi-agent system share the same trace_id, producing
-a unified end-to-end trace.
-
-Usage::
-
-    # Agent A creates a context
-    ctx = AgentContext.from_tracer(tracer_a)
-
-    # Serialize and send to Agent B (via message, HTTP header, etc.)
-    carrier = ctx.to_carrier()
-
-    # Agent B receives and restores context
-    ctx_b = AgentContext.from_carrier(carrier)
-    tracer_b.attach_context(ctx_b)
+Extends W3C trace context for multi-agent delegation by adding
+agent-specific information to OTel baggage.
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Any, Dict, Optional, TYPE_CHECKING
+from typing import Any, Dict, List, Optional
 
-if TYPE_CHECKING:
-    from agenttelemetry.core.trace import AgentTracer
-
-
-# W3C Trace Context header keys (standard)
-TRACEPARENT_KEY = "traceparent"
-AGENTSTATE_KEY = "agentstate"
+from opentelemetry import baggage, context, trace
+from opentelemetry.propagate import inject, extract
+from opentelemetry.baggage.propagation import W3CBaggagePropagator
+from opentelemetry.trace.propagation.tracecontext import TraceContextTextMapPropagator
+from opentelemetry.propagators.composite import CompositePropagator
 
 
-@dataclass
-class AgentContext:
-    """Propagation context for cross-agent tracing.
+# Baggage keys for agent context
+AGENT_ID_KEY = "agenttelemetry.agent_id"
+PARENT_AGENT_ID_KEY = "agenttelemetry.parent_agent_id"
 
-    Follows W3C Trace Context conventions where possible, extended with
-    agent-specific metadata.
+
+class AgentContextPropagator:
+    """Manages trace context propagation across agent boundaries.
+
+    Wraps OTel's W3C trace context + baggage propagation with
+    agent-specific metadata (agent_id, parent_agent_id).
     """
 
-    trace_id: str
-    parent_span_id: str
-    source_agent: str = ""
-    baggage: Dict[str, str] = None
+    def __init__(self) -> None:
+        self._propagator = CompositePropagator([
+            TraceContextTextMapPropagator(),
+            W3CBaggagePropagator(),
+        ])
 
-    def __post_init__(self):
-        if self.baggage is None:
-            self.baggage = {}
+    def inject_context(
+        self,
+        carrier: Dict[str, str],
+        agent_id: Optional[str] = None,
+        parent_agent_id: Optional[str] = None,
+        ctx: Optional[context.Context] = None,
+    ) -> Dict[str, str]:
+        """Inject trace context and agent metadata into a carrier dict.
 
-    def to_carrier(self) -> Dict[str, str]:
-        """Serialize context for transport (HTTP headers, message metadata)."""
-        carrier = {
-            TRACEPARENT_KEY: f"00-{self.trace_id}-{self.parent_span_id}-01",
-            AGENTSTATE_KEY: self.source_agent,
-        }
-        if self.baggage:
-            carrier["baggage"] = ",".join(
-                f"{k}={v}" for k, v in self.baggage.items()
-            )
+        Use this when sending a message or request to another agent.
+
+        Args:
+            carrier: Mutable dict to inject headers into (e.g., HTTP headers).
+            agent_id: ID of the current agent.
+            parent_agent_id: ID of the parent agent (if delegating).
+            ctx: Optional OTel context. Uses current context if not provided.
+
+        Returns:
+            The carrier dict with injected headers.
+        """
+        active_ctx = ctx or context.get_current()
+
+        if agent_id:
+            active_ctx = baggage.set_baggage(AGENT_ID_KEY, agent_id, context=active_ctx)
+        if parent_agent_id:
+            active_ctx = baggage.set_baggage(PARENT_AGENT_ID_KEY, parent_agent_id, context=active_ctx)
+
+        self._propagator.inject(carrier, context=active_ctx)
         return carrier
 
-    @classmethod
-    def from_carrier(cls, carrier: Dict[str, str]) -> AgentContext:
-        """Deserialize context from transport."""
-        traceparent = carrier.get(TRACEPARENT_KEY, "")
-        parts = traceparent.split("-")
-        if len(parts) >= 3:
-            trace_id = parts[1]
-            parent_span_id = parts[2]
-        else:
-            trace_id = ""
-            parent_span_id = ""
+    def extract_context(
+        self,
+        carrier: Dict[str, str],
+    ) -> context.Context:
+        """Extract trace context and agent metadata from a carrier dict.
 
-        source_agent = carrier.get(AGENTSTATE_KEY, "")
+        Use this when receiving a message or request from another agent.
 
-        baggage_str = carrier.get("baggage", "")
-        baggage = {}
-        if baggage_str:
-            for item in baggage_str.split(","):
-                if "=" in item:
-                    k, v = item.split("=", 1)
-                    baggage[k.strip()] = v.strip()
+        Args:
+            carrier: Dict containing propagated headers.
 
-        return cls(
-            trace_id=trace_id,
-            parent_span_id=parent_span_id,
-            source_agent=source_agent,
-            baggage=baggage,
-        )
+        Returns:
+            OTel Context with restored trace context and baggage.
+        """
+        return self._propagator.extract(carrier)
 
-    @classmethod
-    def from_tracer(cls, tracer: AgentTracer) -> Optional[AgentContext]:
-        """Extract current context from a tracer's active spans."""
-        if not tracer._active_spans:
-            return None
-        active = tracer._active_spans[-1]
-        return cls(
-            trace_id=active.trace_id,
-            parent_span_id=active.span_id,
-            source_agent=tracer.agent_name,
-        )
+    @staticmethod
+    def get_agent_id(ctx: Optional[context.Context] = None) -> Optional[str]:
+        """Get the current agent ID from baggage."""
+        return baggage.get_baggage(AGENT_ID_KEY, context=ctx)
+
+    @staticmethod
+    def get_parent_agent_id(ctx: Optional[context.Context] = None) -> Optional[str]:
+        """Get the parent agent ID from baggage."""
+        return baggage.get_baggage(PARENT_AGENT_ID_KEY, context=ctx)
+
+    @staticmethod
+    def set_agent_id(
+        agent_id: str,
+        ctx: Optional[context.Context] = None,
+    ) -> context.Context:
+        """Set the agent ID in baggage and return the new context."""
+        return baggage.set_baggage(AGENT_ID_KEY, agent_id, context=ctx)
+
+    @staticmethod
+    def set_parent_agent_id(
+        parent_agent_id: str,
+        ctx: Optional[context.Context] = None,
+    ) -> context.Context:
+        """Set the parent agent ID in baggage and return the new context."""
+        return baggage.set_baggage(PARENT_AGENT_ID_KEY, parent_agent_id, context=ctx)

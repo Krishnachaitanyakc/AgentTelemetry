@@ -33,24 +33,12 @@ htmlcov/
 *~
 
 # Telemetry output
-*.jsonl
 agent_traces.jsonl
+*.jsonl
 
-# LaTeX artifacts
-*.aux
-*.log
-*.out
-*.bbl
-*.blg
-*.fls
-*.fdb_latexmk
-*.synctex.gz
-*.toc
-*.lof
-*.lot
-*.nav
-*.snm
-*.vrb
+# Experiment traces (large, contain API responses)
+results/*/traces/
+results/swebench_multi_seed/traces/
 
 # OS files
 .DS_Store

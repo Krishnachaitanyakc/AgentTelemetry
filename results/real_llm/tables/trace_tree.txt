@@ -1,0 +1,13 @@
+Trace: 7c71002fcb84d96b...
+[AGENT] agent(GPT-4o Mini) (3331ms)
+  ├─ [PLANNING] planning (0ms)
+  ├─ [MEMORY] memory_read (0ms)
+  ├─ [REASONING] reasoning_step_1 (0ms)
+  ├─ [LLM_CALL] llm_call(GPT-4o Mini) (0ms)
+  ├─ [RETRIEVAL] search_kb(Eiffel Tower height) (0ms)
+  ├─ [REASONING] reasoning_step_2 (0ms)
+  ├─ [LLM_CALL] llm_call(GPT-4o Mini) (0ms)
+  ├─ [TOOL_CALL] unit_converter(meters->feet) (0ms)
+  ├─ [REASONING] reasoning_step_3 (0ms)
+  ├─ [LLM_CALL] llm_call(GPT-4o Mini) (0ms)
+  ├─ [MEMORY] memory_write (0ms)

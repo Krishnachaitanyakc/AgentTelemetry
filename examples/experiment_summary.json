@@ -1,0 +1,20 @@
+{
+  "agent_type": "real_anthropic_claude",
+  "model": "claude-sonnet-4-20250514",
+  "n_runs": 10,
+  "baseline_mean_ms": 7507.16,
+  "baseline_std_ms": 1707.41,
+  "instrumented_mean_ms": 7494.62,
+  "instrumented_std_ms": 2085.82,
+  "overhead_ms": -12.54,
+  "overhead_pct": -0.167,
+  "avg_spans_per_run": 5.0,
+  "total_spans": 50,
+  "span_kind_distribution": {
+    "tool_call": 20,
+    "llm_call": 30
+  },
+  "total_input_tokens": 17522,
+  "total_output_tokens": 1795,
+  "total_cost_usd": 0.0795
+}

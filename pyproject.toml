@@ -1,36 +1,53 @@
 [build-system]
-requires = ["setuptools>=68.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "agenttelemetry"
 version = "0.1.0"
-description = "Unified observability framework for autonomous AI agent systems"
+description = "OpenTelemetry-based observability for autonomous AI agent systems"
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.9"
-dependencies = []
+authors = [
+    { name = "Krishna Chaitanya Balusu" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: System :: Monitoring",
+]
+dependencies = [
+    "opentelemetry-api >= 1.20.0",
+    "opentelemetry-sdk >= 1.20.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/agenttelemetry/agenttelemetry"
+Repository = "https://github.com/agenttelemetry/agenttelemetry"
+Issues = "https://github.com/agenttelemetry/agenttelemetry/issues"
 
 [project.optional-dependencies]
-otlp = [
-    "opentelemetry-api>=1.20.0",
-    "opentelemetry-sdk>=1.20.0",
-    "opentelemetry-exporter-otlp>=1.20.0",
-]
-langchain = ["langchain-core>=0.1.0"]
-crewai = ["crewai>=0.1.0"]
-autogen = ["pyautogen>=0.2.0"]
-dspy = ["dspy-ai>=2.0.0"]
-claude_agent = ["anthropic>=0.20.0"]
-smolagents = ["smolagents>=1.0.0"]
-llamaindex = ["llama-index-core>=0.10.0"]
-all = [
-    "agenttelemetry[otlp,langchain,crewai,autogen,dspy,claude_agent,smolagents,llamaindex]",
-]
-dev = [
-    "pytest>=7.0",
-    "pytest-asyncio>=0.21",
-]
+langchain = ["langchain-core >= 0.2.0"]
+crewai = ["crewai >= 1.0.0"]
+autogen = ["autogen-agentchat >= 0.4.0"]
+anthropic = ["anthropic >= 0.20.0"]
+openai = ["openai >= 1.0.0"]
+llamaindex = ["llama-index-core >= 0.10.0"]
+all = ["agenttelemetry[langchain,crewai,autogen,anthropic,openai,llamaindex]"]
+dev = ["pytest >= 8.0", "pytest-asyncio", "pytest-mock"]
 
-[tool.setuptools.packages.find]
-where = ["src"]
+[tool.hatch.build.targets.wheel]
+packages = ["src/agenttelemetry"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"

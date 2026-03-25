@@ -1,20 +1,28 @@
-"""AgentTelemetry — Unified observability for autonomous AI agent systems."""
-
-from agenttelemetry.core.trace import AgentTracer, AgentSpan, AgentSpanKind, SpanStatus
-from agenttelemetry.core.context import AgentContext
-from agenttelemetry.core.events import AgentEvent, EventType
-from agenttelemetry.core.metrics import AgentMetrics, MetricType
+"""AgentTelemetry — OpenTelemetry-based observability for AI agent systems."""
 
 __version__ = "0.1.0"
 
+from agenttelemetry.core.spans import (
+    AgentSpanKind,
+    AGENT_SPAN_KIND,
+    start_agent_span,
+)
+from agenttelemetry.core.privacy import PrivacyLevel
+from agenttelemetry.core.context import AgentContextPropagator
+from agenttelemetry.core.tracer import AgentTelemetryProvider, configure
+from agenttelemetry.core.exporters import (
+    AgentTelemetryConsoleExporter,
+    AgentTelemetryJSONExporter,
+)
+
 __all__ = [
-    "AgentTracer",
-    "AgentSpan",
     "AgentSpanKind",
-    "SpanStatus",
-    "AgentContext",
-    "AgentEvent",
-    "EventType",
-    "AgentMetrics",
-    "MetricType",
+    "AGENT_SPAN_KIND",
+    "start_agent_span",
+    "PrivacyLevel",
+    "AgentContextPropagator",
+    "AgentTelemetryProvider",
+    "configure",
+    "AgentTelemetryConsoleExporter",
+    "AgentTelemetryJSONExporter",
 ]

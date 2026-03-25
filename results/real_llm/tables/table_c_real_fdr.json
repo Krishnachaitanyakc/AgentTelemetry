@@ -1,0 +1,97 @@
+[
+  {
+    "fault": "context_overflow",
+    "detections": {
+      "claude-3-5-sonnet": false,
+      "claude-haiku-4-5": false,
+      "claude-opus-4-5": false,
+      "claude-opus-4-6": false,
+      "claude-sonnet-4-5": false,
+      "claude-sonnet-4-6": false,
+      "gpt-4.1-mini": false,
+      "gpt-4.1-nano": false,
+      "gpt-4.1": false,
+      "gpt-4o-mini": false,
+      "gpt-4o": false,
+      "o3-mini": false,
+      "o4-mini": false
+    },
+    "fdr": 0.0
+  },
+  {
+    "fault": "tool_failure",
+    "detections": {
+      "claude-3-5-sonnet": false,
+      "claude-haiku-4-5": false,
+      "claude-opus-4-5": false,
+      "claude-opus-4-6": false,
+      "claude-sonnet-4-5": false,
+      "claude-sonnet-4-6": false,
+      "gpt-4.1-mini": false,
+      "gpt-4.1-nano": false,
+      "gpt-4.1": false,
+      "gpt-4o-mini": false,
+      "gpt-4o": false,
+      "o3-mini": false,
+      "o4-mini": false
+    },
+    "fdr": 0.0
+  },
+  {
+    "fault": "wrong_tool",
+    "detections": {
+      "claude-3-5-sonnet": false,
+      "claude-haiku-4-5": false,
+      "claude-opus-4-5": false,
+      "claude-opus-4-6": false,
+      "claude-sonnet-4-5": false,
+      "claude-sonnet-4-6": false,
+      "gpt-4.1-mini": false,
+      "gpt-4.1-nano": true,
+      "gpt-4.1": false,
+      "gpt-4o-mini": true,
+      "gpt-4o": false,
+      "o3-mini": false,
+      "o4-mini": false
+    },
+    "fdr": 0.15384615384615385
+  },
+  {
+    "fault": "cost_explosion",
+    "detections": {
+      "claude-3-5-sonnet": false,
+      "claude-haiku-4-5": true,
+      "claude-opus-4-5": false,
+      "claude-opus-4-6": false,
+      "claude-sonnet-4-5": false,
+      "claude-sonnet-4-6": false,
+      "gpt-4.1-mini": true,
+      "gpt-4.1-nano": false,
+      "gpt-4.1": true,
+      "gpt-4o-mini": true,
+      "gpt-4o": true,
+      "o3-mini": true,
+      "o4-mini": true
+    },
+    "fdr": 0.5384615384615384
+  },
+  {
+    "fault": "missing_guardrail",
+    "detections": {
+      "claude-3-5-sonnet": true,
+      "claude-haiku-4-5": true,
+      "claude-opus-4-5": true,
+      "claude-opus-4-6": true,
+      "claude-sonnet-4-5": true,
+      "claude-sonnet-4-6": true,
+      "gpt-4.1-mini": true,
+      "gpt-4.1-nano": true,
+      "gpt-4.1": true,
+      "gpt-4o-mini": true,
+      "gpt-4o": true,
+      "o3-mini": true,
+      "o4-mini": true
+    },
+    "fdr": 1.0
+  }
+]

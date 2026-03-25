@@ -1,23 +1,26 @@
 """Core module for AgentTelemetry."""
 
-from agenttelemetry.core.trace import (
-    AgentTracer,
-    AgentSpan,
+from agenttelemetry.core.spans import (
     AgentSpanKind,
-    SpanStatus,
+    AGENT_SPAN_KIND,
+    start_agent_span,
 )
-from agenttelemetry.core.context import AgentContext
-from agenttelemetry.core.events import AgentEvent, EventType
-from agenttelemetry.core.metrics import AgentMetrics, MetricType
+from agenttelemetry.core.privacy import PrivacyLevel
+from agenttelemetry.core.context import AgentContextPropagator
+from agenttelemetry.core.tracer import AgentTelemetryProvider, configure
+from agenttelemetry.core.exporters import (
+    AgentTelemetryConsoleExporter,
+    AgentTelemetryJSONExporter,
+)
 
 __all__ = [
-    "AgentTracer",
-    "AgentSpan",
     "AgentSpanKind",
-    "SpanStatus",
-    "AgentContext",
-    "AgentEvent",
-    "EventType",
-    "AgentMetrics",
-    "MetricType",
+    "AGENT_SPAN_KIND",
+    "start_agent_span",
+    "PrivacyLevel",
+    "AgentContextPropagator",
+    "AgentTelemetryProvider",
+    "configure",
+    "AgentTelemetryConsoleExporter",
+    "AgentTelemetryJSONExporter",
 ]
