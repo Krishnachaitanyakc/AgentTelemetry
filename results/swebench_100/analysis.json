@@ -1,0 +1,103 @@
+{
+  "n_instances": 112,
+  "span_summary": {
+    "PLANNING": 112,
+    "MEMORY": 224,
+    "REASONING": 914,
+    "LLM_CALL": 861,
+    "RETRIEVAL": 669,
+    "AGENT": 112,
+    "TOOL_CALL": 134,
+    "GUARD_RAIL": 34
+  },
+  "total_spans": 3060,
+  "anomalies": 4,
+  "anomaly_types": {
+    "infinite_retry": 4
+  },
+  "fault_distribution": {
+    "reasoning_loop": 84,
+    "context_overflow": 0,
+    "planning_failure": 0,
+    "infinite_retry": 4,
+    "missing_guardrail": 6,
+    "cost_explosion": 0,
+    "tool_failure": 17
+  },
+  "total_cost": 2.5299224999999987,
+  "hallucination_candidates": 0,
+  "tool_decisions": 134,
+  "patches_proposed": 26,
+  "patch_rate": 23.214285714285715,
+  "patch_rate_ci": [
+    16.36292344952321,
+    31.84221183866342
+  ],
+  "reasoning_loop_rate": 75.0,
+  "reasoning_loop_ci": [
+    66.24206047806067,
+    82.09981325296513
+  ],
+  "per_repo": {
+    "django/django": {
+      "total": 24,
+      "patch": 6,
+      "loop": 17
+    },
+    "sympy/sympy": {
+      "total": 24,
+      "patch": 6,
+      "loop": 18
+    },
+    "matplotlib/matplotlib": {
+      "total": 12,
+      "patch": 2,
+      "loop": 9
+    },
+    "scikit-learn/scikit-learn": {
+      "total": 12,
+      "patch": 0,
+      "loop": 12
+    },
+    "pytest-dev/pytest": {
+      "total": 10,
+      "patch": 1,
+      "loop": 9
+    },
+    "sphinx-doc/sphinx": {
+      "total": 8,
+      "patch": 4,
+      "loop": 4
+    },
+    "astropy/astropy": {
+      "total": 5,
+      "patch": 3,
+      "loop": 2
+    },
+    "psf/requests": {
+      "total": 4,
+      "patch": 0,
+      "loop": 4
+    },
+    "pylint-dev/pylint": {
+      "total": 4,
+      "patch": 2,
+      "loop": 2
+    },
+    "pydata/xarray": {
+      "total": 4,
+      "patch": 0,
+      "loop": 4
+    },
+    "mwaskom/seaborn": {
+      "total": 3,
+      "patch": 0,
+      "loop": 3
+    },
+    "pallets/flask": {
+      "total": 2,
+      "patch": 2,
+      "loop": 0
+    }
+  }
+}

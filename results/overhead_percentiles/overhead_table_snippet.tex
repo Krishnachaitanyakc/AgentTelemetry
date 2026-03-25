@@ -1,0 +1,24 @@
+% Auto-generated overhead percentile table
+\begin{table}[t]
+\centering
+\small
+\caption{Span creation latency (\textmu s) over 10{,}000 iterations per kind.}
+\label{tab:overhead}
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+\textbf{Span Kind} & \textbf{p50} & \textbf{p95} & \textbf{p99} & \textbf{Mean} & \textbf{Std} \\
+\midrule
+AGENT & 10.7 & 12.9 & 27.2 & 12.1 & 41.0 \\
+DELEGATION & 11.7 & 15.1 & 42.6 & 14.4 & 87.8 \\
+GUARD\_RAIL & 11.5 & 12.5 & 27.7 & 12.8 & 53.8 \\
+LLM\_CALL & 12.7 & 13.7 & 29.2 & 13.5 & 9.5 \\
+MEMORY & 11.5 & 12.3 & 27.2 & 12.1 & 8.8 \\
+PLANNING & 11.6 & 12.5 & 27.4 & 12.3 & 9.2 \\
+REASONING & 11.2 & 12.2 & 27.6 & 12.0 & 9.0 \\
+RETRIEVAL & 11.8 & 12.6 & 27.5 & 12.4 & 8.4 \\
+TOOL\_CALL & 12.5 & 13.4 & 28.6 & 13.2 & 8.9 \\
+\midrule
+All (aggregate) & 11.7 & 13.2 & 28.2 & 12.8 & 37.7 \\
+\bottomrule
+\end{tabular}
+\end{table}

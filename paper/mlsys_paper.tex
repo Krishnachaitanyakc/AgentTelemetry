@@ -82,13 +82,14 @@ vanilla OpenTelemetry and~0.000 without telemetry; and (4)~a
 pip-installable library (3{,}700+ LOC, 78~tests) with adapters for
 seven frameworks, including an end-to-end validated LangChain integration
 producing correct spans from real \texttt{AgentExecutor} traces.
-A case study on 36 SWE-bench Lite instances reveals that reasoning loops account for 67\% of agent failures---a failure mode invisible to vanilla OTel but precisely characterized by \textsc{AgentTelemetry}'s novel REASONING span kind.
+A case study on 112 SWE-bench Lite instances (37\% of the benchmark, across all 12~repositories) reveals that reasoning loops account for 75\% of agent failures (95\% CI: [66\%, 82\%])---a failure mode invisible to vanilla OTel but precisely characterized by \textsc{AgentTelemetry}'s novel REASONING span kind.
 A telemetry-guided intervention that detects and breaks these loops
 improves the patch rate by $+11$~pp over a no-intervention control
 (3-seed mean, $p{<}0.05$), demonstrating that
 the observability is actionable.
-Instrumentation overhead is under~5\,ms per span,
-negligible relative to LLM API latencies of 500\,ms--10\,s.
+Instrumentation overhead is 11.7\,\textmu s median
+(p99~$<$~30\,\textmu s) per span, negligible relative to LLM API
+latencies of 500\,ms--10\,s.
 \end{abstract}
 
 \begin{CCSXML}
@@ -947,26 +948,44 @@ kinds without modifying the library.
 \begin{table}[t]
 \centering
 \small
-\caption{Instrumentation overhead measured across 10{,}000 iterations.}
+\caption{Span creation latency (\textmu s) measured over 10{,}000
+iterations per span kind on Apple M4 Pro. Memory and throughput
+measured separately (5{,}000 spans and 2\,s sustained window,
+respectively).}
 \label{tab:overhead}
-\begin{tabular}{@{}lr@{}}
+\begin{tabular}{@{}lrrrrrrr@{}}
 \toprule
-\textbf{Operation} & \textbf{Latency} \\
+\textbf{Span Kind} & \textbf{p50} & \textbf{p95} & \textbf{p99}
+  & \textbf{Mean} & \textbf{Std}
+  & \textbf{Mem (B)} & \textbf{Tput (k\,sp/s)} \\
 \midrule
-Single span creation            & $<$ 5\,ms \\
-Nested trace (4 span kinds)     & $<$ 10\,ms \\
-Memory per span                 & $<$ 10\,KB \\
-Throughput                      & $>$ 1{,}000 spans/sec \\
+AGENT       & 10.7 & 12.9 & 27.2 & 12.1 & 41.0 & 3{,}105 & 66.4 \\
+DELEGATION  & 11.7 & 15.1 & 42.6 & 14.4 & 87.9 & 3{,}103 & 63.4 \\
+GUARD\_RAIL & 11.5 & 12.5 & 27.7 & 12.9 & 53.8 & 3{,}106 & 61.7 \\
+LLM\_CALL   & 12.7 & 13.7 & 29.3 & 13.5 &  9.5 & 3{,}191 & 58.8 \\
+MEMORY      & 11.5 & 12.3 & 27.3 & 12.1 &  8.8 & 3{,}103 & 64.6 \\
+PLANNING    & 11.6 & 12.5 & 27.4 & 12.3 &  9.2 & 3{,}103 & 62.6 \\
+REASONING   & 11.3 & 12.2 & 27.6 & 12.0 &  9.0 & 3{,}103 & 64.8 \\
+RETRIEVAL   & 11.8 & 12.6 & 27.5 & 12.4 &  8.4 & 3{,}103 & 61.8 \\
+TOOL\_CALL  & 12.5 & 13.4 & 28.6 & 13.2 &  9.0 & 3{,}191 & 60.1 \\
+\midrule
+\textit{All (agg.)} & \textit{11.7} & \textit{13.3} & \textit{28.2}
+  & \textit{12.8} & \textit{37.7} & --- & --- \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Table~\ref{tab:overhead} shows instrumentation overhead.  LLM API
-latencies range from 500\,ms to 10\,s; at $<$5\,ms per span,
-\textsc{AgentTelemetry} adds $<$1\% overhead to end-to-end agent
-execution.  Memory usage scales linearly with span count at
-\texttt{METADATA\_ONLY} level; at \texttt{FULL} level, memory is
-dominated by prompt/completion content.
+Table~\ref{tab:overhead} reports per-span-kind microbenchmark results.
+Across all 9~span kinds ($N{=}90{,}000$ total measurements), the
+\emph{median} span creation latency is 11.7\,\textmu s (p95~=~13.3\,\textmu s,
+p99~=~28.2\,\textmu s).  Even the slowest kind (\texttt{LLM\_CALL}, which
+carries 5~numeric attributes) has p99~$<$~30\,\textmu s.  Given that LLM
+API round trips range from 500\,ms to 10\,s, the instrumentation adds
+$<$0.006\% overhead to end-to-end agent execution.  Memory cost is
+uniform at $\sim$3.1\,KB per span at \texttt{METADATA\_ONLY} level;
+at \texttt{FULL} level, memory is dominated by prompt/completion
+content.  Sustained throughput exceeds 58{,}000~spans/sec for every
+span kind, more than sufficient for any realistic agent workload.
 
 \subsection{RQ4: Diagnostic Case Studies}
 \label{sec:rq4}
@@ -1097,7 +1116,8 @@ Over 15 paired runs (5~questions $\times$ 3~models), the median
 wall-clock overhead of instrumentation is $<$5\%, but individual runs
 range from $-50\%$ to $+162\%$.  This extreme variance reflects
 LLM API latency jitter (1--6\,s round trips), not instrumentation cost.
-The tracing itself adds $<$1\,ms of local processing per span,
+The tracing itself adds $<$30\,\textmu s of local processing per span
+(Table~\ref{tab:overhead}),
 confirming that \textsc{AgentTelemetry} imposes negligible overhead
 relative to API latency.
 
@@ -1112,7 +1132,7 @@ demonstrates cross-provider compatibility.
 
 To demonstrate that \textsc{AgentTelemetry} characterizes real failure
 modes on an established benchmark, we instrument a coding agent and run
-it on 36~instances from SWE-bench Lite~\cite{swebench} across
+it on 112~instances from SWE-bench Lite~\cite{swebench} (37\% of the benchmark) across all
 12~repositories (astropy, django, matplotlib, flask, pytest, scikit-learn,
 sphinx, sympy, xarray, seaborn, requests, pylint).
 
@@ -1120,37 +1140,43 @@ sphinx, sympy, xarray, seaborn, requests, pylint).
 (\texttt{search\_code}, \texttt{read\_file}, \texttt{analyze\_error},
 \texttt{propose\_patch}, \texttt{verify\_fix}), producing spans across
 all nine kinds.  It runs on GPT-4o-mini with a max of 8~iterations per
-instance.  Total cost: \$0.85.
+instance.  Total cost: \$2.53.
 
 \textbf{Results.}
-The agent produced 955~spans (REASONING~30.4\%, LLM\_CALL~28.3\%,
-RETRIEVAL~19.4\%, MEMORY~7.5\%, TOOL\_CALL~5.3\%, PLANNING~3.8\%,
-AGENT~3.8\%, GUARD\_RAIL~1.6\%).  Of 36~instances, 12 (33\%) produced
-patches with GUARD\_RAIL verification; 24 (67\%) exhausted the
+The agent produced 3{,}060~spans (REASONING~29.9\%, LLM\_CALL~28.1\%,
+RETRIEVAL~21.9\%, MEMORY~7.3\%, TOOL\_CALL~4.4\%, PLANNING~3.7\%,
+AGENT~3.7\%, GUARD\_RAIL~1.1\%).  Of 112~instances, 26 (23\%) produced
+patches with GUARD\_RAIL verification; 84 (75\%) exhausted the
 iteration limit.
 
 \textbf{Fault-type distribution.}
 \textsc{AgentTelemetry}'s analysis modules identified two dominant
-failure modes in the 24~failed instances:
+failure modes in the 84~failed instances:
 
 \begin{itemize}[nosep]
-\item \textbf{Reasoning loop (67\% of instances):} The agent repeatedly
+\item \textbf{Reasoning loop (75\% of instances, 95\% CI [66\%, 82\%]):} The agent repeatedly
   called \texttt{search\_code} with similar queries without converging on a
   diagnosis---visible as $\geq$4 consecutive REASONING$\to$LLM\_CALL
   cycles with identical tool patterns.  This failure is \emph{invisible}
   to vanilla OTel, which cannot distinguish a reasoning step from any
   other \texttt{INTERNAL} span.
-\item \textbf{Tool failure (31\% of instances):} \texttt{read\_file}
+\item \textbf{Tool failure (15\% of instances):} \texttt{read\_file}
   returned ERROR status when the agent requested files outside the
   changed set---detected via TOOL\_CALL spans with
   \texttt{tool.status=ERROR}.
 \end{itemize}
 
+\noindent
+The 112-instance sample confirms the dominant role of reasoning loops
+observed in our initial 36-instance pilot (67\%); the larger sample
+narrows the 95\% Wilson confidence interval to $\pm$8~pp, strengthening
+the statistical basis for the finding.
+
 \textbf{Example trace.} Instance \texttt{django\_\_django-10914}: the agent produced the cycle REASONING $\to$ LLM\_CALL $\to$ TOOL\_CALL(\texttt{search\_code}, ``FilePathField'') four consecutive times, each returning the same limited results.  Without REASONING spans, these four cycles collapse into eight undifferentiated \texttt{INTERNAL} spans with no signal that the agent was stuck repeating the same search strategy.
 
 \noindent
 The REASONING span kind is essential for characterizing the dominant
-failure mode: without it, the 24~reasoning-loop failures would appear
+failure mode: without it, the 84~reasoning-loop failures would appear
 as generic ``agent timed out'' events with no diagnostic information
 about \emph{why} the agent failed to converge.  This confirms the
 ablation result (Table~\ref{tab:ablation}) on real benchmark traces.
@@ -1325,7 +1351,7 @@ not the effect of absent instrumentation during execution.
 the four-stage methodology, saturation check, and MAST cross-validation
 (85.7\% convergence) mitigate single-coder bias, inter-rater reliability
 from a second coder would further strengthen the qualitative analysis.
-\emph{Fifth}, the SWE-bench case study uses 36 of 300 available instances (12\%) with a single model (GPT-4o-mini) and single seed; the closed-loop improvement (+38.9~pp) should be interpreted as a proof-of-concept demonstration rather than a statistically precise estimate. Multi-model and multi-seed replication would strengthen confidence in the effect size.
+\emph{Fifth}, the SWE-bench case study uses 112 of 300 available instances (37\%) with a single model (GPT-4o-mini) and single seed; the reasoning-loop rate of 75\% (95\% CI [66\%, 82\%]) is statistically robust, but the closed-loop improvement (+11~pp) was measured on a 36-instance subset and should be interpreted as a proof-of-concept. Multi-model and multi-seed replication would strengthen confidence in the effect size.
 
 \textbf{Streaming, async, and long-running agents.}
 Three deployment patterns merit discussion.
@@ -1585,7 +1611,7 @@ Our fault-injection evaluation across 14~fault types, 6~models,
 FDR\,=\,1.000 for \textsc{AgentTelemetry} versus 0.429 for vanilla
 OTel---an absolute improvement of $+0.571$ attributable entirely to agent-specific
 semantic span kinds.
-The SWE-bench case study (RQ6) demonstrates that the taxonomy captures real failure modes on an established benchmark: the novel REASONING span kind characterizes the dominant failure mode (67\% of instances), which would be invisible under vanilla OTel or OTel GenAI conventions.  Moreover, a telemetry-guided intervention that detects and breaks reasoning loops improves the SWE-bench patch rate by $+11$~pp over a no-intervention control (3-seed mean), closing the loop from observability through diagnosis to measurable improvement in agent performance.
+The SWE-bench case study (RQ6) demonstrates that the taxonomy captures real failure modes on an established benchmark: the novel REASONING span kind characterizes the dominant failure mode (75\% of 112~instances, 95\% CI [66\%, 82\%]), which would be invisible under vanilla OTel or OTel GenAI conventions.  Moreover, a telemetry-guided intervention that detects and breaks reasoning loops improves the SWE-bench patch rate by $+11$~pp over a no-intervention control (3-seed mean), closing the loop from observability through diagnosis to measurable improvement in agent performance.
 
 Future work includes proposing our span taxonomy as an OpenTelemetry
 Enhancement Proposal (OTEP), verifying SWE-bench patches against ground-truth test suites to measure resolve rate improvement, adaptive trace sampling for long-running

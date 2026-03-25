@@ -1,0 +1,110 @@
+{
+  "AGENT": {
+    "span_kind": "AGENT",
+    "n": 10000,
+    "p50_us": 10.67,
+    "p95_us": 12.92,
+    "p99_us": 27.17,
+    "mean_us": 12.06,
+    "std_us": 40.97,
+    "memory_bytes_per_span": 3104.7,
+    "throughput_spans_per_sec": 66396.0
+  },
+  "DELEGATION": {
+    "span_kind": "DELEGATION",
+    "n": 10000,
+    "p50_us": 11.71,
+    "p95_us": 15.08,
+    "p99_us": 42.59,
+    "mean_us": 14.4,
+    "std_us": 87.85,
+    "memory_bytes_per_span": 3103.3,
+    "throughput_spans_per_sec": 63395.0
+  },
+  "GUARD_RAIL": {
+    "span_kind": "GUARD_RAIL",
+    "n": 10000,
+    "p50_us": 11.54,
+    "p95_us": 12.5,
+    "p99_us": 27.67,
+    "mean_us": 12.85,
+    "std_us": 53.82,
+    "memory_bytes_per_span": 3106.3,
+    "throughput_spans_per_sec": 61743.0
+  },
+  "LLM_CALL": {
+    "span_kind": "LLM_CALL",
+    "n": 10000,
+    "p50_us": 12.71,
+    "p95_us": 13.67,
+    "p99_us": 29.25,
+    "mean_us": 13.48,
+    "std_us": 9.47,
+    "memory_bytes_per_span": 3191.3,
+    "throughput_spans_per_sec": 58771.0
+  },
+  "MEMORY": {
+    "span_kind": "MEMORY",
+    "n": 10000,
+    "p50_us": 11.46,
+    "p95_us": 12.29,
+    "p99_us": 27.25,
+    "mean_us": 12.13,
+    "std_us": 8.79,
+    "memory_bytes_per_span": 3103.3,
+    "throughput_spans_per_sec": 64644.0
+  },
+  "PLANNING": {
+    "span_kind": "PLANNING",
+    "n": 10000,
+    "p50_us": 11.58,
+    "p95_us": 12.5,
+    "p99_us": 27.38,
+    "mean_us": 12.32,
+    "std_us": 9.22,
+    "memory_bytes_per_span": 3103.3,
+    "throughput_spans_per_sec": 62614.0
+  },
+  "REASONING": {
+    "span_kind": "REASONING",
+    "n": 10000,
+    "p50_us": 11.25,
+    "p95_us": 12.21,
+    "p99_us": 27.58,
+    "mean_us": 11.97,
+    "std_us": 8.99,
+    "memory_bytes_per_span": 3103.3,
+    "throughput_spans_per_sec": 64781.0
+  },
+  "RETRIEVAL": {
+    "span_kind": "RETRIEVAL",
+    "n": 10000,
+    "p50_us": 11.75,
+    "p95_us": 12.62,
+    "p99_us": 27.46,
+    "mean_us": 12.43,
+    "std_us": 8.37,
+    "memory_bytes_per_span": 3103.3,
+    "throughput_spans_per_sec": 61785.0
+  },
+  "TOOL_CALL": {
+    "span_kind": "TOOL_CALL",
+    "n": 10000,
+    "p50_us": 12.5,
+    "p95_us": 13.38,
+    "p99_us": 28.58,
+    "mean_us": 13.2,
+    "std_us": 8.95,
+    "memory_bytes_per_span": 3191.2,
+    "throughput_spans_per_sec": 60075.0
+  },
+  "AGGREGATE": {
+    "span_kind": "ALL (aggregate)",
+    "n": 90000,
+    "p50_us": 11.67,
+    "p95_us": 13.25,
+    "p99_us": 28.21,
+    "mean_us": 12.76,
+    "std_us": 37.69
+  }
+}
