@@ -1,0 +1,22 @@
+% Auto-generated scalability stress-test table
+\begin{table}[t]
+\centering
+\small
+\caption{Scalability stress-test results on Apple M4 Pro.
+  Concurrent: 100 threads $\times$ 20--50~spans;
+  Long-running: 1{,}200 spans in a single trace with \texttt{BatchSpanProcessor};
+  Export: 10{,}000 spans via JSON-Lines exporter to disk.}
+\label{tab:scalability}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+\textbf{Scenario} & \textbf{Tput (sp/s)}
+  & \textbf{p50 (\textmu s)} & \textbf{p95 (\textmu s)}
+  & \textbf{p99 (\textmu s)} \\
+\midrule
+100-thread concurrent & 19,071 & 44.0 & 52.8 & 76.8 \\
+Long-running (1{,}200~spans) & 5,335 & 39.3 & 46.1 & 83.5 \\
+JSON export (disk) & 6,187 & 145.5 & 199.0 & 331.2 \\
+In-memory baseline & 78,087 & 10.9 & 13.0 & 28.0 \\
+\bottomrule
+\end{tabular}
+\end{table}

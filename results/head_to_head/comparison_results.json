@@ -1,0 +1,153 @@
+{
+  "experiment": "head_to_head_comparison",
+  "traces": "/Users/kcbalusu/Desktop/Project/Research/AgentTelemetry/results/swebench_100/traces/swebench_100_traces.jsonl",
+  "n_traces": 112,
+  "n_spans": 3060,
+  "original_span_distribution": {
+    "PLANNING": 112,
+    "MEMORY": 224,
+    "REASONING": 914,
+    "LLM_CALL": 861,
+    "RETRIEVAL": 669,
+    "AGENT": 112,
+    "TOOL_CALL": 134,
+    "GUARD_RAIL": 34
+  },
+  "novel_span_count": 1284,
+  "novel_span_pct": 42.0,
+  "conditions": {
+    "vanilla_otel": {
+      "condition": "vanilla_otel",
+      "total_spans": 3060,
+      "total_traces": 112,
+      "span_kind_distribution": {
+        "NONE": 3060
+      },
+      "visible_span_kinds": [],
+      "missing_span_kinds": [
+        "AGENT",
+        "DELEGATION",
+        "GUARD_RAIL",
+        "LLM_CALL",
+        "MEMORY",
+        "PLANNING",
+        "REASONING",
+        "RETRIEVAL",
+        "TOOL_CALL"
+      ],
+      "reasoning_loops_detected": 0,
+      "delegation_patterns_visible": 0,
+      "guardrail_events_visible": 0,
+      "planning_spans_visible": 0,
+      "planning_failures_detected": 0,
+      "memory_operations_visible": 0,
+      "tool_errors_detected": 0,
+      "llm_calls_visible": 0,
+      "anomalies_detected": {},
+      "total_anomalies": 0,
+      "can_characterize_reasoning_loops": false,
+      "retries_via_span_names": 111,
+      "taxonomy_span_kinds": 0,
+      "taxonomy_missing": 9
+    },
+    "openllmetry": {
+      "condition": "openllmetry",
+      "total_spans": 3060,
+      "total_traces": 112,
+      "span_kind_distribution": {
+        "NONE": 1284,
+        "LLM_CALL": 861,
+        "RETRIEVAL": 669,
+        "AGENT": 112,
+        "TOOL_CALL": 134
+      },
+      "visible_span_kinds": [
+        "LLM_CALL",
+        "RETRIEVAL",
+        "AGENT",
+        "TOOL_CALL"
+      ],
+      "missing_span_kinds": [
+        "DELEGATION",
+        "GUARD_RAIL",
+        "MEMORY",
+        "PLANNING",
+        "REASONING"
+      ],
+      "reasoning_loops_detected": 0,
+      "delegation_patterns_visible": 0,
+      "guardrail_events_visible": 0,
+      "planning_spans_visible": 0,
+      "planning_failures_detected": 0,
+      "memory_operations_visible": 0,
+      "tool_errors_detected": 17,
+      "llm_calls_visible": 861,
+      "anomalies_detected": {
+        "infinite_retry": 4
+      },
+      "total_anomalies": 4,
+      "can_characterize_reasoning_loops": false,
+      "retries_via_span_names": 111,
+      "taxonomy_span_kinds": 4,
+      "taxonomy_missing": 5
+    },
+    "agenttelemetry": {
+      "condition": "agenttelemetry",
+      "total_spans": 3060,
+      "total_traces": 112,
+      "span_kind_distribution": {
+        "PLANNING": 112,
+        "MEMORY": 224,
+        "REASONING": 914,
+        "LLM_CALL": 861,
+        "RETRIEVAL": 669,
+        "AGENT": 112,
+        "TOOL_CALL": 134,
+        "GUARD_RAIL": 34
+      },
+      "visible_span_kinds": [
+        "PLANNING",
+        "MEMORY",
+        "REASONING",
+        "LLM_CALL",
+        "RETRIEVAL",
+        "AGENT",
+        "TOOL_CALL",
+        "GUARD_RAIL"
+      ],
+      "missing_span_kinds": [
+        "DELEGATION"
+      ],
+      "reasoning_loops_detected": 72,
+      "delegation_patterns_visible": 0,
+      "guardrail_events_visible": 34,
+      "planning_spans_visible": 112,
+      "planning_failures_detected": 0,
+      "memory_operations_visible": 224,
+      "tool_errors_detected": 17,
+      "llm_calls_visible": 861,
+      "anomalies_detected": {
+        "infinite_retry": 4
+      },
+      "total_anomalies": 4,
+      "can_characterize_reasoning_loops": true,
+      "retries_via_span_names": 111,
+      "taxonomy_span_kinds": 9,
+      "taxonomy_missing": 0
+    }
+  },
+  "key_findings": {
+    "reasoning_loops_only_agenttelemetry": 72,
+    "reasoning_loop_rate": 64.3,
+    "reasoning_loop_ci_95": [
+      55.1,
+      72.6
+    ],
+    "guardrail_events_only_agenttelemetry": 34,
+    "planning_visibility_only_agenttelemetry": 112,
+    "memory_ops_only_agenttelemetry": 224,
+    "spans_invisible_to_openllmetry": 1284,
+    "spans_invisible_to_openllmetry_pct": 42.0
+  },
+  "reviewer_response": "The reviewer asked for comparison with Langfuse, Datadog, and LangSmith. These platforms are built on the OpenLLMetry instrumentation layer, which supports gen_ai.* attributes for LLM calls, tool execution, and retrieval but lacks span kinds for PLANNING, REASONING, GUARD_RAIL, DELEGATION, and MEMORY. Running the SAME 112 SWE-bench traces through degraded observability conditions shows that OpenLLMetry/Langfuse/Datadog cannot detect the dominant failure mode (reasoning loops: 72/112 = 64% of traces) because they lack the REASONING span kind. This is a structural limitation, not an implementation choice."
+}

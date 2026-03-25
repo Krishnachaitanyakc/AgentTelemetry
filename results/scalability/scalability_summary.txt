@@ -1,0 +1,20 @@
+
+==============================================================================
+SCALABILITY STRESS TEST — SUMMARY
+==============================================================================
+Test                                Spans  Tput (sp/s)   p50 (us)   p95 (us)   p99 (us)
+------------------------------------------------------------------------------
+1. Concurrent (100 threads)         3,482       19,071       44.0       52.8       76.8
+2. Long-running (1 trace)           1,200        5,335       39.3       46.1       83.5
+3a. Export baseline (in-mem)       10,000       78,087       10.9       13.0       28.0
+3b. Export JSON (disk)             10,000        6,187      145.5      199.0      331.2
+------------------------------------------------------------------------------
+
+Additional Findings:
+  Concurrent memory growth:       10.78 MB (3,482 spans)
+  Long-run latency degradation:   7.6% (first-10% vs last-10% p50)
+  Long-run memory growth:         3.58 MB (1,200 spans)
+  BatchProcessor backpressure:    no (exported 1251/1200)
+  JSON export blocking overhead:  1232.4% (p50 vs in-memory baseline)
+  JSON export file growth:        13.544 MB (1420 B/span)
+  JSON write throughput:           8.38 MB/s

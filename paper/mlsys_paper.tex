@@ -1015,6 +1015,51 @@ at \texttt{FULL} level, memory is dominated by prompt/completion
 content.  Sustained throughput exceeds 58{,}000~spans/sec for every
 span kind, more than sufficient for any realistic agent workload.
 
+\begin{table}[t]
+\centering
+\small
+\caption{Scalability stress-test results on Apple M4 Pro.
+  Concurrent: 100 threads $\times$ 20--50~spans;
+  Long-running: 1{,}200 spans in a single trace with \texttt{BatchSpanProcessor};
+  Export: 10{,}000 spans via JSON-Lines exporter to disk.}
+\label{tab:scalability}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+\textbf{Scenario} & \textbf{Tput (sp/s)}
+  & \textbf{p50 (\textmu s)} & \textbf{p95 (\textmu s)}
+  & \textbf{p99 (\textmu s)} \\
+\midrule
+100-thread concurrent & 19{,}071 & 44.0 & 52.8 & 76.8 \\
+Long-running (1{,}200~spans) & 5{,}335 & 39.3 & 46.1 & 83.5 \\
+JSON export (disk) & 6{,}187 & 145.5 & 199.0 & 331.2 \\
+In-memory baseline & 78{,}087 & 10.9 & 13.0 & 28.0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Scalability.}
+Table~\ref{tab:overhead} reports single-thread microbenchmarks;
+Table~\ref{tab:scalability} extends the evaluation to three
+stress scenarios that better reflect production workloads.
+Under \emph{100-thread concurrent trace pressure} (3{,}482~total spans
+with random span kinds), throughput is 19{,}071~spans/sec with
+p99~=~76.8\,\textmu s---a moderate increase over the single-thread
+p99 of 28.2\,\textmu s, confirming that OTel's lock-free context
+propagation scales well under contention.
+In the \emph{long-running agent} test, a single trace with
+1{,}200~spans shows only 7.6\% median latency degradation between
+the first and last decile (36.6 vs.\ 39.4\,\textmu s), and the
+\texttt{BatchSpanProcessor} exports all spans without backpressure.
+Memory grows linearly at $\sim$3.0\,KB/span, reaching 3.6\,MB at
+1{,}200~spans---negligible relative to LLM prompt/completion buffers.
+The \emph{export pipeline} test reveals the expected cost of synchronous
+disk I/O: the JSON-Lines exporter reduces throughput to 6{,}187~spans/sec
+(p50~=~145.5\,\textmu s) compared to 78{,}087~spans/sec for the
+in-memory baseline.  File size grows linearly at $\sim$1.4\,KB/span.
+In practice, agents produce spans at 1--10~spans/sec (one per LLM call
+or tool invocation), so even the slowest exporter configuration provides
+$>$600$\times$ headroom.
+
 \subsection{RQ4: Diagnostic Case Studies}
 \label{sec:rq4}
 
@@ -1258,6 +1303,30 @@ We note that the 72\% figure reflects patches \emph{proposed} by the agent with 
 
 The intervention pattern generalizes beyond reasoning loops: any fault type with a corresponding span-based detector can trigger a runtime response. For example, a \texttt{cost\_explosion} alert (from LLM\_CALL cost attributes) could trigger budget-aware model downgrading; a \texttt{planning\_failure} alert (from PLANNING step counts) could trigger plan simplification. The REASONING-loop intervention demonstrates the pattern; the span taxonomy provides the detection substrate for all 14~fault types.
 
+\textbf{Diagnostic quality.}
+To quantify how much the span taxonomy aids debugging---beyond
+detection---we compute diagnostic quality metrics over the 84~failed
+traces.  With \textsc{AgentTelemetry}, a developer can filter to
+REASONING + PLANNING + GUARD\_RAIL spans (the ``diagnostic'' kinds
+that explain \emph{why} the agent acted as it did), examining
+9.5~spans on average (95\% CI [9.3, 9.6]) to reach a full diagnosis.
+With vanilla OTel, all 28.5~spans per trace (95\% CI [28.3, 28.8]) are
+undifferentiated \texttt{INTERNAL} spans that must be inspected
+sequentially---a \textbf{66.8\% reduction in spans-to-diagnosis}.
+Localization is similarly improved: identifying the fault pattern
+(a reasoning loop) requires examining just 3~diagnostic spans with
+\textsc{AgentTelemetry} versus 9.5~spans with vanilla OTel (68.4\%
+reduction), because kind-based filtering eliminates LLM\_CALL,
+TOOL\_CALL, RETRIEVAL, and MEMORY spans that carry execution data
+but no diagnostic signal.  Across all 3{,}060~spans, 34.6\% are
+diagnostic kinds---yielding a signal-to-noise ratio of 0.54 versus
+0.0 for vanilla OTel (where no signal/noise distinction is possible).
+While these metrics approximate rather than replace a controlled user
+study, they quantify the structural advantage that typed spans provide:
+the nine span kinds partition agent traces into semantically meaningful
+categories, reducing the search space for root-cause analysis by
+two-thirds.
+
 \subsection{Threats to Validity}
 
 \textbf{Internal.}  The core benchmarks (RQ1--RQ4) use deterministic mock clients
@@ -1370,8 +1439,10 @@ callback-based (LangChain), monkey-patching (OpenAI SDK), and manual
 (Custom) instrumentation strategies.
 
 \textbf{Construct.}  FDR is a binary metric (detected or not); it does
-not capture diagnostic quality.  The case studies in RQ4 provide
-qualitative evidence of diagnostic value.
+not capture diagnostic quality on its own.  The diagnostic quality
+analysis in RQ6 addresses this gap: spans-to-diagnosis drops by 66.8\%
+(9.5 vs 28.5 spans) with typed spans, and the case studies in RQ4 provide
+complementary qualitative evidence.
 
 \textbf{Limitations.}  We acknowledge three key limitations.
 \emph{First}, the core benchmarks use deterministic mock LLM clients

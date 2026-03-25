@@ -1,0 +1,170 @@
+{
+  "metadata": {
+    "platform": "darwin",
+    "python_version": "3.12.13+meta (3.12:3bb231a, Mar 03 2026, 12:38:32) [Clang 19.1.5 (https://git.internal.tfbnw.net/repos/git/rw/osmeta/external/llvm-",
+    "timestamp": "2026-03-25T14:01:01"
+  },
+  "concurrent_pressure": {
+    "test": "concurrent_trace_pressure",
+    "num_threads": 100,
+    "total_spans": 3482,
+    "wall_clock_sec": 0.183,
+    "throughput_spans_per_sec": 19071.0,
+    "latency_p50_us": 44.0,
+    "latency_p95_us": 52.8,
+    "latency_p99_us": 76.8,
+    "latency_mean_us": 48.1,
+    "memory_growth_mb": 10.78,
+    "rss_before_mb": 42.2,
+    "rss_after_mb": 78.7
+  },
+  "long_running_agent": {
+    "test": "long_running_agent",
+    "total_spans": 1200,
+    "wall_clock_sec": 0.225,
+    "throughput_spans_per_sec": 5335.0,
+    "latency_p50_us": 39.3,
+    "latency_p95_us": 46.1,
+    "latency_p99_us": 83.5,
+    "first_10pct_p50_us": 36.6,
+    "first_10pct_p99_us": 60.0,
+    "last_10pct_p50_us": 39.4,
+    "last_10pct_p99_us": 68.9,
+    "latency_degradation_p50_pct": 7.6,
+    "memory_growth_mb": 3.58,
+    "batch_processor_exported": 1251,
+    "batch_processor_backpressure": false,
+    "checkpoints": [
+      {
+        "progress_pct": 10,
+        "spans_created": 120,
+        "mem_growth_mb": 0.359,
+        "recent_p50_us": 36.6,
+        "recent_p99_us": 60.0
+      },
+      {
+        "progress_pct": 20,
+        "spans_created": 240,
+        "mem_growth_mb": 0.724,
+        "recent_p50_us": 37.6,
+        "recent_p99_us": 67.7
+      },
+      {
+        "progress_pct": 30,
+        "spans_created": 360,
+        "mem_growth_mb": 1.083,
+        "recent_p50_us": 38.4,
+        "recent_p99_us": 81.6
+      },
+      {
+        "progress_pct": 40,
+        "spans_created": 480,
+        "mem_growth_mb": 1.44,
+        "recent_p50_us": 38.8,
+        "recent_p99_us": 57.1
+      },
+      {
+        "progress_pct": 50,
+        "spans_created": 600,
+        "mem_growth_mb": 1.8,
+        "recent_p50_us": 39.1,
+        "recent_p99_us": 80.1
+      },
+      {
+        "progress_pct": 60,
+        "spans_created": 720,
+        "mem_growth_mb": 2.157,
+        "recent_p50_us": 39.1,
+        "recent_p99_us": 62.5
+      },
+      {
+        "progress_pct": 70,
+        "spans_created": 840,
+        "mem_growth_mb": 2.514,
+        "recent_p50_us": 40.4,
+        "recent_p99_us": 90.6
+      },
+      {
+        "progress_pct": 80,
+        "spans_created": 960,
+        "mem_growth_mb": 2.869,
+        "recent_p50_us": 40.1,
+        "recent_p99_us": 100.3
+      },
+      {
+        "progress_pct": 90,
+        "spans_created": 1080,
+        "mem_growth_mb": 3.225,
+        "recent_p50_us": 41.2,
+        "recent_p99_us": 89.2
+      },
+      {
+        "progress_pct": 100,
+        "spans_created": 1200,
+        "mem_growth_mb": 3.585,
+        "recent_p50_us": 39.4,
+        "recent_p99_us": 68.9
+      }
+    ]
+  },
+  "export_pipeline": {
+    "test": "export_pipeline_stress",
+    "total_spans": 10000,
+    "baseline_wall_sec": 0.128,
+    "export_wall_sec": 1.616,
+    "baseline_throughput_sps": 78087.0,
+    "export_throughput_sps": 6187.0,
+    "baseline_p50_us": 10.9,
+    "baseline_p95_us": 13.0,
+    "baseline_p99_us": 28.0,
+    "export_p50_us": 145.5,
+    "export_p95_us": 199.0,
+    "export_p99_us": 331.2,
+    "blocking_overhead_p50_pct": 1232.4,
+    "final_file_size_mb": 13.544,
+    "bytes_per_span": 1420.0,
+    "write_throughput_mb_per_sec": 8.38,
+    "file_size_checkpoints": [
+      {
+        "spans_written": 1000,
+        "file_size_mb": 1.354
+      },
+      {
+        "spans_written": 2000,
+        "file_size_mb": 2.707
+      },
+      {
+        "spans_written": 3000,
+        "file_size_mb": 4.06
+      },
+      {
+        "spans_written": 4000,
+        "file_size_mb": 5.413
+      },
+      {
+        "spans_written": 5000,
+        "file_size_mb": 6.768
+      },
+      {
+        "spans_written": 6000,
+        "file_size_mb": 8.125
+      },
+      {
+        "spans_written": 7000,
+        "file_size_mb": 9.478
+      },
+      {
+        "spans_written": 8000,
+        "file_size_mb": 10.834
+      },
+      {
+        "spans_written": 9000,
+        "file_size_mb": 12.188
+      },
+      {
+        "spans_written": 10000,
+        "file_size_mb": 13.544
+      }
+    ]
+  }
+}

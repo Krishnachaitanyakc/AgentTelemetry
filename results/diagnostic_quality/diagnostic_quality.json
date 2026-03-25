@@ -1,0 +1,69 @@
+{
+  "n_instances": 112,
+  "n_traces": 112,
+  "n_failed": 84,
+  "total_spans": 3060,
+  "localization_precision": {
+    "at_mean": 3,
+    "at_median": 3.0,
+    "at_ci_95": [
+      3,
+      3
+    ],
+    "otel_mean": 9.488095238095237,
+    "otel_median": 10.0,
+    "otel_ci_95": [
+      9.130952380952381,
+      9.821428571428571
+    ],
+    "reduction_pct": 68.38143036386448,
+    "n_failed_traces": 84
+  },
+  "spans_to_diagnosis": {
+    "at_mean": 9.464285714285714,
+    "at_median": 9.0,
+    "at_ci_95": [
+      9.333333333333334,
+      9.595238095238095
+    ],
+    "otel_mean": 28.547619047619047,
+    "otel_median": 28.0,
+    "otel_ci_95": [
+      28.321428571428573,
+      28.821428571428573
+    ],
+    "reduction_pct_mean": 66.79522963245365,
+    "reduction_pct_median": 67.85714285714286,
+    "n_traces": 84
+  },
+  "signal_to_noise": {
+    "at_snr_mean": 0.5425013972280116,
+    "at_snr_median": 0.5263157894736842,
+    "otel_snr": 0.0,
+    "diagnostic_fraction": 0.3464052287581699,
+    "total_diagnostic": 1060,
+    "total_execution": 1888,
+    "total_structural": 112,
+    "total_spans": 3060
+  },
+  "trace_depth": {
+    "at_mean_depth": 1,
+    "at_median_depth": 1.0,
+    "at_max_depth": 1,
+    "otel_effective_depth": 1,
+    "kind_by_depth": {
+      "0": {
+        "AGENT": 112
+      },
+      "1": {
+        "PLANNING": 112,
+        "MEMORY": 224,
+        "REASONING": 914,
+        "LLM_CALL": 861,
+        "RETRIEVAL": 669,
+        "TOOL_CALL": 134,
+        "GUARD_RAIL": 34
+      }
+    }
+  }
+}
