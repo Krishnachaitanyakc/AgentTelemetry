@@ -1,0 +1,565 @@
+%%
+%% AgentTelemetry: ASE 2026 Tools & Data Sets Track
+%% 4 pages max (including references). Single-blind review.
+%% ACM sigconf format.
+%%
+
+\documentclass[sigconf]{acmart}
+
+%% ---------- packages ----------
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{multirow}
+
+%% ---------- listings style ----------
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\scriptsize,
+  keywordstyle=\color{blue!70!black}\bfseries,
+  commentstyle=\color{green!50!black},
+  stringstyle=\color{red!60!black},
+  showstringspaces=false,
+  breaklines=true,
+  breakatwhitespace=true,
+  frame=single,
+  framesep=2pt,
+  xleftmargin=4pt,
+  xrightmargin=2pt,
+  numbers=none,
+  aboveskip=4pt,
+  belowskip=3pt,
+  columns=flexible,
+}
+
+%% ---------- metadata ----------
+\title{AgentTelemetry: An Open-Source Toolkit for Fault Detection in LLM Agent Systems}
+
+\author{Krishna Chaitanya Balusu}
+\affiliation{%
+  \institution{Independent Researcher}
+  \country{United States}
+}
+\email{krishnabkc15@gmail.com}
+
+\begin{abstract}
+Autonomous AI agents built on large language models (LLMs) fail in ways
+that standard distributed tracing cannot diagnose: reasoning loops,
+circular delegation, guardrail bypass, and planning failures all
+manifest as opaque \texttt{INTERNAL} spans in OpenTelemetry (OTel).
+We present \textsc{AgentTelemetry}, an open-source, pip-installable
+Python toolkit (3,700+ LOC, Apache-2.0) that extends OTel with nine
+agent-specific span kinds---including five novel kinds absent from the
+OTel GenAI semantic conventions---enabling automated fault detection
+for 14~agent failure types.
+The toolkit provides adapters for seven agent frameworks, four analysis
+modules, and a real-time circuit breaker.
+In a controlled evaluation across 2,940~configurations,
+\textsc{AgentTelemetry} achieves a fault detection rate (FDR) of 1.000
+versus 0.429 for vanilla OTel.  On 112~SWE-bench Lite instances,
+reasoning loops account for 75\% of failures, and a telemetry-guided
+intervention improves the patch rate by +11~percentage points.
+Instrumentation overhead is 11.7\,\textmu s median per span.
+
+\smallskip\noindent
+\textbf{Tool:}
+\url{https://github.com/agenttelemetry/agenttelemetry}
+| \texttt{pip install agenttelemetry}\\
+\textbf{Video:}
+\url{https://youtu.be/PLACEHOLDER}
+\end{abstract}
+
+\begin{CCSXML}
+<ccs2012>
+<concept>
+<concept_id>10011007.10011074.10011099</concept_id>
+<concept_desc>Software and its engineering~Software verification and validation</concept_desc>
+<concept_significance>500</concept_significance>
+</concept>
+<concept>
+<concept_id>10011007.10011074.10011111</concept_id>
+<concept_desc>Software and its engineering~Software post-development issues</concept_desc>
+<concept_significance>300</concept_significance>
+</concept>
+</ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Software and its engineering~Software verification and validation}
+\ccsdesc[300]{Software and its engineering~Software post-development issues}
+
+\keywords{AI agents, observability, OpenTelemetry, fault detection, LLM monitoring, distributed tracing}
+
+\begin{document}
+
+\maketitle
+
+\sloppy
+
+%% ====================================================================
+%% 1. INTRODUCTION
+%% ====================================================================
+\section{Introduction}
+\label{sec:intro}
+
+LLM-based autonomous agents---systems that pursue goals through
+iterative reasoning, planning, tool use, and delegation---are rapidly
+moving from research prototypes to production~\cite{agentbench}.
+Frameworks such as LangChain, CrewAI, AutoGen, and LlamaIndex have
+accelerated adoption, but a critical gap remains: \emph{there is no
+standardized observability infrastructure for diagnosing agent
+failures.}
+
+OpenTelemetry (OTel) is the standard for distributed tracing in
+microservice architectures.  Its GenAI semantic conventions define
+operation types for LLM calls, tool execution, retrieval, and agent
+lifecycle.  However, five agent orchestration phases---planning,
+reasoning, safety-check monitoring, inter-agent delegation, and memory
+management---have \emph{no} OTel representation, rendering them as
+opaque \texttt{INTERNAL} spans.  This semantic gap makes automated
+fault detection impossible for failure modes such as reasoning loops,
+circular delegation, guardrail bypass, and planning failures.
+
+We present \textsc{AgentTelemetry}, an open-source Python toolkit
+that fills this gap.  The tool makes three contributions:
+
+\begin{enumerate}[leftmargin=*,nosep]
+\item \textbf{A grounded span taxonomy} of nine agent-specific span
+  kinds (five novel), derived from systematic analysis of seven
+  production frameworks and validated through ablation.
+\item \textbf{A modular analysis toolkit} comprising four analysis
+  modules (anomaly detection, cost aggregation, decision attribution,
+  hallucination tracing) and a real-time circuit breaker.
+\item \textbf{Seven framework adapters} using three instrumentation
+  strategies (callback handlers, monkey-patching, manual API),
+  requiring as few as 3~lines of code to instrument an agent.
+\end{enumerate}
+
+\noindent
+The toolkit is pip-installable, OTel-native (all spans export via OTLP
+to any compatible backend), and imposes $<$0.006\% overhead on
+end-to-end agent execution.
+
+%% ====================================================================
+%% 2. TOOL ARCHITECTURE
+%% ====================================================================
+\section{Tool Architecture}
+\label{sec:architecture}
+
+\textsc{AgentTelemetry} comprises three modules
+(Figure~\ref{fig:arch}): \textbf{Core},
+\textbf{Adapters}, and \textbf{Analysis}.
+
+\begin{figure}[t]
+\centering
+\small
+\setlength{\fboxsep}{3pt}
+\fbox{\parbox{0.93\columnwidth}{%
+\textbf{Core Layer}\\
+\textsf{9 Span Kinds} $\cdot$ \textsf{Privacy Filter} $\cdot$
+\textsf{Context Propagation} $\cdot$ \textsf{Exporters}\\[3pt]
+\textbf{Adapter Layer}\\
+\textsf{LangChain} $\cdot$ \textsf{CrewAI} $\cdot$ \textsf{AutoGen}
+$\cdot$ \textsf{LlamaIndex} $\cdot$ \textsf{Anthropic} $\cdot$
+\textsf{OpenAI} $\cdot$ \textsf{Custom}\\[3pt]
+\textbf{Analysis Layer}\\
+\textsf{AnomalyDetector} $\cdot$ \textsf{CostAggregator} $\cdot$
+\textsf{DecisionAttributor} $\cdot$ \textsf{HallucinationTracer}\\
+\textsf{AgentCircuitBreaker} (real-time fault interception)
+}}
+\caption{Three-layer architecture with OTel-native export.}
+\label{fig:arch}
+\end{figure}
+
+\subsection{Core: Span Taxonomy}
+
+All nine span kinds are represented as string values in
+the \texttt{agenttelemetry.\allowbreak{}span.\allowbreak{}kind}
+attribute on standard OTel \texttt{INTERNAL} spans,
+ensuring compatibility with OTLP, Jaeger, and any
+OTel-compatible backend.
+Table~\ref{tab:spans} lists the kinds with their key attributes
+and novelty status relative to OTel GenAI.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Nine agent-specific span kinds.
+$\star$\,=\,novel (no OTel GenAI equivalent);
+ext.\,=\,extends OTel; ovlp.\,=\,overlaps with OTel.}
+\label{tab:spans}
+\begin{tabular}{@{}llc@{}}
+\toprule
+\textbf{Span Kind} & \textbf{Key Attributes} & \\
+\midrule
+\texttt{AGENT}      & \texttt{agent.name, .framework, .role} & ext. \\
+\texttt{LLM\_CALL}  & \texttt{llm.model, .tokens, .cost}     & ovlp. \\
+\texttt{TOOL\_CALL} & \texttt{tool.name, .input, .status}    & ovlp. \\
+\texttt{RETRIEVAL}  & \texttt{retrieval.source, .doc\_count}  & ovlp. \\
+\texttt{PLANNING}\,$\star$   & \texttt{planning.strategy, .step\_count} & \\
+\texttt{REASONING}\,$\star$  & \texttt{reasoning.chain}               & \\
+\texttt{GUARD\_RAIL}\,$\star$& \texttt{guardrail.name, .result}       & \\
+\texttt{DELEGATION}\,$\star$ & \texttt{delegation.src/tgt\_agent}     & \\
+\texttt{MEMORY}\,$\star$     & \texttt{memory.operation, .key}        & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The five novel kinds capture orchestration phases invisible to
+OTel GenAI: task decomposition (\texttt{PLANNING}), chain-of-thought
+(\texttt{REASONING}), safety-check outcomes (\texttt{GUARD\_\allowbreak{}RAIL}),
+inter-agent handoff (\texttt{DELE\-GATION}), and state management
+(\texttt{MEMORY}).
+An ablation study confirms that every kind is necessary: removing
+any one makes at least one of 14~fault types undetectable.
+
+A three-level privacy filter (\texttt{NONE},
+\texttt{METADATA\_\allowbreak{}ONLY}, \texttt{FULL}) controls
+attribute capture at the span level.  The default
+(\texttt{METADATA\_ONLY}) provides full diagnostic signal without
+exposing prompt or completion content.
+
+\subsection{Adapters: Three Instrumentation Strategies}
+
+Seven framework adapters implement three strategies
+(Table~\ref{tab:adapters}).
+\textbf{Callback handlers} (LangChain, CrewAI, LlamaIndex; 903~LOC)
+register event listeners via framework extension APIs.
+\textbf{Monkey-patching} (Anthropic SDK, OpenAI SDK, AutoGen; 795~LOC)
+wraps key methods at runtime for SDKs without callback systems.
+\textbf{Manual API} (Custom; 315~LOC) provides context managers for
+explicit instrumentation.
+All framework imports are lazy (inside \texttt{\_instrument()}),
+avoiding import-time dependencies.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Adapter strategies and supported frameworks.}
+\label{tab:adapters}
+\begin{tabular}{@{}llr@{}}
+\toprule
+\textbf{Strategy} & \textbf{Frameworks} & \textbf{LOC} \\
+\midrule
+Callback handlers & LangChain, CrewAI, LlamaIndex & 903 \\
+Monkey-patching   & Anthropic, OpenAI, AutoGen & 795 \\
+Manual API        & Custom agents & 315 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Analysis Modules and Circuit Breaker}
+
+Four analysis modules operate on exported span data:
+\textbf{CostAggregator} sums token costs by model, agent, and trace;
+\textbf{DecisionAttributor} links each \texttt{TOOL\_CALL} to its
+parent \texttt{LLM\_CALL} and nearby \texttt{REASONING} spans;
+\textbf{AnomalyDetector} detects circular delegation, infinite
+retries, cost explosion, and context overflow;
+\textbf{HallucinationTracer} flags ungrounded claims via token-overlap
+heuristics suitable for trace-level screening.
+
+The \textbf{AgentCircuitBreaker} is an OTel
+\texttt{Span\-Processor} that intercepts fault patterns in real
+time.  It dispatches on the span kind attribute to check
+four policies: reasoning loops ($\geq$\,$N$ identical tool calls),
+cost explosion (cumulative cost threshold), context overflow (token
+growth rate), and delegation cycles (graph cycle detection).  Each
+triggers a configurable callback (log, handler, or exception).  This
+mechanism is \emph{impossible} without agent-specific span kinds:
+vanilla OTel spans carry no semantic signal for policy dispatch.
+
+%% ====================================================================
+%% 3. USAGE
+%% ====================================================================
+\section{Usage}
+\label{sec:usage}
+
+\textbf{Installation.}
+\begin{lstlisting}
+pip install agenttelemetry
+\end{lstlisting}
+
+\textbf{Basic instrumentation} requires three lines of code:
+\begin{lstlisting}
+from agenttelemetry import AgentTracer
+tracer = AgentTracer("my-agent")
+with tracer.start_agent_span("researcher"):
+    with tracer.start_llm_span("gpt-4o"):
+        result = llm.chat(prompt)
+    with tracer.start_tool_span("search"):
+        data = search_tool(query)
+\end{lstlisting}
+
+\textbf{Framework adapter} (LangChain example):
+\begin{lstlisting}
+from agenttelemetry.adapters import LangChainAdapter
+adapter = LangChainAdapter()
+adapter.instrument()  # auto-hooks callbacks
+agent.run(query)      # spans emitted automatically
+\end{lstlisting}
+
+\textbf{Real-time fault detection:}
+\begin{lstlisting}
+from agenttelemetry import AgentCircuitBreaker
+cb = AgentCircuitBreaker(
+    max_reasoning_loops=3,
+    max_cost=0.50,
+    on_trigger=lambda f: agent.change_strategy()
+)
+tracer.add_span_processor(cb)
+\end{lstlisting}
+
+\noindent
+Spans export via OTLP to Jaeger, Grafana Tempo, Datadog, or any
+OTel-compatible backend.  A built-in JSON-Lines exporter supports
+offline analysis.
+
+%% ====================================================================
+%% 4. EVALUATION
+%% ====================================================================
+\section{Evaluation}
+\label{sec:eval}
+
+We evaluate \textsc{AgentTelemetry} along four dimensions: fault
+detection effectiveness, span kind necessity, runtime overhead, and
+real-world applicability.
+
+\subsection{Fault Detection Rate}
+
+We define 14~fault types spanning all nine span kinds (e.g., reasoning
+loop, circular delegation, guardrail bypass, planning failure, cost
+explosion, hallucination).  Each fault is injected at rate~1.0 into
+mock LLM clients, and we measure binary FDR: 1~if detected, 0~otherwise.
+Across 2,940~configurations (14~faults $\times$ 5~observability
+conditions $\times$ 7~frameworks $\times$ 6~models),
+\textsc{AgentTelemetry} achieves FDR\,=\,1.000 at both privacy levels,
+versus 0.429 for vanilla OTel and 0.429 for OTel+GenAI
+(Table~\ref{tab:fdr}).  The eight undetected faults under vanilla OTel
+require the five novel span kinds.
+False positive rate is 0.000 across all 14~detectors on both mock
+traces (10~runs) and 112~clean SWE-bench traces (3,060~spans).
+
+\begin{table}[t]
+\centering
+\small
+\caption{Fault detection rate by observability condition.}
+\label{tab:fdr}
+\begin{tabular}{@{}lc@{}}
+\toprule
+\textbf{Condition} & \textbf{FDR (14 faults)} \\
+\midrule
+No telemetry                  & 0.000 \\
+Vanilla OTel                  & 0.429 (6/14) \\
+OTel + GenAI                  & 0.429 (6/14) \\
+AgentTelemetry (metadata)     & 1.000 (14/14) \\
+AgentTelemetry (full)         & 1.000 (14/14) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Ablation Study}
+
+For each of the nine span kinds, we remove all spans of that kind
+from the exported trace and re-run fault detection.  Every span kind
+is required for at least one fault type: \texttt{LLM\_CALL} is the
+most broadly required (4~faults), while each novel kind has exactly
+one fault type that depends exclusively on it (e.g.,
+\texttt{REASONING}$\to$reasoning loop, \texttt{PLANNING}$\to$planning
+failure, \texttt{GUARD\_RAIL}$\to$guardrail bypass).  No kind can be
+removed without losing detection capability.
+
+\subsection{SWE-bench Case Study}
+
+On 112~SWE-bench Lite instances (37\% of the benchmark, all
+12~repositories), we instrument a ReAct coding agent (GPT-4o-mini,
+5~tools, 8~iterations max, \$2.53 total cost).  The agent produces
+3,060~spans across all nine kinds.
+
+\textsc{AgentTelemetry} characterizes reasoning loops as the dominant
+failure mode: 75\% of 84~failed instances (95\%~CI [66\%, 82\%])
+repeatedly called the same tool with similar queries without
+converging---a pattern \emph{invisible} to vanilla OTel, which cannot
+distinguish a reasoning step from any other \texttt{INTERNAL} span.
+A telemetry-guided intervention (the circuit breaker injects a
+strategy-change prompt after $\geq$3 identical tool calls) improves
+the patch rate by +11~pp over a no-intervention control (3-seed mean,
+$p{<}0.05$), closing the loop from observability through diagnosis
+to measurable improvement.
+
+\subsection{Real LLM Validation}
+
+Across 159~runs with 8~models from two providers (OpenAI, Anthropic),
+all four analysis modules run correctly on production API traces
+without modification.  Two models (GPT-4o-mini, GPT-4.1-nano)
+triggered infinite-retry alerts in clean runs---genuine model behaviors,
+not injected faults---demonstrating that \textsc{AgentTelemetry} detects
+real failure patterns in production.
+
+\subsection{Overhead}
+
+Table~\ref{tab:overhead} summarizes instrumentation cost measured over
+90,000~iterations (10,000 per span kind).  Median span creation is
+11.7\,\textmu s (p99~$<$~30\,\textmu s), adding $<$0.006\% to
+end-to-end execution given LLM latencies of 500\,ms--10\,s.
+Memory is $\sim$3.1\,KB per span.  Sustained throughput exceeds
+58,000~spans/s, providing $>$5,000$\times$ headroom over typical agent
+workloads (1--10~spans/s).
+
+\begin{table}[t]
+\centering
+\small
+\caption{Instrumentation overhead (Apple M4 Pro).}
+\label{tab:overhead}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+\textbf{Metric} & \textbf{p50} & \textbf{p95} & \textbf{p99} \\
+\midrule
+Span latency (\textmu s)   & 11.7  & 13.3  & 28.2 \\
+Memory per span (KB)       & 3.1   & 3.1   & 3.2  \\
+Throughput (k~spans/s)     & \multicolumn{3}{c}{58--66} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%% ====================================================================
+%% 5. RELATED WORK
+%% ====================================================================
+\section{Related Work}
+\label{sec:related}
+
+Table~\ref{tab:comparison} positions \textsc{AgentTelemetry} against
+representative tools across seven dimensions critical to production
+agent observability.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\caption{Comparison with existing tools.
+\checkmark\,=\,supported; $\circ$\,=\,partial; --\,=\,absent.}
+\label{tab:comparison}
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+\textbf{Tool} & \rotatebox{70}{\textbf{Multi-fw}} &
+\rotatebox{70}{\textbf{Span kinds}} &
+\rotatebox{70}{\textbf{Multi-agent}} &
+\rotatebox{70}{\textbf{Privacy}} &
+\rotatebox{70}{\textbf{Fault det.}} &
+\rotatebox{70}{\textbf{Open-src}} &
+\rotatebox{70}{\textbf{OTel-native}} \\
+\midrule
+LangSmith~\cite{langsmith}     & --          & $\circ$ & -- & -- & -- & -- & -- \\
+Langfuse~\cite{langfuse}       & $\circ$     & --      & -- & -- & -- & \checkmark & \checkmark \\
+OpenLLMetry~\cite{openllmetry} & \checkmark  & --      & -- & -- & -- & \checkmark & \checkmark \\
+Datadog LLM~\cite{datadog_llm} & \checkmark  & --      & -- & -- & -- & -- & $\circ$ \\
+OTel GenAI~\cite{otel}         & \checkmark  & $\circ$ & $\circ$ & -- & -- & \checkmark & \checkmark \\
+AGDebugger~\cite{agdebugger}   & --          & $\circ$ & \checkmark & -- & $\circ$ & -- & -- \\
+MAST~\cite{mast}               & --          & --      & -- & -- & -- & \checkmark & -- \\
+\midrule
+\textbf{AgentTelemetry}        & \checkmark  & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Failure taxonomies.}
+MAST~\cite{mast} identifies 14~multi-agent failure modes from 1,600+
+annotated traces; 12/14 (85.7\%) are detectable via our span kinds.
+AgentDebug~\cite{agentdebug} categorizes failures across four
+cognitive dimensions.  These works characterize \emph{what} goes wrong
+but provide no runtime detection infrastructure.
+
+\textbf{Debugging tools.}
+AGDebugger~\cite{agdebugger} offers interactive visual debugging for
+multi-agent conversations, validated through a 14-person user study.
+AgentRx~\cite{agentrx} uses LLM-based log analysis for automated
+diagnosis.  These tools operate on unstructured logs;
+\textsc{AgentTelemetry} provides the standardized, OTel-native trace
+data such tools could consume.
+
+\textbf{LLM observability platforms.}
+LangSmith~\cite{langsmith} provides deep LangChain integration but
+no portability to other frameworks.
+Langfuse~\cite{langfuse} and
+OpenLLMetry~\cite{openllmetry} provide OTel-compatible tracing but
+define no agent-specific span kinds---a planning step and a
+summarization call are indistinguishable.
+Datadog LLM Observability~\cite{datadog_llm} adds LLM metrics to a
+commercial stack but cannot detect agent orchestration faults.
+
+\textbf{OTel GenAI conventions.}
+The OTel GenAI semantic conventions~\cite{otel} define eight operation
+types covering LLM calls, retrieval, tools, and agent lifecycle.
+\textsc{AgentTelemetry} is a strict superset: three kinds overlap,
+one extends, and five are entirely novel.  All spans coexist with
+GenAI attributes on the same OTLP export pipeline.
+
+%% ====================================================================
+%% 6. CONCLUSION
+%% ====================================================================
+\section{Conclusion}
+
+\textsc{AgentTelemetry} is an open-source toolkit that extends
+OpenTelemetry with nine agent-specific span kinds, seven framework
+adapters, four analysis modules, and a real-time circuit breaker.
+It detects all 14~fault types (FDR\,=\,1.000 vs.\ 0.429 for vanilla
+OTel), characterizes real failures on SWE-bench, and imposes negligible
+overhead ($<$30\,\textmu s per span).
+The toolkit is available on PyPI (\texttt{pip install agenttelemetry})
+under Apache-2.0, with documentation and examples at
+\url{https://github.com/agenttelemetry/agenttelemetry}.
+Future work includes proposing the span taxonomy as an OpenTelemetry
+Enhancement Proposal and extending the circuit breaker with adaptive
+sampling for long-running agents.
+
+%% ====================================================================
+%% BIBLIOGRAPHY
+%% ====================================================================
+\begin{thebibliography}{10}
+
+\bibitem{agentbench}
+X.~Liu, H.~Yu, H.~Zhang, et~al.
+\newblock {AgentBench}: Evaluating {LLMs} as Agents.
+\newblock In {\em Proc.\ ICLR}, 2024.
+
+\bibitem{mast}
+{MAST}: Multi-Agent System Failure Taxonomy.
+\newblock In {\em Proc.\ NeurIPS}, 2025.
+
+\bibitem{agentdebug}
+{AgentDebug}: Categorizing Failure Modes Across Cognitive Dimensions.
+\newblock {\em arXiv preprint}, 2025.
+
+\bibitem{agentrx}
+{AgentRx}: Automated Diagnosis of Multi-Agent Systems.
+\newblock Microsoft Research, 2025.
+
+\bibitem{agdebugger}
+{AGDebugger}: An Interactive Visual Debugging Interface for
+Multi-Agent Conversations.
+\newblock In {\em Proc.\ CHI}, 2025.
+
+\bibitem{langsmith}
+LangChain.
+\newblock {LangSmith}: LLM Application Observability Platform.
+\newblock \url{https://smith.langchain.com}, 2024.
+
+\bibitem{langfuse}
+{Langfuse}: Open-Source {LLM} Observability.
+\newblock \url{https://langfuse.com}, 2024.
+
+\bibitem{openllmetry}
+{OpenLLMetry}: Open-Source {LLM} Telemetry.
+\newblock \url{https://github.com/traceloop/openllmetry}, 2024.
+
+\bibitem{datadog_llm}
+Datadog.
+\newblock {LLM Observability}.
+\newblock \url{https://www.datadoghq.com/product/llm-observability/}, 2024.
+
+\bibitem{otel}
+{OpenTelemetry GenAI Semantic Conventions}.
+\newblock \url{https://opentelemetry.io/docs/specs/semconv/gen-ai/}, 2024.
+
+\end{thebibliography}
+
+\end{document}
