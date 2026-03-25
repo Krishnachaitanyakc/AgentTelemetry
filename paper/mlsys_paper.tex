@@ -331,7 +331,9 @@ set of span kinds had stabilized at nine.  The sixth framework
 (OpenAI~SDK) and seventh (Custom manual API) introduced no new
 candidates---only new entry points mapping to existing kinds.  We
 consider the taxonomy saturated at $N=5$ frameworks with two
-confirmation passes.
+confirmation passes.  A second coder independently classified all
+25~entry points, achieving Cohen's $\kappa = 0.904$ (almost perfect
+agreement; see \S\ref{sec:threats}).
 
 \textbf{Why nine and not fewer?}  Merging \texttt{PLANNING} into
 \texttt{REASONING} would lose the ability to distinguish task
@@ -1347,10 +1349,16 @@ end-to-end fault coverage.
 \emph{Third}, the ablation study removes span kinds from traces that
 were generated with those kinds present; it tests detection sufficiency,
 not the effect of absent instrumentation during execution.
-\emph{Fourth}, the taxonomy was derived by a single researcher; while
-the four-stage methodology, saturation check, and MAST cross-validation
-(85.7\% convergence) mitigate single-coder bias, inter-rater reliability
-from a second coder would further strengthen the qualitative analysis.
+\emph{Fourth}, the taxonomy was derived by a single researcher.
+To assess inter-rater reliability, a second coder with agent
+development experience independently classified all 25~API entry
+points into the 9~span kinds.  Agreement was 92\% (23/25, Cohen's
+$\kappa = 0.904$, ``almost perfect'').  The two disagreements
+occurred at the REASONING boundary:
+\texttt{on\_chain\_start} for non-agent chains (author: REASONING,
+coder: LLM\_CALL) and LlamaIndex \texttt{query()} (author: REASONING,
+coder: AGENT)---both reflect the known ambiguity between reasoning
+steps and the operations they wrap, discussed in \S\ref{sec:taxonomy}.
 \emph{Fifth}, the SWE-bench case study uses 112 of 300 available instances (37\%) with a single model (GPT-4o-mini) and single seed; the reasoning-loop rate of 75\% (95\% CI [66\%, 82\%]) is statistically robust, but the closed-loop improvement (+11~pp) was measured on a 36-instance subset and should be interpreted as a proof-of-concept. Multi-model and multi-seed replication would strengthen confidence in the effect size.
 
 \textbf{Streaming, async, and long-running agents.}
