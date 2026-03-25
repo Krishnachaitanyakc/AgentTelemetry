@@ -28,12 +28,13 @@ classifiers = [
 dependencies = [
     "opentelemetry-api >= 1.20.0",
     "opentelemetry-sdk >= 1.20.0",
+    "opentelemetry-instrumentation >= 0.41b0",
 ]
 
 [project.urls]
-Homepage = "https://github.com/agenttelemetry/agenttelemetry"
-Repository = "https://github.com/agenttelemetry/agenttelemetry"
-Issues = "https://github.com/agenttelemetry/agenttelemetry/issues"
+Homepage = "https://github.com/Krishnachaitanyakc/AgentTelemetry"
+Repository = "https://github.com/Krishnachaitanyakc/AgentTelemetry"
+Issues = "https://github.com/Krishnachaitanyakc/AgentTelemetry/issues"
 
 [project.optional-dependencies]
 langchain = ["langchain-core >= 0.2.0"]
