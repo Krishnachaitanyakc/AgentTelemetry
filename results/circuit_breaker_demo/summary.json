@@ -1,0 +1,39 @@
+{
+  "total_fires": 4,
+  "fires": [
+    {
+      "trace_id": "eea6c76c5eb9f8eb",
+      "tool": "search_kb",
+      "input": "python",
+      "count": 3
+    },
+    {
+      "trace_id": "67a081ca8730e975",
+      "cumulative_cost": 0.07500000000000001,
+      "threshold": 0.05
+    },
+    {
+      "trace_id": "bfa3092a3f19607e",
+      "cycle": [
+        "agent_a",
+        "agent_b",
+        "agent_a"
+      ]
+    },
+    {
+      "trace_id": "6a42603085f19616",
+      "token_history": [
+        100,
+        250,
+        600
+      ],
+      "growth_factor": 2.0
+    }
+  ],
+  "tests": {
+    "reasoning_loop": "DETECTED",
+    "cost_explosion": "DETECTED",
+    "delegation_cycle": "DETECTED",
+    "context_overflow": "DETECTED"
+  }
+}

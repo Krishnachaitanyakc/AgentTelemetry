@@ -724,6 +724,37 @@ heuristics suitable for trace-level screening, not production-grade
 NLI-based detection; it flags candidate ungrounded claims for human
 review rather than issuing definitive hallucination verdicts.
 
+\subsection{Telemetry-Driven Runtime Control}
+
+Beyond post-hoc analysis, the span taxonomy enables a novel
+\emph{runtime} mechanism: the \texttt{AgentCircuitBreaker}, an OTel
+\texttt{SpanProcessor} that intercepts spans as they complete and
+checks for fault patterns in real time.  Four policies are supported:
+
+\begin{itemize}[nosep]
+\item \textbf{Reasoning loop:} fires when $\geq$\,$N$ consecutive
+  \texttt{TOOL\_CALL} spans have identical \texttt{tool.name} and
+  \texttt{tool.input}---the same pattern that characterizes 75\% of
+  SWE-bench failures (RQ6).
+\item \textbf{Cost explosion:} fires when cumulative \texttt{llm.cost}
+  across \texttt{LLM\_CALL} spans exceeds a configurable threshold.
+\item \textbf{Context overflow:} fires when input token counts in
+  consecutive \texttt{LLM\_CALL} spans grow by $>$\,$k\times$ for
+  $\geq$\,$m$ consecutive calls.
+\item \textbf{Delegation cycle:} fires when the delegation graph
+  (built from \texttt{DELEGATION} span attributes) contains a cycle.
+\end{itemize}
+
+\noindent
+Each policy triggers a configurable callback (log, invoke a handler,
+or raise an exception), enabling runtime interventions such as the
+strategy-change prompt demonstrated in RQ6.  Critically, \emph{this
+mechanism is impossible without agent-specific span kinds}: the circuit
+breaker dispatches on \texttt{agenttelemetry.span.kind} to determine
+whether a span represents a tool call, an LLM invocation, or a
+delegation handoff.  With vanilla OTel, all spans are
+\texttt{INTERNAL} and carry no semantic signal for policy dispatch.
+
 %% ====================================================================
 %% 6. EVALUATION
 %% ====================================================================
