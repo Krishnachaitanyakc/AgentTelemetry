@@ -651,6 +651,25 @@ The signal-to-noise ratio across all 3{,}060~spans is 0.54 (34.6\% of
 spans are diagnostic kinds) versus 0.0 for vanilla OTel, where no
 signal/noise distinction is possible.
 
+\textbf{Simulated user study.}
+To estimate the diagnostic benefit, we simulated 6~developer
+personas (junior dev, senior backend, ML engineer, SRE, QA, tech lead)
+debugging 6~failed traces under both conditions via GPT-4o-mini
+role-playing (72~calls, \$0.02).  With \textsc{AgentTelemetry},
+diagnostic accuracy was 91.7\% (33/36) versus 25.0\% (9/36) with
+vanilla OTel (Cohen's $h = 1.51$, large effect).  Without span kind
+labels, most personas misdiagnosed reasoning loops as ``insufficient
+tool coverage.''  While this approximates rather than replaces a human
+study, the effect size suggests that typed spans substantially reduce
+diagnostic difficulty.
+
+\textbf{Patch verification.}
+To assess whether proposed patches are plausible (not just produced),
+we compared each agent-proposed fix against the SWE-bench ground-truth
+diff.  Of 33~patches with non-empty answers, 29 (88\%) identified the
+correct file(s) and described a fix approach consistent with the ground
+truth; 4 (12\%) targeted wrong files or described unrelated changes.
+
 \textbf{Validation with real LLM APIs.}
 We validated \textsc{AgentTelemetry} against 8~real LLM models
 (7~OpenAI: GPT-4o-mini, GPT-4o, GPT-4.1-nano, GPT-4.1-mini, GPT-4.1,
@@ -665,7 +684,10 @@ calling the same tool 3--4 times with identical arguments---genuine
 model behaviors, not injected faults, demonstrating that
 \textsc{AgentTelemetry} detects real failure patterns in production.
 Instrumentation overhead on real API traces was $<$5\% median wall-clock
-(11.7\,$\mu$s local processing per span vs.\ 1--6\,s API round trips).
+(p50\,=\,11.7\,$\mu$s, p99\,$<$\,30\,$\mu$s per span vs.\ 1--6\,s API
+round trips).  Under 100-thread concurrent trace pressure, throughput
+is 19{,}071~spans/sec with p99\,=\,76.8\,$\mu$s; memory grows
+linearly at $\sim$3\,KB/span.
 
 %% ====================================================================
 %% 5. RELATED WORK

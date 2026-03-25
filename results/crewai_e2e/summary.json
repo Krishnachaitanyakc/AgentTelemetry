@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-03-25T22:43:08.428501+00:00",
+  "crewai_version": "1.11.1",
+  "model": "gpt-4o-mini",
+  "elapsed_seconds": 6.8,
+  "total_spans": 3,
+  "span_kinds": {
+    "PLANNING": 1,
+    "LLM_CALL": 1,
+    "AGENT": 1
+  },
+  "llm_call_count": 1,
+  "tool_call_count": 0,
+  "total_cost_usd": 0.0,
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "all_checks_passed": true,
+  "checks": {
+    "AGENT spans >= 1": true,
+    "LLM_CALL spans >= 1": true,
+    "PLANNING spans >= 1": true,
+    "TOOL_CALL spans >= 0 (tools optional)": true,
+    "Total spans >= 3": true,
+    "LLM model captured": true,
+    "LLM latency captured": true,
+    "Agent framework = crewai": true,
+    "Crew completed": true
+  },
+  "crew_result_preview": "[ChatCompletionMessageFunctionToolCall(id='call_SLqDmRxeXICXfMJYjhPjTbYC', function=Function(arguments='{\"text\": \"Observability is crucial for AI agents as it enables enhanced performance monitoring, allowing real-time tracking and quick identification of issues. It improves debugging by providing insights into system behavior, facilitating effective troubleshooting. Additionally, observability increases trustworthiness by offering transparency in AI decision-making processes, which is essential"
+}
