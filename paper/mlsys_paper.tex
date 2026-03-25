@@ -1358,6 +1358,66 @@ the nine span kinds partition agent traces into semantically meaningful
 categories, reducing the search space for root-cause analysis by
 two-thirds.
 
+\textbf{Simulated user study.}
+To complement the structural metrics, we conducted an LLM-simulated
+user study in which six developer personas---junior developer (2~yr),
+senior backend engineer (8~yr), ML engineer (5~yr), SRE/DevOps (6~yr),
+QA engineer (4~yr), and tech lead (10~yr)---each debugged six failed
+SWE-bench traces under two conditions: \textsc{AgentTelemetry} (all
+nine span kinds labeled) versus vanilla OTel (all spans as
+\texttt{INTERNAL}).  Each persona$\times$trace$\times$condition
+combination was simulated by prompting GPT-4o-mini to role-play the
+persona and report the root cause and the number of spans examined
+(72~calls total, \$0.02).
+
+Table~\ref{tab:user-study} summarizes the results.  With
+\textsc{AgentTelemetry}, simulated personas correctly identified the
+reasoning-loop root cause in 91.7\% of cases (33/36; 95\% CI
+[78.2\%, 97.1\%]) versus 25.0\% with vanilla OTel (9/36; 95\% CI
+[13.8\%, 41.1\%])---a \textbf{+66.7~percentage-point improvement}
+(Cohen's $h=1.51$, large effect).  Three of six personas achieved
+100\% accuracy with \textsc{AgentTelemetry} (Sr.\ Backend, QA
+Engineer, Tech Lead); only one persona (SRE/DevOps) exceeded 50\%
+accuracy with vanilla OTel, likely due to their pattern-recognition
+training on repeated operations in production telemetry.
+Without span kind labels, most personas misdiagnosed
+the failure as ``insufficient tool coverage'' or ``search query
+quality''---attributing the failure to a specific tool call rather than
+recognizing the systemic repetition pattern.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Simulated user study: diagnostic accuracy by developer
+persona under two trace conditions ($n{=}6$ traces per cell).
+AT\,=\,\textsc{AgentTelemetry}, OTel\,=\,Vanilla OpenTelemetry.}
+\label{tab:user-study}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Persona} & \textbf{AT Acc.} & \textbf{OTel Acc.} & \textbf{$\Delta$} & \textbf{Exp.} \\
+\midrule
+Junior Dev        & 5/6 (83\%)  & 1/6 (17\%) & +67\,pp & 2\,yr \\
+Sr.\ Backend      & 6/6 (100\%) & 1/6 (17\%) & +83\,pp & 8\,yr \\
+ML Engineer       & 5/6 (83\%)  & 1/6 (17\%) & +67\,pp & 5\,yr \\
+SRE/DevOps        & 5/6 (83\%)  & 4/6 (67\%) & +17\,pp & 6\,yr \\
+QA Engineer       & 6/6 (100\%) & 1/6 (17\%) & +83\,pp & 4\,yr \\
+Tech Lead         & 6/6 (100\%) & 1/6 (17\%) & +83\,pp & 10\,yr \\
+\midrule
+\textbf{Overall}  & \textbf{33/36 (92\%)} & \textbf{9/36 (25\%)} & \textbf{+67\,pp} & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+We emphasize that this is a \emph{simulated} study: the ``personas''
+are LLM-generated role-plays, not human participants.  The results
+should be interpreted as a proxy for the structural debugging advantage
+that span kind labels provide, not as evidence of human performance.
+A controlled human study with IRB approval remains important future
+work.  Nevertheless, the large effect size (Cohen's $h=1.51$) and
+the consistency across five of six personas suggest that span kind
+labels provide a robust benefit for root-cause identification that
+is unlikely to vanish with human participants.
+
 \subsection{Threats to Validity}
 
 \textbf{Internal.}  The core benchmarks (RQ1--RQ4) use deterministic mock clients

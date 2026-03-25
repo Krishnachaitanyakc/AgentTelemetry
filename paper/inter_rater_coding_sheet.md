@@ -102,4 +102,4 @@ print(f"Cohen's kappa: {kappa:.3f}")
 ### Notes for Paper
 
 Add to Section 3.1 (Taxonomy Derivation):
-"To assess inter-rater reliability, a second coder with [X years] of agent development experience independently classified all 25 API entry points into the 9 span kinds. Agreement was [raw]% (Cohen's κ = [X.XX], [interpretation]). Disagreements occurred primarily at the [X]/[Y] boundary, consistent with [explanation]."
+"To assess inter-rater reliability, a second coder with agent development experience independently classified all 25 API entry points into the 9 span kinds. Agreement was [raw]% (Cohen's κ = [X.XX], [interpretation]). Disagreements occurred primarily at the [X]/[Y] boundary, consistent with [explanation]."

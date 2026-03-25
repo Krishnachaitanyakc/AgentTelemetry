@@ -1,0 +1,948 @@
+{
+  "summary": {
+    "total_verified": 33,
+    "plausibly_correct": 29,
+    "plausible_rate": 87.9,
+    "by_verdict": {
+      "correct_approach": 27,
+      "wrong_approach": 2,
+      "weak_match": 2,
+      "partial_match": 2
+    },
+    "mean_file_match": 0.848,
+    "mean_code_similarity": 0.111,
+    "mean_approach_match": 0.647
+  },
+  "verifications": [
+    {
+      "instance_id": "astropy__astropy-14182",
+      "repo": "astropy/astropy",
+      "source_file": "swebench_100",
+      "gt_files": [
+        "astropy/io/ascii/rst.py"
+      ],
+      "gt_changes_summary": "Files: astropy/io/ascii/rst.py | Added 28 lines | Removed 10 lines | Key additions: >>> from astropy.table import QTable; >>> import astropy.units as u",
+      "gt_lines_added": 31,
+      "gt_lines_removed": 10,
+      "agent_answer_length": 1004,
+      "agent_mentioned_files": [
+        "astropy/io/ascii/rst.py"
+      ],
+      "agent_code_snippets": [
+        " indicated that the ",
+        " class does not accept a ",
+        " parameter, which leads to failure when trying to include header rows in the output.\n\n2. **Explored the Code**: Found the relevant ",
+        " class in the ",
+        " file, but did not find explicit constructor or write method signatures.\n\n3. **Proposed a Code Fix**: Suggested modifications to the "
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.049,
+      "approach_match_score": 0.265,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['astropy/io/ascii/rst.py'] | gt_funcs: ['get_fixedwidth_params', 'RST', 'RST']"
+    },
+    {
+      "instance_id": "astropy__astropy-14365",
+      "repo": "astropy/astropy",
+      "source_file": "swebench_case_study",
+      "gt_files": [
+        "astropy/io/ascii/qdp.py"
+      ],
+      "gt_changes_summary": "Files: astropy/io/ascii/qdp.py | Added 2 lines | Removed 2 lines | Key additions: _line_type_re = re.compile(_type_re, re.IGNORECASE); if v.upper() == \"NO\":",
+      "gt_lines_added": 2,
+      "gt_lines_removed": 2,
+      "agent_answer_length": 1716,
+      "agent_mentioned_files": [
+        "astropy/io/ascii/qdp.py",
+        "re.c"
+      ],
+      "agent_code_snippets": [
+        "    _line_type_re = re.compile(_type_re, re.IGNORECASE)\n    ",
+        "    if v == \"NO\":\n    ",
+        "    if v.lower() == \"no\":\n    ",
+        " module assumes QDP commands are always in uppercase, but the QDP specification states that commands should be case insensitive. The existing implementation leads to crashes when commands are written ",
+        ". Inside, I found the parsing logic that checks for command types and specific values like \"NO\".\n\n**REASON**\nThe current method of checking commands and values is case-sensitive, which does not align "
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.083,
+      "approach_match_score": 0.714,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['astropy/io/ascii/qdp.py', 're.c'] | gt_funcs: ['_line_type', '_get_tables_from_qdp_file']"
+    },
+    {
+      "instance_id": "astropy__astropy-6938",
+      "repo": "astropy/astropy",
+      "source_file": "swebench_100",
+      "gt_files": [
+        "astropy/io/fits/fitsrec.py"
+      ],
+      "gt_changes_summary": "Files: astropy/io/fits/fitsrec.py | Added 1 lines | Removed 1 lines | Key additions: output_field[:] = output_field.replace(b'E', b'D')",
+      "gt_lines_added": 1,
+      "gt_lines_removed": 1,
+      "agent_answer_length": 1434,
+      "agent_mentioned_files": [
+        "fitsrec.py",
+        "astropy/io/fits/fitsrec.py"
+      ],
+      "agent_code_snippets": [
+        "output_field[:] = output_field.replace(encode_ascii('E'), encode_ascii('D'))\n",
+        " method on a ",
+        ", which does not modify the array in-place. The current code attempts to replace 'E' with 'D' in the ",
+        ", but since ",
+        " returns a new array rather than modifying the existing one, the original "
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.065,
+      "approach_match_score": 1.0,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['fitsrec.py', 'astropy/io/fits/fitsrec.py'] | gt_funcs: ['_scale_back_ascii']"
+    },
+    {
+      "instance_id": "django__django-10924",
+      "repo": "django/django",
+      "source_file": "swebench_case_study",
+      "gt_files": [
+        "django/db/models/fields/__init__.py"
+      ],
+      "gt_changes_summary": "Files: django/db/models/fields/__init__.py | Added 1 lines | Removed 1 lines | Key additions: 'path': self.path() if callable(self.path) else self.path,",
+      "gt_lines_added": 1,
+      "gt_lines_removed": 1,
+      "agent_answer_length": 2290,
+      "agent_mentioned_files": [
+        "django/db/models/fields/__init__.py"
+      ],
+      "agent_code_snippets": [
+        "class FilePathField(models.Field):\n    # other methods...\n    def __init__(self, *args, path=None, **kwargs):\n        self.path = path\n        super().__init__(*args, **kwargs)\n\n    def formfield(self",
+        "FilePathField",
+        "FilePathField",
+        "os.path.join()",
+        "FilePathField"
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.055,
+      "approach_match_score": 0.6,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['django/db/models/fields/__init__.py'] | gt_funcs: ['get_prep_value']"
+    },
+    {
+      "instance_id": "django__django-11283",
+      "repo": "django/django",
+      "source_file": "swebench_100",
+      "gt_files": [
+        "django/contrib/auth/migrations/0011_update_proxy_permissions.py"
+      ],
+      "gt_changes_summary": "Files: django/contrib/auth/migrations/0011_update_proxy_permissions.py | Added 21 lines | Removed 5 lines | Key additions: import sys; from django.core.management.color import color_style",
+      "gt_lines_added": 25,
+      "gt_lines_removed": 5,
+      "agent_answer_length": 1221,
+      "agent_mentioned_files": [],
+      "agent_code_snippets": [
+        "auth.0011_update_proxy_permissions",
+        "IntegrityError",
+        "auth_permission"
+      ],
+      "file_match_score": 0.0,
+      "code_similarity_score": 0.071,
+      "approach_match_score": 0.071,
+      "plausible": false,
+      "verdict": "wrong_approach",
+      "notes": "gt_funcs: ['update_proxy_model_permissions', 'update_proxy_model_permissions']"
+    },
+    {
+      "instance_id": "django__django-11905",
+      "repo": "django/django",
+      "source_file": "swebench_100",
+      "gt_files": [
+        "django/db/models/lookups.py"
+      ],
+      "gt_changes_summary": "Files: django/db/models/lookups.py | Added 13 lines | Key additions: import warnings; from django.utils.deprecation import RemovedInDjango40Warning",
+      "gt_lines_added": 13,
+      "gt_lines_removed": 0,
+      "agent_answer_length": 1958,
+      "agent_mentioned_files": [
+        "lookups.py",
+        "django/db/models/lookups.py"
+      ],
+      "agent_code_snippets": [
+        "if not isinstance(self.rhs, bool):\n    raise ValueError('The QuerySet value for an isnull lookup must be True or False.')\n",
+        " lookup in Django can accept non-boolean values, which is against the intended behavior. This can lead to confusion for users and inconsistency in SQL query generation. The report suggests raising an ",
+        " did not return relevant code sections. However, searching for ",
+        " led us to the ",
+        " file, which contains the logic for various lookups.\n\n2. **File Inspection**: While reading "
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.075,
+      "approach_match_score": 0.714,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['lookups.py', 'django/db/models/lookups.py'] | gt_funcs: ['IsNull']"
+    },
+    {
+      "instance_id": "django__django-13321",
+      "repo": "django/django",
+      "source_file": "swebench_100",
+      "gt_files": [
+        "django/contrib/sessions/backends/base.py"
+      ],
+      "gt_changes_summary": "Files: django/contrib/sessions/backends/base.py | Added 9 lines | Key additions: except signing.BadSignature:; try:",
+      "gt_lines_added": 9,
+      "gt_lines_removed": 0,
+      "agent_answer_length": 1824,
+      "agent_mentioned_files": [
+        "django/contrib/sessions/backends/base.py"
+      ],
+      "agent_code_snippets": [
+        "except signing.BadSignature:\n    try:\n        # Return an empty session if data is not in the pre-Django 3.1 format.\n        return self._legacy_decode(session_data)\n    except Exception:\n        logg",
+        "AttributeError",
+        "_session_cache",
+        "SessionStore",
+        "django/contrib/sessions/backends/base.py"
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.301,
+      "approach_match_score": 1.0,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['django/contrib/sessions/backends/base.py'] | gt_funcs: ['decode']"
+    },
+    {
+      "instance_id": "django__django-13768",
+      "repo": "django/django",
+      "source_file": "swebench_100",
+      "gt_files": [
+        "django/dispatch/dispatcher.py"
+      ],
+      "gt_changes_summary": "Files: django/dispatch/dispatcher.py | Added 8 lines | Key additions: import logging; logger = logging.getLogger('django.dispatch')",
+      "gt_lines_added": 9,
+      "gt_lines_removed": 0,
+      "agent_answer_length": 1875,
+      "agent_mentioned_files": [
+        "django/dispatch/dispatcher.py"
+      ],
+      "agent_code_snippets": [
+        "            except Exception as err:\n                logger.exception(\n                    'Error calling %s in Signal.send_robust() (%s)',\n                    receiver.__qualname__,\n                 ",
+        "send_robust()",
+        "send_robust()",
+        "django/dispatch/dispatcher.py",
+        "logger.exception()"
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.118,
+      "approach_match_score": 0.727,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['django/dispatch/dispatcher.py'] | gt_funcs: ['send_robust']"
+    },
+    {
+      "instance_id": "django__django-14016",
+      "repo": "django/django",
+      "source_file": "swebench_100",
+      "gt_files": [
+        "django/db/models/query_utils.py"
+      ],
+      "gt_changes_summary": "Files: django/db/models/query_utils.py | Added 4 lines | Removed 3 lines | Key additions: _, args, kwargs = self.deconstruct(); return type(self)(*args, **kwargs)",
+      "gt_lines_added": 4,
+      "gt_lines_removed": 3,
+      "agent_answer_length": 2367,
+      "agent_mentioned_files": [
+        "obj.c",
+        "django/db/models/query_utils.py"
+      ],
+      "agent_code_snippets": [
+        "def _combine(self, other, conn):\n    # If the other Q() is empty, ignore it and just use `self`.\n    if not other:\n        _, args, kwargs = self.deconstruct()\n        return type(self)(*args, **kwarg",
+        " that occurs when a ",
+        " object is created using the ",
+        " operator on two ",
+        " instances, where one of them includes a "
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.114,
+      "approach_match_score": 1.0,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['obj.c', 'django/db/models/query_utils.py'] | gt_funcs: ['_combine']"
+    },
+    {
+      "instance_id": "django__django-16046",
+      "repo": "django/django",
+      "source_file": "swebench_100",
+      "gt_files": [
+        "django/utils/numberformat.py"
+      ],
+      "gt_changes_summary": "Files: django/utils/numberformat.py | Added 2 lines | Key additions: if number is None or number == \"\":; return mark_safe(number)",
+      "gt_lines_added": 2,
+      "gt_lines_removed": 0,
+      "agent_answer_length": 1459,
+      "agent_mentioned_files": [
+        "numberformat.py",
+        "django/utils/numberformat.py"
+      ],
+      "agent_code_snippets": [
+        "if number is None or number == \"\":\n    return mark_safe(number)\n",
+        "numberformat.py",
+        " (or an empty string) and the line ",
+        " is executed, leading to an ",
+        ". We will address this by adding a check for "
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.09,
+      "approach_match_score": 0.667,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['numberformat.py', 'django/utils/numberformat.py'] | gt_funcs: ['format']"
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-18869",
+      "repo": "matplotlib/matplotlib",
+      "source_file": "swebench_case_study",
+      "gt_files": [
+        "lib/matplotlib/__init__.py"
+      ],
+      "gt_changes_summary": "Files: lib/matplotlib/__init__.py | Added 45 lines | Removed 16 lines | Key additions: # modelled after sys.version_info; _VersionInfo = namedtuple('_VersionInfo',",
+      "gt_lines_added": 51,
+      "gt_lines_removed": 16,
+      "agent_answer_length": 2166,
+      "agent_mentioned_files": [
+        "__init__.py"
+      ],
+      "agent_code_snippets": [
+        "from collections import namedtuple\nfrom packaging.version import parse as parse_version  # Ensure the parse_version function is imported.\n\n# modelled after sys.version_info\n_VersionInfo = namedtuple('",
+        "version_info",
+        "LooseVersion",
+        "__version__",
+        "__version__"
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.127,
+      "approach_match_score": 0.693,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['__init__.py']"
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-24334",
+      "repo": "matplotlib/matplotlib",
+      "source_file": "swebench_100",
+      "gt_files": [
+        "lib/matplotlib/axis.py"
+      ],
+      "gt_changes_summary": "Files: lib/matplotlib/axis.py | Added 3 lines | Key additions: if labels is None and kwargs:; raise ValueError('labels argument cannot be None when '",
+      "gt_lines_added": 3,
+      "gt_lines_removed": 0,
+      "agent_answer_length": 716,
+      "agent_mentioned_files": [],
+      "agent_code_snippets": [
+        "Axis.set_ticks",
+        " are passed when ",
+        ". If they are, a ",
+        " is raised with the message: "
+      ],
+      "file_match_score": 0.0,
+      "code_similarity_score": 0.174,
+      "approach_match_score": 0.333,
+      "plausible": false,
+      "verdict": "weak_match",
+      "notes": "gt_funcs: ['set_ticks']"
+    },
+    {
+      "instance_id": "pallets__flask-4045",
+      "repo": "pallets/flask",
+      "source_file": "swebench_case_study",
+      "gt_files": [
+        "src/flask/blueprints.py"
+      ],
+      "gt_changes_summary": "Files: src/flask/blueprints.py | Added 6 lines | Removed 6 lines | Key additions: if \".\" in name:; raise ValueError(\"'name' may not contain a dot '.' character.\")",
+      "gt_lines_added": 10,
+      "gt_lines_removed": 6,
+      "agent_answer_length": 1766,
+      "agent_mentioned_files": [
+        "src/flask/blueprints.py"
+      ],
+      "agent_code_snippets": [
+        "if \".\" in name:\n    raise ValueError(\"'name' may not contain a dot '.' character.\")\n",
+        "). The significance of this change arises from the ability to nest blueprints, which makes dot characters in names problematic.\n\n2. **Root Cause**: The current code does not include validation for blu",
+        " class in the ",
+        " file where the logic for handling blueprints is implemented.\n- Upon inspecting the relevant part of the code, I found that the constructor of the ",
+        " class initializes the name and lacks any condition to raise an error for dots in the name.\n\n### Proposed Fix\n\nUpon seeing the absence of validation in the constructor, I propose the following patch:\n"
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.147,
+      "approach_match_score": 0.538,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['src/flask/blueprints.py'] | gt_funcs: ['__init__', 'add_url_rule']"
+    },
+    {
+      "instance_id": "pallets__flask-4992",
+      "repo": "pallets/flask",
+      "source_file": "swebench_case_study",
+      "gt_files": [
+        "src/flask/config.py"
+      ],
+      "gt_changes_summary": "Files: src/flask/config.py | Added 7 lines | Removed 3 lines | Key additions: text: bool = True,; import tomllib",
+      "gt_lines_added": 8,
+      "gt_lines_removed": 3,
+      "agent_answer_length": 966,
+      "agent_mentioned_files": [],
+      "agent_code_snippets": [
+        "flask.Config.from_file()",
+        " parameter to allow specifying how files are opened.\n- Defaulted the mode to ",
+        " for text, enabling backward compatibility while allowing users to specify ",
+        " for loading TOML files.\n\n### Next Steps:\n1. **Review**: A manual review of the patch is recommended to ensure that there are no unintended side effects and that the method operates correctly with dif"
+      ],
+      "file_match_score": 0.0,
+      "code_similarity_score": 0.044,
+      "approach_match_score": 0.519,
+      "plausible": false,
+      "verdict": "weak_match",
+      "notes": "gt_funcs: ['from_file', 'from_file', 'from_file']"
+    },
+    {
+      "instance_id": "psf__requests-1963",
+      "repo": "psf/requests",
+      "source_file": "swebench_case_study",
+      "gt_files": [
+        "requests/sessions.py"
+      ],
+      "gt_changes_summary": "Files: requests/sessions.py | Added 3 lines | Removed 1 lines | Key additions: # Override the original request.; req = prepared_request",
+      "gt_lines_added": 4,
+      "gt_lines_removed": 1,
+      "agent_answer_length": 2277,
+      "agent_mentioned_files": [
+        "resp.h",
+        "req.c",
+        "requests/sessions.py"
+      ],
+      "agent_code_snippets": [
+        "def resolve_redirects(self, resp, req, stream=False, timeout=None, **kwargs):\n    ...\n    # Prepare the request for the new location\n    prepared_request = req.copy()  # or however the request is bein",
+        "Session.resolve_redirects",
+        "requests/sessions.py",
+        "resolve_redirects",
+        "new_location"
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.011,
+      "approach_match_score": 0.875,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['resp.h', 'req.c', 'requests/sessions.py'] | gt_funcs: ['resolve_redirects']"
+    },
+    {
+      "instance_id": "pydata__xarray-3364",
+      "repo": "pydata/xarray",
+      "source_file": "swebench_case_study",
+      "gt_files": [
+        "xarray/core/concat.py"
+      ],
+      "gt_changes_summary": "Files: xarray/core/concat.py | Added 2 lines | Removed 7 lines | Key additions: if var in ds:; to_merge[var].append(ds.variables[var])",
+      "gt_lines_added": 2,
+      "gt_lines_removed": 8,
+      "agent_answer_length": 2099,
+      "agent_mentioned_files": [
+        "xarray.c",
+        "pd.c",
+        "xarray/core/concat.py"
+      ],
+      "agent_code_snippets": [
+        "def _dataset_concat(\n    ...\n    for ds in datasets:\n        for var in variables_to_merge:\n            if var in ds:\n                to_merge[var].append(ds.variables[var])\n    ...\n)\n",
+        "xarray.concat",
+        "ValueError",
+        ", which performs an outer join allowing for missing data.\n\n2. **SEARCHING**: I located the relevant code responsible for concatenating datasets in the ",
+        " file. The area of interest explicitly raises a "
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.073,
+      "approach_match_score": 0.96,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['xarray.c', 'pd.c', 'xarray/core/concat.py'] | gt_funcs: ['_dataset_concat']"
+    },
+    {
+      "instance_id": "pylint-dev__pylint-6506",
+      "repo": "pylint-dev/pylint",
+      "source_file": "swebench_100",
+      "gt_files": [
+        "pylint/config/config_initialization.py"
+      ],
+      "gt_changes_summary": "Files: pylint/config/config_initialization.py | Added 1 lines | Removed 2 lines | Key additions: linter._arg_parser.error(f\"Unrecognized option found: {msg}\")",
+      "gt_lines_added": 1,
+      "gt_lines_removed": 2,
+      "agent_answer_length": 1843,
+      "agent_mentioned_files": [
+        "config_initialization.py"
+      ],
+      "agent_code_snippets": [
+        "if unrecognized_options:\n    msg = \", \".join(unrecognized_options)\n    linter._arg_parser.error(f\"Unrecognized option found: {msg}\")\n",
+        ", a traceback error is shown instead of a user-friendly error message. This traceback can be confusing and does not provide a clear directive on how the user should proceed. \n\nThe root cause of this i",
+        " file. When such options are detected, an exception (",
+        ") is raised which sends a traceback to the user.\n\n### Proposed Fix\n\nTo resolve the issue, I propose modifying the handling of unrecognized options in the ",
+        " function within the "
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.091,
+      "approach_match_score": 0.955,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['config_initialization.py'] | gt_funcs: ['_config_initialization']"
+    },
+    {
+      "instance_id": "pylint-dev__pylint-7114",
+      "repo": "pylint-dev/pylint",
+      "source_file": "swebench_100",
+      "gt_files": [
+        "pylint/lint/expand_modules.py"
+      ],
+      "gt_changes_summary": "Files: pylint/lint/expand_modules.py | Added 5 lines | Removed 5 lines | Key additions: if os.path.isfile(something) or os.path.exists(; os.path.join(something, \"__init__.py\")",
+      "gt_lines_added": 5,
+      "gt_lines_removed": 5,
+      "agent_answer_length": 1426,
+      "agent_mentioned_files": [
+        "__init__.py",
+        "a/a.py",
+        "expand_modules.py",
+        "a/__init__.py"
+      ],
+      "agent_code_snippets": [
+        "if os.path.isfile(something) or (os.path.isdir(something) and os.path.exists(os.path.join(something, '__init__.py'))):\n",
+        "__init__.py",
+        "__init__.py",
+        " on a directory that contains a file with the same name (like ",
+        "), pylint erroneously looks for "
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.174,
+      "approach_match_score": 0.312,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['__init__.py', 'a/a.py', 'expand_modules.py'] | gt_funcs: ['expand_modules', 'expand_modules']"
+    },
+    {
+      "instance_id": "pytest-dev__pytest-11143",
+      "repo": "pytest-dev/pytest",
+      "source_file": "swebench_case_study",
+      "gt_files": [
+        "src/_pytest/assertion/rewrite.py"
+      ],
+      "gt_changes_summary": "Files: src/_pytest/assertion/rewrite.py | Added 1 lines | Key additions: and isinstance(item.value.value, str)",
+      "gt_lines_added": 1,
+      "gt_lines_removed": 0,
+      "agent_answer_length": 1431,
+      "agent_mentioned_files": [
+        "rewrite.py"
+      ],
+      "agent_code_snippets": [
+        "+                and isinstance(item.value.value, str)\n",
+        " fails with a ",
+        " is likely caused by the handling of an expression in the AST (Abstract Syntax Tree) within pytest. Specifically, it seems to occur when the first expression in a test file is a number, leading the co",
+        " file.\n2. There is a check involving ",
+        "ast.Constant"
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.082,
+      "approach_match_score": 0.5,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['rewrite.py'] | gt_funcs: ['run']"
+    },
+    {
+      "instance_id": "pytest-dev__pytest-11148",
+      "repo": "pytest-dev/pytest",
+      "source_file": "swebench_case_study",
+      "gt_files": [
+        "src/_pytest/pathlib.py"
+      ],
+      "gt_changes_summary": "Files: src/_pytest/pathlib.py | Added 2 lines | Key additions: with contextlib.suppress(KeyError):; return sys.modules[module_name]",
+      "gt_lines_added": 2,
+      "gt_lines_removed": 0,
+      "agent_answer_length": 1067,
+      "agent_mentioned_files": [],
+      "agent_code_snippets": [
+        "pmxbot.logging",
+        "Logger.store",
+        "pmxbot.logging",
+        "Logger.store",
+        "pmxbot.logging"
+      ],
+      "file_match_score": 0.0,
+      "code_similarity_score": 0.095,
+      "approach_match_score": 0.0,
+      "plausible": false,
+      "verdict": "wrong_approach",
+      "notes": "gt_funcs: ['import_path']"
+    },
+    {
+      "instance_id": "pytest-dev__pytest-5103",
+      "repo": "pytest-dev/pytest",
+      "source_file": "swebench_case_study",
+      "gt_files": [
+        "src/_pytest/assertion/rewrite.py"
+      ],
+      "gt_changes_summary": "Files: src/_pytest/assertion/rewrite.py | Added 24 lines | Key additions: if isinstance(call.func, ast.Name) and call.func.id == \"all\":; return self._visit_all(call)",
+      "gt_lines_added": 25,
+      "gt_lines_removed": 0,
+      "agent_answer_length": 2795,
+      "agent_mentioned_files": [
+        "rewrite.py",
+        "ast.c"
+      ],
+      "agent_code_snippets": [
+        "def _visit_all(self, call):\n    \"\"\"Special rewrite for the builtin all function, see #5062\"\"\"\n    if not isinstance(call.args[0], (ast.GeneratorExp, ast.ListComp)):\n        return\n    gen_exp = call.a",
+        " in assertions, the failure messages are not informative enough. The primary issue arises when assertions that utilize these functions provide less clarity regarding which elements caused the failure,",
+        ", specifically in the context of pytest's assertion rewriting mechanism.\n2. **Explore Possible Solutions**: Implement code changes that will unroll the iterable passed to ",
+        " to produce detailed assertion failure messages similar to those provided by a standard loop.\n\n### Code Search\n- **Search for References to ",
+        "**: Conducted searches yielded no direct references to "
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.12,
+      "approach_match_score": 0.487,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['rewrite.py', 'ast.c'] | gt_funcs: ['visit_Call_35', 'visit_Call_35', 'visit_Call_legacy']"
+    },
+    {
+      "instance_id": "pytest-dev__pytest-5221",
+      "repo": "pytest-dev/pytest",
+      "source_file": "swebench_100",
+      "gt_files": [
+        "src/_pytest/python.py"
+      ],
+      "gt_changes_summary": "Files: src/_pytest/python.py | Added 6 lines | Removed 4 lines | Key additions: tw.write(argname, green=True); if fixturedef.scope != \"function\":",
+      "gt_lines_added": 6,
+      "gt_lines_removed": 4,
+      "agent_answer_length": 1639,
+      "agent_mentioned_files": [
+        "src/_pytest/python.py"
+      ],
+      "agent_code_snippets": [
+        "if fixturedef.scope != \"function\":\n    tw.write(\" [%s scope]\" % fixturedef.scope, cyan=True)\n",
+        "pytest --fixtures",
+        "pytest --fixtures",
+        "pytest --fixtures",
+        "src/_pytest/python.py"
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.283,
+      "approach_match_score": 0.778,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['src/_pytest/python.py'] | gt_funcs: ['_showfixtures_main']"
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-7738",
+      "repo": "sphinx-doc/sphinx",
+      "source_file": "swebench_100",
+      "gt_files": [
+        "sphinx/ext/napoleon/docstring.py"
+      ],
+      "gt_changes_summary": "Files: sphinx/ext/napoleon/docstring.py | Added 1 lines | Removed 1 lines | Key additions: if name.endswith('_') and getattr(self._config, 'strip_signature_backslash', False):",
+      "gt_lines_added": 1,
+      "gt_lines_removed": 1,
+      "agent_answer_length": 2534,
+      "agent_mentioned_files": [
+        "sphinx/ext/napoleon/docstring.py"
+      ],
+      "agent_code_snippets": [
+        "def _escape_args_and_kwargs(self, name: str) -> str:\n    # Keep the existing behavior if the config flag is not set\n    if name.endswith('_') and getattr(self._config, 'strip_signature_backslash', Fal",
+        "sphinx.ext.napoleon",
+        ") results in it being rendered with a visible backslash (e.g., ",
+        "). This suggests that there is logic in the code that escapes the underscore character inappropriately.\n\n2. **SEARCH**: After searching for relevant code, I found the implementation within ",
+        ", which contains a method responsible for escaping underscores.\n\n3. **REASON**: The "
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.049,
+      "approach_match_score": 0.6,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['sphinx/ext/napoleon/docstring.py'] | gt_funcs: ['_dedent']"
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-8273",
+      "repo": "sphinx-doc/sphinx",
+      "source_file": "swebench_100",
+      "gt_files": [
+        "sphinx/builders/manpage.py"
+      ],
+      "gt_changes_summary": "Files: sphinx/builders/manpage.py | Added 7 lines | Removed 2 lines | Key additions: from sphinx.util.osutil import ensuredir, make_filename_from_project; if self.config.man_make_section_directory:",
+      "gt_lines_added": 8,
+      "gt_lines_removed": 2,
+      "agent_answer_length": 2718,
+      "agent_mentioned_files": [
+        "self.c",
+        "sphinx/builders/manpage.py"
+      ],
+      "agent_code_snippets": [
+        "if self.config.man_make_section_directory:\n    ensuredir(path.join(self.outdir, str(section)))\n    targetname = '%s/%s.%s' % (section, name, section)\nelse:\n    targetname = '%s.%s' % (name, section)\n",
+        "), all are placed in a single level directory (",
+        "), making it incompatible with the ",
+        " environment variable.\n\n### Diagnostics\n\n1. **Relevant Code Identification**:\n   - The core logic for handling man page generation resides in ",
+        ".\n   - It uses utilities from "
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.13,
+      "approach_match_score": 0.433,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['self.c', 'sphinx/builders/manpage.py'] | gt_funcs: ['write', 'setup']"
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-8435",
+      "repo": "sphinx-doc/sphinx",
+      "source_file": "swebench_100",
+      "gt_files": [
+        "sphinx/ext/autodoc/__init__.py"
+      ],
+      "gt_changes_summary": "Files: sphinx/ext/autodoc/__init__.py | Added 4 lines | Removed 2 lines | Key additions: annotations = get_type_hints(self.parent, None,; self.config.autodoc_type_aliases)",
+      "gt_lines_added": 4,
+      "gt_lines_removed": 2,
+      "agent_answer_length": 1906,
+      "agent_mentioned_files": [
+        "sphinx/ext/autodoc/__init__.py",
+        "self.c"
+      ],
+      "agent_code_snippets": [
+        "annotations = get_type_hints(self.parent, None, self.config.autodoc_type_aliases)\n",
+        "autodoc_type_aliases",
+        "get_type_hints",
+        "self.config.autodoc_type_aliases",
+        "autodoc_type_aliases"
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.373,
+      "approach_match_score": 1.0,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['sphinx/ext/autodoc/__init__.py', 'self.c'] | gt_funcs: ['add_directive_header', 'add_directive_header']"
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-8721",
+      "repo": "sphinx-doc/sphinx",
+      "source_file": "swebench_100",
+      "gt_files": [
+        "sphinx/ext/viewcode.py"
+      ],
+      "gt_changes_summary": "Files: sphinx/ext/viewcode.py | Added 4 lines | Key additions: if app.builder.name == \"singlehtml\":; return",
+      "gt_lines_added": 4,
+      "gt_lines_removed": 0,
+      "agent_answer_length": 1621,
+      "agent_mentioned_files": [
+        "env.c",
+        "sphinx/ext/viewcode.py"
+      ],
+      "agent_code_snippets": [
+        "if app.builder.name.startswith(\"epub\") and not env.config.viewcode_enable_epub:\n    return\n",
+        " extension creates module pages for EPUB format documents even when ",
+        " is set to ",
+        ". The expected behavior is that no module pages should be created for EPUB when this setting is disabled.\n\n2. **Likely Cause**: The ",
+        " function in the "
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.102,
+      "approach_match_score": 0.933,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['env.c', 'sphinx/ext/viewcode.py'] | gt_funcs: ['collect_pages']"
+    },
+    {
+      "instance_id": "sympy__sympy-11400",
+      "repo": "sympy/sympy",
+      "source_file": "swebench_case_study",
+      "gt_files": [
+        "sympy/printing/ccode.py"
+      ],
+      "gt_changes_summary": "Files: sympy/printing/ccode.py | Added 12 lines | Key additions: def _print_Relational(self, expr):; lhs_code = self._print(expr.lhs)",
+      "gt_lines_added": 14,
+      "gt_lines_removed": 0,
+      "agent_answer_length": 1773,
+      "agent_mentioned_files": [
+        "sympy.c",
+        "sympy/printing/ccode.py"
+      ],
+      "agent_code_snippets": [
+        "def _print_sinc(self, expr):\n    from sympy.functions.elementary.trigonometric import sin\n    from sympy.core.relational import Ne\n    from sympy.functions import Piecewise\n    _piecewise = Piecewise(",
+        "ccode(sinc(x))",
+        " function to handle the ",
+        " function properly. The ",
+        " function needs to be expressed in terms of C-compatible constructs.\n\n### Findings\n\n- I found the implementation of the "
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.227,
+      "approach_match_score": 0.612,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['sympy.c', 'sympy/printing/ccode.py'] | gt_funcs: ['_print_Symbol']"
+    },
+    {
+      "instance_id": "sympy__sympy-11897",
+      "repo": "sympy/sympy",
+      "source_file": "swebench_case_study",
+      "gt_files": [
+        "sympy/printing/latex.py"
+      ],
+      "gt_changes_summary": "Files: sympy/printing/latex.py | Added 3 lines | Removed 1 lines | Key additions: if expr.is_Piecewise:; return True",
+      "gt_lines_added": 3,
+      "gt_lines_removed": 1,
+      "agent_answer_length": 2051,
+      "agent_mentioned_files": [
+        "latex.py",
+        "sympy/printing/latex.py"
+      ],
+      "agent_code_snippets": [
+        "# Update LaTeX printer in latex.py if it uses different formatting compared to pprint.\n\n# This may involve checking expressions and modifying the way they are printed in latex.py.\n",
+        " functions within the codebase but found relevant code only for the LaTeX printer in ",
+        ". No specific pprint functionalities were found in other files indicating potential structural separation or encapsulation.\n\n3. **REASON**: The analysis of the issue points out that the two functions ",
+        ", expressions are transformed into LaTeX format but may not account for how these expressions are handled by the pretty printer. Further exploration revealed conditional logic in ",
+        " that may obstruct consistent output formatting.\n\n4. **FIX**: A proposed patch has been created to ensure that the LaTeX printer output is consistent with the pretty printer. This may involve signific"
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.021,
+      "approach_match_score": 0.167,
+      "plausible": true,
+      "verdict": "partial_match",
+      "notes": "files: ['latex.py', 'sympy/printing/latex.py'] | gt_funcs: ['_needs_mul_brackets']"
+    },
+    {
+      "instance_id": "sympy__sympy-12454",
+      "repo": "sympy/sympy",
+      "source_file": "swebench_100",
+      "gt_files": [
+        "sympy/matrices/matrices.py"
+      ],
+      "gt_changes_summary": "Files: sympy/matrices/matrices.py | Added 2 lines | Removed 2 lines | Key additions: for j in range(min(self.cols, (i - 1)))); for j in range(min(i, self.cols)))",
+      "gt_lines_added": 2,
+      "gt_lines_removed": 2,
+      "agent_answer_length": 1860,
+      "agent_mentioned_files": [
+        "self.c"
+      ],
+      "agent_code_snippets": [
+        "return all(self[i, j].is_zero\n           for i in range(1, self.rows)\n           for j in range(i))\n",
+        "def is_upper(self):\n    \"\"\"\n    Check if the matrix is upper triangular.\n    \"\"\"\n    return all(self[i, j].is_zero\n               for i in range(1, self.rows)\n               for j in range(min(i, self",
+        "is_upper()",
+        "IndexError",
+        "python\nreturn all(self[i, j].is_zero\n           for i in range(1, self.rows)\n           for j in range(i))\n"
+      ],
+      "file_match_score": 0.0,
+      "code_similarity_score": 0.026,
+      "approach_match_score": 0.75,
+      "plausible": true,
+      "verdict": "partial_match",
+      "notes": "gt_funcs: ['_eval_is_zero', 'is_upper']"
+    },
+    {
+      "instance_id": "sympy__sympy-13043",
+      "repo": "sympy/sympy",
+      "source_file": "swebench_100",
+      "gt_files": [
+        "sympy/integrals/intpoly.py"
+      ],
+      "gt_changes_summary": "Files: sympy/integrals/intpoly.py | Added 3 lines | Removed 3 lines | Key additions: {x, x**2, y, y**5, x*y, x**3*y**2}; return {monom[1] for monom in degrees}",
+      "gt_lines_added": 3,
+      "gt_lines_removed": 3,
+      "agent_answer_length": 2369,
+      "agent_mentioned_files": [
+        "intpoly.py"
+      ],
+      "agent_code_snippets": [
+        "     return [monom[1] for monom in degrees]\n     ",
+        "def decompose(expr, separate=False):\n    # ... existing code ...\n    if separate:\n        return sorted([monom[1] for monom in degrees])\n",
+        "decompose()",
+        "separate=True",
+        "decompose()"
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.042,
+      "approach_match_score": 0.867,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['intpoly.py'] | gt_funcs: ['decompose', 'decompose', 'decompose']"
+    },
+    {
+      "instance_id": "sympy__sympy-17139",
+      "repo": "sympy/sympy",
+      "source_file": "swebench_100",
+      "gt_files": [
+        "sympy/simplify/fu.py"
+      ],
+      "gt_changes_summary": "Files: sympy/simplify/fu.py | Added 2 lines | Key additions: if not rv.exp.is_real:; return rv",
+      "gt_lines_added": 2,
+      "gt_lines_removed": 0,
+      "agent_answer_length": 1184,
+      "agent_mentioned_files": [
+        "fu.py"
+      ],
+      "agent_code_snippets": [
+        "if not rv.exp.is_real:\n    return rv\n",
+        ". The bug occurs within the ",
+        " function in the ",
+        " file, where the expression's exponent is being compared incorrectly without checking if it is real.\n\n### Likely Root Cause\nThe likely cause of the bug is that the code attempts to compare the exponen",
+        ") to zero without first ensuring that it is a real number. This results in a "
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.066,
+      "approach_match_score": 1.0,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['fu.py'] | gt_funcs: ['_f']"
+    },
+    {
+      "instance_id": "sympy__sympy-20212",
+      "repo": "sympy/sympy",
+      "source_file": "swebench_100",
+      "gt_files": [
+        "sympy/core/power.py"
+      ],
+      "gt_changes_summary": "Files: sympy/core/power.py | Added 2 lines | Key additions: if b is S.Zero and e is S.NegativeInfinity:; return S.ComplexInfinity",
+      "gt_lines_added": 2,
+      "gt_lines_removed": 0,
+      "agent_answer_length": 1437,
+      "agent_mentioned_files": [
+        "sympy/core/power.py"
+      ],
+      "agent_code_snippets": [
+        "if b is S.Zero and e is S.NegativeInfinity:\n    return S.ComplexInfinity\n",
+        " produces ",
+        " instead of ",
+        " (which is ",
+        ") as documented.\n2. **Root Cause**: The code checks for special cases of the power class ("
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.116,
+      "approach_match_score": 0.667,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['sympy/core/power.py'] | gt_funcs: ['__new__']"
+    },
+    {
+      "instance_id": "sympy__sympy-22714",
+      "repo": "sympy/sympy",
+      "source_file": "swebench_100",
+      "gt_files": [
+        "sympy/geometry/point.py"
+      ],
+      "gt_changes_summary": "Files: sympy/geometry/point.py | Added 1 lines | Removed 1 lines | Key additions: if any(a.is_number and im(a).is_zero is False for a in coords):",
+      "gt_lines_added": 1,
+      "gt_lines_removed": 1,
+      "agent_answer_length": 1980,
+      "agent_mentioned_files": [
+        "sympy/geometry/point.py"
+      ],
+      "agent_code_snippets": [
+        "if any(a.is_number and im(a) for a in coords):\n",
+        "if any(a.is_number and im(a).is_zero is False for a in coords):\n",
+        "if any(a.is_number and im(a).is_zero is False for a in coords):\n    raise ValueError('Imaginary coordinates are not permitted.')\n",
+        " inside a ",
+        " block, resulting in an error stating \"Imaginary coordinates are not permitted.\" This is likely due to how the "
+      ],
+      "file_match_score": 1.0,
+      "code_similarity_score": 0.058,
+      "approach_match_score": 0.6,
+      "plausible": true,
+      "verdict": "correct_approach",
+      "notes": "files: ['sympy/geometry/point.py'] | gt_funcs: ['__new__']"
+    }
+  ]
+}

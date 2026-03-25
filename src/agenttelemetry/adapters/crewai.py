@@ -64,7 +64,7 @@ class CrewAIInstrumentor(BaseInstrumentor):
         self._active_tool_spans = {}
 
         try:
-            from crewai.utilities.hooks import (
+            from crewai.hooks import (
                 register_before_llm_call_hook,
                 register_after_llm_call_hook,
                 register_before_tool_call_hook,
@@ -97,7 +97,7 @@ class CrewAIInstrumentor(BaseInstrumentor):
 
     def _uninstrument(self, **kwargs: Any) -> None:
         try:
-            from crewai.utilities.hooks import clear_all_global_hooks
+            from crewai.hooks import clear_all_global_hooks
             clear_all_global_hooks()
         except ImportError:
             pass
@@ -136,11 +136,21 @@ class CrewAIInstrumentor(BaseInstrumentor):
                 attrs[AGENT_TASK] = str(desc)[:200]
         return attrs
 
+    def _extract_model_name(self, context: Any) -> str:
+        """Extract LLM model name from context.llm (BaseLLM or str)."""
+        llm = getattr(context, "llm", None)
+        if llm is None:
+            return getattr(context, "model", "") or ""
+        if isinstance(llm, str):
+            return llm
+        # BaseLLM objects have a .model attribute
+        return getattr(llm, "model", "") or str(llm)
+
     def _on_before_llm(self, context: Any) -> None:
         ctx_id = self._get_context_id(context)
         self._llm_start_times[ctx_id] = time.perf_counter()
 
-        model = getattr(context, "model", "") or ""
+        model = self._extract_model_name(context)
         attrs: Dict[str, Any] = {
             AGENT_SPAN_KIND: AgentSpanKind.LLM_CALL,
             LLM_PROVIDER: "crewai",
@@ -149,9 +159,9 @@ class CrewAIInstrumentor(BaseInstrumentor):
         attrs.update(self._get_agent_info(context))
 
         if should_capture_content(self._privacy_level):
-            prompt = getattr(context, "prompt", None) or getattr(context, "messages", None)
-            if prompt:
-                attrs[LLM_PROMPT] = str(prompt)
+            messages = getattr(context, "messages", None)
+            if messages:
+                attrs[LLM_PROMPT] = str(messages)
 
         filtered = filter_attributes(attrs, self._privacy_level)
         span = self._tracer.start_span(
@@ -173,9 +183,10 @@ class CrewAIInstrumentor(BaseInstrumentor):
             latency_ms = (time.perf_counter() - start_time) * 1000
             span.set_attribute(LLM_LATENCY_MS, latency_ms)
 
-        # Extract token usage from response
-        response = getattr(context, "response", None) or getattr(context, "result", None)
-        if response:
+        # Extract token usage - CrewAI response may be a string or object
+        response = getattr(context, "response", None)
+        if response is not None:
+            # Try object-style usage first (LiteLLM ModelResponse)
             usage = getattr(response, "usage", None)
             if usage:
                 input_tokens = getattr(usage, "input_tokens", 0) or getattr(
@@ -187,15 +198,18 @@ class CrewAIInstrumentor(BaseInstrumentor):
                 span.set_attribute(LLM_INPUT_TOKENS, input_tokens)
                 span.set_attribute(LLM_OUTPUT_TOKENS, output_tokens)
                 span.set_attribute(LLM_TOTAL_TOKENS, input_tokens + output_tokens)
-                model = getattr(context, "model", "")
+                model = self._extract_model_name(context)
                 span.set_attribute(
-                    LLM_COST, estimate_cost(model or "", input_tokens, output_tokens)
+                    LLM_COST, estimate_cost(model, input_tokens, output_tokens)
                 )
 
             if should_capture_content(self._privacy_level):
-                text = getattr(response, "text", None) or getattr(response, "content", None)
-                if text:
-                    span.set_attribute(LLM_COMPLETION, str(text))
+                if isinstance(response, str):
+                    span.set_attribute(LLM_COMPLETION, response[:2000])
+                else:
+                    text = getattr(response, "text", None) or getattr(response, "content", None)
+                    if text:
+                        span.set_attribute(LLM_COMPLETION, str(text)[:2000])
 
         error = getattr(context, "error", None)
         if error:
@@ -219,8 +233,8 @@ class CrewAIInstrumentor(BaseInstrumentor):
         attrs.update(self._get_agent_info(context))
 
         if should_capture_content(self._privacy_level):
-            tool_input = getattr(context, "input", None) or getattr(
-                context, "tool_input", None
+            tool_input = getattr(context, "tool_input", None) or getattr(
+                context, "input", None
             )
             if tool_input:
                 attrs[TOOL_INPUT] = str(tool_input)
@@ -255,9 +269,9 @@ class CrewAIInstrumentor(BaseInstrumentor):
             span.set_attribute(TOOL_STATUS, "success")
 
         if should_capture_content(self._privacy_level):
-            output = getattr(context, "output", None) or getattr(
-                context, "result", None
-            )
+            output = getattr(context, "tool_result", None) or getattr(
+                context, "output", None
+            ) or getattr(context, "result", None)
             if output:
                 span.set_attribute(TOOL_OUTPUT, str(output))
 
