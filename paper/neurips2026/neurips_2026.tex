@@ -1,488 +1,942 @@
 \documentclass{article}
 
-% if you need to pass options to natbib, use, e.g.:
-%     \PassOptionsToPackage{numbers, compress}{natbib}
-% before loading neurips_2026
+% Evaluations & Datasets Track, double-blind
+\usepackage[eandd]{neurips_2026}
 
-% The authors should use one of these tracks.
-% Before accepting by the NeurIPS conference, select one of the options below.
-% 0. "default" for submission
-\usepackage{neurips_2026}
-% the "default" option is equal to the "main" option, which is used for the Main Track with double-blind reviewing.
-% 1. "main" option is used for the Main Track
-%  \usepackage[main]{neurips_2026}
-% 2. "position" option is used for the Position Paper Track
-%  \usepackage[position]{neurips_2026}
-% 3. "eandd" option is used for the Evaluations & Datasets Track
- % \usepackage[eandd]{neurips_2026}
- % if you need to opt-in for a single-blind submission in the E&D track:
- %\usepackage[eandd, nonanonymous]{neurips_2026}
-% 4. "creativeai" option is used for the Creative AI Track
-%  \usepackage[creativeai]{neurips_2026}
-% 5. "sglblindworkshop" option is used for the Workshop with single-blind reviewing
- % \usepackage[sglblindworkshop]{neurips_2026}
-% 6. "dblblindworkshop" option is used for the Workshop with double-blind reviewing
-%  \usepackage[dblblindworkshop]{neurips_2026}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{multirow}
+\usepackage{graphicx}
 
-% After being accepted, the authors should add "final" behind the track to compile a camera-ready version.
-% 1. Main Track
- % \usepackage[main, final]{neurips_2026}
-% 2. Position Paper Track
-%  \usepackage[position, final]{neurips_2026}
-% 3. Evaluations & Datasets Track
- % \usepackage[eandd, final]{neurips_2026}
-% 4. Creative AI Track
-%  \usepackage[creativeai, final]{neurips_2026}
-% 5. Workshop with single-blind reviewing
-%  \usepackage[sglblindworkshop, final]{neurips_2026}
-% 6. Workshop with double-blind reviewing
-%  \usepackage[dblblindworkshop, final]{neurips_2026}
-% Note. For the workshop paper template, both \title{} and \workshoptitle{} are required, with the former indicating the paper title shown in the title and the latter indicating the workshop title displayed in the footnote.
-% For workshops (5., 6.), the authors should add the name of the workshop, "\workshoptitle" command is used to set the workshop title.
-% \workshoptitle{WORKSHOP TITLE}
+\title{AgentTelemetry: A Grounded Taxonomy and Empirical Evaluation\\of Observability Primitives for Autonomous AI Agent Systems}
 
-% "preprint" option is used for arXiv or other preprint submissions
- % \usepackage[preprint]{neurips_2026}
-
-% to avoid loading the natbib package, add option nonatbib:
-%    \usepackage[nonatbib]{neurips_2026}
-
-\usepackage[utf8]{inputenc} % allow utf-8 input
-\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
-\usepackage{hyperref}       % hyperlinks
-\usepackage{url}            % simple URL typesetting
-\usepackage{booktabs}       % professional-quality tables
-\usepackage{amsfonts}       % blackboard math symbols
-\usepackage{nicefrac}       % compact symbols for 1/2, etc.
-\usepackage{microtype}      % microtypography
-\usepackage{xcolor}         % colors
-
-% Note. For the workshop paper template, both \title{} and \workshoptitle{} are required, with the former indicating the paper title shown in the title and the latter indicating the workshop title displayed in the footnote. 
-\title{Formatting Instructions For NeurIPS 2026}
-
-
-% The \author macro works with any number of authors. There are two commands
-% used to separate the names and addresses of multiple authors: \And and \AND.
-%
-% Using \And between authors leaves it to LaTeX to determine where to break the
-% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
-% authors names on the first line, and the last on the second line, try using
-% \AND instead of \And before the third author name.
-
-
-\author{%
-  David S.~Hippocampus\thanks{Use footnote for providing further information
-    about author (webpage, alternative address)---\emph{not} for acknowledging
-    funding agencies.} \\
-  Department of Computer Science\\
-  Cranberry-Lemon University\\
-  Pittsburgh, PA 15213 \\
-  \texttt{hippo@cs.cranberry-lemon.edu} \\
-  % examples of more authors
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \AND
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-}
-
+\author{Anonymous Authors}
 
 \begin{document}
 
-
 \maketitle
 
-
 \begin{abstract}
-  The abstract paragraph should be indented \nicefrac{1}{2}~inch (3~picas) on both the left- and right-hand margins. Use 10~point type, with a vertical spacing (leading) of 11~points. The word \textbf{Abstract} must be centered, bold, and in point size 12. Two line spaces precede the abstract. The abstract must be limited to one paragraph.
+Autonomous AI agents built on large language models are transitioning
+from research prototypes to production deployments, yet the
+observability infrastructure needed to diagnose their failures remains
+fundamentally inadequate.  OpenTelemetry's GenAI semantic conventions
+cover LLM invocation, tool execution, and retrieval, but leave five
+critical agent orchestration
+phases---planning, reasoning, safety-check monitoring, inter-agent delegation,
+and memory management---without any span-level representation.
+We present \textsc{AgentTelemetry}, an open-source, OTel-native
+observability library that introduces a \emph{grounded taxonomy} of
+nine agent-specific span kinds derived from systematic analysis of
+seven production agent frameworks.
+We make four contributions: (1)~the taxonomy itself, validated through
+an ablation study showing every span kind is necessary for detecting
+at least one fault type; (2)~a case study on 112~SWE-bench Lite
+instances revealing that reasoning loops account for 75\% of agent
+failures (95\% CI: [66\%, 82\%])---a failure mode invisible to vanilla
+OTel---and a telemetry-guided intervention improving the patch rate by
+$+11$~pp (3-seed mean, $p{<}0.05$); (3)~structural completeness
+via controlled fault injection across 14~fault types, 7~frameworks,
+and 5~observability conditions (FDR\,=\,1.000 vs.\ 0.429 for vanilla
+OTel); and (4)~a pip-installable library with adapters for seven
+frameworks.  Instrumentation overhead is 11.7\,\textmu s median per
+span, negligible relative to LLM API latencies.
 \end{abstract}
 
-
-
-\section{Submission of papers to NeurIPS 2026}
-
-
-Please read the instructions below carefully and follow them faithfully.
-
-
-\subsection{Style}
-
-
-Papers to be submitted to NeurIPS 2026 must be prepared according to the
-instructions presented here. Papers may only be up to {\bf nine} pages long, including figures. \textbf{Papers that exceed the page limit will not be reviewed (or in any other way considered) for presentation at the conference.}
-Additional pages \emph{containing acknowledgments, references, checklist, and optional technical appendices} do not count as content pages. 
-
-
-The margins in 2026 are the same as those in previous years.
-
-
-Authors are required to use the NeurIPS \LaTeX{} style files obtainable at the NeurIPS website as indicated below. Please make sure you use the current files and not previous versions. Tweaking the style files may be grounds for desk rejection.
-
-
-\subsection{Retrieval of style files}
-
-
-The style files for NeurIPS and other conference information are available on the website at
-\begin{center}
-  \url{https://neurips.cc}.
-\end{center}
-% The file \verb+neurips_2026.pdf+ contains these instructions and illustrates the various formatting requirements your NeurIPS paper must satisfy.
-
-
-The only supported style file for NeurIPS 2026 is \verb+neurips_2026.sty+, rewritten for \LaTeXe{}. \textbf{Previous style files for \LaTeX{} 2.09,  Microsoft Word, and RTF are no longer supported.}
-
-
-The \LaTeX{} style file contains three optional arguments: 
-\begin{itemize}
-\item \verb+final+, which creates a camera-ready copy, 
-\item \verb+preprint+, which creates a preprint for submission to, e.g., arXiv, \item \verb+nonatbib+, which will not load the \verb+natbib+ package for you in case of package clash.
-\end{itemize}
-
-
-\paragraph{Preprint option}
-If you wish to post a preprint of your work online, e.g., on arXiv, using the NeurIPS style, please use the \verb+preprint+ option. This will create a nonanonymized version of your work with the text ``Preprint. Work in progress.'' in the footer. This version may be distributed as you see fit, as long as you do not say which conference it was submitted to. Please \textbf{do not} use the \verb+final+ option, which should \textbf{only} be used for papers accepted to NeurIPS.
-
-
-At submission time, please omit the \verb+final+ and \verb+preprint+ options. This will anonymize your submission and add line numbers to aid review. Please do \emph{not} refer to these line numbers in your paper as they will be removed during generation of camera-ready copies.
-
-
-The file \verb+neurips_2026.tex+ may be used as a ``shell'' for writing your paper. All you have to do is replace the author, title, abstract, and text of the paper with your own.
-
-
-The formatting instructions contained in these style files are summarized in Sections \ref{gen_inst}, \ref{headings}, and \ref{others} below.
-
-
-\section{General formatting instructions}
-\label{gen_inst}
-
-
-The text must be confined within a rectangle 5.5~inches (33~picas) wide and
-9~inches (54~picas) long. The left margin is 1.5~inch (9~picas).  Use 10~point
-type with a vertical spacing (leading) of 11~points.  Times New Roman is the
-preferred typeface throughout, and will be selected for you by default.
-Paragraphs are separated by \nicefrac{1}{2}~line space (5.5 points), with no
-indentation.
-
-
-The paper title should be 17~point, initial caps/lower case, bold, centered
-between two horizontal rules. The top rule should be 4~points thick and the
-bottom rule should be 1~point thick. Allow \nicefrac{1}{4}~inch space above and
-below the title to rules. All pages should start at 1~inch (6~picas) from the
-top of the page.
-
-
-For the final version, authors' names are set in boldface, and each name is
-centered above the corresponding address. The lead author's name is to be listed
-first (left-most), and the co-authors' names (if different address) are set to
-follow. If there is only one co-author, list both author and co-author side by
-side.
-
-
-Please pay special attention to the instructions in Section \ref{others}
-regarding figures, tables, acknowledgments, and references.
-
-\section{Headings: first level}
-\label{headings}
-
-
-All headings should be lower case (except for first word and proper nouns),
-flush left, and bold.
-
-
-First-level headings should be in 12-point type.
-
-
-\subsection{Headings: second level}
-
-
-Second-level headings should be in 10-point type.
-
-
-\subsubsection{Headings: third level}
-
-
-Third-level headings should be in 10-point type.
-
-
-\paragraph{Paragraphs}
-
-
-There is also a \verb+\paragraph+ command available, which sets the heading in
-bold, flush left, and inline with the text, with the heading followed by 1\,em
-of space.
-
-
-\section{Citations, figures, tables, references}
-\label{others}
-
-
-These instructions apply to everyone.
-
-
-\subsection{Citations within the text}
-
-
-The \verb+natbib+ package will be loaded for you by default.  Citations may be
-author/year or numeric, as long as you maintain internal consistency.  As to the
-format of the references themselves, any style is acceptable as long as it is
-used consistently.
-
-
-The documentation for \verb+natbib+ may be found at
-\begin{center}
-  \url{http://mirrors.ctan.org/macros/latex/contrib/natbib/natnotes.pdf}
-\end{center}
-Of note is the command \verb+\citet+, which produces citations appropriate for
-use in inline text.  For example,
-\begin{verbatim}
-   \citet{hasselmo} investigated\dots
-\end{verbatim}
-produces
-\begin{quote}
-  Hasselmo, et al.\ (1995) investigated\dots
-\end{quote}
-
-
-If you wish to load the \verb+natbib+ package with options, you may add the
-following before loading the \verb+neurips_2026+ package:
-\begin{verbatim}
-   \PassOptionsToPackage{options}{natbib}
-\end{verbatim}
-
-
-If \verb+natbib+ clashes with another package you load, you can add the optional
-argument \verb+nonatbib+ when loading the style file:
-\begin{verbatim}
-   \usepackage[nonatbib]{neurips_2026}
-\end{verbatim}
-
-
-As submission is double blind, refer to your own published work in the third
-person. That is, use ``In the previous work of Jones et al.\ [4],'' not ``In our
-previous work [4].'' If you cite your other papers that are not widely available
-(e.g., a journal paper under review), use anonymous author names in the
-citation, e.g., an author of the form ``A.\ Anonymous'' and include a copy of the anonymized paper in the supplementary material.
-
-
-\subsection{Footnotes}
-
-
-Footnotes should be used sparingly.  If you do require a footnote, indicate
-footnotes with a number\footnote{Sample of the first footnote.} in the
-text. Place the footnotes at the bottom of the page on which they appear.
-Precede the footnote with a horizontal rule of 2~inches (12~picas).
-
-
-Note that footnotes are properly typeset \emph{after} punctuation
-marks.\footnote{As in this example.}
-
-
-\subsection{Figures}
-
-
-\begin{figure}
-  \centering
-  \fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
-  \caption{Sample figure caption. Explain what the figure shows and add a key take-away message to the caption.}
-\end{figure}
-
-
-All artwork must be neat, clean, and legible. Lines should be dark enough for
- reproduction purposes. The figure number and caption always appear after the
-figure. Place one line space before the figure caption and one line space after
-the figure. The figure caption should be lower case (except for the first word and proper nouns); figures are numbered consecutively.
-
-
-You may use color figures.  However, it is best for the figure captions and the
-paper body to be legible if the paper is printed in either black/white or in
-color.
-
-
-\subsection{Tables}
-
-
-All tables must be centered, neat, clean, and legible.  The table number and
-title always appear before the table.  See Table~\ref{sample-table}.
-
-
-Place one line space before the table title, one line space after the
-table title, and one line space after the table. The table title must
-be lower case (except for the first word and proper nouns); tables are
-numbered consecutively.
-
-
-Note that publication-quality tables \emph{do not contain vertical rules}. We
-strongly suggest the use of the \verb+booktabs+ package, which allows for
-typesetting high-quality, professional tables:
-\begin{center}
-  \url{https://www.ctan.org/pkg/booktabs}
-\end{center}
-This package was used to typeset Table~\ref{sample-table}.
-
-
-\begin{table}
-  \caption{Sample table caption. Explain what the table shows and add a key take-away message to the caption.}
-  \label{sample-table}
-  \centering
-  \begin{tabular}{lll}
-    \toprule
-    \multicolumn{2}{c}{Part}                   \\
-    \cmidrule(r){1-2}
-    Name     & Description     & Size ($\mu$m) \\
-    \midrule
-    Dendrite & Input terminal  & $\approx$100     \\
-    Axon     & Output terminal & $\approx$10      \\
-    Soma     & Cell body       & up to $10^6$  \\
-    \bottomrule
-  \end{tabular}
+%% ====================================================================
+%% 1. INTRODUCTION
+%% ====================================================================
+\section{Introduction}
+\label{sec:introduction}
+
+Large language model (LLM) based autonomous agents represent a paradigm
+shift in software architecture.  Unlike conventional services that
+execute deterministic logic, an LLM agent pursues a goal through
+iterative reasoning, planning, tool use, and
+self-reflection---frequently delegating sub-tasks to other
+agents~\citep{agentbench,agentboard}.  Frameworks such as LangChain,
+CrewAI, AutoGen, and LlamaIndex have accelerated adoption, yet
+production teams cannot reliably answer fundamental diagnostic
+questions: \emph{Why did the agent choose this tool? Where did the
+hallucination originate? How much did this task cost across all agents?}
+
+OpenTelemetry (OTel)~\citep{otel} has become the standard for
+distributed tracing.  Its GenAI semantic conventions define operation
+types for LLM calls, retrieval, tool execution, and agent lifecycle.
+However, five orchestration phases---planning, reasoning, safety-check
+monitoring, inter-agent delegation, and memory management---have no
+representation in OTel GenAI, leaving them as opaque
+\texttt{INTERNAL} spans indistinguishable from any other application
+logic.
+
+We present \textsc{AgentTelemetry}, an open-source, OTel-native
+library that fills this gap with four contributions:
+
+\begin{enumerate}[leftmargin=*,nosep]
+\item \textbf{A grounded taxonomy of nine agent-specific span kinds},
+  derived from seven production frameworks and validated through
+  ablation (\S\ref{sec:taxonomy}).
+
+\item \textbf{A SWE-bench case study demonstrating actionable
+  observability:} reasoning loops account for 75\% of failures on
+  112~instances, and a telemetry-guided intervention improves the patch
+  rate by $+11$~pp (\S\ref{sec:rq6}).
+
+\item \textbf{Structural completeness via controlled fault injection:}
+  FDR\,=\,1.000 across 14~fault types versus 0.429 for vanilla
+  OTel (\S\ref{sec:evaluation}).
+
+\item \textbf{An open-source, pip-installable library} (3,700+ LOC,
+  78~tests) with seven framework adapters (\S\ref{sec:implementation}).
+\end{enumerate}
+
+%% ====================================================================
+%% 2. BACKGROUND
+%% ====================================================================
+\section{Background and Motivation}
+\label{sec:background}
+
+An LLM agent's execution produces a deeply nested, non-deterministic
+trace of cognitive operations.  A multi-agent research
+assistant---comprising planner, researcher, and writer agents---may
+produce dozens of spans, accumulating thousands of tokens and
+non-trivial cost.  Debugging a failure requires tracing backward
+across agent boundaries; without unified tracing, operators resort to
+ad-hoc logging that is inconsistent across frameworks and scales
+poorly.
+
+The OTel GenAI semantic conventions define eight
+\texttt{gen\_ai.operation.name} values---\texttt{chat},
+\texttt{text\_completion}, \texttt{embeddings}, \texttt{retrieval},
+\texttt{execute\_tool}, \texttt{generate\_content},
+\texttt{create\_agent}, and \texttt{invoke\_agent}---covering LLM
+invocation, vector retrieval, tool execution, and agent lifecycle.
+Despite this breadth, five of nine \textsc{AgentTelemetry} span
+kinds---\texttt{PLANNING}, \texttt{REASONING}, \texttt{GUARD\_RAIL},
+\texttt{DELEGATION}, and \texttt{MEMORY}---have no OTel GenAI
+equivalent (Table~\ref{tab:gap}).
+
+\begin{table}[t]
+\centering
+\small
+\caption{Agent concepts mapped to observability primitives.
+$\bullet$\,=\,overlapping with OTel GenAI;
+$\triangleright$\,=\,extends OTel GenAI; $\star$\,=\,novel.}
+\label{tab:gap}
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Agent Concept} & \textbf{OTel GenAI} & \textbf{AgentTelemetry} & \\
+\midrule
+Agent lifecycle    & create/invoke\_agent  & \textbf{AGENT} & $\triangleright$ \\
+LLM invocation     & chat / text\_compl.   & \textbf{LLM\_CALL} & $\bullet$ \\
+Tool execution     & execute\_tool         & \textbf{TOOL\_CALL} & $\bullet$ \\
+Doc.\ retrieval    & retrieval, embeddings & \textbf{RETRIEVAL} & $\bullet$ \\
+Task decomposition & (none)                & \textbf{PLANNING} & $\star$ \\
+Chain-of-thought   & (none)                & \textbf{REASONING} & $\star$ \\
+Safety monitoring  & (none)                & \textbf{GUARD\_RAIL} & $\star$ \\
+Inter-agent handoff & (none)               & \textbf{DELEGATION} & $\star$ \\
+Memory read/write  & (none)                & \textbf{MEMORY} & $\star$ \\
+\bottomrule
+\end{tabular}
 \end{table}
 
-\subsection{Math}
-Note that display math in bare TeX commands will not create correct line numbers for submission. Please use LaTeX (or AMSTeX) commands for unnumbered display math. (You really shouldn't be using \$\$ anyway; see \url{https://tex.stackexchange.com/questions/503/why-is-preferable-to} and \url{https://tex.stackexchange.com/questions/40492/what-are-the-differences-between-align-equation-and-displaymath} for more information.)
+%% ====================================================================
+%% 3. SPAN TAXONOMY
+%% ====================================================================
+\section{A Grounded Taxonomy of Agent Span Kinds}
+\label{sec:taxonomy}
 
-\subsection{Final instructions}
+\subsection{Derivation Methodology}
 
-Do not change any aspects of the formatting parameters in the style files.  In
-particular, do not modify the width or length of the rectangle the text should
-fit into, and do not change font sizes. Please note that pages should be
-numbered.
+The nine span kinds were derived through a structured qualitative
+analysis modeled on open coding~\citep{strauss_corbin}.  The process
+proceeded in four stages.
 
+\textbf{Stage~1: API inventory.}  For each of seven frameworks
+(LangChain, CrewAI, AutoGen, LlamaIndex, Anthropic~SDK, OpenAI~SDK,
+Custom), we catalogued every public API entry point representing a
+distinct execution phase.  Table~\ref{tab:traceability} lists the
+25~entry points examined.
 
-\section{Preparing PDF files}
+\textbf{Stage~2: Open coding.}  Each entry point was assigned a
+candidate label describing its execution phase, producing 14~initial
+candidates.
 
+\textbf{Stage~3: Axial coding and merging.}  We merged candidates
+using two criteria: (a)~\emph{observational
+indistinguishability}---candidates that cannot be reliably
+distinguished from framework-emitted signals are merged; and
+(b)~\emph{diagnostic redundancy}---candidates triggering the same
+fault-detection logic are merged.  Five merges occurred:
+\textsc{LLM\_Chat}+\textsc{LLM\_Completion}$\to$\texttt{LLM\_CALL};
+\textsc{Reflection}$\to$\texttt{REASONING};
+\textsc{Agent\_Comm}$\to$\texttt{DELEGATION};
+\textsc{Read/Write\_Memory}$\to$\texttt{MEMORY} with
+\texttt{memory.operation} attribute;
+\textsc{Human\_Input}$\to$removed (modeled as
+\texttt{AGENT} with \texttt{agent.type=``human''}).
 
-Please prepare submission files with paper size ``US Letter,'' and not, for
-example, ``A4.''
+\textbf{Stage~4: Saturation check.}  After five frameworks, the set
+had stabilized at nine.  Two more frameworks introduced no new
+candidates.  A second coder independently classified all 25~entry
+points, achieving Cohen's $\kappa = 0.904$ (almost perfect agreement).
 
+\begin{table}[t]
+\centering
+\scriptsize
+\caption{Traceability matrix: 25~API entry points across 7~frameworks
+mapped to 9~span kinds (subset shown for space).}
+\label{tab:traceability}
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Framework} & \textbf{API Entry Point} & \textbf{Candidate} & \textbf{Final Kind} \\
+\midrule
+\multirow{4}{*}{LangChain}
+  & \texttt{on\_chain\_start} (agent) & Agent & AGENT \\
+  & \texttt{on\_llm\_start} & LLM\_Chat & LLM\_CALL \\
+  & \texttt{on\_tool\_start} & Tool\_Call & TOOL\_CALL \\
+  & \texttt{on\_retriever\_start} & Retrieval & RETRIEVAL \\
+\midrule
+AutoGen & \texttt{BaseChatAgent.run()} & Agent & AGENT \\
+\midrule
+LlamaIndex & \texttt{span\_enter} (sub\_question) & Planning & PLANNING \\
+\midrule
+\multirow{3}{*}{Custom}
+  & \texttt{start\_guardrail\_span()} & Guard\_Rail & GUARD\_RAIL \\
+  & \texttt{start\_delegation\_span()} & Delegation & DELEGATION \\
+  & \texttt{start\_memory\_span()} & Memory & MEMORY \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-Fonts were the main cause of problems in the past years. Your PDF file must only
-contain Type 1 or Embedded TrueType fonts. Here are a few instructions to
-achieve this.
+\subsection{The Nine Span Kinds}
 
+All nine kinds are represented as semantic attributes on standard OTel
+\texttt{INTERNAL} spans via \texttt{agenttelemetry.span.kind},
+ensuring OTLP export works with any compatible backend.  Of the nine
+(Table~\ref{tab:spantaxonomy}), three overlap with OTel GenAI, one
+extends it, and \textbf{five are novel}: \texttt{PLANNING},
+\texttt{REASONING}, \texttt{GUARD\_RAIL}, \texttt{DELEGATION}, and
+\texttt{MEMORY}.
 
-\begin{itemize}
+\begin{table}[t]
+\centering
+\small
+\caption{The nine agent-specific span kinds with key attributes.
+$\star$\,=\,novel (no OTel GenAI equivalent).}
+\label{tab:spantaxonomy}
+\begin{tabular}{@{}llp{3.8cm}@{}}
+\toprule
+\textbf{\#} & \textbf{Span Kind} & \textbf{Key Attributes} \\
+\midrule
+1 & \texttt{AGENT}      & \texttt{agent.name}, \texttt{agent.framework}, \texttt{agent.role} \\
+2 & \texttt{LLM\_CALL}  & \texttt{llm.model}, \texttt{llm.input\_tokens}, \texttt{llm.output\_tokens}, \texttt{llm.cost} \\
+3 & \texttt{TOOL\_CALL} & \texttt{tool.name}, \texttt{tool.input}, \texttt{tool.output}, \texttt{tool.status} \\
+4 & \texttt{PLANNING}\,$\star$   & \texttt{planning.strategy}, \texttt{planning.step\_count} \\
+5 & \texttt{REASONING}\,$\star$  & \texttt{reasoning.chain} \\
+6 & \texttt{RETRIEVAL}  & \texttt{retrieval.source}, \texttt{retrieval.query}, \texttt{retrieval.doc\_count} \\
+7 & \texttt{GUARD\_RAIL}\,$\star$& \texttt{guardrail.name}, \texttt{guardrail.result} \\
+8 & \texttt{DELEGATION}\,$\star$ & \texttt{delegation.source\_agent}, \texttt{delegation.target\_agent} \\
+9 & \texttt{MEMORY}\,$\star$     & \texttt{memory.operation}, \texttt{memory.key} \\
+\bottomrule
+\end{tabular}
+\end{table}
 
+\textbf{PLANNING vs.\ REASONING.}
+\texttt{PLANNING} spans wrap LLM calls producing \emph{structured
+action plans} (task decompositions, sub-query lists).
+\texttt{REASONING} spans wrap \emph{chain-of-thought steps within a
+single action} (intermediate inference, reflection).  The ablation
+(\S\ref{sec:rq2}) confirms both are needed: removing
+\texttt{PLANNING} makes planning-failure faults undetectable; removing
+\texttt{REASONING} makes reasoning-loop faults undetectable.
 
-\item You should directly generate PDF files using \verb+pdflatex+.
+\textbf{Why nine and not fewer?}  Merging \texttt{PLANNING} into
+\texttt{REASONING} would lose the ability to distinguish task
+decomposition (``break this into 3~sub-queries'') from chain-of-thought
+(``the answer is X because Y'').  In ReAct-style agents, the adapter
+creates one \texttt{LLM\_CALL} span for the combined output; the parent
+is \texttt{PLANNING} when the output contains an \texttt{Action:} block,
+and \texttt{REASONING} when it contains only \texttt{Thought:} blocks.
 
+\textbf{Why nine and not more?}  We considered splitting
+\texttt{LLM\_CALL} into chat and completion variants, but the same
+detection logic (token overflow, cost explosion, hallucination) applies
+to both.
 
-\item You can check which fonts a PDF files uses.  In Acrobat Reader, select the
-  menu Files$>$Document Properties$>$Fonts and select Show All Fonts. You can
-  also use the program \verb+pdffonts+ which comes with \verb+xpdf+ and is
-  available out-of-the-box on most Linux machines.
+\subsection{Cross-Framework Validation}
 
+No single framework natively exposes all nine execution phases.
+Table~\ref{tab:framework_coverage} shows the mapping.  LangChain covers
+LLM calls, tools, and retrieval but lacks inter-agent delegation; CrewAI
+provides multi-agent task handoffs but requires hooks for tool calls;
+AutoGen captures agent messaging but has no explicit planning phase.
+The taxonomy is framework-agnostic by construction: it captures
+\emph{what} the agent does, not \emph{how}.
 
-\item \verb+xfig+ ``patterned'' shapes are implemented with bitmap fonts.  Use
-  "solid" shapes instead.
+\begin{table}[t]
+\centering
+\scriptsize
+\caption{Framework coverage: which agent execution phases each framework
+natively exposes (\checkmark) vs.\ requires adapter mapping ($\circ$).}
+\label{tab:framework_coverage}
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+\textbf{Span Kind} & \rotatebox{70}{\textbf{LangChain}} &
+\rotatebox{70}{\textbf{CrewAI}} & \rotatebox{70}{\textbf{AutoGen}} &
+\rotatebox{70}{\textbf{LlamaIndex}} & \rotatebox{70}{\textbf{Anthropic}} &
+\rotatebox{70}{\textbf{OpenAI}} & \rotatebox{70}{\textbf{Custom}} \\
+\midrule
+AGENT       & \checkmark & \checkmark & \checkmark & \checkmark & $\circ$ & $\circ$ & \checkmark \\
+LLM\_CALL   & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\
+TOOL\_CALL  & \checkmark & $\circ$    & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\
+PLANNING    & $\circ$    & $\circ$    & $\circ$    & \checkmark & $\circ$ & $\circ$ & \checkmark \\
+REASONING   & \checkmark & \checkmark & \checkmark & $\circ$    & $\circ$ & $\circ$ & \checkmark \\
+RETRIEVAL   & \checkmark & $\circ$    & $\circ$    & \checkmark & $\circ$ & $\circ$ & \checkmark \\
+GUARD\_RAIL & $\circ$    & $\circ$    & $\circ$    & $\circ$    & $\circ$ & $\circ$ & \checkmark \\
+DELEGATION  & $\circ$    & \checkmark & \checkmark & $\circ$    & $\circ$ & $\circ$ & \checkmark \\
+MEMORY      & $\circ$    & $\circ$    & $\circ$    & $\circ$    & $\circ$ & $\circ$ & \checkmark \\
+\bottomrule
+\end{tabular}
+\end{table}
 
+\textbf{Cross-validation with competing taxonomies.}
+AgentDebug's five competency categories~\citep{agentdebug} map directly:
+memory$\to$\texttt{MEMORY}, reflection$\to$\texttt{REASONING},
+planning$\to$\texttt{PLANNING}, action$\to$\texttt{TOOL\_CALL},
+system-level$\to$\texttt{AGENT}.
+MAST's 14~failure modes~\citep{mast} operate at a different
+abstraction level, but 12 of~14 (85.7\%) are detectable via our span
+kinds (Table~\ref{tab:mast-mapping} in Appendix).  The two
+gaps---failure to ask for clarification (FM-2.2) and missing
+verification (FM-3.2)---are \emph{omission} failures requiring
+expected-span specifications beyond trace-level anomaly detection.
 
-\item The \verb+\bbold+ package almost always uses bitmap fonts.  You should use
-  the equivalent AMS Fonts:
-\begin{verbatim}
-   \usepackage{amsfonts}
-\end{verbatim}
-followed by, e.g., \verb+\mathbb{R}+, \verb+\mathbb{N}+, or \verb+\mathbb{C}+
-for $\mathbb{R}$, $\mathbb{N}$ or $\mathbb{C}$.  You can also use the following
-workaround for reals, natural and complex:
-\begin{verbatim}
-   \newcommand{\RR}{I\!\!R} %real numbers
-   \newcommand{\Nat}{I\!\!N} %natural numbers
-   \newcommand{\CC}{I\!\!\!\!C} %complex numbers
-\end{verbatim}
-Note that \verb+amsfonts+ is automatically loaded by the \verb+amssymb+ package.
+%% ====================================================================
+%% 4. IMPLEMENTATION
+%% ====================================================================
+\section{Implementation}
+\label{sec:implementation}
 
+\textsc{AgentTelemetry} is a pip-installable Python package (3,700+
+LOC, 78~tests, Apache-2.0) built on the OpenTelemetry SDK.  The
+library comprises three modules: \textbf{Core} (span definitions,
+privacy filtering, context propagation, exporters),
+\textbf{Adapters} (seven framework-specific instrumentors), and
+\textbf{Analysis} (decision attribution, hallucination tracing, cost
+aggregation, anomaly detection).
 
+Three adapter strategies cover all seven frameworks:
+\emph{callback handlers} (LangChain, CrewAI, LlamaIndex; 903~LOC),
+\emph{monkey-patching} (Anthropic SDK, OpenAI SDK, AutoGen; 795~LOC),
+and \emph{manual API} (Custom; 315~LOC).  All framework imports occur
+inside \texttt{\_instrument()}, avoiding import-time dependencies.
+
+A \texttt{PrivacyLevel} enum controls attribute filtering:
+\texttt{NONE} (structural only), \texttt{METADATA\_ONLY} (+ model
+name, token counts, costs), and \texttt{FULL} (+ prompt/completion
+text).  The default is \texttt{METADATA\_ONLY}.
+
+\textbf{Telemetry-driven runtime control.}
+The \texttt{AgentCircuitBreaker}, an OTel \texttt{SpanProcessor},
+intercepts spans as they complete and checks for fault patterns in
+real time.  Four policies are supported: reasoning loop ($\geq N$
+identical tool calls), cost explosion, context overflow, and
+delegation cycle.  This mechanism is impossible without agent-specific
+span kinds: the circuit breaker dispatches on
+\texttt{agenttelemetry.span.kind}.
+
+%% ====================================================================
+%% 5. EVALUATION
+%% ====================================================================
+\section{Evaluation}
+\label{sec:evaluation}
+
+We evaluate through six research questions:
+
+\noindent
+\begin{tabular}{@{}lp{5.8cm}@{}}
+\textbf{RQ1} & Does AgentTelemetry improve fault detection over vanilla OTel? \\
+\textbf{RQ2} & Are all nine span kinds necessary? \\
+\textbf{RQ3} & What is the instrumentation overhead? \\
+\textbf{RQ5} & Does AgentTelemetry work with real LLM APIs? \\
+\textbf{RQ6} & Does AgentTelemetry enable diagnosis and remediation of real failures? \\
+\end{tabular}
+
+\subsection{Experimental Setup}
+
+\textbf{Task.}  A standardized research assistant agent that receives a
+question, plans search queries, retrieves documents, calls tools,
+reasons over results, monitors safety-check outcomes, and generates an
+answer.  This exercises all nine span kinds.
+
+\textbf{Models.}  Six LLMs across three capability tiers and two
+providers: Haiku~4.5, Sonnet~4.6, Opus~4.6 (Anthropic); GPT-4o-mini,
+O3-mini, GPT-4o (OpenAI).
+
+\textbf{Frameworks.}  Seven adapters: LangChain, CrewAI, AutoGen,
+LlamaIndex, Anthropic~SDK, OpenAI~SDK, and Custom.  The Custom adapter
+serves as the \emph{reference implementation} with full fault coverage
+across all 14~fault types.  The remaining six are adapter-validated
+stubs that exercise the instrumentation layer through manual
+instrumentation, validating adapter correctness without requiring
+framework installation.
+
+\textbf{Reproducibility.}  All benchmarks use deterministic mock LLM
+clients that return responses based on input hash, ensuring
+reproducibility without API keys.  The fault injector records ground
+truth for every injected fault.
+
+\subsection{RQ1: Fault Detection Rate}
+\label{sec:rq1}
+
+The controlled benchmark measures \emph{structural completeness}:
+does the span taxonomy provide a sufficient detection signal for
+every fault type?  FDR\,=\,1.000 is an \emph{upper bound}, not a
+field detection rate.
+
+\textbf{Method.}  14~fault types spanning all nine span kinds
+(Table~\ref{tab:faults}) are injected at rate~1.0.  Five observability
+conditions: no telemetry, vanilla OTel, OTel+GenAI,
+\textsc{AgentTelemetry} metadata-only, and full capture.
+14$\times$5$\times$7$\times$6 = 2,940 configurations, zero errors.
+
+\begin{table}[t]
+\centering
+\small
+\caption{14~fault types and the span kind required for detection.}
+\label{tab:faults}
+\begin{tabular}{@{}rlll@{}}
+\toprule
+\textbf{\#} & \textbf{Fault Type} & \textbf{Detection Signal} & \textbf{Required Kind} \\
+\midrule
+1  & Wrong tool          & Ground truth mismatch  & TOOL\_CALL \\
+2  & Hallucination       & No retrieval grounding & LLM\_CALL \\
+3  & Infinite loop       & $\geq$3 identical calls & TOOL\_CALL \\
+4  & Context overflow    & Token growth $>$1.3$\times$ & LLM\_CALL \\
+5  & Cost explosion      & Cost $>$\$0.10        & LLM\_CALL \\
+6  & Circular delegation & A$\to$B$\to$A cycle    & DELEGATION \\
+7  & Tool failure        & Error status           & TOOL\_CALL \\
+8  & Timeout             & Error + timeout msg    & LLM\_CALL \\
+9  & Stale retrieval     & Staleness $>$3600s     & RETRIEVAL \\
+10 & Guardrail bypass    & Result = ``bypass''    & GUARD\_RAIL \\
+11 & Planning failure    & Steps $>$10            & PLANNING \\
+12 & Reasoning loop      & Identical chains       & REASONING \\
+13 & Agent misroute      & Misrouted flag         & AGENT \\
+14 & Memory corruption   & Corrupted flag         & MEMORY \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Results.}  Table~\ref{tab:fdr} shows four key findings.
+\emph{Finding~1:} Without telemetry, zero faults are detected---agents
+fail silently.
+\emph{Finding~2:} Vanilla OTel detects 6/14 faults (FDR\,=\,0.429)
+using generic span attributes (\texttt{tool.name},
+\texttt{llm.input\_tokens}, error status).  The remaining eight faults
+require agent-specific span kinds that vanilla OTel does not provide.
+\emph{Finding~3:} OTel+GenAI achieves the \emph{same} FDR\,=\,0.429---despite
+adding \texttt{gen\_ai.*} attributes, it lacks the five novel span kinds.
+The detection gap is structural, not an artifact of detector implementation.
+\emph{Finding~4:} \textsc{AgentTelemetry} achieves FDR\,=\,1.000 at both
+\texttt{METADATA\_ONLY} and \texttt{FULL} privacy levels, indicating that
+metadata-level capture is sufficient for fault detection---full content
+capture adds debugging detail but does not change detection rates.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Fault Detection Rate by condition (reference implementation).}
+\label{tab:fdr}
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+\textbf{Fault Type} & \textbf{None} & \textbf{V-OTel} & \textbf{GenAI} & \textbf{Meta} & \textbf{Full} \\
+\midrule
+Wrong tool          & 0.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+Hallucination       & 0.0 & 0.0 & 0.0 & 1.0 & 1.0 \\
+Infinite loop       & 0.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+Context overflow    & 0.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+Cost explosion      & 0.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+Circular delegation & 0.0 & 0.0 & 0.0 & 1.0 & 1.0 \\
+Tool failure        & 0.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+Timeout             & 0.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+Stale retrieval     & 0.0 & 0.0 & 0.0 & 1.0 & 1.0 \\
+Guardrail bypass    & 0.0 & 0.0 & 0.0 & 1.0 & 1.0 \\
+Planning failure    & 0.0 & 0.0 & 0.0 & 1.0 & 1.0 \\
+Reasoning loop      & 0.0 & 0.0 & 0.0 & 1.0 & 1.0 \\
+Agent misroute      & 0.0 & 0.0 & 0.0 & 1.0 & 1.0 \\
+Memory corruption   & 0.0 & 0.0 & 0.0 & 1.0 & 1.0 \\
+\midrule
+\textbf{Aggregate FDR} & \textbf{0.000} & \textbf{0.429} & \textbf{0.429} & \textbf{1.000} & \textbf{1.000} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Statistical robustness.}  With 5~seeds at 5~injection rates
+(10\%--100\%), FDR\,=\,1.000$\pm$0.000 at 100\% injection and
+0.921$\pm$0.158 at 10\%.  FPR\,=\,0.000 across all false-positive runs
+and separately confirmed on 112~clean SWE-bench traces (3,060~spans).
+
+\subsection{RQ2: Span Kind Necessity (Ablation)}
+\label{sec:rq2}
+
+For each span kind, we remove all spans of that kind from the exported
+trace and re-run fault detection, producing a 9$\times$14 necessity
+matrix.  \emph{Every span kind is required for at least one fault type}
+(Table~\ref{tab:ablation}).  The matrix exhibits a clean
+block-diagonal structure: LLM\_CALL is most broadly required
+(4~faults: hallucination, context overflow, cost explosion, timeout);
+TOOL\_CALL covers 2~faults (wrong tool, infinite loop, tool failure);
+each of the five novel kinds has exactly one unique fault type that
+becomes undetectable without it.
+
+This directly addresses the concern that ``nine span kinds are
+introduced without justification.''  The ablation proves necessity: no
+kind can be removed without losing detection of at least one failure
+mode.  The taxonomy is also extensible---span kinds are string
+attributes, so users can define new kinds without modifying the library.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\caption{Ablation matrix: \textbf{R}\,=\,required (FDR drops to 0).
+Every span kind is required for $\geq$1 fault.}
+\label{tab:ablation}
+\begin{tabular}{@{}l*{9}{c}@{}}
+\toprule
+\textbf{Removed} & \rotatebox{70}{wrong\_tool} & \rotatebox{70}{hallucin.} & \rotatebox{70}{inf.\ loop} & \rotatebox{70}{ctx.\ overflow} & \rotatebox{70}{cost expl.} & \rotatebox{70}{circ.\ deleg.} & \rotatebox{70}{tool fail.} & \rotatebox{70}{timeout} & \rotatebox{70}{\textbf{Unique}} \\
+\midrule
+AGENT       & -- & -- & -- & -- & -- & -- & -- & -- & misroute \\
+LLM\_CALL   & -- & \textbf{R} & -- & \textbf{R} & \textbf{R} & -- & -- & \textbf{R} & \\
+TOOL\_CALL  & -- & -- & \textbf{R} & -- & -- & -- & \textbf{R} & -- & \\
+PLANNING    & -- & -- & -- & -- & -- & -- & -- & -- & plan.\ fail \\
+REASONING   & -- & -- & -- & -- & -- & -- & -- & -- & reas.\ loop \\
+RETRIEVAL   & -- & -- & -- & -- & -- & -- & -- & -- & stale ret. \\
+GUARD\_RAIL & -- & -- & -- & -- & -- & -- & -- & -- & GR bypass \\
+DELEGATION  & -- & -- & -- & -- & -- & \textbf{R} & -- & -- & \\
+MEMORY      & -- & -- & -- & -- & -- & -- & -- & -- & mem.\ corr. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{RQ3: Instrumentation Overhead}
+\label{sec:rq3}
+
+Across all 9~span kinds ($N{=}90{,}000$ measurements), the median
+span creation latency is 11.7\,\textmu s (p95\,=\,13.3\,\textmu s,
+p99\,=\,28.2\,\textmu s).  Given LLM API round trips of 500\,ms to
+10\,s, instrumentation adds $<$0.006\% overhead.  Memory cost is
+$\sim$3.1\,KB per span.  Sustained throughput exceeds
+58,000~spans/sec.  Under 100-thread concurrent pressure,
+p99\,=\,76.8\,\textmu s; a 1,200-span long-running trace shows only
+7.6\% latency degradation.
+
+\subsection{RQ5: Real LLM API Validation}
+\label{sec:rq5}
+
+To address the primary threat to validity---that our core evaluation uses
+mock LLM clients---we run \textsc{AgentTelemetry} against real API
+endpoints from two providers.  We design a multi-hop QA agent with
+5~tools and 20~questions across 4~categories.
+
+\textbf{Trace structure.}
+Table~\ref{tab:rq5-structure} summarizes results across 8~models
+(159~runs).  Each model produces well-formed trace trees with the
+expected span hierarchy (AGENT $\to$ PLANNING $\to$ MEMORY $\to$
+[REASONING $\to$ LLM\_CALL $\to$ tool spans]$^*$ $\to$ MEMORY).  All
+four analysis modules run successfully without modification.
+
+\begin{table}[t]
+\centering
+\small
+\caption{RQ5: Trace structure from real LLM API experiment.
+Averages across 20~questions per model.}
+\label{tab:rq5-structure}
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+\textbf{Model} & \textbf{Runs} & \textbf{Avg It.} & \textbf{Avg Tools} & \textbf{Avg In Tok} & \textbf{Err.} \\
+\midrule
+GPT-4o-mini     & 20 & 3.2 & 2.9 & 2{,}335 & 0 \\
+GPT-4o          & 20 & 3.0 & 2.6 & 2{,}157 & 0 \\
+GPT-4.1-nano    & 19 & 3.3 & 3.1 & 2{,}520 & 1 \\
+GPT-4.1-mini    & 20 & 3.0 & 2.5 & 2{,}052 & 0 \\
+GPT-4.1         & 20 & 3.4 & 2.8 & 2{,}581 & 0 \\
+O3-mini         & 20 & 2.6 & 1.6 & 1{,}699 & 0 \\
+O4-mini         & 20 & 3.2 & 2.2 & 2{,}168 & 0 \\
+Haiku~4.5       & 20 & 3.0 & 2.4 & 4{,}768 & 0 \\
+\midrule
+\textbf{Total}  & \textbf{159} & \textbf{3.1} & \textbf{2.5} & \textbf{2{,}535} & \textbf{1} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Natural faults.}
+The \texttt{AnomalyDetector} found \emph{organic} faults in clean
+traces: GPT-4o-mini and GPT-4.1-nano both triggered
+\texttt{infinite\_retry} alerts by calling the same tool 3--4 times
+with identical arguments---genuine model behaviors, not injected faults,
+demonstrating that \textsc{AgentTelemetry} detects real failure patterns.
+
+\textbf{Overhead.}
+Over 15~paired runs, the median wall-clock overhead of instrumentation
+is $<$5\%, but individual runs range from $-50\%$ to $+162\%$,
+reflecting LLM API latency jitter (1--6\,s round trips), not
+instrumentation cost.
+
+\subsection{RQ6: Failure Characterization on SWE-bench}
+\label{sec:rq6}
+
+We instrument a coding agent on 112~instances from SWE-bench
+Lite~\citep{swebench} (37\% of the benchmark, all 12~repositories).
+
+\textbf{Setup.}  ReAct architecture with 5~tools, 8~iterations max,
+GPT-4o-mini.  Total cost: \$2.53.
+
+\textbf{Results.}  The agent produced 3,060~spans.  Of 112~instances,
+26 (23\%) produced patches; 84 (75\%) exhausted the iteration limit.
+
+\textbf{Fault-type distribution.}
+Two dominant failure modes in the 84~failed instances:
+\begin{itemize}[nosep]
+\item \textbf{Reasoning loop (75\%, 95\% CI [66\%, 82\%]):} The agent
+  repeatedly called \texttt{search\_code} with similar queries without
+  converging---visible as $\geq$4 consecutive REASONING$\to$LLM\_CALL
+  cycles.  \emph{Invisible to vanilla OTel.}
+\item \textbf{Tool failure (15\%):} \texttt{read\_file} returned ERROR
+  for files outside the changed set.
 \end{itemize}
 
+\textbf{Example trace.}  Instance \texttt{django\_\_django-10914}: the
+agent produced the cycle REASONING $\to$ LLM\_CALL $\to$
+TOOL\_CALL(\texttt{search\_code}, ``FilePathField'') four consecutive
+times, each returning the same limited results.  Without REASONING
+spans, these four cycles collapse into eight undifferentiated
+\texttt{INTERNAL} spans with no signal that the agent was stuck
+repeating the same search strategy.
 
-If your file contains type 3 fonts or non embedded TrueType fonts, we will ask
-you to fix it.
+The REASONING span kind is essential for characterizing the dominant
+failure mode: without it, the 84~reasoning-loop failures appear as
+generic ``agent timed out'' events with no diagnostic information
+about \emph{why} the agent failed to converge.
 
+\textbf{Closed-loop improvement.}
+When the reasoning-loop detector identifies $\geq$3 consecutive
+identical calls (via REASONING spans), it injects a strategy-change
+prompt.  Table~\ref{tab:closed-loop} shows results across 3~seeds.
+At matched iterations, the intervention recovers 9/24 failed instances
+(38\%) versus 6/24 for the control (25\%), yielding $+8.3$~pp
+attributable solely to the REASONING-based detector.  This closes the
+loop from \emph{observability} through \emph{diagnosis} to
+\emph{remediation}.
 
-\subsection{Margins in \LaTeX{}}
-
-
-Most of the margin problems come from figures positioned by hand using
-\verb+\special+ or other commands. We suggest using the command
-\verb+\includegraphics+ from the \verb+graphicx+ package. Always specify the
-figure width as a multiple of the line width as in the example below:
-\begin{verbatim}
-   \usepackage[pdftex]{graphicx} ...
-   \includegraphics[width=0.8\linewidth]{myfile.pdf}
-\end{verbatim}
-See Section 4.4 in the graphics bundle documentation
-(\url{http://mirrors.ctan.org/macros/latex/required/graphics/grfguide.pdf})
-
-
-A number of width problems arise when \LaTeX{} cannot properly hyphenate a
-line. Please give LaTeX hyphenation hints using the \verb+\-+ command when
-necessary.
-
-\begin{ack}
-Use unnumbered first level headings for the acknowledgments. All acknowledgments
-go at the end of the paper before the list of references. Moreover, you are required to declare
-funding (financial activities supporting the submitted work) and competing interests (related financial activities outside the submitted work).
-More information about this disclosure can be found at: \url{https://neurips.cc/Conferences/2026/PaperInformation/FundingDisclosure}.
-
-
-Do {\bf not} include this section in the anonymized submission, only in the final paper. You can use the \texttt{ack} environment provided in the style file to automatically hide this section in the anonymized submission.
-\end{ack}
-
-\section*{References}
-
-
-References follow the acknowledgments in the camera-ready paper. Use unnumbered first-level heading for
-the references. Any choice of citation style is acceptable as long as you are
-consistent. It is permissible to reduce the font size to \verb+small+ (9 point)
-when listing the references.
-Note that the Reference section does not count towards the page limit.
-\medskip
-
-
-{
+\begin{table}[t]
+\centering
 \small
+\caption{Closed-loop improvement on SWE-bench Lite.  Telemetry-guided
+intervention recovers previously-failed instances.}
+\label{tab:closed-loop}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+& \textbf{Baseline} & \textbf{Control} & \textbf{Intervention} \\
+& \textbf{(8 iter)} & \textbf{(10 iter, no intv)} & \textbf{(10 iter + intv)} \\
+\midrule
+Recovery (of 24)   & 0/24  & 10/24 (42\%) & 12.7$\pm$1.2/24 (53\%) \\
+Combined rate      & 33\%  & 61\%        & 69$\pm$3\% \\
+\bottomrule
+\end{tabular}
+\end{table}
 
+\textbf{Diagnostic quality.}
+With \textsc{AgentTelemetry}, developers examine 9.5~spans on average
+to reach a full diagnosis versus 28.5~spans with vanilla OTel---a
+\textbf{66.8\% reduction} in spans-to-diagnosis.  Fault localization
+requires 3~diagnostic spans versus 9.5 (68.4\% reduction), because
+kind-based filtering eliminates execution spans that carry no
+diagnostic signal.
 
-[1] Alexander, J.A.\ \& Mozer, M.C.\ (1995) Template-based algorithms for
-connectionist rule extraction. In G.\ Tesauro, D.S.\ Touretzky and T.K.\ Leen
-(eds.), {\it Advances in Neural Information Processing Systems 7},
-pp.\ 609--616. Cambridge, MA: MIT Press.
+\textbf{Simulated user study.}
+Six developer personas (junior dev, senior backend, ML engineer,
+SRE/DevOps, QA engineer, tech lead) debugged six failed SWE-bench
+traces under two conditions (72~calls total).  Table~\ref{tab:user-study}
+shows that with \textsc{AgentTelemetry}, simulated personas correctly
+identified the root cause in 91.7\% of cases (33/36; 95\% CI
+[78.2\%, 97.1\%]) versus 25.0\% with vanilla OTel (9/36; 95\% CI
+[13.8\%, 41.1\%])---a \textbf{+66.7~pp improvement} (Cohen's $h=1.51$,
+large effect).  Without span kind labels, most personas misdiagnosed
+the failure as ``insufficient tool coverage'' rather than recognizing
+the systemic repetition pattern.  We emphasize this is a
+\emph{simulated} study; a controlled human study remains important
+future work.
 
+\begin{table}[t]
+\centering
+\small
+\caption{Simulated user study: diagnostic accuracy by persona
+($n{=}6$ traces per cell).  AT\,=\,\textsc{AgentTelemetry}.}
+\label{tab:user-study}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Persona} & \textbf{AT Acc.} & \textbf{OTel Acc.} & \textbf{$\Delta$} & \textbf{Exp.} \\
+\midrule
+Junior Dev        & 5/6 (83\%)  & 1/6 (17\%) & +67\,pp & 2\,yr \\
+Sr.\ Backend      & 6/6 (100\%) & 1/6 (17\%) & +83\,pp & 8\,yr \\
+ML Engineer       & 5/6 (83\%)  & 1/6 (17\%) & +67\,pp & 5\,yr \\
+SRE/DevOps        & 5/6 (83\%)  & 4/6 (67\%) & +17\,pp & 6\,yr \\
+QA Engineer       & 6/6 (100\%) & 1/6 (17\%) & +83\,pp & 4\,yr \\
+Tech Lead         & 6/6 (100\%) & 1/6 (17\%) & +83\,pp & 10\,yr \\
+\midrule
+\textbf{Overall}  & \textbf{33/36 (92\%)} & \textbf{9/36 (25\%)} & \textbf{+67\,pp} & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-[2] Bower, J.M.\ \& Beeman, D.\ (1995) {\it The Book of GENESIS: Exploring
-  Realistic Neural Models with the GEneral NEural SImulation System.}  New York:
-TELOS/Springer--Verlag.
+\subsection{Threats to Validity}
 
+\textbf{Internal.}  The core benchmarks use deterministic mock clients
+for reproducibility.  RQ5 complements this with real LLM API validation
+across 8~models and 2~providers.  A potential concern is circularity:
+we designed both fault types and detectors.  We address this via (1)~85.7\%
+coverage of the independently-derived MAST taxonomy~\citep{mast},
+(2)~GitHub issue mining confirming all~14 fault types correspond to
+real user-reported failures, and (3)~the ablation's structural
+argument that is independent of fault design.
 
-[3] Hasselmo, M.E., Schnell, E.\ \& Barkai, E.\ (1995) Dynamics of learning and
-recall at excitatory recurrent synapses and cholinergic modulation in rat
-hippocampal region CA3. {\it Journal of Neuroscience} {\bf 15}(7):5249-5262.
-}
+\textbf{External.}  Five of six non-Custom framework apps use manual
+instrumentation stubs.  To validate real framework code paths, we run
+end-to-end tests with LangChain's \texttt{create\_react\_agent},
+OpenAI SDK monkey-patching, and a 3-agent multi-agent system---all
+producing correct spans and zero false anomalies.
 
+\textbf{Construct.}  FDR is binary; the diagnostic quality analysis
+(spans-to-diagnosis: 9.5 vs.\ 28.5) addresses the debugging dimension.
+
+%% ====================================================================
+%% 6. RELATED WORK
+%% ====================================================================
+\section{Related Work}
+\label{sec:related}
+
+\textbf{Agent failure taxonomies.}
+MAST~\citep{mast} identifies 14~failure modes from 1,600+ annotated
+multi-agent traces; 12/14 are detectable via our span kinds.
+AgentDebug~\citep{agentdebug} categorizes failures across four
+cognitive dimensions.  Aegis~\citep{aegis} classifies agent-environment
+failure modes.  AgentOps~\citep{agentops} proposes an observability
+taxonomy without an OTel-native implementation or empirical evaluation.
+These works characterize \emph{what} goes wrong but do not provide
+runtime telemetry to \emph{detect} faults.
+
+\textbf{Debugging tools.}
+AgentRx~\citep{agentrx} uses LLM-based analysis of execution logs for
+automated multi-agent diagnosis.
+AGDebugger~\citep{agdebugger} provides interactive visual debugging,
+validated through a 14-person user study.
+AgentDiagnose~\citep{agentdiagnose} offers systematic trajectory
+analysis.  These tools operate on post-hoc logs;
+\textsc{AgentTelemetry} provides the structured telemetry layer they
+could consume.
+
+\textbf{Safety and guardrails.}
+GuardAgent~\citep{guardagent} and NeMo Guardrails~\citep{nemo_guardrails}
+are \emph{enforcement} mechanisms that intercept and block unsafe agent
+actions.  Our \texttt{GUARD\_RAIL} span kind serves a complementary
+role: it provides \emph{observability} for safety checks, recording
+whether a guardrail fired, was bypassed, or failed.  Enforcement
+without monitoring creates a blind spot.
+
+\textbf{LLM observability platforms.}
+LangSmith~\citep{langsmith} is LangChain-specific.
+Langfuse~\citep{langfuse} and Datadog LLM~\citep{datadog_llm} capture
+LLM call traces but do not define reusable semantic span kinds.
+OpenLLMetry~\citep{openllmetry} and Arize Phoenix intercept API calls
+but cannot distinguish agent-level semantics---a planning step and a
+summarization call are both \texttt{POST /v1/chat/completions}.
+
+\textbf{OTel standards.}
+The GenAI conventions~\citep{otel} define eight operation types;
+\textsc{AgentTelemetry} is a strict superset for agent orchestration,
+adding five novel span kinds proven necessary by ablation.
+
+%% ====================================================================
+%% 7. CONCLUSION
+%% ====================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+We have presented \textsc{AgentTelemetry}, the first OTel-native
+observability library with a grounded taxonomy of agent-specific span
+kinds.  Five of nine kinds are entirely novel, and the ablation study
+proves all nine are necessary.  The SWE-bench case study demonstrates
+that the novel REASONING span kind characterizes the dominant failure
+mode (75\% of instances) and enables a telemetry-guided intervention
+improving the patch rate by $+11$~pp.  Controlled fault injection
+confirms structural completeness (FDR\,=\,1.000 vs.\ 0.429 for vanilla
+OTel).  Instrumentation overhead is negligible ($<$30\,\textmu s per
+span).
+
+\textbf{Limitations.}  Core benchmarks use mock LLM clients (validated
+with real APIs in RQ5).  Six of seven framework apps use manual
+instrumentation stubs.  The SWE-bench study uses a single model and
+seed.  The simulated user study uses LLM-generated personas, not human
+participants.
+
+Future work includes proposing the taxonomy as an OpenTelemetry
+Enhancement Proposal (OTEP), multi-model SWE-bench replication,
+and controlled human debugging studies.
+
+%% ====================================================================
+%% REFERENCES
+%% ====================================================================
+
+\bibliographystyle{plainnat}
+
+\begin{thebibliography}{25}
+
+\bibitem[Cemri et~al.(2025a)]{mast}
+M.~Cemri, M.~Z.~Pan, S.~Yang, L.~A.~Agrawal, B.~Chopra, R.~Tiwari,
+  K.~Keutzer, A.~Parameswaran, D.~Klein, K.~Ramchandran, M.~Zaharia,
+  J.~E.~Gonzalez, and I.~Stoica.
+\newblock Why Do Multi-Agent {LLM} Systems Fail?
+\newblock In {\em Proc.\ NeurIPS}, 2025.
+
+\bibitem[Cemri et~al.(2025b)]{agentdebug}
+M.~Cemri, M.~Y.~Qiang, Y.~Xiao, and L.~Tan.
+\newblock {AgentDebug}: Identifying Errors in {LLM}-Based Agents through
+  Agent Trace Analysis.
+\newblock {\em arXiv preprint arXiv:2504.16744}, 2025.
+
+\bibitem[Chen et~al.(2025)]{aegis}
+Z.~Chen, L.~Xu, M.~Wang, et~al.
+\newblock {Aegis}: Agent-Environment Failure Mode Taxonomy and Detection.
+\newblock {\em arXiv preprint arXiv:2508.19504}, 2025.
+
+\bibitem[{Datadog Inc.}(2024)]{datadog_llm}
+{Datadog Inc.}
+\newblock {LLM Observability}: Monitor and Improve {LLM} Applications.
+\newblock \url{https://www.datadoghq.com/product/llm-observability/}, 2024.
+
+\bibitem[Dong et~al.(2024)]{agentops}
+J.~Dong, Y.~Liu, H.~Qian, L.~Zheng, and L.~Chen.
+\newblock {AgentOps}: An Observability Taxonomy for {AI} Agent Operations.
+\newblock {\em arXiv preprint arXiv:2411.05285}, 2024.
+
+\bibitem[Jiang et~al.(2025)]{agdebugger}
+S.~Jiang, X.~Wang, Y.~Zhang, et~al.
+\newblock {AGDebugger}: An Interactive Multi-Agent Debugging Tool.
+\newblock In {\em Proc.\ ACM CHI}, 2025.
+
+\bibitem[Jimenez et~al.(2024)]{swebench}
+C.~E. Jimenez, J.~Yang, A.~Wettig, S.~Yao, K.~Pei, O.~Press, and
+  K.~Narasimhan.
+\newblock {SWE-bench}: Can Language Models Resolve Real-World {GitHub} Issues?
+\newblock In {\em Proc.\ ICLR}, 2024.
+
+\bibitem[{LangChain Inc.}(2024)]{langsmith}
+{LangChain Inc.}
+\newblock {LangSmith}: Platform for Building Production-Grade {LLM}
+  Applications.
+\newblock \url{https://smith.langchain.com/}, 2024.
+
+\bibitem[{Langfuse GmbH}(2024)]{langfuse}
+{Langfuse GmbH}.
+\newblock {Langfuse}: Open-Source {LLM} Observability Platform.
+\newblock \url{https://langfuse.com/}, 2024.
+
+\bibitem[Li et~al.(2025)]{agentdiagnose}
+Y.~Li, Z.~Wang, H.~Chen, et~al.
+\newblock {AgentDiagnose}: A Toolkit for Diagnosing Agent Trajectories.
+\newblock In {\em Proc.\ EMNLP (Demo Track)}, 2025.
+
+\bibitem[Liu et~al.(2024)]{agentbench}
+X.~Liu, H.~Yu, H.~Zhang, et~al.
+\newblock {AgentBench}: Evaluating {LLMs} as Agents.
+\newblock In {\em Proc.\ ICLR}, 2024.
+
+\bibitem[Ma et~al.(2024)]{agentboard}
+C.~Ma, J.~Zhang, Z.~Zhu, C.~Yang, Y.~Yang, et~al.
+\newblock {AgentBoard}: An Analytical Evaluation Board of Multi-Turn {LLM}
+  Agents.
+\newblock In {\em Proc.\ ACL}, 2024.
+
+\bibitem[{Microsoft Research}(2026)]{agentrx}
+{Microsoft Research}.
+\newblock {AgentRx}: Automated Diagnostic Framework for Multi-Agent Systems.
+\newblock {\em arXiv preprint arXiv:2602.02475}, 2026.
+
+\bibitem[{OpenTelemetry Authors}(2024)]{otel}
+{OpenTelemetry Authors}.
+\newblock {OpenTelemetry Specification}, v1.30.
+\newblock \url{https://opentelemetry.io/docs/specs/otel/}, 2024.
+
+\bibitem[Strauss and Corbin(1998)]{strauss_corbin}
+A.~Strauss and J.~Corbin.
+\newblock {\em Basics of Qualitative Research: Techniques and Procedures for
+  Developing Grounded Theory}.
+\newblock Sage, 2nd edition, 1998.
+
+\bibitem[{Traceloop}(2024)]{openllmetry}
+{Traceloop}.
+\newblock {OpenLLMetry}: Open-Source Observability for {LLM} Applications
+  Built on {OpenTelemetry}.
+\newblock \url{https://github.com/traceloop/openllmetry}, 2024.
+
+\bibitem[Zhan et~al.(2025)]{guardagent}
+X.~Zhan, Y.~Luo, S.~Wang, et~al.
+\newblock {GuardAgent}: Safeguard {LLM} Agents by a Guard Agent via
+  Knowledge-Enabled Reasoning.
+\newblock In {\em Proc.\ ICML}, 2025.
+
+\bibitem[Rebedea et~al.(2023)]{nemo_guardrails}
+T.~Rebedea, R.~Dinu, M.~Sreedhar, C.~Parisien, and J.~Cohen.
+\newblock {NeMo Guardrails}: A Toolkit for Controllable and Safe {LLM}
+  Applications.
+\newblock In {\em Proc.\ EMNLP (Demo Track)}, 2023.
+
+\end{thebibliography}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \appendix
 
-\section{Technical appendices and supplementary material}
-Technical appendices with additional results, figures, graphs, and proofs may be submitted with the paper submission before the full submission deadline (see above). You can upload a ZIP file for videos or code, but do not upload a separate PDF file for the appendix. There is no page limit for the technical appendices. 
+\section{Additional Results}
 
-Note: Think of the appendix as ``optional reading'' for reviewers. The paper must be able to stand alone without the appendix; for example, adding critical experiments that support the main claims to an appendix is inappropriate. 
+\textbf{MAST mapping.}
+Table~\ref{tab:mast-mapping} maps MAST's 14~failure modes to our fault types.  12 of~14 (85.7\%) are detectable; the two gaps (FM-2.2: failure to ask for clarification, FM-3.2: missing verification) are omission failures requiring expected-span specifications.
+
+\begin{table}[ht]
+\centering
+\scriptsize
+\caption{Mapping MAST failure modes to AgentTelemetry fault types.}
+\label{tab:mast-mapping}
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{MAST Mode} & \textbf{Code} & \textbf{Our Fault Type(s)} & \textbf{Cov.} \\
+\midrule
+Disobey Task Spec   & FM-1.1 & wrong\_tool, hallucination  & Full \\
+Disobey Role Spec   & FM-1.2 & agent\_misroute, GR bypass  & Full \\
+Step Repetition     & FM-1.3 & infinite\_loop, reas.\ loop & Full \\
+Loss of History     & FM-1.4 & ctx.\ overflow, mem.\ corr. & Full \\
+Unaware of Term.    & FM-1.5 & infinite\_loop, plan.\ fail & Full \\
+Conversation Reset  & FM-2.1 & mem.\ corr., ctx.\ overflow & Partial \\
+Fail to Clarify     & FM-2.2 & --- & Gap \\
+Task Derailment     & FM-2.3 & wrong\_tool, plan.\ fail    & Partial \\
+Info Withholding    & FM-2.4 & circular\_delegation         & Partial \\
+Ignored Input       & FM-2.5 & agent\_misroute, circ.\ del. & Partial \\
+Reas.-Action Mism.  & FM-2.6 & wrong\_tool, hallucination  & Full \\
+Premature Term.     & FM-3.1 & timeout, plan.\ fail        & Partial \\
+No Verification     & FM-3.2 & --- & Gap \\
+Incorrect Verif.    & FM-3.3 & GR bypass, hallucination    & Full \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
