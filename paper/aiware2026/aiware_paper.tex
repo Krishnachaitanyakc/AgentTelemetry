@@ -396,7 +396,11 @@ Four policies are supported: reasoning-loop detection ($\geq N$
 identical tool calls), cost explosion (cumulative cost threshold),
 context overflow (token growth rate), and delegation-cycle detection.
 Each policy triggers a configurable callback (log, handler, or
-exception).  This mechanism is impossible without agent-specific span
+exception).  The circuit breaker fires after observing the 3rd
+consecutive identical tool call, meaning detection occurs within
+3~reasoning cycles ($\sim$3 LLM calls, typically 5--15 seconds of
+agent execution).
+This mechanism is impossible without agent-specific span
 kinds: the circuit breaker dispatches on
 \texttt{agenttelemetry.span.kind} to determine span semantics.
 
@@ -486,7 +490,9 @@ adding \texttt{gen\_ai.*} attributes, it lacks span kinds for planning,
 reasoning, guard rails, delegation, and memory.  The detection gap is
 structural, not an artifact of detector implementation.
 \emph{(4)}~\textsc{AgentTelemetry} achieves FDR\,=\,1.000 at both
-privacy levels, confirming that metadata-level capture suffices.
+privacy levels---a structural completeness result confirming that every
+fault type has a corresponding span-based detection signal.
+Metadata-level capture suffices.
 
 \textbf{Statistical robustness.}
 With 5~seeds at 5~injection rates, FDR\,=\,1.000 ($\pm$0.000) at 100\%
@@ -659,9 +665,13 @@ role-playing (72~calls, \$0.02).  With \textsc{AgentTelemetry},
 diagnostic accuracy was 91.7\% (33/36) versus 25.0\% (9/36) with
 vanilla OTel (Cohen's $h = 1.51$, large effect).  Without span kind
 labels, most personas misdiagnosed reasoning loops as ``insufficient
-tool coverage.''  While this approximates rather than replaces a human
-study, the effect size suggests that typed spans substantially reduce
-diagnostic difficulty.
+tool coverage.''
+We note that this is a simulated study using LLM-based persona
+role-playing, not a controlled human study with IRB approval.
+The results approximate rather than measure real developer diagnostic
+behavior; a proper human study remains essential future work.
+Notwithstanding this limitation, the effect size suggests that typed
+spans substantially reduce diagnostic difficulty.
 
 \textbf{Patch verification.}
 To assess whether proposed patches are plausible (not just produced),
@@ -821,6 +831,9 @@ To validate real-framework integration, we run end-to-end tests with
 LangChain's \texttt{AgentExecutor} against real OpenAI APIs, producing
 136~spans across 5~span kinds with correct token counts and cost
 tracking.
+The benchmark uses a single research-assistant task architecture;
+generalization to other agent architectures (tree-of-thought, debate,
+hierarchical multi-agent) remains to be validated.
 
 \textbf{Construct.}
 FDR is a binary metric; the diagnostic quality analysis (66.8\% span
