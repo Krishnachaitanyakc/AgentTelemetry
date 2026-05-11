@@ -9,8 +9,8 @@ OpenTelemetry-based observability for AI agent systems. Provides 9 agent-specifi
 ## Papers
 
 - **AIware 2026** — *AgentTelemetry: A Fault Detection Benchmark and Toolkit for LLM Agent Observability.* Krishna Chaitanya Balusu. 3rd ACM International Conference on AI-Powered Software, July 2026.
-  [DOI: 10.1145/3805760.3814931](https://doi.org/10.1145/3805760.3814931) ·
-  Frozen snapshot: tag `v0.1.0-aiware2026` ·
+  Paper: [DOI: 10.1145/3805760.3814931](https://doi.org/10.1145/3805760.3814931) ·
+  Software archive: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20129005.svg)](https://doi.org/10.5281/zenodo.20129005) (this AIware snapshot: [`v0.1.0-aiware2026`](https://doi.org/10.5281/zenodo.20129006)) ·
   Camera-ready PDF: [`paper/aiware2026/aiware_paper.pdf`](paper/aiware2026/aiware_paper.pdf)
 
 ## Installation
