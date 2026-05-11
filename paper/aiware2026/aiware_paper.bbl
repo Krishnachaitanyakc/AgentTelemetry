@@ -1,0 +1,225 @@
+%%% -*-BibTeX-*-
+%%% Do NOT edit. File created by BibTeX with style
+%%% ACM-Reference-Format-Journals [18-Jan-2012].
+
+\begin{thebibliography}{15}
+
+%%% ====================================================================
+%%% NOTE TO THE USER: you can override these defaults by providing
+%%% customized versions of any of these macros before the \bibliography
+%%% command.  Each of them MUST provide its own final punctuation,
+%%% except for \shownote{} and \showURL{}.  The latter two
+%%% do not use final punctuation, in order to avoid confusing it with
+%%% the Web address.
+%%%
+%%% To suppress output of a particular field, define its macro to expand
+%%% to an empty string, or better, \unskip, like this:
+%%%
+%%% \newcommand{\showURL}[1]{\unskip}   % LaTeX syntax
+%%%
+%%% \def \showURL #1{\unskip}           % plain TeX syntax
+%%%
+%%% ====================================================================
+
+\ifx \showCODEN    \undefined \def \showCODEN     #1{\unskip}     \fi
+\ifx \showISBNx    \undefined \def \showISBNx     #1{\unskip}     \fi
+\ifx \showISBNxiii \undefined \def \showISBNxiii  #1{\unskip}     \fi
+\ifx \showISSN     \undefined \def \showISSN      #1{\unskip}     \fi
+\ifx \showLCCN     \undefined \def \showLCCN      #1{\unskip}     \fi
+\ifx \shownote     \undefined \def \shownote      #1{#1}          \fi
+\ifx \showarticletitle \undefined \def \showarticletitle #1{#1}   \fi
+\ifx \showURL      \undefined \def \showURL       {\relax}        \fi
+% The following commands are used for tagged output and should be
+% invisible to TeX
+\providecommand\bibfield[2]{#2}
+\providecommand\bibinfo[2]{#2}
+\providecommand\natexlab[1]{#1}
+\providecommand\showeprint[2][]{arXiv:#2}
+
+\bibitem[Balusu(2026)]%
+        {otep_3594}
+\bibfield{author}{\bibinfo{person}{Krishna~Chaitanya Balusu}.}
+  \bibinfo{year}{2026}\natexlab{}.
+\newblock \bibinfo{title}{{AI} Agent Planning Semantic Conventions}.
+\newblock \bibinfo{howpublished}{OpenTelemetry Semantic Conventions Pull
+  Request \#3594}.
+\newblock
+\urldef\tempurl%
+\url{https://github.com/open-telemetry/semantic-conventions/pull/3594}
+\showURL{%
+\tempurl}
+
+
+\bibitem[Barke et~al\mbox{.}(2026)]%
+        {agentrx}
+\bibfield{author}{\bibinfo{person}{Shraddha Barke}, \bibinfo{person}{Anirudh
+  Goyal}, \bibinfo{person}{Aniket Khare}, \bibinfo{person}{Aman Singh},
+  \bibinfo{person}{Suman Nath}, {and} \bibinfo{person}{Chetan Bansal}.}
+  \bibinfo{year}{2026}\natexlab{}.
+\newblock \bibinfo{title}{{AgentRx}: Diagnosing {AI} Agent Failures from
+  Execution Trajectories}.
+\newblock
+\showeprint[arxiv]{2602.02475}
+\href{https://doi.org/10.48550/arXiv.2602.02475}{doi:\nolinkurl{10.48550/arXiv.2602.02475}}
+
+
+\bibitem[Cemri et~al\mbox{.}(2025)]%
+        {mast}
+\bibfield{author}{\bibinfo{person}{Mert Cemri}, \bibinfo{person}{Melissa~Z.
+  Pan}, \bibinfo{person}{Shuyi Yang}, {et~al\mbox{.}}}
+  \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{Why Do Multi-Agent {LLM} Systems Fail?}. In
+  \bibinfo{booktitle}{\emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}}.
+\newblock
+\href{https://doi.org/10.48550/arXiv.2503.13657}{doi:\nolinkurl{10.48550/arXiv.2503.13657}}
+
+
+\bibitem[Dong et~al\mbox{.}(2024)]%
+        {agentops}
+\bibfield{author}{\bibinfo{person}{Liming Dong}, \bibinfo{person}{Qinghua Lu},
+  {and} \bibinfo{person}{Liming Zhu}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \bibinfo{title}{{AgentOps}: Enabling Observability of {LLM} Agents}.
+\newblock
+\showeprint[arxiv]{2411.05285}
+\href{https://doi.org/10.48550/arXiv.2411.05285}{doi:\nolinkurl{10.48550/arXiv.2411.05285}}
+
+
+\bibitem[Epperson et~al\mbox{.}(2025)]%
+        {agdebugger}
+\bibfield{author}{\bibinfo{person}{Will Epperson}, \bibinfo{person}{Gagan
+  Bansal}, \bibinfo{person}{Victor Dibia}, \bibinfo{person}{Adam Fourney},
+  \bibinfo{person}{Jacob Gerrits}, \bibinfo{person}{Erkang Zhu}, {and}
+  \bibinfo{person}{Saleema Amershi}.} \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{Interactive Debugging and Steering of Multi-Agent
+  {AI} Systems}. In \bibinfo{booktitle}{\emph{Proceedings of the 2025 CHI
+  Conference on Human Factors in Computing Systems (CHI)}}.
+\newblock
+\href{https://doi.org/10.1145/3706598.3713581}{doi:\nolinkurl{10.1145/3706598.3713581}}
+
+
+\bibitem[Jimenez et~al\mbox{.}(2024)]%
+        {swebench}
+\bibfield{author}{\bibinfo{person}{Carlos~E. Jimenez}, \bibinfo{person}{John
+  Yang}, \bibinfo{person}{Alexander Wettig}, \bibinfo{person}{Shunyu Yao},
+  \bibinfo{person}{Kexin Pei}, \bibinfo{person}{Ofir Press}, {and}
+  \bibinfo{person}{Karthik Narasimhan}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{{SWE-bench}: Can Language Models Resolve Real-World
+  {GitHub} Issues?}. In \bibinfo{booktitle}{\emph{Proceedings of the 12th
+  International Conference on Learning Representations (ICLR)}}.
+\newblock
+\urldef\tempurl%
+\url{https://openreview.net/forum?id=VTF8yNQM66}
+\showURL{%
+\tempurl}
+
+
+\bibitem[{LangChain Inc.}(2024)]%
+        {langsmith}
+\bibfield{author}{\bibinfo{person}{{LangChain Inc.}}}
+  \bibinfo{year}{2024}\natexlab{}.
+\newblock \bibinfo{title}{{LangSmith}: Production-Grade {LLM} Platform}.
+\newblock
+\urldef\tempurl%
+\url{https://smith.langchain.com/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[{Langfuse GmbH}(2024)]%
+        {langfuse}
+\bibfield{author}{\bibinfo{person}{{Langfuse GmbH}}.}
+  \bibinfo{year}{2024}\natexlab{}.
+\newblock \bibinfo{title}{{Langfuse}: Open-Source {LLM} Observability}.
+\newblock
+\urldef\tempurl%
+\url{https://langfuse.com/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[{OpenTelemetry Authors}(2024)]%
+        {otel}
+\bibfield{author}{\bibinfo{person}{{OpenTelemetry Authors}}.}
+  \bibinfo{year}{2024}\natexlab{}.
+\newblock \bibinfo{title}{{OpenTelemetry Specification v1.30}}.
+\newblock
+\urldef\tempurl%
+\url{https://opentelemetry.io/docs/specs/otel/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[Rebedea et~al\mbox{.}(2023)]%
+        {nemo_guardrails}
+\bibfield{author}{\bibinfo{person}{Traian Rebedea}, \bibinfo{person}{Razvan
+  Dinu}, \bibinfo{person}{Makesh Sreedhar}, \bibinfo{person}{Christopher
+  Parisien}, {and} \bibinfo{person}{Jonathan Cohen}.}
+  \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{{NeMo Guardrails}: A Toolkit for Controllable and
+  Safe {LLM} Applications with Programmable Rails}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 2023 Conference on Empirical
+  Methods in Natural Language Processing: System Demonstrations (EMNLP Demo)}}.
+\newblock
+\href{https://doi.org/10.18653/v1/2023.emnlp-demo.40}{doi:\nolinkurl{10.18653/v1/2023.emnlp-demo.40}}
+
+
+\bibitem[Song et~al\mbox{.}(2025)]%
+        {aegis}
+\bibfield{author}{\bibinfo{person}{Kevin Song}, \bibinfo{person}{Anand
+  Jayarajan}, \bibinfo{person}{Yaoyao Ding}, {et~al\mbox{.}}}
+  \bibinfo{year}{2025}\natexlab{}.
+\newblock \bibinfo{title}{{Aegis}: Taxonomy and Optimizations for Overcoming
+  Agent-Environment Failures in {LLM} Agents}.
+\newblock
+\showeprint[arxiv]{2508.19504}
+\href{https://doi.org/10.48550/arXiv.2508.19504}{doi:\nolinkurl{10.48550/arXiv.2508.19504}}
+
+
+\bibitem[Strauss and Corbin(1998)]%
+        {strauss_corbin}
+\bibfield{author}{\bibinfo{person}{Anselm Strauss} {and}
+  \bibinfo{person}{Juliet Corbin}.} \bibinfo{year}{1998}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{Basics of Qualitative Research}
+  (\bibinfo{edition}{2nd} ed.)}.
+\newblock \bibinfo{publisher}{Sage Publications}.
+\newblock
+
+
+\bibitem[{Traceloop}(2024)]%
+        {openllmetry}
+\bibfield{author}{\bibinfo{person}{{Traceloop}}.}
+  \bibinfo{year}{2024}\natexlab{}.
+\newblock \bibinfo{title}{{OpenLLMetry}: Open-Source {LLM} Observability}.
+\newblock
+\urldef\tempurl%
+\url{https://github.com/traceloop/openllmetry}
+\showURL{%
+\tempurl}
+
+
+\bibitem[Xiang et~al\mbox{.}(2025)]%
+        {guardagent}
+\bibfield{author}{\bibinfo{person}{Zhen Xiang}, \bibinfo{person}{Linzhi Zheng},
+  \bibinfo{person}{Yanjie Li}, {et~al\mbox{.}}}
+  \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{{GuardAgent}: Safeguard {LLM} Agents by a Guard
+  Agent via Knowledge-Enabled Reasoning}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 42nd International Conference on
+  Machine Learning (ICML)}}.
+\newblock
+\href{https://doi.org/10.48550/arXiv.2406.09187}{doi:\nolinkurl{10.48550/arXiv.2406.09187}}
+
+
+\bibitem[Zhu et~al\mbox{.}(2025)]%
+        {agentdebug}
+\bibfield{author}{\bibinfo{person}{Kunlun Zhu}, \bibinfo{person}{Zheng Liu},
+  \bibinfo{person}{Bo Li}, {et~al\mbox{.}}} \bibinfo{year}{2025}\natexlab{}.
+\newblock \bibinfo{title}{Where {LLM} Agents Fail and How They Can Learn From
+  Failures}.
+\newblock
+\showeprint[arxiv]{2509.25370}
+\href{https://doi.org/10.48550/arXiv.2509.25370}{doi:\nolinkurl{10.48550/arXiv.2509.25370}}
+
+
+\end{thebibliography}
