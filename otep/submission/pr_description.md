@@ -1,3 +1,10 @@
+> [!WARNING]
+> Background-only PR draft for the retired umbrella OTEP approach.
+>
+> Do not use this text for a live OpenTelemetry submission. The active proposal
+> path is a focused PR to `open-telemetry/semantic-conventions`, starting with
+> the minimal `plan` operation proposal in `plan_span_pr_description.md`.
+
 ## OTEP: Semantic Conventions for AI Agent Observability
 
 ### Summary

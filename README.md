@@ -89,16 +89,40 @@ instrumentor.instrument(tracer_provider=provider.tracer_provider)
 
 ### Benchmark Results
 
-In fault-detection experiments, AgentTelemetry detects **8 out of 8 fault types** at FDR = 1.0:
+The current MDE Intelligence 2026 benchmark covers **14 fault classes** across
+six telemetry conditions, seven agent frameworks, and six mocked foundation
+models (3,528 fault-injection runs + 252 fault-free controls = 3,780 rows in
+`benchmarks/results_full.tsv`). Aggregate Fault Detection Rate (FDR):
 
-- Circular delegation loops
-- Infinite tool retry loops
-- Cost explosion (runaway spending)
-- Context window overflow
-- Ungrounded LLM outputs (hallucination candidates)
-- Unattributed tool decisions
-- Token budget violations
-- Latency anomalies
+| Condition | FDR | FPR | @ FDR=1.0 |
+|---|---|---|---|
+| No telemetry | 0.000 | 0.000 | 0/14 |
+| Vanilla OTel | 0.429 | 0.000 | 6/14 |
+| OTel GenAI (current spec) | 0.429 | 0.000 | 6/14 |
+| OpenInference | 0.429 | 0.000 | 6/14 |
+| AgentTelemetry DSM (metadata) | 0.612 | 0.071 | 7/14 |
+| AgentTelemetry DSM (full) | 0.612 | 0.071 | 7/14 |
+| _DSM, conformance-complete adapter (upper bound)_ | **1.000** | **0.000** | **14/14** |
+
+The DSM is the only metamodel that can express the eight coordination,
+cognitive, and policy faults (`circular_delegation`, `hallucination`,
+`stale_retrieval`, `guardrail_bypass`, `planning_failure`, `reasoning_loop`,
+`agent_misroute`, `memory_corruption`); the three baselines all top out at
+the same six tool/LLM-attribute faults (`wrong_tool`, `infinite_loop`,
+`tool_failure`, `timeout`, `context_overflow`, `cost_explosion`). The 0.612
+aggregate is a per-app conformance issue, not a metamodel-expressivity issue:
+only the reference `custom_agent` emits the full nine-kind vocabulary; third-
+party benchmark apps emit 3/9 to 7/9 typed kinds (see
+`paper/mde2026/coverage_matrix.md`). Reproduce with:
+
+```bash
+PYTHONPATH=src:. python benchmarks/run_benchmarks.py \
+  --output benchmarks/results_full.tsv
+PYTHONPATH=src:. python benchmarks/compute_fpr.py \
+  benchmarks/results_full.tsv
+```
+
+Pinned environment in `requirements.lock`. Numbers reproduce verbatim.
 
 ## Privacy Controls
 

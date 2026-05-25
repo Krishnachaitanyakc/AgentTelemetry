@@ -1,5 +1,14 @@
 # Semantic Conventions for Autonomous AI Agent Workloads
 
+> [!WARNING]
+> Background draft only. Do not submit this document to OpenTelemetry.
+>
+> The `open-telemetry/oteps` repository is archived, and this document reflects
+> an older umbrella strategy based on `agent.*`, `llm.*`, `tool.*`, and
+> `agent.span_kind`. The active submission path is now a narrow PR to
+> `open-telemetry/semantic-conventions`, starting with the minimal `plan`
+> proposal described in `plan_span_pr_description.md` and `EXECUTION_PLAN.md`.
+
 |||
 |---|---|
 | **OTEP** | NNNN (draft) |
