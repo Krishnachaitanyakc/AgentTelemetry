@@ -50,3 +50,26 @@ Thumbs.db
 # Misc
 *.bak
 *.tmp
+
+# Third-party clones (re-clone from upstream)
+external/
+
+# LaTeX auxiliary files (regenerated on first pdflatex)
+*.aux
+*.log
+*.out
+*.blg
+*.vtc
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.toc
+*.lof
+*.lot
+
+# Build artifacts
+release_package/
+hf_bundle/
+
+# Snapshot duplicates of submitted PDFs
+paper/*/Submitted.pdf
