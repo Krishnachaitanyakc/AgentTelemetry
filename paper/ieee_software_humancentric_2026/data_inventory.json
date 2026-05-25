@@ -1,0 +1,213 @@
+{
+  "manuscript": "ieee_sw_humancentric_paper.tex",
+  "purpose": "Machine-readable inventory mapping every aggregate number cited in the paper to a specific corpus file on disk. Enables reviewer-side independent verification.",
+  "generated": "2026-05-17",
+  "corpora_used": [
+    {
+      "name": "simulated_user_study",
+      "path": "/Users/kcbalusu/Desktop/Project/research/AgentTelemetry/results/simulated_user_study/",
+      "files": [
+        "simulated_user_study.json",
+        "results_table.tsv"
+      ],
+      "numbers_cited": {
+        "aggregate_AT_accuracy_pct": {
+          "value": 91.666666666666660,
+          "source": "simulated_user_study.json :: aggregate.agenttelemetry.accuracy",
+          "ci_95": [78.17298972308114, 97.12519107287082]
+        },
+        "aggregate_OTel_accuracy_pct": {
+          "value": 25.0,
+          "source": "simulated_user_study.json :: aggregate.vanilla_otel.accuracy",
+          "ci_95": [13.750323839225388, 41.07076768320342]
+        },
+        "accuracy_improvement_pp": {
+          "value": 66.66666666666666,
+          "source": "simulated_user_study.json :: aggregate.accuracy_improvement_pp"
+        },
+        "AT_spans_examined_mean": {
+          "value": 23.13888888888889,
+          "source": "simulated_user_study.json :: aggregate.agenttelemetry.spans_examined_mean",
+          "ci_95": [21.055555555555557, 25.13888888888889]
+        },
+        "OTel_spans_examined_mean": {
+          "value": 19.22222222222222,
+          "source": "simulated_user_study.json :: aggregate.vanilla_otel.spans_examined_mean",
+          "ci_95": [17.27777777777778, 21.305555555555557]
+        },
+        "spans_examined_increase_pct": {
+          "value": 20.4,
+          "source": "derived from AT/OTel spans_examined_mean: (23.14 - 19.22) / 19.22 = 0.204"
+        },
+        "n_total_LLM_calls": 72,
+        "n_personas": 6,
+        "n_conditions": 2,
+        "n_traces_used": 6,
+        "model_used_as_persona_engine": "gpt-4o-mini",
+        "per_persona": {
+          "junior_dev_AT_accuracy_pct": 83.33333333333334,
+          "junior_dev_OTel_accuracy_pct": 16.666666666666664,
+          "senior_backend_AT_accuracy_pct": 100.0,
+          "senior_backend_OTel_accuracy_pct": 16.666666666666664,
+          "ml_engineer_AT_accuracy_pct": 83.33333333333334,
+          "ml_engineer_OTel_accuracy_pct": 16.666666666666664,
+          "sre_devops_AT_accuracy_pct": 83.33333333333334,
+          "sre_devops_OTel_accuracy_pct": 66.66666666666666,
+          "qa_engineer_AT_accuracy_pct": 100.0,
+          "qa_engineer_OTel_accuracy_pct": 16.666666666666664,
+          "tech_lead_AT_accuracy_pct": 100.0,
+          "tech_lead_OTel_accuracy_pct": 16.666666666666664
+        }
+      },
+      "per_persona_table": "Table 1 in manuscript"
+    },
+    {
+      "name": "diagnostic_quality",
+      "path": "/Users/kcbalusu/Desktop/Project/research/AgentTelemetry/results/diagnostic_quality/",
+      "files": ["diagnostic_quality.json"],
+      "numbers_cited": {
+        "n_instances": 112,
+        "n_failed_traces": 84,
+        "total_spans": 3060,
+        "AT_localization_precision_mean": 3,
+        "OTel_localization_precision_mean": 9.488095238095237,
+        "localization_reduction_pct": 68.38143036386448,
+        "AT_spans_to_diagnosis_mean": 9.464285714285714,
+        "OTel_spans_to_diagnosis_mean": 28.547619047619047,
+        "spans_to_diagnosis_reduction_pct_mean": 66.79522963245365
+      }
+    },
+    {
+      "name": "real_fpr",
+      "path": "/Users/kcbalusu/Desktop/Project/research/AgentTelemetry/results/real_fpr/",
+      "files": ["fpr_results.json"],
+      "numbers_cited": {
+        "n_traces": 112,
+        "n_spans": 3060,
+        "thresholds": {
+          "max_retries": 5,
+          "cost_threshold": 0.5,
+          "token_growth_factor": 2.0,
+          "hallucination_min_confidence": 0.5
+        },
+        "fpr_anomaly": 0.0,
+        "fpr_hallucination": 0.0,
+        "fpr_combined": 0.0
+      }
+    },
+    {
+      "name": "threshold_sensitivity",
+      "path": "/Users/kcbalusu/Desktop/Project/research/AgentTelemetry/results/threshold_sensitivity/",
+      "files": ["sensitivity_results.json", "sensitivity_table.tsv"],
+      "n_swebench_spans_in_corpus": 3060,
+      "n_real_llm_spans_in_corpus": 6949,
+      "table_2_cells": {
+        "max_retries=2_swebench_total": 15,
+        "max_retries=2_real_llm_total": 34,
+        "max_retries=3_swebench_total": 7,
+        "max_retries=3_real_llm_total": 26,
+        "max_retries=4_swebench_total": 5,
+        "max_retries=4_real_llm_total": 8,
+        "max_retries=5_swebench_total": 3,
+        "max_retries=5_real_llm_total": 6,
+        "max_retries=6_swebench_total": 3,
+        "max_retries=6_real_llm_total": 6,
+        "cost_threshold=0.05_swebench_total": 7,
+        "cost_threshold=0.05_real_llm_total": 26,
+        "cost_threshold=0.075_swebench_total": 7,
+        "cost_threshold=0.075_real_llm_total": 26,
+        "cost_threshold=0.1_swebench_total": 7,
+        "cost_threshold=0.1_real_llm_total": 26,
+        "cost_threshold=0.125_swebench_total": 7,
+        "cost_threshold=0.125_real_llm_total": 26,
+        "cost_threshold=0.15_swebench_total": 7,
+        "cost_threshold=0.15_real_llm_total": 26,
+        "token_growth_factor=1.15_swebench_total": 25,
+        "token_growth_factor=1.15_real_llm_total": 59,
+        "token_growth_factor=1.3_swebench_total": 7,
+        "token_growth_factor=1.3_real_llm_total": 26,
+        "token_growth_factor=1.45_swebench_total": 4,
+        "token_growth_factor=1.45_real_llm_total": 21,
+        "token_growth_factor=1.6_swebench_total": 4,
+        "token_growth_factor=1.6_real_llm_total": 21,
+        "token_growth_factor=2.0_swebench_total": 4,
+        "token_growth_factor=2.0_real_llm_total": 21
+      },
+      "per_detector_decomposition_at_default": {
+        "real_llm_token_growth_factor=1.3": {
+          "infinite_retry": 21,
+          "context_overflow": 5,
+          "circular_delegation": 0,
+          "cost_explosion": 0,
+          "total": 26
+        },
+        "real_llm_token_growth_factor=1.45": {
+          "infinite_retry": 21,
+          "context_overflow": 0,
+          "circular_delegation": 0,
+          "cost_explosion": 0,
+          "total": 21
+        }
+      },
+      "increase_pct_max_retries_2_vs_3_real_llm": 30.769230769230770,
+      "increase_pct_token_growth_factor_1.15_vs_1.3_real_llm": 126.923076923076920
+    },
+    {
+      "name": "head_to_head",
+      "path": "/Users/kcbalusu/Desktop/Project/research/AgentTelemetry/results/head_to_head/",
+      "files": ["comparison_table.tsv", "comparison_results.json"],
+      "table_3_cells": {
+        "vanilla_otel_visible_span_kinds": 0,
+        "openllmetry_visible_span_kinds": 4,
+        "agenttelemetry_visible_span_kinds": 9,
+        "vanilla_otel_reasoning_loops_detected": 0,
+        "openllmetry_reasoning_loops_detected": 0,
+        "agenttelemetry_reasoning_loops_detected": 72,
+        "vanilla_otel_guardrail_events_visible": 0,
+        "openllmetry_guardrail_events_visible": 0,
+        "agenttelemetry_guardrail_events_visible": 34,
+        "vanilla_otel_planning_visibility": 0,
+        "openllmetry_planning_visibility": 0,
+        "agenttelemetry_planning_visibility": 112,
+        "vanilla_otel_memory_ops_visible": 0,
+        "openllmetry_memory_ops_visible": 0,
+        "agenttelemetry_memory_ops_visible": 224,
+        "vanilla_otel_tool_errors_detected": 0,
+        "openllmetry_tool_errors_detected": 17,
+        "agenttelemetry_tool_errors_detected": 17,
+        "trace_data_lost": {
+          "vanilla_otel_pct": 100,
+          "openllmetry_pct": 42,
+          "agenttelemetry_pct": 0
+        }
+      }
+    },
+    {
+      "name": "detector_applicability",
+      "path": "/Users/kcbalusu/Desktop/Project/research/AgentTelemetry/results/detector_applicability/",
+      "files": ["summary.json", "summary.tsv"],
+      "numbers_cited": {
+        "n_issues_attempted": 17,
+        "n_reconstructible": 11,
+        "n_insufficient_evidence": 6,
+        "reconstructible_rate": 0.6470588235294118,
+        "insufficient_evidence_rate": 0.3529411764705882,
+        "n_fault_types_covered": 6,
+        "fault_types": ["infinite_loop", "context_overflow", "circular_delegation", "tool_failure", "guardrail_bypass", "memory_corruption"],
+        "source_frameworks": ["LangChain", "LangGraph", "langchain-aws", "CrewAI", "NVIDIA NeMo Guardrails"]
+      }
+    }
+  ],
+  "numbers_cited_in_lead_vignette": {
+    "specific_instance_id": "django__django-10914",
+    "source": "simulated_user_study/results_table.tsv :: row 2-7 (this instance is one of the 6 traces used)"
+  },
+  "anti_overlap_guarantees": {
+    "swebench_n60_outcomes_used": false,
+    "swebench_n60_v2_outcomes_used": false,
+    "intervention_replication_claimed": false,
+    "edge_cloud_continuum_framing_used": false,
+    "vendor_cli_absorption_framing_used": false,
+    "rationale": "All five negations above confirm orthogonality vs. paper/ieee_software_2026/ (Edge-Cloud SI submission); see overlap_analysis.md for the full inventory."
+  }
+}

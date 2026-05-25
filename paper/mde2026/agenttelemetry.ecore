@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="agenttelemetry"
+    nsURI="https://agenttelemetry.dev/dsm/1.0"
+    nsPrefix="at">
+
+  <eClassifiers xsi:type="ecore:EClass" name="Trace">
+    <eStructuralFeatures xsi:type="ecore:EReference"
+        name="spans" upperBound="-1" containment="true"
+        eType="#//AgentSpan"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="AgentSpan" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="parentId"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="agentId"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind"
+        eType="#//SpanKind"/>
+    <eStructuralFeatures xsi:type="ecore:EReference"
+        name="attributes" upperBound="-1" containment="true"
+        eType="#//Attribute"/>
+    <eStructuralFeatures xsi:type="ecore:EReference"
+        name="baggage" upperBound="-1" containment="true"
+        eType="#//BaggageEntry"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Attribute">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="BaggageEntry">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EEnum" name="SpanKind">
+    <eLiterals name="AGENT" value="0"/>
+    <eLiterals name="LLM_CALL" value="1"/>
+    <eLiterals name="TOOL_CALL" value="2"/>
+    <eLiterals name="PLANNING" value="3"/>
+    <eLiterals name="REASONING" value="4"/>
+    <eLiterals name="DELEGATION" value="5"/>
+    <eLiterals name="GUARD_RAIL" value="6"/>
+    <eLiterals name="RETRIEVAL" value="7"/>
+    <eLiterals name="MEMORY" value="8"/>
+  </eClassifiers>
+
+  <!-- Concrete subclasses, one per SpanKind. Each is a thin specialization
+       of AgentSpan; the concrete class is the typed view, the kind enum
+       is retained for OTel SDK interoperability and is constrained by an
+       EMF generated derivation rule kind = SpanKind::<concrete subclass>. -->
+  <eClassifiers xsi:type="ecore:EClass" name="Agent" eSuperTypes="#//AgentSpan"/>
+  <eClassifiers xsi:type="ecore:EClass" name="LlmCall" eSuperTypes="#//AgentSpan"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ToolCall" eSuperTypes="#//AgentSpan"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Planning" eSuperTypes="#//AgentSpan"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Reasoning" eSuperTypes="#//AgentSpan"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GuardRail" eSuperTypes="#//AgentSpan"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Retrieval" eSuperTypes="#//AgentSpan"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Memory" eSuperTypes="#//AgentSpan"/>
+
+  <!-- Delegation extends AgentSpan. The structural features sourceAgent and
+       targetAgent are DERIVED projections (derived="true", transient="true",
+       volatile="true") of the generic Attribute entries
+       'delegation.source_agent' / 'delegation.target_agent' that the OCL
+       invariants in agenttelemetry.ocl read directly. Concretely, an EMF
+       generated derivation body returns
+       self.attributes->select(a | a.key='delegation.source_agent')
+                      ->first().value
+       (and similarly for target). The W3C Baggage keys agenttelemetry.agent_id
+       and agenttelemetry.parent_agent_id are an orthogonal cross-process
+       propagation mechanism, not the in-trace topology check. -->
+  <eClassifiers xsi:type="ecore:EClass" name="Delegation" eSuperTypes="#//AgentSpan">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sourceAgent"
+        derived="true" transient="true" volatile="true"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation"
+            value="Derived from attributes['delegation.source_agent']."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetAgent"
+        derived="true" transient="true" volatile="true"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation"
+            value="Derived from attributes['delegation.target_agent']."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <!-- The kind:SpanKind discriminator on AgentSpan is itself derived: in EMF
+       it is computed from the runtime concrete subclass of the AgentSpan
+       instance, so that model-level conformance ensures kind always equals
+       the SpanKind literal corresponding to the concrete subclass. The
+       derivation rule is encoded as a GenModel EAnnotation. -->
+  <eClassifiers xsi:type="ecore:EAnnotation" source="agenttelemetry/derivations">
+    <details key="kind"
+        value="self.oclType().name = SpanKind::&lt;subclass-name&gt;.toString()"/>
+  </eClassifiers>
+
+</ecore:EPackage>

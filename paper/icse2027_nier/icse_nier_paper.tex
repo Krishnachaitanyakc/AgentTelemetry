@@ -1,0 +1,548 @@
+%% ICSE 2027 NIER Track Submission
+%% Double-Anonymous.  4 pp main + 1 pp references (IEEE template).
+%% Compile: pdflatex; bibtex; pdflatex; pdflatex.
+
+\documentclass[10pt,conference]{IEEEtran}
+
+%% ---------- packages ----------
+\usepackage{cite}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[hyphens]{url}
+\usepackage{balance}
+\usepackage[hidelinks]{hyperref}
+
+\setlength{\emergencystretch}{2em}
+\tolerance=2000
+
+%% ---------- metadata (anonymized) ----------
+\title{Agent Observability is Not Microservice Observability}
+
+\author{\IEEEauthorblockN{Anonymous Author(s)}
+\IEEEauthorblockA{Submission anonymized for double-blind review}}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Large language model (LLM) agents are failing in production in ways
+fifteen years of microservice observability research cannot represent.
+A coding agent on \texttt{django\_\_django-10914} issues four
+near-identical search queries and exhausts its iteration budget; under
+the de-facto OpenTelemetry stack the failure surfaces as eight
+\texttt{INTERNAL} spans with no signal that the agent was stuck. Across
+a controlled 14-fault benchmark, vanilla OpenTelemetry and the current
+\texttt{gen\_ai.*} semantic conventions saturate at a fault-detection
+rate of 0.429 (6 of 14); the missing eight are exactly the faults that
+arise from open-ended action, model-of-the-world reasoning, and
+emergent multi-agent coordination. We argue this is not a
+missing-attribute problem but a metamodel mismatch --- the
+\emph{Cognitive-Trace Hypothesis}: agent execution is a typed
+trajectory through a cognitive state space, not a request--response
+chain over RPC. From this reframing we derive five concrete research
+questions for the SE community, each anchored to a deliverable
+artifact. One --- estimating what an autonomous agent would have done
+absent a runtime intervention --- recasts SE evaluation as causal
+inference on a non-stationary stochastic policy, a class of
+empirical-SE question the community has not previously had to confront.
+The window to set these abstractions is short: production telemetry is
+already congealing around vendor-specific platforms.
+\end{abstract}
+
+\begin{IEEEkeywords}
+LLM agents, observability, distributed tracing, OpenTelemetry, semantic
+conventions, fault detection, software engineering research agenda
+\end{IEEEkeywords}
+
+%% ====================================================================
+\section{Introduction}
+%% ====================================================================
+
+\textbf{Vignette.}
+A ReAct-style coding agent~\cite{react} attacks the SWE-bench
+Lite~\cite{swebench} instance \texttt{django\_\_django-10914}. Over four
+consecutive iterations it issues near-identical calls to
+\texttt{search\_code} with arguments
+\texttt{"FilePathField"}, \texttt{"FilePathField"},
+\texttt{"FilePathField allow\_files"}, \texttt{"FilePathField"} ---
+never converging, finally exhausting the eight-iteration budget
+without producing a patch. On the maintainer's screen this run
+renders as eight \texttt{INTERNAL} OpenTelemetry spans of
+indistinguishable type. There is no signal that an agent reasoning
+loop occurred. The span graph satisfies the OpenTelemetry
+specification~\cite{otel_spec}; the agent silently failed.
+
+\textbf{Why the obvious vanilla-OTel detector does not work.}
+A skeptic proposes a one-liner: hash the \texttt{gen\_ai.completion}
+text on each \texttt{POST /v1/chat/com\-ple\-tions} span and alarm on
+repetition. The proposal fails for two structural reasons. (i)~The
+completion payload is a multi-thousand-token chain-of-thought blob
+fusing planning, tool-argument construction, and self-critique into one
+opaque string; the \emph{step within} the chain is not addressable, so
+two ``different'' completions can encode the same underlying reasoning
+loop and two ``identical'' completions can encode different cognitive
+states. (ii)~Consecutive \texttt{chat/completions} calls in vanilla
+OTel carry no causal-edge type distinguishing ``same agent looping''
+from ``two independent agents querying the same backend'': the
+parent-child edge is the RPC parent, not the cognitive predecessor.
+The missing constructs --- a typed cognitive predecessor edge plus a
+phase-addressable span --- do not exist in the standard.
+
+This is one trace among 84 such traces in a 112-instance study using a
+recently-released open-source agent-telemetry SDK~\cite{anon_sdk_2026}.
+The same SDK's controlled benchmark shows that the gap is not an
+artifact of any one detector: vanilla OpenTelemetry and the
+\texttt{gen\_ai.*} semantic conventions both saturate at a binary
+fault-detection rate of 0.429 (6 of 14 fault classes) on a controlled
+fault-injection harness~\cite{anon_taxonomy_2026}. The eight
+undetectable faults --- planning failure, reasoning loop, guardrail
+bypass, circular delegation, memory corruption, stale retrieval, agent
+misroute, and hallucination unrelated to retrieval --- have no
+representation in a metamodel whose root abstraction is a typed RPC
+span.
+
+\textbf{Thesis.}
+Microservice observability assumes that an execution is a DAG of typed
+RPCs with bounded action spaces, no internal state worth recording, and
+a single causal call tree per request. None of those assumptions hold
+for LLM agents. The problem is not a missing attribute; the metamodel
+was designed in 2010 for a different class of
+system~\cite{dapper,tracing_practice}. We name the reframing the
+\emph{Cognitive-Trace Hypothesis}: agent observability is fundamentally
+a typed trajectory through a \emph{cognitive state} space, where
+\emph{cognitive state} denotes the agent's evolving model-of-the-world
+--- planning context, intermediate reasoning chain, memory contents,
+guardrail decisions --- updated at every internal step and not
+addressable through the request--response endpoint surface that
+microservice tracing assumes. The hypothesis is the third generation of
+a recurring SE move: distributed tracing extended single-process
+logging~\cite{dapper}; the hidden-technical-debt line extended
+software-systems monitoring for ML
+pipelines~\cite{sculley_tech_debt,breck_ml_test_score}. Agents are the
+third inflection.
+
+This paper does three things. (1)~It identifies three structural
+mismatches between microservice tracing and agent execution
+(\S\ref{sec:mismatch}). (2)~It reports one emerging empirical result
+that motivates the reframing (\S\ref{sec:emerging}). (3)~It articulates
+a research agenda of five concrete questions, each tied to a
+deliverable artifact (\S\ref{sec:agenda}), and identifies threats to
+the vision (\S\ref{sec:related},~\S\ref{sec:threats}). The deepest of
+those questions --- estimating what an agent would have done absent a
+runtime intervention --- recasts SE evaluation as causal inference on a
+non-stationary stochastic policy, a class of empirical-SE question the
+community has not previously had to confront. The audience is the SE
+research community: the problem is one of abstraction, conformance, and
+contracts --- not of training better models --- and the window to set
+these abstractions before production telemetry congeals around
+vendor-specific platforms is now.
+
+%% ====================================================================
+\section{Why Microservice Observability is Insufficient}
+\label{sec:mismatch}
+%% ====================================================================
+
+\subsection{The microservice telemetry model}
+
+Dapper~\cite{dapper}, X-Trace~\cite{xtrace}, Zipkin~\cite{zipkin},
+Jaeger~\cite{jaeger}, and the OpenTelemetry consensus~\cite{otel_spec}
+model an execution as a DAG of typed spans
+(\texttt{SERVER}, \texttt{CLIENT}, \texttt{INTERNAL},
+\texttt{PRODUCER}, \texttt{CONSUMER}) attached to fixed
+semantic-convention namespaces (\texttt{http.*}, \texttt{db.*},
+\texttt{rpc.*}, \texttt{messaging.*}). The graph is \emph{closed}: every
+node corresponds to a deployed binary's RPC boundary. Tools downstream
+(latency dashboards, error-rate SLOs, trace-graph viewers) make this
+closure assumption explicit. The closure is what makes
+the metamodel \emph{useful}: an SRE can map every span back to a service
+they can ssh into. Pivot Tracing~\cite{datadog_aps} and the broader
+AIOps literature~\cite{aiops_survey,nersession} extend this picture
+with dynamic queries and learned anomaly detectors, but the underlying
+metamodel is unchanged.
+
+\subsection{Three structural mismatches}
+
+\textbf{M1. The action space is open.}
+A microservice has a fixed RPC surface; an agent's next action is
+sampled from a learned distribution over tools, sub-agents, internal
+reasoning steps, and memory operations. The
+``\texttt{POST /v1/chat/completions}'' span at the bottom of every
+agent trace conceals whether the request was a planning decomposition,
+a guardrail check, a chain-of-thought continuation, or a final answer.
+A \texttt{SpanKind} enum sized for transport semantics cannot represent
+cognition.
+
+\textbf{M2. Causal edges are RPC parent--child, not state propagation.}
+Agent failure is dominated by state corruption that flows through a
+shared memory or context window, not through an HTTP header. When an
+agent writes a wrong fact to its memory store at iteration~3 and a
+later sub-agent retrieves it at iteration~7, no span-link in the
+existing OTel model encodes the dataflow. The \texttt{traceparent}
+W3C convention preserves causal containment but not causal data
+flow~\cite{otel_spec}.
+
+\textbf{M3. Aggregations are per-endpoint, not per-decision.}
+Microservice SLOs are formulated over $\langle \text{endpoint},
+\text{status}, \text{latency} \rangle$ tuples. An agent fleet's
+service-level concerns are over $\langle \text{task}, \text{recovery
+rate}, \text{cost-per-task}, \text{intervention-trigger-rate} \rangle$
+tuples with no pre-defined endpoint. Practitioners currently set agent
+SLOs by analogy --- ``mean latency,'' ``error rate'' --- producing
+thresholds that are meaningless on a stochastic executor.
+
+\subsection{The current state of ``LLM observability''}
+
+Commercial GenAI tracing stacks (LangSmith~\cite{langsmith},
+Langfuse~\cite{langfuse}, OpenLLMetry~\cite{openllmetry},
+AgentOps~\cite{agentops}) intercept API calls and expose
+prompt/completion content. They are useful, but their underlying span
+model inherits the microservice metamodel: a planning step and a
+summarization call are both \texttt{POST /v1/chat/completions}. As of
+the OpenTelemetry GenAI SIG draft conventions (v1.30,
+\texttt{gen\_ai.*} namespace), the standardized vocabulary covers
+\texttt{gen\_ai.system}, \texttt{gen\_ai.request.model},
+\texttt{gen\_ai.completion}, \texttt{gen\_ai.usage.*}, and the operation
+names \texttt{chat}, \texttt{execute\_tool},
+\texttt{retrieval}~\cite{otel_genai_sig}. None of these typed kinds or
+attributes addresses the cognitive predecessor edge or the
+phase-within-completion addressability that the obvious-detector
+demolition in \S\ref{sec:emerging} requires.
+OpenInference~\cite{openinference} goes furthest, defining typed
+\texttt{LLM}, \texttt{retriever}, \texttt{chain}, \texttt{agent}, and
+\texttt{guardrail} spans. It is the closest analogue to the
+proposal we sketch; the gap it leaves is, however, exactly the gap
+that matters: there is no typed distinction between a planning step
+and an interior reasoning step (both fall under \texttt{chain}); the
+\texttt{agent} span carries no source/target identifiers for typed
+inter-agent \texttt{DELEGATION}; and there is no \texttt{MEMORY} span
+kind for the read/write operations that drive most state-corruption
+faults. The OpenInference conventions are also not part of the
+OpenTelemetry standard. The OpenTelemetry GenAI SIG itself
+acknowledges fragmentation and an incomplete vocabulary as open
+issues~\cite{otel_genai_sig}. Recent failure taxonomies for multi-agent
+systems characterize \emph{what} fails but supply no runtime telemetry
+primitives capable of detecting those failures from standardized
+traces: MAST~\cite{mast} catalogs 14 failure modes from manual
+transcript analysis but does not define detection signals;
+AgentDebug~\cite{agentdebug} learns from failure transcripts but
+assumes a richer trajectory representation than vanilla OTel exposes;
+Aegis~\cite{aegis} targets agent--environment mismatches but is
+content-oriented, not span-typed; AgentRx~\cite{agentrx} diagnoses
+post-hoc from trajectories rather than from in-flight typed spans.
+AGDebugger~\cite{agdebugger} is a debugger that consumes such traces;
+without typed spans it cannot attribute the failure to a cognitive
+phase. Enforcement tools (NeMo Guardrails~\cite{nemo_guardrails},
+GuardAgent~\cite{guardagent}) are complementary --- enforcement without
+typed monitoring leaves a blind spot.
+
+%% ====================================================================
+\section{Emerging Result}
+\label{sec:emerging}
+%% ====================================================================
+
+We summarize \emph{one} number that motivates the agenda; the
+underlying benchmark is reported in full
+elsewhere~\cite{anon_taxonomy_2026}. A 9-kind agent-telemetry SDK
+\cite{anon_sdk_2026} was deployed across seven agent frameworks on 112
+SWE-bench Lite instances under a ReAct coding-agent
+architecture~\cite{react}. The SDK records nine span kinds covering
+the orchestration phases absent from the OpenTelemetry GenAI
+conventions: \texttt{AGENT}, \texttt{LLM\_CALL}, \texttt{TOOL\_CALL},
+\texttt{PLANNING}, \texttt{REASONING}, \texttt{RETRIEVAL},
+\texttt{GUARD\_RAIL}, \texttt{DELEGATION}, \texttt{MEMORY}.
+
+Of 112 runs, 84 (75\%) exhausted the iteration budget without
+producing a patch. All 84 exhibit a single structural pattern:
+three or more consecutive
+\texttt{REASONING $\to$ LLM\_CALL $\to$ TOOL\_CALL} cycles with
+near-identical tool arguments. The pattern is \emph{only visible} once
+the trace carries a typed \texttt{REASONING} span kind; under vanilla
+OpenTelemetry the same 84 traces appear as approximately 28
+undifferentiated \texttt{INTERNAL} spans each (3{,}060 spans total,
+no signal). A controlled fault-injection benchmark spanning 14 fault
+classes confirms the gap is structural rather than threshold-tunable:
+vanilla OpenTelemetry and the current \texttt{gen\_ai.*} conventions
+both saturate at a binary fault-detection rate of 0.429 (6 of 14);
+the eight undetectable faults are exactly those whose detection
+signal requires a span kind \emph{not present} in the existing
+standard, so no detector built on the standard vocabulary in
+\cite{anon_taxonomy_2026} was able to bridge the gap, independent
+of threshold choice. The number we draw on for this paper is the
+75\% silent-loop rate --- not the full benchmark --- because it is
+the minimum evidence the vision requires: \emph{the dominant failure
+mode of a deployed coding agent is silent under the de-facto
+observability standard, and the silence is metamodel-level, not
+detector-level.}
+
+%% ====================================================================
+\section{A Research Agenda}
+\label{sec:agenda}
+%% ====================================================================
+
+Five open research questions, each anchored to a concrete artifact
+the SE community can build:
+
+\textbf{RQ1: Under what conditions is a span-kind vocabulary
+\emph{saturated}, and what kinds of new agent architectures break a
+given vocabulary?}
+The OpenTelemetry GenAI conventions today expose nine \emph{operation
+names} (\texttt{chat}, \texttt{execute\_tool}, \texttt{retrieval},
+$\ldots$) but no typed \emph{kinds} for the cognitive
+orchestration phases. The pilot taxonomy~\cite{anon_taxonomy_2026}
+derives nine kinds from seven open-source frameworks and reports
+saturation after five frameworks --- but the question of how
+\emph{principled} that saturation is remains open. Does a
+debate / tree-of-thought / self-consistency architecture require
+additional kinds (e.g., \texttt{CRITIC}, \texttt{VOTE})? Should
+memory be one kind or one per backend (vector, KV, episodic)? How do
+we test, in advance, whether a candidate vocabulary will hold for
+the next architecture? \emph{Artifact:} a community-curated taxonomy
+with explicit saturation criteria, shipped as an OpenTelemetry
+semantic-convention PR. \emph{Tractable start:} a multi-coder open-
+coding study across $\geq 10$ open-source agent frameworks with
+inter-coder reliability reporting, plus a stress test against
+emerging multi-agent architectures.
+
+\textbf{RQ2: How do we specify, at design time, what a correct agent
+trace should look like?}
+Microservice OTel has no notion of an \emph{expected} trace; the
+metamodel is descriptive. For stochastic agents we need a
+contract-style language --- analogous to OCL for UML or
+trace-temporal-logic for distributed systems --- typed over cognitive
+span kinds. Figure~\ref{fig:spec} sketches the form. The contract is
+not "this trace happened" but "every trace must look like this." This
+is software contracts re-imagined for stochastic executors.
+\emph{Artifact:} an expected-trace specification language, a
+reference checker, and a corpus of specifications mined from
+successful traces. \emph{Tractable start:} mine
+\texttt{must-precede}, \texttt{must-contain}, and
+\texttt{must-not-repeat} patterns from the 28~successful SWE-bench
+runs (the complement of the 84 silent failures in~\S\ref{sec:emerging})
+in~\cite{anon_sdk_2026} and adapt LTL$_f$ for cognitive spans.
+
+\begin{figure}[t]
+\small
+\hrule\vspace{2pt}
+\begin{verbatim}
+spec ReActAgent {
+  every PLANNING span p =>
+    p :precedes (TOOL_CALL | DELEGATION)
+              :before LLM_CALL;
+  not exists consecutive REASONING r1, r2
+    where hash(r1.tool_payload)
+       == hash(r2.tool_payload);
+  every MEMORY.write w =>
+    exists MEMORY.read r in trace
+    where r.key == w.key
+      and r :after w;
+}
+\end{verbatim}
+\vspace{-4pt}\hrule
+\caption{Sketch of an expected-trace specification (RQ2) over
+cognitive span kinds. Clause~1 catches \emph{planning-failure}
+faults; clause~2 catches the \emph{reasoning-loop} pattern from the
+emerging result (\S\ref{sec:emerging}); clause~3 catches
+\emph{memory-corruption} / orphan-write faults. Operators
+(\texttt{:precedes}, \texttt{:before}, \texttt{:after},
+\texttt{exists~in~trace}) carry standard LTL$_f$-over-event-traces
+semantics typed over cognitive span kinds; full formalization is
+deferred to the artifact (RQ2). The language is intentionally open ---
+a research artifact, not a finished product.}
+\label{fig:spec}
+\end{figure}
+
+\textbf{RQ3: How do we detect agent faults that are emergent --- visible
+only in the trace as a whole, not in any single span?}
+Reasoning loops, circular delegation, planning regression, and
+Byzantine sub-agents are trace-level phenomena. The pilot benchmark
+shows that an attribute-level detector cannot catch them even with
+the right schema; one needs trace-graph queries with cognitive
+typing. \emph{Artifact:} a benchmark of trace-level fault detectors
+with ground-truth labels for at least the eight currently-undetectable
+faults, plus precision/recall reporting against a real-LLM trace
+corpus. \emph{Tractable start:} extend the MAST behavioral
+taxonomy~\cite{mast} with trace-level detection signals --- the
+12-of-14 MAST coverage already reported~\cite{anon_taxonomy_2026} is a
+starting point, not an end state.
+
+\textbf{RQ4: What is the right family of stochastic-SLO formalisms
+for non-stationary agent fleets, and how do we express them in
+telemetry?}
+Latency and error-rate are the wrong primitives: they were designed
+for stationary request--response systems with bounded action spaces.
+Candidate primitives include task-recovery rate after intervention,
+cost-per-successful-task, plan-regression-rate (the fraction of plans
+superseded within $k$ steps), and the intervention-trigger-rate of
+the safety policy --- but the deeper open question is whether agent
+SLOs need a fundamentally different formalism (e.g., per-trajectory
+percentiles, drift-aware burn-rate windows) because the underlying
+agent policy is non-stationary across model updates and tool
+upgrades.
+\emph{Artifact:} a catalog of agent-SLO patterns with PromQL/OTel-
+compatible queries, validated against at least one production agent
+fleet's traces, paired with a formal characterization of which
+patterns are robust under policy drift. \emph{Tractable start:}
+formalize the four metrics above for the pilot corpus and report
+their stability across model tiers.
+
+\textbf{RQ5: How do we close the loop --- from observability to runtime
+intervention --- without violating the principle that telemetry is
+side-effect-free?}
+Production agent platforms increasingly do this in an ad-hoc way:
+detect a cost explosion, switch to a cheaper model; detect a
+reasoning loop, inject a strategy-change prompt. The pilot
+work~\cite{anon_taxonomy_2026} reports a small $+12.5$\,pp recovery
+gain from one such intervention at $n{=}24$ (not statistically
+significant; significance is reserved for later work). Treating
+span processors as first-class \emph{actuators} re-opens questions
+SE thought it had solved: how to record the intervention as a
+causally-linked event~\cite{xtrace}; how to prevent intervention
+loops; and --- the deepest of the three --- how to estimate the
+counterfactual: what would the agent have done absent the
+intervention? That is, in effect, a causal-inference problem on a
+non-stationary stochastic policy, a class of empirical-software-
+engineering question the community has not previously had to
+confront. \emph{Artifact:} a research agenda for intervention-aware
+tracing, with formal semantics for actuator-spans and a causal-
+inference methodology for evaluating closed-loop interventions in
+non-stationary agent populations.
+
+Together these five questions cut across at least four core ICSE
+research areas (observability, testing, formal methods, debugging)
+and form a research program. None of them require advances in model
+training; all of them are squarely in the SE community's
+purview~--- abstractions, conformance, and contracts.
+
+%% ====================================================================
+\section{Related Vision Work}
+\label{sec:related}
+%% ====================================================================
+
+Position papers on AI for SE and SE for AI have laid groundwork on
+quality assurance for ML systems, on \emph{using} LLMs as SE
+tools~\cite{lo_se_in_age_of_ai}, and on the methodological threats of
+LLM-augmented research~\cite{nguyen_breaking_silence}; recent
+visions of AI-native software engineering call for re-imagining the SE
+lifecycle around foundation models~\cite{hassan_software_30}. The
+structurally closest precedent is the \emph{ML-systems observability}
+line: Sculley et~al.'s hidden-technical-debt
+argument~\cite{sculley_tech_debt} and the ML Test
+Score~\cite{breck_ml_test_score} made the case a decade ago that ML
+pipelines exhibit qualitatively new observability requirements
+(training--serving skew, feedback loops, entanglement). The
+Cognitive-Trace Hypothesis is the third generation of that move:
+distributed tracing extended single-process
+logging~\cite{dapper,tracing_practice}; ML observability extended
+distributed tracing; agent observability extends ML observability with
+open-ended action spaces and intra-trace cognitive-state evolution.
+
+Within the agent ecosystem, failure taxonomies
+\cite{mast,agentdebug,aegis} and debugging tools
+\cite{agdebugger,agentrx} make the empirical case that agent failures
+are dominated by cognitive and coordination pathologies; they do not
+position the gap as a metamodel problem for the SE community. The
+SDK~\cite{anon_sdk_2026} on which our emerging result rests proposes
+typed cognitive span kinds, but presents them as a benchmark
+contribution, not as the seed of a research agenda. The contribution
+of the present paper is the agenda framing.
+
+%% ====================================================================
+\section{Threats to the Vision}
+\label{sec:threats}
+%% ====================================================================
+
+\textbf{T1: A narrower vocabulary wins.}
+The field may converge on an LLM-only vocabulary that collapses agent
+semantics into tool-call sequences. The emerging result already shows
+this is structurally insufficient: tool-call sequences alone cannot
+distinguish a reasoning loop from a planned multi-step search.
+
+\textbf{T2: Frameworks consolidate.}
+If agent frameworks consolidate around a single dominant API,
+cross-framework abstractions may seem unnecessary. The pilot data
+shows that \emph{even within a single framework} (LangChain on the
+112-instance SWE-bench corpus in~\cite{anon_sdk_2026}) the structural
+mismatches (M1--M3) hold.
+
+\textbf{T3: Vendor capture.}
+Production telemetry may shift toward proprietary single-vendor
+platforms (Datadog LLM, Anthropic-internal, OpenAI Traces) that
+absorb the standard. SE research should pre-empt this by
+establishing open, typed semantics now --- the same role the
+Dapper paper~\cite{dapper} played for microservices.
+
+\textbf{T4: Chain-of-thought unfaithfulness.}
+The model's verbal reasoning chain need not be a faithful record of
+its internal computation~\cite{turpin_cot_unfaithful}; if a
+\texttt{REASONING} span's payload is the recorded CoT, an
+unfaithful CoT yields a misleading span. The agenda does not collapse
+under this threat because cognitive span kinds separate cognitive
+\emph{phases} from cognitive \emph{contents}: the phase-level
+structural faults that the emerging result targets (loops, missing
+planning, orphan memory writes) are detectable from phase typing and
+causal-edge structure alone, independent of CoT content faithfulness.
+Faithfulness becomes a sub-question for the contents of typed spans
+(an RQ2 specification can constrain phases without trusting CoT
+verbatim), not a refutation of the metamodel.
+
+%% ====================================================================
+\section{Future Plans}
+\label{sec:future}
+%% ====================================================================
+
+The agenda is multi-year. Concrete near-term steps planned by the
+authors and proposed for collaboration with the community:
+
+\begin{enumerate}[leftmargin=*,nosep]
+\item \textbf{Full ICSE Research-Track benchmark} extending the 14-fault
+controlled study to additional architectures (tree-of-thought,
+debate, hierarchical multi-agent) and a $\geq 500$-instance real-LLM
+corpus.
+\item \textbf{Semantic-convention proposal} of typed cognitive span
+kinds to the OpenTelemetry GenAI SIG, with a public PR (citation
+withheld for double-anonymous review) and a reference implementation
+across at least three agent frameworks. The lived experience of the
+upstream review process is itself empirical input for RQ1.
+\item \textbf{Expected-trace specification language} (RQ2), released
+as a stand-alone artifact with a checker and a mined-spec corpus.
+\item \textbf{Controlled human study} ($n \approx 30$ SE practitioners)
+measuring time-to-diagnose with versus without typed cognitive
+spans, with IRB-equivalent informed consent and pre-registered
+analysis.
+\item \textbf{Agent-SLO pattern catalog} (RQ4), validated against a
+production agent fleet's telemetry, released as an OpenTelemetry
+recipe collection.
+\end{enumerate}
+
+Anonymized artifacts (the SDK source, the SWE-bench trace corpus,
+the fault-injection harness, the semantic-convention specification)
+will be released with the camera-ready version under an open
+license.
+
+%% ====================================================================
+\section{Conclusion}
+%% ====================================================================
+
+Microservice observability is the wrong frame for autonomous agent
+execution: the metamodel was designed in 2010 for typed RPC over fixed
+action spaces. The Cognitive-Trace Hypothesis recasts agent
+observability as typed trajectories through a cognitive state space;
+the 75\% silent-loop rate under vanilla OpenTelemetry establishes the
+gap as structural. Five research questions, each anchored to a
+concrete artifact, define a tractable agenda --- one (RQ5) opens
+causal inference on non-stationary stochastic policies as a new class
+of empirical-SE question. The window to set these abstractions is
+short.
+
+%% ====================================================================
+%% References
+%% ====================================================================
+\balance
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+
+\end{document}

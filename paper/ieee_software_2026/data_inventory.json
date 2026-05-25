@@ -1,0 +1,314 @@
+{
+  "v1-opus": {
+    "model": "Opus 4.6",
+    "vendor": "Anthropic",
+    "tier": "frontier",
+    "harness": "v1 passive",
+    "path": "results/swebench_n60_opus",
+    "conditions": {
+      "control": {
+        "n": 60,
+        "patches": 51,
+        "rate": 0.85,
+        "ci_lo": 0.7388517410884038,
+        "ci_hi": 0.9190265075770431,
+        "avg_iterations": 1.03,
+        "avg_searches": 0.0,
+        "avg_patch_suppressions": 0.0,
+        "avg_intervention_triggers": 0.0,
+        "max_query_repeats_observed": 0,
+        "timeouts": 9,
+        "errors": 9
+      },
+      "intervention": {
+        "n": 60,
+        "patches": 53,
+        "rate": 0.8833333333333333,
+        "ci_lo": 0.7782097940014187,
+        "ci_hi": 0.9423235259654995,
+        "avg_iterations": 1.03,
+        "avg_searches": 0.0,
+        "avg_patch_suppressions": 0.0,
+        "avg_intervention_triggers": 0.0,
+        "max_query_repeats_observed": 0,
+        "timeouts": 7,
+        "errors": 7
+      }
+    },
+    "fisher_exact_p_two_sided": 0.7891,
+    "delta_pp": 3.33
+  },
+  "v1-sonnet": {
+    "model": "Sonnet 4.6",
+    "vendor": "Anthropic",
+    "tier": "mid",
+    "harness": "v1 passive",
+    "path": "results/swebench_n60_sonnet",
+    "conditions": {
+      "control": {
+        "n": 60,
+        "patches": 36,
+        "rate": 0.6,
+        "ci_lo": 0.47365824394206846,
+        "ci_hi": 0.714306969962345,
+        "avg_iterations": 1.0,
+        "avg_searches": 0.0,
+        "avg_patch_suppressions": 0.0,
+        "avg_intervention_triggers": 0.0,
+        "max_query_repeats_observed": 0,
+        "timeouts": 24,
+        "errors": 24
+      },
+      "intervention": {
+        "n": 60,
+        "patches": 44,
+        "rate": 0.7333333333333333,
+        "ci_lo": 0.6099104639810865,
+        "ci_hi": 0.8286750351292115,
+        "avg_iterations": 1.02,
+        "avg_searches": 0.0,
+        "avg_patch_suppressions": 0.0,
+        "avg_intervention_triggers": 0.0,
+        "max_query_repeats_observed": 0,
+        "timeouts": 16,
+        "errors": 16
+      }
+    },
+    "fisher_exact_p_two_sided": 0.1749,
+    "delta_pp": 13.33
+  },
+  "v1-haiku": {
+    "model": "Haiku 4.5",
+    "vendor": "Anthropic",
+    "tier": "budget",
+    "harness": "v1 passive",
+    "path": "results/swebench_n60_haiku",
+    "conditions": {
+      "control": {
+        "n": 60,
+        "patches": 55,
+        "rate": 0.9166666666666666,
+        "ci_lo": 0.8193083153188752,
+        "ci_hi": 0.9638800759495141,
+        "avg_iterations": 1.02,
+        "avg_searches": 0.0,
+        "avg_patch_suppressions": 0.0,
+        "avg_intervention_triggers": 0.0,
+        "max_query_repeats_observed": 0,
+        "timeouts": 5,
+        "errors": 5
+      },
+      "intervention": {
+        "n": 60,
+        "patches": 55,
+        "rate": 0.9166666666666666,
+        "ci_lo": 0.8193083153188752,
+        "ci_hi": 0.9638800759495141,
+        "avg_iterations": 1.0,
+        "avg_searches": 0.0,
+        "avg_patch_suppressions": 0.0,
+        "avg_intervention_triggers": 0.0,
+        "max_query_repeats_observed": 0,
+        "timeouts": 5,
+        "errors": 5
+      }
+    },
+    "fisher_exact_p_two_sided": 1.0,
+    "delta_pp": 0.0
+  },
+  "v1-gpt55": {
+    "model": "GPT-5.5",
+    "vendor": "OpenAI",
+    "tier": "frontier",
+    "harness": "v1 passive",
+    "path": "results/swebench_n60_gpt55",
+    "conditions": {
+      "control": {
+        "n": 60,
+        "patches": 57,
+        "rate": 0.95,
+        "ci_lo": 0.8629926537490016,
+        "ci_hi": 0.9828508088208587,
+        "avg_iterations": 1.0,
+        "avg_searches": 0.0,
+        "avg_patch_suppressions": 0.0,
+        "avg_intervention_triggers": 0.0,
+        "max_query_repeats_observed": 0,
+        "timeouts": 3,
+        "errors": 3
+      },
+      "intervention": {
+        "n": 60,
+        "patches": 57,
+        "rate": 0.95,
+        "ci_lo": 0.8629926537490016,
+        "ci_hi": 0.9828508088208587,
+        "avg_iterations": 1.0,
+        "avg_searches": 0.0,
+        "avg_patch_suppressions": 0.0,
+        "avg_intervention_triggers": 0.0,
+        "max_query_repeats_observed": 0,
+        "timeouts": 3,
+        "errors": 3
+      }
+    },
+    "fisher_exact_p_two_sided": 1.0,
+    "delta_pp": 0.0
+  },
+  "v2-opus": {
+    "model": "Opus 4.6",
+    "vendor": "Anthropic",
+    "tier": "frontier",
+    "harness": "v2 forced",
+    "path": "results/swebench_n60_v2_opus",
+    "conditions": {
+      "control": {
+        "n": 60,
+        "patches": 53,
+        "rate": 0.8833333333333333,
+        "ci_lo": 0.7782097940014187,
+        "ci_hi": 0.9423235259654995,
+        "avg_iterations": 4.03,
+        "avg_searches": 3.23,
+        "avg_patch_suppressions": 1.02,
+        "avg_intervention_triggers": 0.0,
+        "max_query_repeats_observed": 1,
+        "timeouts": 3,
+        "errors": 7
+      },
+      "intervention": {
+        "n": 60,
+        "patches": 54,
+        "rate": 0.9,
+        "ci_lo": 0.7985030550748896,
+        "ci_hi": 0.9533578005427642,
+        "avg_iterations": 4.03,
+        "avg_searches": 3.42,
+        "avg_patch_suppressions": 0.95,
+        "avg_intervention_triggers": 0.0,
+        "max_query_repeats_observed": 1,
+        "timeouts": 5,
+        "errors": 6
+      }
+    },
+    "fisher_exact_p_two_sided": 1.0,
+    "delta_pp": 1.67
+  },
+  "v2-sonnet": {
+    "model": "Sonnet 4.6",
+    "vendor": "Anthropic",
+    "tier": "mid",
+    "harness": "v2 forced",
+    "path": "results/swebench_n60_v2_sonnet",
+    "conditions": {
+      "control": {
+        "n": 60,
+        "patches": 2,
+        "rate": 0.03333333333333333,
+        "ci_lo": 0.009189126490150246,
+        "ci_hi": 0.11363987528925378,
+        "avg_iterations": 5.3,
+        "avg_searches": 0.28,
+        "avg_patch_suppressions": 4.67,
+        "avg_intervention_triggers": 0.0,
+        "max_query_repeats_observed": 1,
+        "timeouts": 17,
+        "errors": 25
+      },
+      "intervention": {
+        "n": 60,
+        "patches": 2,
+        "rate": 0.03333333333333333,
+        "ci_lo": 0.009189126490150246,
+        "ci_hi": 0.11363987528925378,
+        "avg_iterations": 5.7,
+        "avg_searches": 0.28,
+        "avg_patch_suppressions": 5.07,
+        "avg_intervention_triggers": 0.0,
+        "max_query_repeats_observed": 1,
+        "timeouts": 17,
+        "errors": 22
+      }
+    },
+    "fisher_exact_p_two_sided": 1.0,
+    "delta_pp": 0.0
+  },
+  "v2-haiku": {
+    "model": "Haiku 4.5",
+    "vendor": "Anthropic",
+    "tier": "budget",
+    "harness": "v2 forced",
+    "path": "results/swebench_n60_v2_haiku",
+    "conditions": {
+      "control": {
+        "n": 60,
+        "patches": 8,
+        "rate": 0.13333333333333333,
+        "ci_lo": 0.06914026978309641,
+        "ci_hi": 0.24165394590072103,
+        "avg_iterations": 6.45,
+        "avg_searches": 1.15,
+        "avg_patch_suppressions": 5.12,
+        "avg_intervention_triggers": 0.0,
+        "max_query_repeats_observed": 1,
+        "timeouts": 12,
+        "errors": 12
+      },
+      "intervention": {
+        "n": 60,
+        "patches": 7,
+        "rate": 0.11666666666666667,
+        "ci_lo": 0.05767647403450049,
+        "ci_hi": 0.2217902059985814,
+        "avg_iterations": 7.1,
+        "avg_searches": 1.02,
+        "avg_patch_suppressions": 5.75,
+        "avg_intervention_triggers": 0.0,
+        "max_query_repeats_observed": 1,
+        "timeouts": 10,
+        "errors": 10
+      }
+    },
+    "fisher_exact_p_two_sided": 1.0,
+    "delta_pp": -1.67
+  },
+  "v2-gpt55": {
+    "model": "GPT-5.5",
+    "vendor": "OpenAI",
+    "tier": "frontier",
+    "harness": "v2 forced",
+    "path": "results/swebench_n60_v2_gpt55",
+    "conditions": {
+      "control": {
+        "n": 60,
+        "patches": 50,
+        "rate": 0.8333333333333334,
+        "ci_lo": 0.7196814850279217,
+        "ci_hi": 0.9068692279867897,
+        "avg_iterations": 4.47,
+        "avg_searches": 2.62,
+        "avg_patch_suppressions": 0.85,
+        "avg_intervention_triggers": 0.0,
+        "max_query_repeats_observed": 1,
+        "timeouts": 10,
+        "errors": 10
+      },
+      "intervention": {
+        "n": 60,
+        "patches": 51,
+        "rate": 0.85,
+        "ci_lo": 0.7388517410884038,
+        "ci_hi": 0.9190265075770431,
+        "avg_iterations": 4.67,
+        "avg_searches": 2.77,
+        "avg_patch_suppressions": 0.92,
+        "avg_intervention_triggers": 0.0,
+        "max_query_repeats_observed": 1,
+        "timeouts": 8,
+        "errors": 8
+      }
+    },
+    "fisher_exact_p_two_sided": 1.0,
+    "delta_pp": 1.67
+  }
+}

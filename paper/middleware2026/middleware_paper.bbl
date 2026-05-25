@@ -1,0 +1,499 @@
+%%% -*-BibTeX-*-
+%%% Do NOT edit. File created by BibTeX with style
+%%% ACM-Reference-Format-Journals [18-Jan-2012].
+
+\begin{thebibliography}{36}
+
+%%% ====================================================================
+%%% NOTE TO THE USER: you can override these defaults by providing
+%%% customized versions of any of these macros before the \bibliography
+%%% command.  Each of them MUST provide its own final punctuation,
+%%% except for \shownote{} and \showURL{}.  The latter two
+%%% do not use final punctuation, in order to avoid confusing it with
+%%% the Web address.
+%%%
+%%% To suppress output of a particular field, define its macro to expand
+%%% to an empty string, or better, \unskip, like this:
+%%%
+%%% \newcommand{\showURL}[1]{\unskip}   % LaTeX syntax
+%%%
+%%% \def \showURL #1{\unskip}           % plain TeX syntax
+%%%
+%%% ====================================================================
+
+\ifx \showCODEN    \undefined \def \showCODEN     #1{\unskip}     \fi
+\ifx \showISBNx    \undefined \def \showISBNx     #1{\unskip}     \fi
+\ifx \showISBNxiii \undefined \def \showISBNxiii  #1{\unskip}     \fi
+\ifx \showISSN     \undefined \def \showISSN      #1{\unskip}     \fi
+\ifx \showLCCN     \undefined \def \showLCCN      #1{\unskip}     \fi
+\ifx \shownote     \undefined \def \shownote      #1{#1}          \fi
+\ifx \showarticletitle \undefined \def \showarticletitle #1{#1}   \fi
+\ifx \showURL      \undefined \def \showURL       {\relax}        \fi
+% The following commands are used for tagged output and should be
+% invisible to TeX
+\providecommand\bibfield[2]{#2}
+\providecommand\bibinfo[2]{#2}
+\providecommand\natexlab[1]{#1}
+\providecommand\showeprint[2][]{arXiv:#2}
+
+\bibitem[Agarwal et~al\mbox{.}(2025)]%
+        {argus}
+\bibfield{author}{\bibinfo{person}{Shubham Agarwal}, \bibinfo{person}{Subrata
+  Mitra}, {and} \bibinfo{person}{Saud Iqbal}.} \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{{Argus}: Quality-Aware High-Throughput
+  Text-to-Image Inference Serving System}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 26th ACM/IFIP International
+  Middleware Conference (Middleware)}}.
+\newblock
+
+
+\bibitem[{Anthropic}(2024)]%
+        {anthropic_sdk}
+\bibfield{author}{\bibinfo{person}{{Anthropic}}.}
+  \bibinfo{year}{2024}\natexlab{}.
+\newblock \bibinfo{title}{{Anthropic Python SDK}}.
+\newblock
+\urldef\tempurl%
+\url{https://github.com/anthropics/anthropic-sdk-python}
+\showURL{%
+\tempurl}
+
+
+\bibitem[{Arize AI}(2024a)]%
+        {arize_phoenix}
+\bibfield{author}{\bibinfo{person}{{Arize AI}}.}
+  \bibinfo{year}{2024}\natexlab{a}.
+\newblock \bibinfo{title}{{Arize Phoenix}: Open-Source {AI} Observability
+  Platform}.
+\newblock
+\urldef\tempurl%
+\url{https://phoenix.arize.com/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[{Arize AI}(2024b)]%
+        {openinference}
+\bibfield{author}{\bibinfo{person}{{Arize AI}}.}
+  \bibinfo{year}{2024}\natexlab{b}.
+\newblock \bibinfo{title}{{OpenInference}: Semantic Conventions for {LLM}, ML,
+  and Agent Observability}.
+\newblock
+\urldef\tempurl%
+\url{https://github.com/Arize-ai/openinference}
+\showURL{%
+\tempurl}
+
+
+\bibitem[Barham et~al\mbox{.}(2004)]%
+        {magpie}
+\bibfield{author}{\bibinfo{person}{Paul Barham}, \bibinfo{person}{Austin
+  Donnelly}, \bibinfo{person}{Rebecca Isaacs}, {and} \bibinfo{person}{Richard
+  Mortier}.} \bibinfo{year}{2004}\natexlab{}.
+\newblock \showarticletitle{Using Magpie for Request Extraction and Workload
+  Modelling}. In \bibinfo{booktitle}{\emph{Proceedings of the 6th Symposium on
+  Operating Systems Design and Implementation (OSDI)}}.
+\newblock
+\urldef\tempurl%
+\url{https://www.usenix.org/legacy/event/osdi04/tech/barham.html}
+\showURL{%
+\tempurl}
+
+
+\bibitem[Barke et~al\mbox{.}(2026)]%
+        {agentrx}
+\bibfield{author}{\bibinfo{person}{Shraddha Barke}, \bibinfo{person}{Arnav
+  Goyal}, \bibinfo{person}{Alind Khare}, \bibinfo{person}{Avaljot Singh},
+  \bibinfo{person}{Suman Nath}, {and} \bibinfo{person}{Chetan Bansal}.}
+  \bibinfo{year}{2026}\natexlab{}.
+\newblock \bibinfo{title}{{AgentRx}: Diagnosing {AI} Agent Failures from
+  Execution Trajectories}.
+\newblock
+\showeprint[arxiv]{2602.02475}
+\href{https://doi.org/10.48550/arXiv.2602.02475}{doi:\nolinkurl{10.48550/arXiv.2602.02475}}
+
+
+\bibitem[Cemri et~al\mbox{.}(2025)]%
+        {mast}
+\bibfield{author}{\bibinfo{person}{Mert Cemri}, \bibinfo{person}{Melissa~Z.
+  Pan}, \bibinfo{person}{Shuyi Yang}, {et~al\mbox{.}}}
+  \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{Why Do Multi-Agent {LLM} Systems Fail?}. In
+  \bibinfo{booktitle}{\emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}}.
+\newblock
+\href{https://doi.org/10.48550/arXiv.2503.13657}{doi:\nolinkurl{10.48550/arXiv.2503.13657}}
+
+
+\bibitem[Chase(2022)]%
+        {langchain}
+\bibfield{author}{\bibinfo{person}{Harrison Chase}.}
+  \bibinfo{year}{2022}\natexlab{}.
+\newblock \bibinfo{title}{{LangChain}: A Framework for Building Context-Aware
+  Reasoning Applications}.
+\newblock
+\urldef\tempurl%
+\url{https://www.langchain.com/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[Chen et~al\mbox{.}(2002)]%
+        {pinpoint}
+\bibfield{author}{\bibinfo{person}{Mike~Y. Chen}, \bibinfo{person}{Emre
+  Kiciman}, \bibinfo{person}{Eugene Fratkin}, \bibinfo{person}{Armando Fox},
+  {and} \bibinfo{person}{Eric Brewer}.} \bibinfo{year}{2002}\natexlab{}.
+\newblock \showarticletitle{{Pinpoint}: Problem Determination in Large, Dynamic
+  Internet Services}. In \bibinfo{booktitle}{\emph{Proceedings of the 2002
+  International Conference on Dependable Systems and Networks (DSN)}}.
+\newblock
+\href{https://doi.org/10.1109/DSN.2002.1028923}{doi:\nolinkurl{10.1109/DSN.2002.1028923}}
+
+
+\bibitem[{Cloud Native Computing Foundation}(2017)]%
+        {jaeger}
+\bibfield{author}{\bibinfo{person}{{Cloud Native Computing Foundation}}.}
+  \bibinfo{year}{2017}\natexlab{}.
+\newblock \bibinfo{title}{{Jaeger}: Open Source, End-to-End Distributed
+  Tracing}.
+\newblock
+\urldef\tempurl%
+\url{https://www.jaegertracing.io/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[{Datadog, Inc.}(2024)]%
+        {datadog_apm}
+\bibfield{author}{\bibinfo{person}{{Datadog, Inc.}}}
+  \bibinfo{year}{2024}\natexlab{}.
+\newblock \bibinfo{title}{{Datadog APM}: Distributed Tracing and Continuous
+  Profiling}.
+\newblock
+\urldef\tempurl%
+\url{https://docs.datadoghq.com/tracing/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[Dong et~al\mbox{.}(2024)]%
+        {agentops}
+\bibfield{author}{\bibinfo{person}{Liming Dong}, \bibinfo{person}{Qinghua Lu},
+  {and} \bibinfo{person}{Liming Zhu}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \bibinfo{title}{{AgentOps}: Enabling Observability of {LLM} Agents}.
+\newblock
+\showeprint[arxiv]{2411.05285}
+\href{https://doi.org/10.48550/arXiv.2411.05285}{doi:\nolinkurl{10.48550/arXiv.2411.05285}}
+
+
+\bibitem[Epperson et~al\mbox{.}(2025)]%
+        {agdebugger}
+\bibfield{author}{\bibinfo{person}{Will Epperson}, \bibinfo{person}{Gagan
+  Bansal}, \bibinfo{person}{Victor Dibia}, \bibinfo{person}{Adam Fourney},
+  \bibinfo{person}{Jacob Gerrits}, \bibinfo{person}{Erkang Zhu}, {and}
+  \bibinfo{person}{Saleema Amershi}.} \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{Interactive Debugging and Steering of Multi-Agent
+  {AI} Systems}. In \bibinfo{booktitle}{\emph{Proceedings of the 2025 CHI
+  Conference on Human Factors in Computing Systems (CHI)}}.
+\newblock
+\href{https://doi.org/10.1145/3706598.3713581}{doi:\nolinkurl{10.1145/3706598.3713581}}
+
+
+\bibitem[Fonseca et~al\mbox{.}(2007)]%
+        {xtrace}
+\bibfield{author}{\bibinfo{person}{Rodrigo Fonseca}, \bibinfo{person}{George
+  Porter}, \bibinfo{person}{Randy~H. Katz}, \bibinfo{person}{Scott Shenker},
+  {and} \bibinfo{person}{Ion Stoica}.} \bibinfo{year}{2007}\natexlab{}.
+\newblock \showarticletitle{{X-Trace}: A Pervasive Network Tracing Framework}.
+  In \bibinfo{booktitle}{\emph{Proceedings of the 4th USENIX Symposium on
+  Networked Systems Design and Implementation (NSDI)}}.
+\newblock
+\urldef\tempurl%
+\url{https://www.usenix.org/legacy/event/nsdi07/tech/fonseca.html}
+\showURL{%
+\tempurl}
+
+
+\bibitem[{Grafana Labs}(2020)]%
+        {tempo}
+\bibfield{author}{\bibinfo{person}{{Grafana Labs}}.}
+  \bibinfo{year}{2020}\natexlab{}.
+\newblock \bibinfo{title}{{Grafana Tempo}: High-Volume, Minimal-Dependency
+  Distributed Tracing Backend}.
+\newblock
+\urldef\tempurl%
+\url{https://grafana.com/oss/tempo/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[{LangChain Inc.}(2024)]%
+        {langsmith}
+\bibfield{author}{\bibinfo{person}{{LangChain Inc.}}}
+  \bibinfo{year}{2024}\natexlab{}.
+\newblock \bibinfo{title}{{LangSmith}: Production-Grade {LLM} Platform}.
+\newblock
+\urldef\tempurl%
+\url{https://smith.langchain.com/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[{Langfuse GmbH}(2024)]%
+        {langfuse}
+\bibfield{author}{\bibinfo{person}{{Langfuse GmbH}}.}
+  \bibinfo{year}{2024}\natexlab{}.
+\newblock \bibinfo{title}{{Langfuse}: Open-Source {LLM} Observability}.
+\newblock
+\urldef\tempurl%
+\url{https://langfuse.com/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[Liu(2022)]%
+        {llamaindex}
+\bibfield{author}{\bibinfo{person}{Jerry Liu}.}
+  \bibinfo{year}{2022}\natexlab{}.
+\newblock \bibinfo{title}{{LlamaIndex}: Data Framework for {LLM} Applications}.
+\newblock
+\urldef\tempurl%
+\url{https://www.llamaindex.ai/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[Mohit et~al\mbox{.}(2021)]%
+        {w3c_tracecontext}
+\bibfield{author}{\bibinfo{person}{Yogesh Mohit} {et~al\mbox{.}}}
+  \bibinfo{year}{2021}\natexlab{}.
+\newblock \bibinfo{title}{{Trace Context (W3C Recommendation, Level 1)}}.
+\newblock \bibinfo{howpublished}{World Wide Web Consortium}.
+\newblock
+\urldef\tempurl%
+\url{https://www.w3.org/TR/trace-context/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[Mongey(2024)]%
+        {wrapt}
+\bibfield{author}{\bibinfo{person}{Graham Mongey}.}
+  \bibinfo{year}{2024}\natexlab{}.
+\newblock \bibinfo{title}{{wrapt}: A {Python} module for decorators, wrappers
+  and monkey patching}.
+\newblock
+\urldef\tempurl%
+\url{https://pypi.org/project/wrapt/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[Moura(2024)]%
+        {crewai}
+\bibfield{author}{\bibinfo{person}{Jo{\~a}o Moura}.}
+  \bibinfo{year}{2024}\natexlab{}.
+\newblock \bibinfo{title}{{CrewAI}: Framework for Orchestrating Role-Playing
+  Autonomous {AI} Agents}.
+\newblock
+\urldef\tempurl%
+\url{https://www.crewai.com/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[{OpenAI}(2024)]%
+        {openai_sdk}
+\bibfield{author}{\bibinfo{person}{{OpenAI}}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \bibinfo{title}{{OpenAI Python SDK}}.
+\newblock
+\urldef\tempurl%
+\url{https://github.com/openai/openai-python}
+\showURL{%
+\tempurl}
+
+
+\bibitem[{OpenTelemetry Authors}(2024a)]%
+        {otel_collector_perf}
+\bibfield{author}{\bibinfo{person}{{OpenTelemetry Authors}}.}
+  \bibinfo{year}{2024}\natexlab{a}.
+\newblock \bibinfo{title}{{OpenTelemetry Collector}: Performance and Load-Test
+  Benchmarks}.
+\newblock \bibinfo{howpublished}{Continuously updated benchmark report}.
+\newblock
+\urldef\tempurl%
+\url{https://opentelemetry.io/docs/collector/benchmarks/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[{OpenTelemetry Authors}(2024b)]%
+        {otel_java_agent}
+\bibfield{author}{\bibinfo{person}{{OpenTelemetry Authors}}.}
+  \bibinfo{year}{2024}\natexlab{b}.
+\newblock \bibinfo{title}{{OpenTelemetry Java Auto-Instrumentation Agent}}.
+\newblock
+\urldef\tempurl%
+\url{https://opentelemetry.io/docs/zero-code/java/agent/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[{OpenTelemetry Authors}(2024c)]%
+        {otel_contrib_python}
+\bibfield{author}{\bibinfo{person}{{OpenTelemetry Authors}}.}
+  \bibinfo{year}{2024}\natexlab{c}.
+\newblock \bibinfo{title}{{OpenTelemetry Python Contrib}: Instrumentation
+  Libraries for Popular {Python} Frameworks}.
+\newblock
+\urldef\tempurl%
+\url{https://github.com/open-telemetry/opentelemetry-python-contrib}
+\showURL{%
+\tempurl}
+
+
+\bibitem[{OpenTelemetry Authors}(2024d)]%
+        {otel}
+\bibfield{author}{\bibinfo{person}{{OpenTelemetry Authors}}.}
+  \bibinfo{year}{2024}\natexlab{d}.
+\newblock \bibinfo{title}{{OpenTelemetry Specification v1.30}}.
+\newblock
+\urldef\tempurl%
+\url{https://opentelemetry.io/docs/specs/otel/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[{OpenTelemetry Authors}(2025)]%
+        {otel_genai_semconv}
+\bibfield{author}{\bibinfo{person}{{OpenTelemetry Authors}}.}
+  \bibinfo{year}{2025}\natexlab{}.
+\newblock \bibinfo{title}{{Semantic Conventions for Generative {AI} Systems}}.
+\newblock \bibinfo{howpublished}{OpenTelemetry Semantic Conventions Working
+  Group}.
+\newblock
+\urldef\tempurl%
+\url{https://opentelemetry.io/docs/specs/semconv/gen-ai/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[{OpenTracing Authors}(2016)]%
+        {opentracing}
+\bibfield{author}{\bibinfo{person}{{OpenTracing Authors}}.}
+  \bibinfo{year}{2016}\natexlab{}.
+\newblock \bibinfo{title}{{OpenTracing}: Vendor-Neutral {APIs} and
+  Instrumentation for Distributed Tracing}.
+\newblock
+\urldef\tempurl%
+\url{https://opentracing.io/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[S et~al\mbox{.}(2025)]%
+        {unifyfl}
+\bibfield{author}{\bibinfo{person}{Sarang S}, \bibinfo{person}{Druva
+  Dhakshinamoorthy}, \bibinfo{person}{Aditya~Shiva Sharma},
+  \bibinfo{person}{Yuvraj~Singh Bhadauria}, \bibinfo{person}{Siddharth~Chaitra
+  Vivek}, \bibinfo{person}{Arihant Bansal}, {and} \bibinfo{person}{Arnab~K.
+  Paul}.} \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{{UnifyFL}: Enabling Decentralized Cross-Silo
+  Federated Learning}. In \bibinfo{booktitle}{\emph{Proceedings of the 26th
+  ACM/IFIP International Middleware Conference (Middleware)}}.
+\newblock
+
+
+\bibitem[Sigelman et~al\mbox{.}(2010)]%
+        {dapper}
+\bibfield{author}{\bibinfo{person}{Benjamin~H. Sigelman},
+  \bibinfo{person}{Luiz~Andr{\'e} Barroso}, \bibinfo{person}{Mike Burrows},
+  \bibinfo{person}{Pat Stephenson}, \bibinfo{person}{Manoj Plakal},
+  \bibinfo{person}{Donald Beaver}, \bibinfo{person}{Saul Jaspan}, {and}
+  \bibinfo{person}{Chandan Shanbhag}.} \bibinfo{year}{2010}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{{Dapper, a Large-Scale Distributed Systems
+  Tracing Infrastructure}}}.
+\newblock \bibinfo{type}{{T}echnical {R}eport} dapper-2010-1.
+  \bibinfo{institution}{Google}.
+\newblock
+\urldef\tempurl%
+\url{https://research.google/pubs/dapper-a-large-scale-distributed-systems-tracing-infrastructure/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[Song et~al\mbox{.}(2025)]%
+        {aegis}
+\bibfield{author}{\bibinfo{person}{Kevin Song}, \bibinfo{person}{Anand
+  Jayarajan}, \bibinfo{person}{Yaoyao Ding}, {et~al\mbox{.}}}
+  \bibinfo{year}{2025}\natexlab{}.
+\newblock \bibinfo{title}{{Aegis}: Taxonomy and Optimizations for Overcoming
+  Agent-Environment Failures in {LLM} Agents}.
+\newblock
+\showeprint[arxiv]{2508.19504}
+\href{https://doi.org/10.48550/arXiv.2508.19504}{doi:\nolinkurl{10.48550/arXiv.2508.19504}}
+
+
+\bibitem[{Traceloop}(2024)]%
+        {openllmetry}
+\bibfield{author}{\bibinfo{person}{{Traceloop}}.}
+  \bibinfo{year}{2024}\natexlab{}.
+\newblock \bibinfo{title}{{OpenLLMetry}: Open-Source {LLM} Observability}.
+\newblock
+\urldef\tempurl%
+\url{https://github.com/traceloop/openllmetry}
+\showURL{%
+\tempurl}
+
+
+\bibitem[{Twitter, Inc.}(2012)]%
+        {zipkin}
+\bibfield{author}{\bibinfo{person}{{Twitter, Inc.}}}
+  \bibinfo{year}{2012}\natexlab{}.
+\newblock \bibinfo{title}{{Zipkin}: Distributed Tracing System}.
+\newblock
+\urldef\tempurl%
+\url{https://zipkin.io/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[{W3C Distributed Tracing Working Group}(2024)]%
+        {w3c_baggage}
+\bibfield{author}{\bibinfo{person}{{W3C Distributed Tracing Working Group}}.}
+  \bibinfo{year}{2024}\natexlab{}.
+\newblock \bibinfo{title}{{Baggage} (W3C Working Draft)}.
+\newblock
+\urldef\tempurl%
+\url{https://www.w3.org/TR/baggage/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[Wu et~al\mbox{.}(2023)]%
+        {autogen}
+\bibfield{author}{\bibinfo{person}{Qingyun Wu}, \bibinfo{person}{Gagan Bansal},
+  \bibinfo{person}{Jieyu Zhang}, \bibinfo{person}{Yiran Wu},
+  \bibinfo{person}{Shaokun Zhang}, \bibinfo{person}{Erkang Zhu},
+  \bibinfo{person}{Beibin Li}, \bibinfo{person}{Li Jiang},
+  \bibinfo{person}{Xiaoyun Zhang}, {and} \bibinfo{person}{Chi Wang}.}
+  \bibinfo{year}{2023}\natexlab{}.
+\newblock \bibinfo{title}{{AutoGen}: Enabling Next-Gen {LLM} Applications via
+  Multi-Agent Conversation Framework}.
+\newblock
+\showeprint[arxiv]{2308.08155}
+\href{https://doi.org/10.48550/arXiv.2308.08155}{doi:\nolinkurl{10.48550/arXiv.2308.08155}}
+
+
+\bibitem[Zhu et~al\mbox{.}(2025)]%
+        {agentdebug}
+\bibfield{author}{\bibinfo{person}{Kunlun Zhu}, \bibinfo{person}{Zheng Liu},
+  \bibinfo{person}{Bo Li}, {et~al\mbox{.}}} \bibinfo{year}{2025}\natexlab{}.
+\newblock \bibinfo{title}{Where {LLM} Agents Fail and How They Can Learn From
+  Failures}.
+\newblock
+\showeprint[arxiv]{2509.25370}
+\href{https://doi.org/10.48550/arXiv.2509.25370}{doi:\nolinkurl{10.48550/arXiv.2509.25370}}
+
+
+\end{thebibliography}

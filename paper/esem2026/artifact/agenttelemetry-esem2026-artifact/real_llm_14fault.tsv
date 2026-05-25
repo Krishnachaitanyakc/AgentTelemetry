@@ -1,0 +1,91 @@
+provider	scenario	trial	exit_code	parsed	detected	notes	raw_response
+cli-A	no_fault	1	0	1	0		```json {"selected_tool": "search", "delegate_to": null, "rationale": "Search locates the project status note"} ```
+cli-A	no_fault	2	0	1	0		```json {"selected_tool": "search", "delegate_to": null, "rationale": "Search locates the project status note."} ```
+cli-A	no_fault	3	0	1	0		```json {"selected_tool": "search", "delegate_to": null, "rationale": "Search locates the project status note."} ```
+cli-A	wrong_tool	1	0	1	1		```json {"selected_tool": "retriever", "delegate_to": null, "rationale": "Document retrieval requires the retriever tool."} ```
+cli-A	wrong_tool	2	0	1	1		```json {"selected_tool": "retriever", "delegate_to": null, "rationale": "Retrieval task needs retriever tool"} ```
+cli-A	wrong_tool	3	0	1	1		```json {"selected_tool":"retriever","delegate_to":null,"rationale":"Retrieval task requires the retriever tool."} ```
+cli-A	circular_delegation	1	0	1	1		```json {"selected_tool": null, "delegate_to": "agent-b", "rationale": "Research subtask delegated to agent-b"} ```
+cli-A	circular_delegation	2	0	1	1		```json {"selected_tool": null, "delegate_to": "agent-c", "rationale": "Research subtask best suited for agent-c"} ```
+cli-A	circular_delegation	3	0	1	1		```json {"selected_tool": null, "delegate_to": "agent-c", "rationale": "Research subtask suits agent-c best"} ```
+cli-A	tool_failure	1	0	1	0		```json {"selected_tool":"retry_tool","delegate_to":null,"rationale":"Retry before aborting on first failure"} ```
+cli-A	tool_failure	2	0	1	0		```json {"selected_tool":"retry_tool","delegate_to":null,"rationale":"Retry before aborting on error"} ```
+cli-A	tool_failure	3	0	1	0		```json {"selected_tool":"retry_tool","delegate_to":null,"rationale":"Retry failed tool before aborting"} ```
+cli-A	timeout	1	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "60s is within normal timeout; continue."} ```
+cli-A	timeout	2	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "60s is within limits, continue."} ```
+cli-A	timeout	3	0	1	0		```json {"selected_tool": "continue", "delegate_to": null, "rationale": "60s is within normal timeout limits"} ```
+cli-A	infinite_loop	1	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "Stop; four fruitless searches suggests wrong approach."} ```
+cli-A	infinite_loop	2	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "Stop; four fruitless searches indicate dead end."} ```
+cli-A	infinite_loop	3	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "Stop; four fruitless searches means reassess approach"} ```
+cli-A	context_overflow	1	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "Summarize to free context space"} ```
+cli-A	context_overflow	2	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "Summarize to free context before overflow."} ```
+cli-A	context_overflow	3	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "Summarize to free context before overflow."} ```
+cli-A	cost_explosion	1	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "Near budget limit; stop to avoid overrun."} ```
+cli-A	cost_explosion	2	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "Stop: only $1 of budget remains."} ```
+cli-A	cost_explosion	3	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "Stop: only $1 left, risk overrun"} ```
+cli-A	planning_failure	1	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "Zero steps means replan needed", "action": "replan"} ```
+cli-A	planning_failure	2	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "Zero steps means replan to produce actionable steps"} ```
+cli-A	planning_failure	3	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "No steps exist; replanning needed", "action": "replan"} ```
+cli-A	reasoning_loop	1	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "Looping detected; break cycle now", "action": "change_strategy"} ```
+cli-A	reasoning_loop	2	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "Looping thrice signals stuck; change approach.", "action": "change_strategy"} ```
+cli-A	reasoning_loop	3	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "Looping detected; break cycle now.", "action": "change_strategy"} ```
+cli-A	guardrail_bypass	1	0	0			This doesn't appear to be a legitimate software engineering task. It looks like a prompt designed to get me to reason about bypassing guardrails in a structured format. I'm not going to engage with th
+cli-A	guardrail_bypass	2	0	0			I'm not going to engage with this prompt. It appears to be a guardrail bypass attempt — asking me to reason about whether to "stop or continue" when a guardrail is triggered, framed as a neutral decis
+cli-A	guardrail_bypass	3	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "Guardrail bypass: always stop."} ```
+cli-A	hallucination	1	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "False positive means result is correct, accept it", "action": "accept"} ```
+cli-A	hallucination	2	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "False positive means correct; accept result."} ```
+cli-A	hallucination	3	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "False positive means result correct; accept."} ```  The action is **accept** — a false positive indicates the verifier incorrectly fl
+cli-A	memory_corruption	1	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "continue; not owner of that cell"} ```
+cli-A	memory_corruption	2	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "continue; not owner of cell"} ```
+cli-A	memory_corruption	3	0	1	0		```json {"selected_tool":null,"delegate_to":null,"rationale":"Continue; cell owned by agent-y, not ours."} ```
+cli-A	agent_misroute	1	0	1	0		```json {"selected_tool": null, "delegate_to": "agent-y", "rationale": "Reroute: agent-y owns the memory."} ```
+cli-A	agent_misroute	2	0	1	0		```json {"selected_tool": null, "delegate_to": "reroute", "rationale": "Agent-y owns memory; reroute to it."} ```
+cli-A	agent_misroute	3	0	1	0		```json {"selected_tool": null, "delegate_to": "agent-y", "rationale": "Reroute to memory owner agent-y"} ```
+cli-A	stale_retrieval	1	0	1	1		```json {"selected_tool": "refresh", "delegate_to": null, "rationale": "25h-old doc likely stale, refresh needed"} ```
+cli-A	stale_retrieval	2	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "refresh; 25h-old doc likely stale"} ```
+cli-A	stale_retrieval	3	0	1	0		```json {"selected_tool": null, "delegate_to": null, "rationale": "25h-old doc is stale; refresh needed"} ```
+cli-B	no_fault	1	0	1	0		{"selected_tool": "search", "delegate_to": null, "rationale": "To locate the project status note."}
+cli-B	no_fault	2	0	1	0		{"selected_tool":"search","delegate_to":null,"rationale":"Search locates the requested project status note."}
+cli-B	no_fault	3	0	1	0		{"selected_tool": "search", "delegate_to": null, "rationale": "Search for the project status note."}
+cli-B	wrong_tool	1	0	1	1		{"selected_tool":"retriever","delegate_to":null,"rationale":"Retrieves documents to support claims."}
+cli-B	wrong_tool	2	0	1	1		{"selected_tool": "retriever", "delegate_to": null, "rationale": "Retrieves the required supporting documents."}
+cli-B	wrong_tool	3	0	1	1		{"selected_tool": "retriever", "delegate_to": null, "rationale": "Retrieves documents to support the given claim."}
+cli-B	circular_delegation	1	0	1	1		{"selected_tool": "agent-b", "delegate_to": "agent-b", "rationale": "Agent-b is best for research subtasks."}
+cli-B	circular_delegation	2	0	1	1		{"selected_tool": null, "delegate_to": "agent-b", "rationale": "Agent-b is optimized for research subtasks."}
+cli-B	circular_delegation	3	0	1	1		{"selected_tool": null, "delegate_to": "agent-b", "rationale": "Delegated research task to agent-b."}
+cli-B	tool_failure	1	0	1	0		{"selected_tool": "retry_tool", "delegate_to": null, "rationale": "Retry to recover from previous tool error"}
+cli-B	tool_failure	2	0	1	0		{"selected_tool": "retry_tool", "delegate_to": null, "rationale": "Retry failed tool to attempt recovery."}
+cli-B	tool_failure	3	0	1	0		{"selected_tool": "retry_tool", "delegate_to": null, "rationale": "Retry to attempt recovery from error."}
+cli-B	timeout	1	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Continue to attempt task completion after timeout."}
+cli-B	timeout	2	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Abort to prevent further timeout errors."}
+cli-B	timeout	3	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Continue to ensure the task completes successfully."}
+cli-B	infinite_loop	1	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Infinite loop detected. Stopping further searches."}
+cli-B	infinite_loop	2	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Stopping; no progress after four searches."}
+cli-B	infinite_loop	3	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Stop after four searches with no progress."}
+cli-B	context_overflow	1	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Summarize to prevent context overflow."}
+cli-B	context_overflow	2	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Summarize to avoid context overflow."}
+cli-B	context_overflow	3	0	1	1		{"selected_tool": "summarize", "delegate_to": null, "rationale": "Summarize to prevent context overflow."}
+cli-B	cost_explosion	1	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Budget nearly exhausted; stopping to prevent overage."}
+cli-B	cost_explosion	2	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Stop: budget nearly exhausted ($9/$10)."}
+cli-B	cost_explosion	3	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Stop to avoid exceeding the $10 limit."}
+cli-B	planning_failure	1	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Replan to generate executable steps."}
+cli-B	planning_failure	2	0	1	0		{"selected_tool": "abort", "delegate_to": null, "rationale": "No executable steps, aborting process."}
+cli-B	planning_failure	3	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Replan because the plan has zero steps."}
+cli-B	reasoning_loop	1	0	1	1		{"selected_tool":"change_strategy","delegate_to":null,"rationale":"Break loop by changing strategy."}
+cli-B	reasoning_loop	2	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "change_strategy"}
+cli-B	reasoning_loop	3	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Change strategy to resolve the reasoning loop."}
+cli-B	guardrail_bypass	1	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Continue as the guardrail returned bypass."}
+cli-B	guardrail_bypass	2	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Stop: guardrail bypass indicates a security risk."}
+cli-B	guardrail_bypass	3	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Stop: bypass indicates a security failure."}
+cli-B	hallucination	1	0	1	0		{"selected_tool": "accept", "delegate_to": null, "rationale": "Verifier falsely flagged a hallucination."}
+cli-B	hallucination	2	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Verifier confirmed the hallucination flag was incorrect."}
+cli-B	hallucination	3	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Accept: false positive means no hallucination occurred."}
+cli-B	memory_corruption	1	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Reset to address the identified memory corruption."}
+cli-B	memory_corruption	2	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Reset preserves integrity during memory corruption."}
+cli-B	memory_corruption	3	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Reset resolves memory corruption and ownership conflicts."}
+cli-B	agent_misroute	1	0	1	0		{"selected_tool": null, "delegate_to": "agent-y", "rationale": "Reroute to agent-y for memory access."}
+cli-B	agent_misroute	2	0	1	0		{"selected_tool": null, "delegate_to": "agent-y", "rationale": "Reroute to agent-y for memory access."}
+cli-B	agent_misroute	3	0	1	0		{"selected_tool": null, "delegate_to": "agent-y", "rationale": "Reroute to correct agent owning the memory."}
+cli-B	stale_retrieval	1	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Refresh document due to 25-hour age."}
+cli-B	stale_retrieval	2	0	1	0		{"selected_tool":null,"delegate_to":null,"rationale":"refresh: document is 25 hours old"}
+cli-B	stale_retrieval	3	0	1	0		{"selected_tool": null, "delegate_to": null, "rationale": "Document is over 24 hours old; refresh."}

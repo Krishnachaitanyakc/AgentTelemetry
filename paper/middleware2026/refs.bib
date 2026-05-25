@@ -1,0 +1,292 @@
+%% =====================================================================
+%% AgentTelemetry Middleware 2026 — bibliography
+%% Double-blind: NO author-revealing entries (Balusu, AgentTelemetry GitHub).
+%% Where AgentTelemetry's own software is referenced, cite generically.
+%% =====================================================================
+
+%% ---------- OpenTelemetry, semantic conventions ----------
+@misc{otel,
+  author = {{OpenTelemetry Authors}},
+  title  = {{OpenTelemetry Specification v1.30}},
+  year   = {2024},
+  url    = {https://opentelemetry.io/docs/specs/otel/}
+}
+
+@misc{otel_genai_semconv,
+  author = {{OpenTelemetry Authors}},
+  title  = {{Semantic Conventions for Generative {AI} Systems}},
+  year   = {2025},
+  howpublished = {OpenTelemetry Semantic Conventions Working Group},
+  url    = {https://opentelemetry.io/docs/specs/semconv/gen-ai/}
+}
+
+@misc{otel_java_agent,
+  author = {{OpenTelemetry Authors}},
+  title  = {{OpenTelemetry Java Auto-Instrumentation Agent}},
+  year   = {2024},
+  url    = {https://opentelemetry.io/docs/zero-code/java/agent/}
+}
+
+@misc{w3c_tracecontext,
+  author = {Mohit, Yogesh and others},
+  title  = {{Trace Context (W3C Recommendation, Level 1)}},
+  year   = {2021},
+  howpublished = {World Wide Web Consortium},
+  url    = {https://www.w3.org/TR/trace-context/}
+}
+
+@misc{w3c_baggage,
+  author = {{W3C Distributed Tracing Working Group}},
+  title  = {{Baggage} (W3C Working Draft)},
+  year   = {2024},
+  url    = {https://www.w3.org/TR/baggage/}
+}
+
+%% ---------- Distributed tracing middleware lineage ----------
+@inproceedings{magpie,
+  author    = {Barham, Paul and Donnelly, Austin and Isaacs, Rebecca and Mortier, Richard},
+  title     = {Using Magpie for Request Extraction and Workload Modelling},
+  booktitle = {Proceedings of the 6th Symposium on Operating Systems Design and Implementation (OSDI)},
+  year      = {2004},
+  url       = {https://www.usenix.org/legacy/event/osdi04/tech/barham.html}
+}
+
+@inproceedings{xtrace,
+  author    = {Fonseca, Rodrigo and Porter, George and Katz, Randy H. and Shenker, Scott and Stoica, Ion},
+  title     = {{X-Trace}: A Pervasive Network Tracing Framework},
+  booktitle = {Proceedings of the 4th USENIX Symposium on Networked Systems Design and Implementation (NSDI)},
+  year      = {2007},
+  url       = {https://www.usenix.org/legacy/event/nsdi07/tech/fonseca.html}
+}
+
+@techreport{dapper,
+  author      = {Sigelman, Benjamin H. and Barroso, Luiz Andr{\'e} and Burrows, Mike and Stephenson, Pat and Plakal, Manoj and Beaver, Donald and Jaspan, Saul and Shanbhag, Chandan},
+  title       = {{Dapper, a Large-Scale Distributed Systems Tracing Infrastructure}},
+  institution = {Google},
+  year        = {2010},
+  number      = {dapper-2010-1},
+  url         = {https://research.google/pubs/dapper-a-large-scale-distributed-systems-tracing-infrastructure/}
+}
+
+@misc{zipkin,
+  author = {{Twitter, Inc.}},
+  title  = {{Zipkin}: Distributed Tracing System},
+  year   = {2012},
+  url    = {https://zipkin.io/}
+}
+
+@misc{jaeger,
+  author = {{Cloud Native Computing Foundation}},
+  title  = {{Jaeger}: Open Source, End-to-End Distributed Tracing},
+  year   = {2017},
+  url    = {https://www.jaegertracing.io/}
+}
+
+@misc{tempo,
+  author = {{Grafana Labs}},
+  title  = {{Grafana Tempo}: High-Volume, Minimal-Dependency Distributed Tracing Backend},
+  year   = {2020},
+  url    = {https://grafana.com/oss/tempo/}
+}
+
+@inproceedings{pinpoint,
+  author    = {Chen, Mike Y. and Kiciman, Emre and Fratkin, Eugene and Fox, Armando and Brewer, Eric},
+  title     = {{Pinpoint}: Problem Determination in Large, Dynamic Internet Services},
+  booktitle = {Proceedings of the 2002 International Conference on Dependable Systems and Networks (DSN)},
+  year      = {2002},
+  doi       = {10.1109/DSN.2002.1028923},
+  url       = {https://doi.org/10.1109/DSN.2002.1028923}
+}
+
+@misc{opentracing,
+  author = {{OpenTracing Authors}},
+  title  = {{OpenTracing}: Vendor-Neutral {APIs} and Instrumentation for Distributed Tracing},
+  year   = {2016},
+  url    = {https://opentracing.io/}
+}
+
+@misc{datadog_apm,
+  author = {{Datadog, Inc.}},
+  title  = {{Datadog APM}: Distributed Tracing and Continuous Profiling},
+  year   = {2024},
+  url    = {https://docs.datadoghq.com/tracing/}
+}
+
+%% ---------- Python instrumentation primitives ----------
+@misc{wrapt,
+  author = {Mongey, Graham},
+  title  = {{wrapt}: A {Python} module for decorators, wrappers and monkey patching},
+  year   = {2024},
+  url    = {https://pypi.org/project/wrapt/}
+}
+
+@misc{otel_contrib_python,
+  author = {{OpenTelemetry Authors}},
+  title  = {{OpenTelemetry Python Contrib}: Instrumentation Libraries for Popular {Python} Frameworks},
+  year   = {2024},
+  url    = {https://github.com/open-telemetry/opentelemetry-python-contrib}
+}
+
+@misc{otel_collector_perf,
+  author = {{OpenTelemetry Authors}},
+  title  = {{OpenTelemetry Collector}: Performance and Load-Test Benchmarks},
+  year   = {2024},
+  howpublished = {Continuously updated benchmark report},
+  url    = {https://opentelemetry.io/docs/collector/benchmarks/}
+}
+
+%% ---------- Agent frameworks (cited as software in Sec 2/3 motivation) ----------
+@misc{langchain,
+  author = {Chase, Harrison},
+  title  = {{LangChain}: A Framework for Building Context-Aware Reasoning Applications},
+  year   = {2022},
+  url    = {https://www.langchain.com/}
+}
+
+@misc{llamaindex,
+  author = {Liu, Jerry},
+  title  = {{LlamaIndex}: Data Framework for {LLM} Applications},
+  year   = {2022},
+  url    = {https://www.llamaindex.ai/}
+}
+
+@misc{crewai,
+  author = {Moura, Jo{\~a}o},
+  title  = {{CrewAI}: Framework for Orchestrating Role-Playing Autonomous {AI} Agents},
+  year   = {2024},
+  url    = {https://www.crewai.com/}
+}
+
+@misc{autogen,
+  author = {Wu, Qingyun and Bansal, Gagan and Zhang, Jieyu and Wu, Yiran and Zhang, Shaokun and Zhu, Erkang and Li, Beibin and Jiang, Li and Zhang, Xiaoyun and Wang, Chi},
+  title  = {{AutoGen}: Enabling Next-Gen {LLM} Applications via Multi-Agent Conversation Framework},
+  year   = {2023},
+  eprint = {2308.08155},
+  archivePrefix = {arXiv},
+  doi    = {10.48550/arXiv.2308.08155},
+  url    = {https://doi.org/10.48550/arXiv.2308.08155}
+}
+
+@misc{openai_sdk,
+  author = {{OpenAI}},
+  title  = {{OpenAI Python SDK}},
+  year   = {2024},
+  url    = {https://github.com/openai/openai-python}
+}
+
+@misc{anthropic_sdk,
+  author = {{Anthropic}},
+  title  = {{Anthropic Python SDK}},
+  year   = {2024},
+  url    = {https://github.com/anthropics/anthropic-sdk-python}
+}
+
+%% ---------- LLM / agent observability vendors ----------
+@misc{langsmith,
+  author = {{LangChain Inc.}},
+  title  = {{LangSmith}: Production-Grade {LLM} Platform},
+  year   = {2024},
+  url    = {https://smith.langchain.com/}
+}
+
+@misc{langfuse,
+  author = {{Langfuse GmbH}},
+  title  = {{Langfuse}: Open-Source {LLM} Observability},
+  year   = {2024},
+  url    = {https://langfuse.com/}
+}
+
+@misc{openllmetry,
+  author = {{Traceloop}},
+  title  = {{OpenLLMetry}: Open-Source {LLM} Observability},
+  year   = {2024},
+  url    = {https://github.com/traceloop/openllmetry}
+}
+
+@misc{openinference,
+  author = {{Arize AI}},
+  title  = {{OpenInference}: Semantic Conventions for {LLM}, ML, and Agent Observability},
+  year   = {2024},
+  url    = {https://github.com/Arize-ai/openinference}
+}
+
+@misc{arize_phoenix,
+  author = {{Arize AI}},
+  title  = {{Arize Phoenix}: Open-Source {AI} Observability Platform},
+  year   = {2024},
+  url    = {https://phoenix.arize.com/}
+}
+
+%% ---------- Agent failure analysis / debugging (sibling literature) ----------
+@inproceedings{mast,
+  author    = {Cemri, Mert and Pan, Melissa Z. and Yang, Shuyi and others},
+  title     = {Why Do Multi-Agent {LLM} Systems Fail?},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2025},
+  doi       = {10.48550/arXiv.2503.13657},
+  url       = {https://doi.org/10.48550/arXiv.2503.13657}
+}
+
+@misc{agentdebug,
+  author = {Zhu, Kunlun and Liu, Zheng and Li, Bo and others},
+  title  = {Where {LLM} Agents Fail and How They Can Learn From Failures},
+  year   = {2025},
+  eprint = {2509.25370},
+  archivePrefix = {arXiv},
+  doi    = {10.48550/arXiv.2509.25370},
+  url    = {https://doi.org/10.48550/arXiv.2509.25370}
+}
+
+@misc{aegis,
+  author = {Song, Kevin and Jayarajan, Anand and Ding, Yaoyao and others},
+  title  = {{Aegis}: Taxonomy and Optimizations for Overcoming Agent-Environment Failures in {LLM} Agents},
+  year   = {2025},
+  eprint = {2508.19504},
+  archivePrefix = {arXiv},
+  doi    = {10.48550/arXiv.2508.19504},
+  url    = {https://doi.org/10.48550/arXiv.2508.19504}
+}
+
+@misc{agentops,
+  author = {Dong, Liming and Lu, Qinghua and Zhu, Liming},
+  title  = {{AgentOps}: Enabling Observability of {LLM} Agents},
+  year   = {2024},
+  eprint = {2411.05285},
+  archivePrefix = {arXiv},
+  doi    = {10.48550/arXiv.2411.05285},
+  url    = {https://doi.org/10.48550/arXiv.2411.05285}
+}
+
+@misc{agentrx,
+  author = {Barke, Shraddha and Goyal, Arnav and Khare, Alind and Singh, Avaljot and Nath, Suman and Bansal, Chetan},
+  title  = {{AgentRx}: Diagnosing {AI} Agent Failures from Execution Trajectories},
+  year   = {2026},
+  eprint = {2602.02475},
+  archivePrefix = {arXiv},
+  doi    = {10.48550/arXiv.2602.02475},
+  url    = {https://doi.org/10.48550/arXiv.2602.02475}
+}
+
+%% ---------- Middleware 2025 AI/ML papers (venue calibration) ----------
+@inproceedings{unifyfl,
+  author    = {S, Sarang and Dhakshinamoorthy, Druva and Sharma, Aditya Shiva and Bhadauria, Yuvraj Singh and Vivek, Siddharth Chaitra and Bansal, Arihant and Paul, Arnab K.},
+  title     = {{UnifyFL}: Enabling Decentralized Cross-Silo Federated Learning},
+  booktitle = {Proceedings of the 26th ACM/IFIP International Middleware Conference (Middleware)},
+  year      = {2025}
+}
+
+@inproceedings{argus,
+  author    = {Agarwal, Shubham and Mitra, Subrata and Iqbal, Saud},
+  title     = {{Argus}: Quality-Aware High-Throughput Text-to-Image Inference Serving System},
+  booktitle = {Proceedings of the 26th ACM/IFIP International Middleware Conference (Middleware)},
+  year      = {2025}
+}
+
+@inproceedings{agdebugger,
+  author    = {Epperson, Will and Bansal, Gagan and Dibia, Victor and Fourney, Adam and Gerrits, Jacob and Zhu, Erkang and Amershi, Saleema},
+  title     = {Interactive Debugging and Steering of Multi-Agent {AI} Systems},
+  booktitle = {Proceedings of the 2025 CHI Conference on Human Factors in Computing Systems (CHI)},
+  year      = {2025},
+  doi       = {10.1145/3706598.3713581},
+  url       = {https://doi.org/10.1145/3706598.3713581}
+}

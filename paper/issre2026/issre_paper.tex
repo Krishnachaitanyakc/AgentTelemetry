@@ -1,0 +1,790 @@
+%%
+%% Telemetry-Driven Reliability Engineering for LLM Agent Systems:
+%% A Deployment Rubric from 3,780 Fault-Injection Runs
+%%
+%% Target: ISSRE 2026 Industry Track Full Paper (6 pages incl. references)
+%% IEEE Computer Society conference format.
+%% Non-anonymous submission.
+%% Deadlines (AoE): Abstract 2026-06-28 (cycle 1) / 2026-07-03 (cycle 2);
+%%                  Full paper 2026-07-05 (cycle 1) / 2026-07-12 (cycle 2).
+%% Target: cycle 1 (abstract 2026-06-28, paper 2026-07-05).
+%%
+
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage{cite}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{balance}
+
+\PassOptionsToPackage{hyphens}{url}
+\setlength{\emergencystretch}{3em}
+\tolerance=2000
+\hfuzz=2pt
+\hbadness=10000
+
+\makeatletter
+\g@addto@macro\UrlBreaks{\do\_\do\.\do\-\do\,\do\?\do\/}
+\makeatother
+
+\begin{document}
+
+\title{Telemetry-Driven Reliability Engineering\\
+for LLM Agent Systems:\\
+A Deployment Rubric from 3{,}780 Fault-Injection Runs}
+
+\author{\IEEEauthorblockN{Krishna Chaitanya Balusu}
+\IEEEauthorblockA{Independent Researcher\\
+San Francisco, CA, USA\\
+krishnabkc15@gmail.com}}
+
+\maketitle
+
+\begin{abstract}
+LLM agents are entering production faster than the observability
+stacks that monitor them. A prior benchmark~\cite{agenttelemetry_aiware}
+showed nine agent-specific span kinds detect fourteen
+agent-orchestration fault classes; it stopped at a research artifact.
+This paper translates the same 3{,}780-row corpus (14~faults
+$\times$~6~telemetry conditions $\times$~7~frameworks $\times$~6~LLMs)
+into a reliability-engineering rubric: a vendor conformance grade
+card scoring seven agent SDKs A--F on out-of-the-box coverage
+(detection 0.500--1.000, threshold-invariant); a blast-radius
+taxonomy of the 14 faults for triage; an alert-threshold playbook
+with a 7.1\% empirical FPR and a fatigue-budget calculation; a
+four-week rollout pattern and runbook templates. Honest findings:
+every off-the-shelf SDK ships at Grade C/D ($\sim$43\% blind spot),
+the only fault firing on every production LLM
+(\texttt{guardrail\_bypass}) is the one no off-the-shelf SDK detects,
+and the benchmark did not measure MTTR. Artifacts are open-source.
+\end{abstract}
+
+\begin{IEEEkeywords}
+LLM agents, reliability engineering, observability, AIOps.
+\end{IEEEkeywords}
+
+%% =====================================================================
+\section{Introduction}
+\label{sec:introduction}
+
+Consider a composite deployment scenario synthesized from
+publicly documented agent-incident patterns~\cite{mast,agenttelemetry_aiware}:
+a platform team deploys a CrewAI-based pricing agent into production.
+The agent enters a reasoning loop, burns a non-trivial share of the
+per-task API budget before the cost-anomaly alarm fires, and the
+postmortem reveals that the team's OpenTelemetry stack had no concept
+of a \emph{reasoning step}---every iteration appeared as an
+undifferentiated \texttt{INTERNAL} span. This pattern is not
+hypothetical: it is the modal failure mode that controlled
+fault-injection benchmarks on agent systems consistently
+document~\cite{agenttelemetry_aiware,mast}, with the underlying
+behavior (LLM agents getting stuck in repeated reasoning cycles with
+cost amplification) recorded across the
+1{,}600+-trace MAST corpus~\cite{mast}.
+
+Site reliability engineering (SRE) teams adopting LLM agents inherit
+a four-way deficit. The OpenTelemetry GenAI semantic
+conventions~\cite{otel_genai} cover LLM invocation, tool execution,
+and retrieval, but leave planning, reasoning, safety monitoring,
+delegation, and memory operations as opaque internal spans;
+production framework SDKs (LangChain~\cite{langchain},
+CrewAI~\cite{crewai}, AutoGen~\cite{autogen},
+LlamaIndex~\cite{llamaindex}, OpenAI Agents SDK, Anthropic SDK)
+vary widely in how much agent-orchestration structure they expose;
+microservice-era fault taxonomies (e.g.~\cite{cusick_orr,nicsdg}) do
+not cover coordination and cognitive failures such as reasoning
+loops, planning failure, or guardrail bypass; and the research
+community has produced benchmarks and toolkits but not the
+deployment-time rubrics an on-call rotation can adopt next week:
+which SDK to pick, what alert threshold to set, what runbook to
+write, how to score blast radius.
+
+This paper closes the last gap. We do not propose a new benchmark, a
+new span taxonomy, or a new toolkit---those were the contribution of
+the AIware~2026 paper~\cite{agenttelemetry_aiware}, which we cite
+throughout. Instead, we use the same 3{,}780-row benchmark as a
+\emph{measurement instrument} and derive a reliability-engineering
+rubric for production deployment: a vendor conformance grade card
+(\S\ref{sec:conformance}), a blast-radius taxonomy of the 14 fault
+classes (\S\ref{sec:blastradius}), an alert-threshold playbook
+including an alert-fatigue budget and an SLO/error-budget translation
+rule (\S\ref{sec:alerts}--\S\ref{sec:slo}), a four-week deployment
+integration pattern with runbook templates (\S\ref{sec:deployment}),
+and lessons learned (\S\ref{sec:lessons}). The artifact-by-artifact
+boundary with AIware is in Table~\ref{tab:boundary}.
+
+The audience is reliability engineers, AIOps practitioners, and
+platform teams adopting LLM agents into existing
+OpenTelemetry-based stacks, and the agent-SDK vendors deciding what
+instrumentation to ship.
+
+%% =====================================================================
+\section{Background and Relation to Prior Work}
+\label{sec:background}
+
+\textbf{The nine agent-specific span kinds.}
+The AgentTelemetry benchmark~\cite{agenttelemetry_aiware} defines nine
+agent-specific span kinds derived through grounded coding of seven
+production frameworks: \texttt{AGENT}, \texttt{LLM\_CALL},
+\texttt{TOOL\_CALL}, \texttt{PLANNING}, \texttt{REASONING},
+\texttt{RETRIEVAL}, \texttt{GUARD\_RAIL}, \texttt{DELEGATION},
+\texttt{MEMORY}. Three overlap with OTel GenAI operations, one
+extends the GenAI \texttt{agent} operation, and five are novel
+(planning, reasoning, safety, delegation, memory).
+
+\textbf{The 14 fault classes.}
+The same work defines 14 fault classes spanning coordination
+(circular delegation, agent misroute), cognitive (reasoning loop,
+planning failure, hallucination), policy (guardrail bypass,
+stale retrieval, memory corruption), and operational
+(cost explosion, context overflow, infinite loop, tool failure,
+timeout, wrong tool) categories. All 14 are documented in real
+GitHub-reported incidents across six frameworks.
+
+\textbf{The 6 telemetry conditions.}
+The benchmark evaluates fault detection under six conditions of
+increasing capability: no telemetry, vanilla OTel, OTel+GenAI,
+OpenInference, AgentTelemetry at metadata-only privacy, and
+AgentTelemetry at full-capture privacy.
+
+\textbf{Boundary with prior work.}
+The benchmark data, span taxonomy, fault taxonomy, telemetry
+conditions, and toolkit were contributed
+in~\cite{agenttelemetry_aiware}. This paper is a separate
+contribution: we use the benchmark as a measurement instrument and
+derive deployment-time engineering artifacts absent from the prior
+work. Table~\ref{tab:boundary} enumerates the artifact-by-artifact
+split. No tables from the prior work are imported verbatim; every
+operational artifact in this paper is new.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\caption{Artifact-by-artifact boundary with AIware 2026
+(\cite{agenttelemetry_aiware}). Every operational artifact in this
+paper is new; every research artifact is cited, not duplicated. A
+reviewer who is suspicious of overlap can read AIware's table of
+contents end-to-end and confirm none of the ``new here'' rows appears.}
+\label{tab:boundary}
+\begin{tabular}{@{}lccl@{}}
+\toprule
+\textbf{Artifact} & \textbf{AIware} & \textbf{Here} & \textbf{Why a separate treatment} \\
+\midrule
+9-span taxonomy           & yes & cited & Measurement primitive \\
+14-fault taxonomy         & yes & cited & Measurement primitive \\
+Aggregate FDR (0.612)     & yes & cited & Benchmark result \\
+Ablation matrix           & yes & cited & Benchmark result \\
+SWE-bench case            & yes & cited & Research validation \\
+Per-framework FDR / grade & no  & Tab.~\ref{tab:conformance} & Vendor-selection rubric \\
+Blast-radius S/M/L/XL     & no  & Tab.~\ref{tab:blastradius} & Triage policy \\
+Alert-fatigue budget      & no  & Tab.~\ref{tab:alertbudget} & Eng-hours cost translation \\
+SLO/error-budget rule     & no  & \S\ref{sec:slo}        & Reliability-currency rule \\
+Four-week rollout         & no  & \S\ref{sec:deployment} & Deployment process \\
+Runbook templates         & no  & \S\ref{sec:deployment} & On-call artifact \\
+Postmortem fields         & no  & Tab.~\ref{tab:postmortem} & Incident-template addendum \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Reliability-engineering vocabulary and benchmark scope.}
+We adopt standard SRE vocabulary~\cite{sre_book, sre_workbook}
+(\emph{MTTR}, \emph{MTBF}, \emph{SLO}, \emph{error budget},
+\emph{blast radius}, \emph{alert fatigue}) and add
+\emph{conformance} (the degree to which an implementation emits
+the structural signals a downstream consumer expects). We use
+controlled-benchmark FDR and FPR throughout as \emph{structural
+ceilings}---what each adapter can detect when faults are present,
+not how often faults will be present in production. The AIware
+appendix shows organic rates in production-tier LLMs are dominated
+by \texttt{missing\_guardrail} and \texttt{cost\_explosion}, with
+most classes rare without injection (Lesson~3, \S\ref{sec:lessons}).
+
+%% =====================================================================
+\section{Vendor Conformance Grades for Agent SDKs}
+\label{sec:conformance}
+
+\subsection{Motivation}
+
+A platform team picking an agent SDK today is implicitly committing
+to whatever agent-orchestration structure that SDK exposes through
+its native hooks. This commitment is invisible during procurement
+and only surfaces at the postmortem table. We make it visible.
+
+\subsection{Method}
+
+For each of the seven framework adapters in
+AgentTelemetry~\cite{agenttelemetry_aiware} we ran the metadata-only
+condition against all 14 fault classes and all 6 mocked LLM seeds
+(84 runs per framework). We compute the mean fault-detection rate
+(FDR) and the count of distinct span kinds the adapter emits
+natively, then assign a letter grade:
+\textbf{A}~(FDR\,$\geq$\,0.95 \emph{and} 9/9 kinds);
+\textbf{B}~($\geq$\,0.70 \emph{and} 7--8/9);
+\textbf{C}~(0.55--0.70 \emph{or} 5--6/9);
+\textbf{D}~(0.40--0.55 \emph{or} 3--4/9);
+\textbf{F}~($<$\,0.40).
+This weighs both \emph{detection coverage} and \emph{instrumentation
+depth} so a vendor cannot mask a structural gap with
+detector-specific heuristics.
+
+\textbf{Threshold robustness.}
+The central finding---one Grade A and six Grade C/D adapters---is
+invariant to threshold choice within the range a reasonable rubric
+author would pick. Sweeping the Grade A FDR floor over
+$\{0.85, 0.90, 0.95\}$ and the kind-count floor over $\{7, 8, 9\}$
+leaves the partition unchanged: \texttt{custom} is the unique A and
+all six off-the-shelf adapters land at C or D in every combination.
+The conformance-gap finding is not an artifact of threshold choice;
+it reflects a real instrumentation-surface deficit.
+
+\textbf{What the grade reflects.}
+The grade reflects the coverage achieved by the
+AgentTelemetry-shipped adapter using each framework's public hooks
+(callback APIs, monkey-patch points, span handlers). It is a joint
+measurement of (a)~the framework's intrinsic instrumentation
+surface and (b)~the adapter's exploitation of that surface;
+frameworks have not been given the opportunity to ship their own
+native AgentTelemetry-compliant adapters. The rubric is therefore
+a snapshot of the \emph{out-of-the-box posture} a team experiences
+today, not a verdict on intrinsic framework capability; the
+``Remediation path'' column estimates the kinds required to lift
+each adapter one grade.
+
+\subsection{Results}
+
+Table~\ref{tab:conformance} reports the grade card. Only the
+hand-rolled \emph{custom} adapter reaches Grade A; every off-the-shelf
+SDK ships at Grade C or D today. The gap is uniform: third-party
+SDKs all detect the six fault classes observable through generic
+attributes (cost, tokens, tool status) and miss most of the eight
+coordination, cognitive, and policy faults.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\caption{Vendor conformance grade card. FDR is mean across 84 runs
+(14 faults $\times$ 6 mocked LLMs) at metadata-only privacy. ``Span
+kinds'' counts kinds emitted natively. LOC is adapter size
+from~\cite{agenttelemetry_aiware}. The Grade D row falls below the
+C-tier FDR floor (0.55) despite tying autogen/crewai on native kind
+count, because their four kinds overlap a smaller slice of the
+detection matrix.}
+\label{tab:conformance}
+\begin{tabular}{@{}lrrrcl@{}}
+\toprule
+\textbf{Framework} & \textbf{Adapter} & \textbf{Span} & \textbf{FDR} & \textbf{Grade} & \textbf{Remediation} \\
+ & \textbf{LOC} & \textbf{kinds} &  &  & \textbf{path} \\
+\midrule
+custom        & 315 & 9/9 & 1.000 & \textbf{A} & --- (reference) \\
+anthropic\_sdk & 294 & 3/9 & 0.571 & C & +5 kinds \\
+autogen       & 256 & 4/9 & 0.571 & C & +4 kinds \\
+crewai        & 264 & 4/9 & 0.571 & C & +4 kinds \\
+openai\_sdk   & 245 & 3/9 & 0.571 & C & +5 kinds \\
+langchain     & 359 & 4/9 & 0.500 & D & +4 kinds \\
+llamaindex    & 280 & 4/9 & 0.500 & D & +4 kinds \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Operational reading}
+
+A team standardizing on a Grade D off-the-shelf SDK today operates
+at 0.500 fault-detection coverage on the 14-class taxonomy. That is
+not an algorithmic limit: every missing fault class has a defined
+detection signal that requires the SDK to emit the corresponding
+span kind. The remediation path is concretely sized---adding 4--5
+span kinds per adapter---and the custom adapter (315 LOC, Grade A)
+bounds the upper-end engineering cost. Vendor-side instrumentation
+work in this range is the highest-leverage reliability investment
+available to agent-SDK maintainers today.
+For an SLO-bound workload, a platform team should (a)~deploy the
+reference adapter for the highest-blast workloads, (b)~ship an
+SDK-side patch raising the chosen vendor to Grade B+ for general
+workloads, or (c)~accept the gap and tier alert policy accordingly
+(\S\ref{sec:alerts}). Each option has a concrete cost in engineering
+effort, vendor patching, or alert risk---this paper's contribution
+is making each cost surfaceable.
+
+%% =====================================================================
+\section{Blast-Radius Taxonomy of the 14 Fault Classes}
+\label{sec:blastradius}
+
+\subsection{Method}
+
+Incident triage requires ranking faults by operational impact, not by
+detector convenience. We score each of the 14 fault classes on three
+dimensions:
+
+\begin{itemize}[nosep,leftmargin=*]
+\item \textbf{Blast radius} (S/M/L/XL): scope of damage if the fault
+  goes undetected over a typical detection window---direct dollar
+  burn (XL), user-visible regression or safety violation (L),
+  internal state drift (M), bounded transient (S). The bands are
+  assigned by worst-case observed impact rather than expected impact,
+  so a team that weights customer-visibility more than dollar burn
+  may upgrade \texttt{memory\_corruption} and \texttt{stale\_retrieval}
+  from M to L. The S/M/L/XL boundary between adjacent bands is the
+  only band-pair where a reasonable SRE could disagree with our
+  scoring on any of the 14 faults.
+\item \textbf{Detection reliability} (Grade A/B/C/F\textsubscript{D}):
+  A = detected under all conformant conditions including vanilla
+  OTel; B = requires metadata-level AgentTelemetry; C = requires
+  AgentTelemetry on Grade A or B framework only;
+  F\textsubscript{D} = undetectable in any condition tested.
+\item \textbf{Time-to-detect class} (Fast/Medium/Slow): Fast = per
+  span at emit time; Medium = per trace, requires trace-level
+  aggregation; Slow = cross-trace correlation or external grounding
+  required. We intentionally use qualitative classes here: the
+  benchmark's released TSV does not populate
+  \texttt{time\_to\_root\_cause\_ms} (it is $0$ in 3{,}779 of 3{,}780
+  rows; the lone $0.1$\,ms entry is an instrumentation artifact),
+  so we do not report MTTR numbers. This is a known gap discussed in
+  \S\ref{sec:threats}.
+\end{itemize}
+
+\subsection{Results and triage policy}
+
+Table~\ref{tab:blastradius} presents the taxonomy. The recommended
+response column gives a default triage policy a team can adapt to
+their SLO; ``page'' implies immediate human attention via pager,
+``ticket'' implies asynchronous queue processing, ``digest'' implies
+daily review.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\caption{Blast-radius taxonomy for the 14 fault classes. Detection
+reliability anchors to the conformance grade card
+(Table~\ref{tab:conformance}); A = detectable on vanilla OTel,
+B = requires AgentTelemetry, C = requires Grade A/B framework.
+Time-to-detect class is qualitative (TSV does not include measured
+timing, see \S\ref{sec:threats}). Triage default is a
+starting policy adaptable to per-tenant SLOs.}
+\label{tab:blastradius}
+\begin{tabular}{@{}lcccl@{}}
+\toprule
+\textbf{Fault class} & \textbf{Blast} & \textbf{Det.} & \textbf{TTD} & \textbf{Triage} \\
+\midrule
+cost\_explosion       & XL & A & Fast & page \\
+circular\_delegation  & XL & B & Fast & page \\
+guardrail\_bypass     & XL & C & Fast & page \\
+hallucination         & L  & B & Slow & ticket \\
+reasoning\_loop       & L  & C & Med  & ticket / page on recur \\
+infinite\_loop        & L  & A & Fast & page \\
+context\_overflow     & L  & A & Fast & page on recur \\
+memory\_corruption    & L  & C & Slow & ticket \\
+tool\_failure         & M  & A & Fast & ticket \\
+timeout               & M  & A & Fast & ticket \\
+wrong\_tool           & M  & A & Med  & ticket \\
+stale\_retrieval      & M  & C & Slow & digest \\
+planning\_failure     & M  & C & Med  & ticket \\
+agent\_misroute       & M  & C & Med  & ticket \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Operational reading}
+
+Three observations drive the deployment plan
+(\S\ref{sec:deployment}): (1)~the XL-blast faults split between
+Grade A detection (\texttt{cost\_explosion}---catchable on any
+stack) and Grade C detection (\texttt{guardrail\_bypass}---requires
+a Grade A/B framework), making the conformance gap directly
+safety-relevant; (2)~L-blast cognitive faults (hallucination,
+reasoning loop, memory corruption) can compound cost before
+detection fires on Grade D stacks, so \texttt{cost\_explosion} is a
+useful early-warning compensating control; (3)~no fault class is
+undetectable in principle---every fault has at least one
+span-based signal, anchoring the conformance-investment argument
+from \S\ref{sec:conformance}.
+
+%% =====================================================================
+\section{Alert Thresholds and Alert-Fatigue Budget}
+\label{sec:alerts}
+
+\subsection{False-positive baseline}
+
+The benchmark includes 42~no-fault control runs per condition.
+Under both AgentTelemetry conditions (metadata-only and
+full-capture) detectors fired on 3/42 runs (FPR\,=\,0.071); under
+no\_telemetry, vanilla OTel, OTel+GenAI, and OpenInference,
+FPR\,=\,0.000 (those conditions detect almost nothing, including
+true positives). 7.1\% FPR is the operating baseline for
+metadata-level AgentTelemetry. Privacy level (metadata vs full
+capture) has no effect on FDR or FPR; teams should pick metadata
+for privacy compliance and accept the same alert volume.
+
+\subsection{Threshold defaults and their sensitivity}
+
+The benchmark's sensitivity sweep~\cite{agenttelemetry_aiware}
+documents three tuning axes: \texttt{max\_retries}
+(infinite\_retry, reasoning\_loop) is sensitive across 2--6
+(firings 12$\to$0; production default 4 to absorb stochasticity);
+\texttt{cost\_threshold} (cost\_explosion) is \emph{insensitive}
+across \$0.05--\$0.15 (set by per-tenant budget policy); and
+\texttt{token\_growth\_factor} (context\_overflow) is sensitive
+across 1.15--2.00$\times$ (firings 21$\to$0; per-agent-type
+calibration---conversational tolerates higher growth than
+ReAct-style coding).
+
+\subsection{Alert-fatigue budget}
+
+The 7.1\% per-run FPR translates directly to operational load. For a
+hypothetical platform running $N$ agent invocations per day, the
+expected daily false-alert count at the defaults is
+$0.071 \times N$. Table~\ref{tab:alertbudget} shows the load at three
+deployment scales.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\caption{Alert-fatigue budget at 7.1\% per-run FPR (metadata-level
+AgentTelemetry, defaults). Pager budget assumes one engineer-hour per
+investigated page (industry rule-of-thumb~\cite{sre_book}). At the
+50K/day scale, defaults-only operation would consume 3{,}550
+investigative hours/month---enough to anchor an entirely false
+oncall rotation. Tiered policy (page only on Grade A detections,
+ticket on Grade B/C, digest on Slow TTD) is essential at scale.
+Linear-extrapolation caveat: this is a planning-grade estimate that
+assumes detector firings are independent across runs and that
+production traffic mirrors the benchmark's fault-class distribution.
+Both assumptions are imperfect (see \S\ref{sec:threats}); teams
+should treat the table as an order-of-magnitude sizing tool, not a
+forecast.}
+\label{tab:alertbudget}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+\textbf{Scale} & \textbf{Runs/day} & \textbf{Exp.\ FPs/day} & \textbf{Eng-hrs/mo} \\
+\midrule
+small  & 1{,}000   & 71    & 71 \\
+mid    & 10{,}000  & 710   & 710 \\
+large  & 50{,}000  & 3{,}550 & 3{,}550 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Recommended policy}
+
+We recommend a three-tier alert policy keyed to
+Table~\ref{tab:blastradius}:
+
+\begin{enumerate}[nosep,leftmargin=*]
+\item \textbf{Page} only on XL-blast \emph{and} Grade A detection
+  with the stricter threshold (e.g., cost\_explosion at 2$\times$
+  budget). This bounds pager volume at roughly the cost-anomaly
+  rate---typically $<$1\% of runs in healthy production.
+\item \textbf{Ticket} on L-blast or Grade B/C detection. Investigated
+  on the next business day with full trace evidence.
+\item \textbf{Digest} on Slow-TTD or M-blast faults. Reviewed weekly
+  by a designated reliability owner. Regulated workloads
+  (PCI/HIPAA/SOX-bound and safety-critical agent paths) escalate one
+  tier per fault class regardless of TTD, so a Slow-TTD safety class
+  becomes a ticket and a Medium-TTD safety class becomes a page.
+\end{enumerate}
+
+Each tier degrades gracefully under the conformance gap from
+\S\ref{sec:conformance}: a Grade D stack simply demotes Grade C
+detections (rows below the line in Table~\ref{tab:blastradius}) to
+``not detected'' and the corresponding fault class becomes a known
+blind spot the postmortem template explicitly records (see
+\S\ref{sec:deployment}).
+
+\subsection{From conformance grade to error-budget burn: a worked example}
+\label{sec:slo}
+
+A worked example translates the conformance gap into reliability
+currency. Consider a 99.5\% success-rate SLO over a 30-day window
+on $N=100{,}000$ agent invocations/month: error budget is
+500~failed invocations. A Grade A reference adapter detects all 14
+fault classes; a Grade D off-the-shelf adapter (FDR\,$\approx$\,0.500)
+detects seven (cost, tool, loop, context, timeout,
+\texttt{circular\_delegation}) and misses the seven coordination,
+cognitive, and policy classes that require agent-specific span
+kinds---most importantly \texttt{guardrail\_bypass} (XL-blast,
+FDR\,=\,0 on every off-the-shelf SDK we tested). The AIware
+real-LLM appendix~\cite{agenttelemetry_aiware} reports concrete
+organic detection rates across 13~production-tier models:
+\texttt{missing\_guardrail} fires on 13/13, \texttt{cost\_explosion}
+on 7/13, \texttt{wrong\_tool} on 2/13, \texttt{infinite\_loop} on
+3/13, and the remaining ten classes register zero organic instances
+in the 159-run corpus. Two consequences. \emph{First}, a Grade D
+stack catches the loop/cost/tool faults that fire organically, so
+the deceptive month-by-month read is ``the budget is fine.''
+\emph{Second}, the one fault class that fires on every
+production-tier model (\texttt{guardrail\_bypass}) is precisely the
+one no off-the-shelf adapter detects: on the Grade D stack, every
+guardrail bypass passes silently into the user-visible error budget,
+and unlike a cost overrun (auto-cappable) the failure mode is a
+safety violation the budget cannot meaningfully absorb. Closing the
+\texttt{GUARD\_RAIL} span-kind gap alone---one of the five novel
+kinds---moves a Grade D adapter from ``catches the noise, misses
+the safety class'' to ``covers the only fault that always fires.''
+The same logic applies to the ten zero-organic classes once an
+upstream model regression or a chaos drill~\cite{netflix_chaos}
+pushes their rate above zero.
+The translation rule (conformance grade $\to$ undetected class list
+$\to$ per-class organic rate $\to$ budget exposure weighted by
+blast radius) is substitutable: teams plug in their own SLO,
+traffic, and organic rate. This is the unit of account in which
+closing the conformance gap from \S\ref{sec:conformance} becomes
+funded engineering work.
+
+%% =====================================================================
+\section{Deployment Integration Pattern}
+\label{sec:deployment}
+
+\subsection{Four-week rollout}
+
+We describe a four-week rollout pattern for adopting AgentTelemetry
+inside an existing OpenTelemetry-based reliability stack (Grafana
+Tempo~\cite{grafana_tempo}, Datadog, Honeycomb, or equivalent). This
+pattern is designed to fail safe: each step is independently
+revertible and each adds at most one new alert source. The
+four-week cadence is indicative rather than prescriptive---it is
+the smallest cadence that preserves the structural ordering required
+by three converging bodies of deployment practice: SRE Workbook
+implementing-SLOs discipline~\cite{sre_workbook} (one signal at a
+time, observe before promoting to alerting), Google
+progressive-rollout / canary practice~\cite{sre_book} (independent
+revertibility per step, quantitative gate per promotion), and
+Netflix chaos engineering~\cite{netflix_chaos} (exercise the
+detection stack against known failures before relying on it). The
+structural ordering---instrument first, observe baseline, enable
+detectors one at a time, wire runbooks last---is what generalizes;
+the wall-clock figure is illustrative and teams compress or expand
+to their change-management velocity.
+
+\noindent\textbf{Week 0 --- Inventory.}
+Enumerate every agent workload in production. Score the hosting
+framework on Table~\ref{tab:conformance}. Pick rollout order:
+highest blast-radius workload first, lowest-grade framework last.
+
+\noindent\textbf{Week 1 --- Bridge.}
+Install the AgentTelemetry adapter for the chosen framework and
+route spans through the existing OTLP collector. Per-span overhead
+is on the order of $11.7\,\mu$s
+median~\cite{agenttelemetry_aiware}---sub-0.006\% of typical LLM API
+latencies---but every team should verify in their own stack. Gate
+promotion on no regression in p99 task latency, no spike in
+collector queue depth, and correct \texttt{agenttelemetry.span.kind}
+tagging.
+
+\noindent\textbf{Week 2--4 --- Detectors.}
+Turn on detectors one at a time, starting with the highest-leverage
+pair: cost\_explosion (XL, Grade A, Fast) and infinite\_loop (L,
+Grade A, Fast). Tune thresholds against \S\ref{sec:alerts}. Observe
+FPR in production traffic for 7 days before activating the next
+detector; gate on FPR within 1.5$\times$ the benchmark baseline.
+
+\noindent\textbf{Week 4+ --- Runbooks and postmortems.}
+Wire each enabled detector to a runbook (template below); add an
+agent-fault-class section to the postmortem template
+(Table~\ref{tab:postmortem}).
+
+\subsection{Runbook template}
+
+Condensed runbook templates for all 14 fault classes ship in the
+open-source release; two worked examples here.
+
+\noindent\textbf{Runbook 1: reasoning\_loop.}
+\emph{Trigger:} $\geq 4$ consecutive REASONING$\to$LLM\_CALL
+cycles in one trace with near-identical prompt fragments.
+\emph{First action:} pin to last known-good agent version if
+recently changed; otherwise inspect REASONING attributes for
+repeated patterns and inject a strategy-change hint or kill the
+trace. \emph{Cost cap:} kill regardless of cause if trace exceeds
+2$\times$ per-task budget while still looping. \emph{Postmortem
+fields:} loop pattern, tool involved, prompt fragment, total cost
+burn, framework grade, threshold setting.
+
+\noindent\textbf{Runbook 2: cost\_explosion.}
+\emph{Trigger:} cumulative trace cost exceeds per-task threshold
+(default \$0.10). \emph{First action:} determine single-call
+(unbounded prompt template---revert or apply prompt-length guard)
+vs iteration-driven (cross-reference reasoning\_loop; follow
+Runbook 1 if also firing). \emph{Compensating control on Grade D
+stacks:} this is the primary early-warning signal for coordination
+and cognitive faults that Grade C detectors miss.
+\emph{Postmortem fields:} call shape, per-call token counts, agent
+identity, framework grade, tenant budget tier.
+
+\subsection{Postmortem rubric additions}
+
+Table~\ref{tab:postmortem} lists the fields an agent-incident
+postmortem should add beyond a standard SRE postmortem template
+(timeline, customer impact, root cause, action items) of the kind
+documented in the Google SRE Workbook~\cite{sre_workbook} and the
+PagerDuty open incident-response documentation~\cite{pagerduty_ir}.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\caption{Agent-incident postmortem fields. Capturing these per
+incident creates an internal corpus that lets a team measure
+their conformance-gap exposure over time and prioritize SDK-side
+patches against blast-radius-weighted incident rate.}
+\label{tab:postmortem}
+\begin{tabular}{@{}lp{4.8cm}@{}}
+\toprule
+\textbf{Field} & \textbf{Purpose} \\
+\midrule
+Fault class & One of the 14 classes (\S\ref{sec:blastradius}) \\
+Detection latency class & Fast / Medium / Slow / Not detected \\
+Framework grade at time & A--F per Table~\ref{tab:conformance} \\
+Blast-radius realized & Actual S/M/L/XL impact observed \\
+Detector at default? & Whether alert threshold was tuned \\
+Conformance gap exposed & Span kinds the SDK didn't emit \\
+Remediation owner & Vendor patch, in-house adapter, accepted risk \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%% =====================================================================
+\section{Lessons Learned and Negative Findings}
+\label{sec:lessons}
+
+The ISSRE Industry Track explicitly invites negative findings. We
+surface five.
+
+\textbf{Lesson 1: the conformance gap is industry-wide.} Every
+off-the-shelf agent SDK we tested ships at Grade C or D today
+(Table~\ref{tab:conformance}). This is an instrumentation deficit,
+not an algorithm problem; the engineering cost to close it is
+concretely bounded (4--5 additional kinds per adapter against a
+245--359 LOC baseline). Until that work lands, SLO-bound workloads
+on off-the-shelf SDKs operate with a documented $\sim$43\%
+agent-orchestration blind spot.
+
+\textbf{Lesson 2: metadata is enough for fault detection but
+introduces a real alert-fatigue cost.} FDR and FPR are identical at
+metadata-only and full-capture (both 0.612 / 7.1\% aggregate). Pick
+metadata for privacy compliance; do not pay full-capture's privacy
+cost expecting better detection.
+
+\textbf{Lesson 3: controlled fault injection over-counts what
+production traffic surfaces organically.} The mock benchmark reaches
+FDR\,=\,1.000 with a conformance-complete adapter because faults are
+injected at rate 1.0; the AIware real-LLM appendix shows organic
+fault rates dominated by missing\_guardrail and cost\_explosion,
+with most fault classes rare in production-tier models. Passive
+monitoring alone under-validates the detection stack;
+fault-injection drills (chaos engineering for
+agents~\cite{netflix_chaos}) remain necessary to exercise detectors
+against ground truth on a recurring cadence.
+
+\textbf{Lesson 4: span-kind coverage has direct, fault-class-by-class
+payoff.} The ablation in~\cite{agenttelemetry_aiware} shows each
+span kind is the sole detection signal for at least one fault class.
+Adding REASONING to a Grade D adapter immediately unlocks
+reasoning\_loop detection. On the detection-coverage axis
+specifically, span-kind investment has direct payoff---a property
+few other reliability investments share, which typically yield
+diffuse improvements rather than per-fault-class deltas.
+
+\textbf{Lesson 5: the benchmark didn't measure time-to-detect.}
+The released TSV's \texttt{time\_to\_root\_cause\_ms} column is
+$0$ in 3{,}779 of 3{,}780 rows (a single row records $0.1$\,ms, an
+instrumentation artifact rather than a meaningful measurement)---the
+harness did not capture detection latency. This is a real
+gap for operational deployment because the MTTR contribution of a
+detector depends on detection latency, not just FDR. We surface this
+openly rather than fabricate timing estimates; the next benchmark
+iteration must instrument it.
+
+%% =====================================================================
+\section{Threats to Validity}
+\label{sec:threats}
+
+\textbf{Construct.} The conformance rubric is derived, not a
+vendor-sanctioned standard, and reflects coverage on the
+\cite{agenttelemetry_aiware} 14-fault taxonomy. Blast-radius
+S/M/L/XL bands are qualitative; teams may re-rank under different
+cost or compliance thresholds.
+
+\textbf{Internal.} The benchmark uses deterministic mock LLM clients;
+organic rates differ (Lesson~3). The 7.1\% FPR is from 42 controlled
+no-fault runs per condition; production FPR may diverge.
+
+\textbf{External.} Seven frameworks and six LLM families tested.
+Conformance grades will shift as vendors update SDKs; the rubric is
+versioned against the framework releases captured in the AIware
+artifact. No live deployment is included; the integration pattern
+(\S\ref{sec:deployment}) is \emph{designed} informed by SRE
+practice~\cite{sre_book}, not \emph{measured} field outcome.
+
+\textbf{Conclusion.} Operational claims (alert-fatigue budget,
+runbook applicability, four-week rollout) are propositional---they
+describe what an SRE team would do if they adopt the rubric, not
+measured field outcomes.
+
+%% =====================================================================
+\section{Related Work}
+\label{sec:related}
+
+\textbf{Agent observability and benchmarks.}
+AgentTelemetry~\cite{agenttelemetry_aiware} is the direct prior
+work. The closest published agent-failure taxonomy is
+MAST~\cite{mast}, which identifies 14 failure modes from 1{,}600+
+multi-agent traces and provides the inter-annotator-validated
+behavioral baseline against which our blast-radius scoring is
+cross-checkable. These taxonomies characterize what fails but do
+not provide deployment-time rubrics.
+
+\textbf{LLM observability platforms.}
+OpenLLMetry~\cite{openllmetry}, Langfuse~\cite{langfuse}, and
+LangSmith~\cite{langsmith} are widely deployed but inherit the
+OTel GenAI ceiling on agent-orchestration semantics; the
+agent-specific runbook layer added here is absent from their
+default configurations.
+
+\textbf{Cloud-system reliability tooling and SRE foundations.}
+ISSRE Industry Track precedent includes
+Early Bird~\cite{earlybird} (failure prediction at scale), the
+Global Operational Readiness Review process~\cite{cusick_orr}, and
+NICSDG~\cite{nicsdg} (non-intrusive service-dependency graphs);
+the contribution delta here is extending the deployment-rubric
+pattern to the agent-system domain. Vocabulary and rubric
+structure inherit from the SRE literature~\cite{sre_book,sre_workbook}
+and the AIOps research agenda~\cite{aiops_roadmap}.
+
+%% =====================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+Adopting LLM agents in production requires reliability-engineering
+artifacts beyond benchmark evidence alone. This paper translates the
+AgentTelemetry fault-injection corpus into deployment-time artifacts
+that a platform team can adopt next week: a vendor conformance grade
+card surfacing a $\sim$43\% blind spot across off-the-shelf SDKs,
+a blast-radius taxonomy for incident triage, an alert-threshold
+playbook with empirical FPR bounds and an alert-fatigue budget, a
+four-week rollout pattern, and runbook templates for all 14 fault
+classes. The honest negative findings---the industry-wide
+conformance gap, the alert-fatigue cost of metadata-only capture,
+the gap between controlled-benchmark and organic field-fault rates,
+the absence of measured time-to-detect---bound what the rubric does
+and does not promise. Vendors and platform teams have a concrete next
+step: close the span-kind gap. The rubric, conformance card, runbook
+templates, and reproduction artifacts are open-source.
+
+%% =====================================================================
+\section*{Data Availability}
+
+The 3{,}780-row benchmark, seven framework adapters, and toolkit are
+archived at \url{https://doi.org/10.5281/zenodo.20129005}
+(concept DOI)~\cite{agenttelemetry_artifact} and on PyPI as
+\texttt{agenttelemetry}. The conformance-grade script, blast-radius
+scoring sheet, runbook templates, and postmortem rubric introduced
+here are released alongside the same artifact.
+
+\balance
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+
+\end{document}

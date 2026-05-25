@@ -1,0 +1,9 @@
+adapter	fault	live_kinds	sim_kinds	sim_subset_of_live	n_spans	error
+langchain	no_fault	AGENT,LLM_CALL,TOOL_CALL	LLM_CALL,TOOL_CALL	1	3	
+langchain	wrong_tool	AGENT,LLM_CALL	LLM_CALL,TOOL_CALL	0	2	
+langchain	tool_failure	AGENT,LLM_CALL,TOOL_CALL	LLM_CALL,TOOL_CALL	1	3	
+langchain	infinite_loop	AGENT,LLM_CALL,TOOL_CALL	LLM_CALL,TOOL_CALL	1	6	
+anthropic_sdk	no_fault	AGENT,LLM_CALL	LLM_CALL	1	2	
+anthropic_sdk	wrong_tool	AGENT,LLM_CALL	LLM_CALL	1	2	
+anthropic_sdk	tool_failure	AGENT,LLM_CALL	LLM_CALL	1	2	
+anthropic_sdk	infinite_loop	AGENT,LLM_CALL	LLM_CALL	1	2	

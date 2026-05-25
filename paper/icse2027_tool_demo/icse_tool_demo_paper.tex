@@ -1,0 +1,493 @@
+%%
+%% AgentTelemetry: An OpenTelemetry-Native Observability SDK
+%% for AI Agent Systems
+%%
+%% Target: ICSE 2027 Tool Demonstration and Data Showcase Track
+%% Page limit: 4 pages, including references.
+%% Format: IEEEtran 10pt conference (no compsoc), single-anonymous.
+%%
+
+\documentclass[10pt,conference]{IEEEtran}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{cite}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{pifont}
+\usepackage{url}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue!60!black}
+
+%% Allow line breaks inside \texttt{...} on underscores, dots, hyphens.
+\makeatletter
+\g@addto@macro\UrlBreaks{\do\_\do\.\do\-\do\,\do\?\do\/}
+\makeatother
+\sloppy
+
+%% Stretch slightly so 4 pages set cleanly.
+\setlength{\emergencystretch}{2em}
+\tolerance=1500
+\hbadness=10000
+
+%% --- Code listing style (compact) ---------------------------------
+\definecolor{lstkw}{HTML}{0033B3}
+\definecolor{lststr}{HTML}{067D17}
+\definecolor{lstcm}{HTML}{8C8C8C}
+\lstset{
+  basicstyle=\ttfamily\scriptsize,
+  keywordstyle=\color{lstkw}\bfseries,
+  commentstyle=\color{lstcm}\itshape,
+  stringstyle=\color{lststr},
+  language=Python,
+  showstringspaces=false,
+  columns=fullflexible,
+  keepspaces=true,
+  breaklines=true,
+  aboveskip=2pt,
+  belowskip=2pt,
+  xleftmargin=0.6em,
+  framexleftmargin=0pt
+}
+
+\begin{document}
+
+\title{AgentTelemetry: An OpenTelemetry-Native\\Observability SDK for AI Agent Systems}
+
+\author{\IEEEauthorblockN{Krishna Chaitanya Balusu}
+\IEEEauthorblockA{Independent Researcher\\
+San Francisco, USA\\
+krishnabkc15@gmail.com}}
+
+\maketitle
+
+\begin{abstract}
+LLM-based AI agents fail in modes---circular delegation, planning
+loops, silent guardrail bypass, stale memory---that existing
+observability tools cannot represent. OpenTelemetry's GenAI semantic
+conventions cover LLM invocation and tool execution but leave five
+agent orchestration phases (planning, reasoning, safety,
+delegation, memory) without span-level vocabulary, so the resulting
+traces show \emph{what} the model said but not \emph{what the agent did}.
+We present \textsc{AgentTelemetry}, an Apache-licensed,
+pip-installable Python SDK that adds nine agent-specific span
+kinds, seven framework auto-instrumentors (LangChain, CrewAI,
+AutoGen, OpenAI, Anthropic, LlamaIndex, plus a manual API), three
+privacy levels, and four analysis modules
+(anomaly detection, cost aggregation, decision attribution,
+hallucination tracing). The SDK is OpenTelemetry-native and exports
+to any OTLP backend (Jaeger, Grafana Tempo, Datadog, etc.). A
+developer instruments an existing LangChain agent in five lines and
+immediately gains structural visibility into coordination failures.
+A companion 3{,}780-row public benchmark (Zenodo
+DOI~10.5281/zenodo.20129005) shows that the nine-kind span
+vocabulary can express fault classes that vanilla OpenTelemetry
+cannot. All artifacts---PyPI release, source, dataset, and a
+3--5~minute screencast---are openly available.
+\end{abstract}
+
+\begin{IEEEkeywords}
+AI agents; observability; OpenTelemetry; fault detection;
+distributed tracing; LLM monitoring; software tools
+\end{IEEEkeywords}
+
+\section{Introduction}
+\label{sec:intro}
+
+Autonomous LLM agents now plan tasks, call tools, delegate to
+sub-agents, retrieve from vector stores, and reason over multi-turn
+state. When they fail, however, the trace a developer sees in their
+observability backend rarely reflects the agent's actual cognitive
+trajectory. OpenTelemetry's GenAI semantic conventions~\cite{otel,
+otel_genai} model only LLM invocation and tool execution. Failures
+that originate from \emph{coordination} (circular delegation,
+agent misroute, infinite reasoning loops) or from \emph{cognitive
+state} (stale retrieval, memory corruption, guardrail
+bypass)~\cite{mast, agentops_paper} therefore appear as
+indistinguishable nests of \texttt{gen\_ai.completion} spans.
+
+Existing commercial and open-source agent observability
+tools---LangSmith~\cite{langsmith}, Langfuse~\cite{langfuse},
+AgentOps~\cite{agentops}, Arize Phoenix~\cite{phoenix},
+OpenLIT~\cite{openlit}---either reuse the generic GenAI spans or
+introduce closed proprietary schemas (\cite{openinference}
+partially excepted). None offers a typed span vocabulary for the
+five missing orchestration phases, and several are SaaS-only.
+
+\textsc{AgentTelemetry} closes this gap with an OpenTelemetry-native
+SDK. A developer who already understands OTel does not need to
+learn a new dashboarding product or accept a hosted backend; they
+\texttt{pip install agenttelemetry}, add two lines, and their
+existing Jaeger or Tempo instance starts showing typed spans for
+\texttt{PLANNING}, \texttt{REASONING}, \texttt{DELEGATION},
+\texttt{GUARD\_RAIL}, and \texttt{MEMORY}. The same span graph then
+feeds four offline analysis modules that flag known agent failure
+patterns structurally, without inspecting prompt content.
+
+\noindent\textbf{Contributions.} This tool demonstration paper
+contributes (i)~a pip-installable, Apache-2.0 SDK
+(4{,}100~LOC, 111 tests) implementing nine agent span kinds and
+seven framework adapters; (ii)~four analysis modules that
+operate over the resulting traces; (iii)~a publicly downloadable
+3{,}780-row fault detection benchmark on Zenodo that demonstrates
+the SDK produces a detectable signal across 14~fault classes; and
+(iv)~a 3--5~minute screencast walking through end-to-end
+instrumentation, trace inspection in Jaeger, and anomaly detection.
+
+\section{Tool Overview}
+\label{sec:overview}
+
+\begin{figure}[t]
+\centering
+\setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.4pt}
+\fbox{%
+\begin{minipage}{0.96\columnwidth}
+\centering\vspace{2pt}\ttfamily\scriptsize
+\begin{tabular}{c}
+\textbf{User Code (LangChain, CrewAI, AutoGen, custom)}\\
+$\downarrow$ \rmfamily\itshape callback / monkey-patch / context mgr\\
+\fbox{\rmfamily\bfseries\small Adapter (7 framework instrumentors)}\\
+$\downarrow$\\
+\fbox{\rmfamily\bfseries\small AgentTelemetry SDK}\\
+\fbox{\small spans \,$|$\, privacy \,$|$\, exporter}\\
+$\downarrow$ \rmfamily\itshape OTLP/HTTP \,$|$\, OTLP/gRPC \,$|$\, console \,$|$\, JSON\\
+\fbox{\rmfamily\bfseries\small Backend: Jaeger, Tempo, Datadog, OTLP-any}\\
+$\downarrow$ \rmfamily\itshape trace export\\
+\fbox{\rmfamily\bfseries\small Analysis: anomaly \,$|$\, cost \,$|$\, attribution \,$|$\, halluc.}
+\end{tabular}\vspace{2pt}
+\end{minipage}}
+\caption{AgentTelemetry architecture. User code is instrumented
+through a framework adapter or the manual API. Spans flow through
+the SDK's privacy filter and exporter to any OTLP-compatible
+backend. Analysis modules consume completed traces offline to
+flag structural failure patterns.}
+\label{fig:arch}
+\end{figure}
+
+\textbf{Span kinds.} The SDK defines an
+\texttt{AgentSpanKind} enum with nine values:
+\texttt{AGENT}, \texttt{LLM\_CALL}, \texttt{TOOL\_CALL},
+\texttt{PLANNING}, \texttt{REASONING}, \texttt{RETRIEVAL},
+\texttt{GUARD\_RAIL}, \texttt{DELEGATION}, and \texttt{MEMORY}.
+Each is exported as the standard
+\texttt{agent.span.kind} OTel attribute, so existing OTLP backends
+display them without modification. Three of the nine
+(\texttt{LLM\_CALL}, \texttt{TOOL\_CALL}, \texttt{RETRIEVAL})
+overlap conceptually with OTel GenAI; the remaining six fill the
+orchestration gap.
+
+\textbf{Adapters.} Table~\ref{tab:adapters} summarises the seven
+framework adapters. Each adapter uses lazy imports: the framework
+package is required only at \texttt{instrument()} time, so users do
+not pay an import cost for frameworks they don't use.
+
+\begin{table}[t]
+\caption{Framework adapters shipped with AgentTelemetry 0.1.0.}
+\label{tab:adapters}
+\centering\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}l l l r@{}}
+\toprule
+\textbf{Framework} & \textbf{Class} & \textbf{Strategy} & \textbf{LOC}\\
+\midrule
+LangChain     & \texttt{LangChainInstr.}  & Callback handler & 359\\
+CrewAI        & \texttt{CrewAIInstr.}     & Hook system      & 264\\
+AutoGen       & \texttt{AutoGenInstr.}    & Monkey-patch     & 256\\
+Anthropic SDK & \texttt{AnthropicInstr.}  & Monkey-patch     & 294\\
+OpenAI SDK    & \texttt{OpenAIInstr.}     & Monkey-patch     & 245\\
+LlamaIndex    & \texttt{LlamaIndexInstr.} & Span handler     & 280\\
+Custom (manual) & \texttt{start\_agent\_span} & Context mgr  & 315\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Privacy.} Three levels (\texttt{NONE},
+\texttt{METADATA\_ONLY} [default], \texttt{FULL}) gate what
+attribute payloads reach the exporter; metadata-only retains
+structural diagnostics (model names, token counts, USD cost,
+status) while suppressing prompt and completion text.
+
+\textbf{Analysis modules.} Four modules consume completed traces
+offline:
+\texttt{AnomalyDetector} flags circular delegation, infinite
+retries, cost explosions, and context overflow by walking the
+span graph;
+\texttt{CostAggregator} sums per-model and per-agent USD spend;
+\texttt{DecisionAttributor} links each tool call back to the LLM
+decision that triggered it;
+\texttt{HallucinationTracer} marks LLM outputs whose tokens are
+not grounded in spans of kind \texttt{RETRIEVAL} immediately
+preceding them. All four operate on serialized
+trace JSON, so they can run on Jaeger exports, persisted
+\texttt{.jsonl} bundles, or live OTel collector pipelines.
+
+\section{Usage}
+\label{sec:usage}
+
+Listing~\ref{lst:manual} shows the entire developer-facing surface
+for a hand-instrumented agent: one \texttt{configure} call and a
+nested set of context managers. The same trace can be exported to
+Jaeger by setting \texttt{OTEL\_EXPORTER\_OTLP\_ENDPOINT}; no
+SDK-side change is required.
+
+\begin{lstlisting}[caption={Manual instrumentation in 10 lines.},label={lst:manual}]
+from agenttelemetry import (
+    configure, start_agent_span, AgentSpanKind)
+
+provider = configure(service_name="my-agent", console=True)
+tracer = provider.get_tracer()
+
+with start_agent_span("research", AgentSpanKind.AGENT, tracer=tracer):
+    with start_agent_span("call-gpt4", AgentSpanKind.LLM_CALL,
+                          tracer=tracer) as llm:
+        llm.set_attribute("llm.model", "gpt-4o")
+        llm.set_attribute("llm.input_tokens", 500)
+    with start_agent_span("search", AgentSpanKind.TOOL_CALL,
+                          tracer=tracer) as tool:
+        tool.set_attribute("tool.name", "google")
+\end{lstlisting}
+
+Listing~\ref{lst:auto} shows the equivalent for an existing
+LangChain~\cite{langchain} ReAct~\cite{react} agent. The
+\texttt{LangChainInstrumentor} attaches a callback handler that
+maps LangChain's internal events (chain start, LLM start, tool
+start, agent action) onto the correct \texttt{AgentSpanKind}, so
+\emph{no application code changes}.
+
+\begin{lstlisting}[caption={Auto-instrumentation for an existing LangChain agent.},label={lst:auto}]
+from agenttelemetry import configure
+from agenttelemetry.adapters import (
+    LangChainInstrumentor)
+
+provider = configure(service_name="my-agent")
+LangChainInstrumentor().instrument(
+    tracer_provider=provider.tracer_provider)
+# existing LangChain code runs unchanged
+\end{lstlisting}
+
+A trace produced by Listing~\ref{lst:auto} on a tool-using ReAct
+agent appears in Jaeger as the nested span graph
+\texttt{AGENT} $\to$ \texttt{PLANNING} $\to$ \texttt{LLM\_CALL}
+$\to$ \texttt{TOOL\_CALL} $\to$ \texttt{REASONING} $\to$
+\texttt{LLM\_CALL}, with the orchestration spans
+appearing alongside the standard GenAI spans rather than replacing
+them. This is the key visual payoff of the SDK and is the
+centerpiece of the accompanying screencast (Sec.~\ref{sec:avail}).
+
+\textbf{Walk-through: catching a circular delegation.}
+Consider a CrewAI swarm (\path{examples/multi_agent.py} in the
+repository) in which agent~A delegates a
+sub-task to agent~B, which routes back to~A on an unrecognized
+intent. Without typed spans the resulting trace is a deep nest of
+LLM completions and tool calls---no single span attribute
+signals the cycle. Auto-instrumented with \texttt{CrewAIInstrumentor},
+the same run produces the span graph shown in
+Listing~\ref{lst:trace}: every cross-agent hand-off emits a
+\texttt{DELEGATION} span carrying
+\texttt{agent.delegation.target} and \texttt{agent.delegation.depth}
+attributes. The bundled \texttt{AnomalyDetector} traverses this
+graph with three lines of code and returns a list of typed
+\texttt{Anomaly} records (Listing~\ref{lst:trace}, bottom). The
+same call also flags cost explosions and infinite retries from the
+same trace. This end-to-end loop---instrument, export,
+analyse---runs in under 30~seconds on a developer laptop and is
+the centre of the demo video.
+
+\begin{lstlisting}[caption={Jaeger-style trace dump and \texttt{AnomalyDetector} output for the circular-delegation case.},label={lst:trace}]
+AGENT  researcher           [span-a1]
+ PLANNING  decide-route     [span-a2]
+  LLM_CALL  gpt-4o          [span-a3]
+ DELEGATION  -> writer      [span-a4] target=writer depth=1
+  AGENT  writer             [span-b1]
+   DELEGATION  -> researcher [span-b2] target=researcher depth=2
+    AGENT  researcher       [span-a1]   <-- cycle
+
+>>> AnomalyDetector().detect(trace)
+[Anomaly(type='CIRCULAR_DELEGATION',
+         evidence=['span-a1','span-b2','span-a1'],
+         depth=3, severity='high')]
+\end{lstlisting}
+
+\section{Comparison with Existing Tools}
+\label{sec:compare}
+
+Table~\ref{tab:compare} contrasts AgentTelemetry with the five
+most prominent agent-observability tools as of mid-2026. The
+per-competitor wedge is the load-bearing claim of this section:
+against \textbf{LangSmith}~\cite{langsmith} (closed-source SaaS,
+no OTLP egress), AgentTelemetry is self-hostable Apache code that
+exports to any OTLP backend the team already runs.
+Against \textbf{Langfuse}~\cite{langfuse} (OTel-native but generic
+LLM spans), AgentTelemetry adds five typed orchestration span
+kinds (\texttt{PLANNING}, \texttt{REASONING}, \texttt{DELEGATION},
+\texttt{GUARD\_RAIL}, \texttt{MEMORY}) plus an \texttt{AGENT} root
+span that Langfuse currently folds into untyped trace events.
+Against \textbf{AgentOps}~\cite{agentops} (OSS dashboard product),
+AgentTelemetry ships an offline analysis library
+(\texttt{AnomalyDetector}, \texttt{CostAggregator},
+\texttt{DecisionAttributor}, \texttt{HallucinationTracer}) that
+operates on exported trace JSON without a hosted backend.
+Against \textbf{Phoenix}~\cite{phoenix} (OpenInference-based),
+AgentTelemetry stays on the OpenTelemetry semantic-conventions
+track and contributes a draft OTEP
+(\path{otep/agent-semantic-conventions.md}) rather than maintaining
+a parallel schema. Against the closest competitor,
+\textbf{OpenLIT}~\cite{openlit} (Apache, OTel-native, 20+
+provider instrumentations), the wedge is structural: OpenLIT
+instruments individual \emph{provider SDKs} (Anthropic, OpenAI,
+vector stores) and emits standard \texttt{gen\_ai.*} spans, so a
+CrewAI delegation cycle is invisible at the span-kind level.
+AgentTelemetry instruments \emph{agent frameworks} (LangChain,
+CrewAI, AutoGen) and emits typed orchestration spans, so the same
+cycle shows up directly as a \texttt{DELEGATION} subgraph that
+\texttt{AnomalyDetector} can match without parsing prompt text.
+
+\begin{table*}[t]
+\caption{AgentTelemetry vs.\ existing agent-observability tools (verified from each project's official documentation, May 2026). \ding{51}~=~yes, \ding{55}~=~no.}
+\label{tab:compare}
+\centering\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}l c c l c l c c@{}}
+\toprule
+\textbf{Tool} & \textbf{OSS} & \textbf{OTel} & \textbf{Typed agent spans} & \textbf{Adapters} & \textbf{Analysis} & \textbf{Open semconv} & \textbf{Self-host}\\
+ & & \textbf{native} & & & & \textbf{proposal} & \\
+\midrule
+LangSmith~\cite{langsmith}   & \ding{55} (SaaS)    & \ding{55}                & generic LLM/tool   & many   & proprietary            & \ding{55} & \ding{55}\\
+Langfuse~\cite{langfuse}     & \ding{51}           & \ding{51}                & generic LLM        & 50+    & dashboards             & \ding{55} & \ding{51}\\
+AgentOps~\cite{agentops}     & \ding{51}           & not docu.                & generic            & many   & dashboards             & \ding{55} & \ding{51}\\
+Phoenix~\cite{phoenix}       & \ding{51}           & via OpenInf.             & generic LLM/tool   & many   & evaluation             & \ding{55} (OpenInf., not OTel) & \ding{51}\\
+OpenLIT~\cite{openlit}       & \ding{51}           & \ding{51}                & generic LLM        & 20+    & dashboards             & \ding{55} & \ding{51}\\
+\textbf{AgentTelemetry (this work)} & \ding{51} (Apache) & \ding{51}     & \textbf{9 typed kinds} & 7      & \textbf{4 modules}     & \ding{51} (OTEP draft) & \ding{51}\\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\section{Evidence of Detectable Signal}
+\label{sec:eval}
+
+A 3{,}780-row controlled benchmark accompanies the SDK release
+(3{,}528 fault-injection runs $+$ 252 fault-free
+controls)~\cite{agenttelemetry_aiware, agenttelemetry_zenodo} and
+is publicly downloadable as a tab-separated file from the Zenodo
+record. The benchmark covers 14 fault classes across six telemetry
+conditions and seven agent frameworks. Aggregate Fault Detection
+Rate (FDR), reproducible verbatim from
+DOI~10.5281/zenodo.20129006:
+
+\begin{center}\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}l r r@{}}
+\toprule
+\textbf{Telemetry condition} & \textbf{FDR} & \textbf{Detected}\\
+\midrule
+No telemetry                                & 0.000 & 0/14\\
+Vanilla OpenTelemetry                       & 0.429 & 6/14\\
+OTel GenAI conventions                      & 0.429 & 6/14\\
+OpenInference                               & 0.429 & 6/14\\
+AgentTelemetry (metadata privacy)           & 0.612 & 7/14\\
+AgentTelemetry (full vocabulary, upper bd.) & \textbf{1.000} & \textbf{14/14}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The upper bound is the relevant claim for a tool-demonstration
+audience: the nine-kind span vocabulary is structurally
+\emph{sufficient} to express all 14 fault classes, including the
+eight coordination, cognitive, and policy faults
+(\path{circular_delegation}, \path{hallucination},
+\path{stale_retrieval}, \path{guardrail_bypass},
+\path{planning_failure}, \path{reasoning_loop},
+\path{agent_misroute}, \path{memory_corruption}) that no
+baseline can express. The 0.612 mid-row is a per-framework
+conformance gap, not a metamodel limit: only the bundled
+\texttt{custom\_agent} reference adapter currently emits the full
+nine-kind vocabulary, while third-party adapters emit 3--7 typed
+kinds out of 9. Closing this gap is ongoing work and is tracked in
+the repository roadmap. Full methodology, ablations, and
+statistical analysis are reported separately~\cite{agenttelemetry_aiware};
+we reference the artifact here strictly as evidence that the SDK
+produces a usable signal.
+
+\textbf{Overhead.} The in-tree benchmark
+\path{tests/benchmarks/test_overhead.py} (run against an
+\texttt{InMemorySpanExporter}) asserts that a single instrumented
+span completes in $<$5~ms and a nested
+agent$\to$LLM$\to$tool triple in $<$10~ms on a 2024-class laptop
+CPU, well below typical LLM round-trip latencies.
+
+\section{Availability and Reproducibility}
+\label{sec:avail}
+
+\textbf{Install.} \texttt{pip install agenttelemetry==0.1.0}
+(PyPI, Apache-2.0)~\cite{agenttelemetry_pypi}. The unpinned
+\texttt{pip install agenttelemetry} also resolves to 0.1.0 today.
+On a stock 2024-class laptop the install completes in
+$<$30~seconds (the SDK has four runtime dependencies:
+\texttt{opentelemetry-api}, \texttt{opentelemetry-sdk},
+\texttt{opentelemetry-exporter-otlp}, \texttt{pydantic}). Optional
+extras (\texttt{[langchain]}, \texttt{[crewai]}, \texttt{[autogen]},
+\texttt{[anthropic]}, \texttt{[openai]}, \texttt{[llamaindex]},
+\texttt{[all]}) pull in the corresponding framework dependency
+groups.
+
+\textbf{Source.} \url{https://github.com/Krishnachaitanyakc/AgentTelemetry}
+(Apache-2.0, 4{,}100 SDK LOC, 111 tests, CI on Python 3.9--3.12).
+
+\textbf{Archived artifact.} Zenodo concept
+DOI~\href{https://doi.org/10.5281/zenodo.20129005}{10.5281/zenodo.20129005};
+pinned version DOI~\href{https://doi.org/10.5281/zenodo.20129006}{10.5281/zenodo.20129006}
+contains the 0.1.0 source plus the 3{,}780-row benchmark TSV and a
+\texttt{requirements.lock} that reproduces every number above
+verbatim.
+
+\textbf{Screencast.} A 3--5~minute video walks through
+installation, manual and auto-instrumentation, the Jaeger trace
+view, and the anomaly detector on a circular-delegation example:
+\url{https://youtu.be/AGENTTELEMETRY-ICSE27-DEMO}.
+
+\textbf{Semantic conventions.} A draft OTEP proposing the nine
+agent span kinds for upstream adoption lives at
+\path{otep/agent-semantic-conventions.md} in the repository and
+is being discussed with the OpenTelemetry Semantic Conventions
+working group.
+
+\section{Limitations and Roadmap}
+\label{sec:limits}
+
+The SDK is at \textbf{alpha} maturity (PyPI development status~3).
+Three limitations bound current use. First, the 0.612 average FDR
+in Sec.~\ref{sec:eval} reflects that only the bundled
+\texttt{custom\_agent} reference adapter emits the full nine-kind
+vocabulary; third-party framework adapters emit 3--7 of the nine
+typed kinds. Conformance work for LangChain, CrewAI, and AutoGen
+adapters is the top roadmap item. Second, the
+\texttt{HallucinationTracer} relies on a token-overlap
+heuristic against \texttt{RETRIEVAL}-kind spans and is therefore
+recall-biased; semantic-similarity grounding is a planned
+replacement. Third, the OTEP that proposes the nine span kinds
+for upstream OpenTelemetry adoption is under community review and
+not yet a ratified standard, so backends that match on
+\texttt{agent.span.kind} are configuring against a draft attribute.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+\textsc{AgentTelemetry} ships today as a one-command-installable
+Python SDK that gives any OpenTelemetry-equipped team typed
+visibility into the orchestration phases that distinguish AI
+agents from single LLM calls. The accompanying public benchmark
+and screencast let reviewers and practitioners verify, in
+minutes, that the span vocabulary captures coordination and
+cognitive failure modes other tools elide. We invite the
+community to install the package, build new framework adapters,
+file fault patterns, and---via the OTEP draft---help shape an
+upstream OpenTelemetry semantic convention for agent
+observability.
+
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+
+\end{document}

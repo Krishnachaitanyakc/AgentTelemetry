@@ -1,0 +1,922 @@
+
+===== PAGE 1 =====
+The Conformance Gap is a Framework Gap: An
+Empirical Survey of Six AI-Agent SDKs and a
+Controlled Telemetry Benchmark on 14 Fault
+Classes
+Anonymous Author(s)
+Anonymous Institution
+Abstract
+Background.Three industry telemetry vocabularies—generic OpenTelemetry, OpenTelemetry
+GenAI, and OpenInference—compete to instrument autonomous AI-agent systems built on LLMs.
+Production agent stacks layer these conventions on top of framework SDKs (LangChain, LlamaIndex,
+AutoGen, CrewAI, Anthropic SDK, OpenAI Agents) whose default tracing emissions vary widely.
+No prior empirical study has measured how much of the observed cross-stack fault-detection variance
+comes from metamodel choice versus per-framework instrumentation defaults.
+Aims.(RQ1) How does the typed-capability footprint (TCR; FPR) of the three industry metamodels
+compare on a controlled benchmark of 14 agent-specific fault classes? (RQ2) How much of the realized
+cross-adapter variance is attributable to framework-instrumentation defaults rather than metamodel
+design, and how does an unconstrained Domain-Specific Metamodel (DSM) compare on the realized
+denominator under standardized-field, permissive-substring, and conformant extended-attribute
+scoring? (RQ3) How sensitive are the measurements to detector thresholds, the per-framework
+profile, and the foundation-model dimension?
+Method.Inferential unit: n = 14paired faults, n = 6third-party framework profiles.Controlled
+fault-injection harness with 4 detector banks and 6 telemetry conditions across executable simulations
+of 7 framework adapter profiles whose per-kind coverage is grounded in a direct survey of each SDK’s
+source as of 2026-05 (pinned commit SHAs and source-query citations incoverage_matrix.md).
+The matrix produces3,780artifact rows; the model dimension contributes zero variance under
+deterministic mocks. 13 of the 14 fault types map onto modes of the independent MAST taxonomy [4];
+the mapping is independently re-coded by a second annotator (Cohen’sκ= 0.83, bootstrap 95%
+CI[0 .58, 1.00]). Three scoring rules (standardized-field, permissive substring on surveyed default
+span names, extended-attribute dispatch on attributesactually publishedin each metamodel’s
+specification) are reported in parallel.
+Results.Per-framework variance dominates.Realized DSM cross-adapter TCR ranges from
+2/14 = 0.143(Anthropic SDK; emits no typed spans) to9/14 = 0.643(OpenAI Agents SDK; emits
+typed handoff and guardrail). The 4.5×range across surveyed framework defaults is the dominant
+variance source.Realized headline.Cross-adapter mean DSM realized is36 /84 = 0.429at FPR
+4/72 = 0.056; OpenInference under conformant extended-attribute dispatch reaches34/84 = 0.405
+at FPR0/36 = 0.000on the same denominator, so the default realized DSM trades higher TCR for
+a0 .056FPR penalty. Under conformant detectors restricted to published attributes, the realized
+DSM advantage seen in our pilot is not statistically detectable (GEE adapter-clusterp = 0.264,
+fault-cluster sign-flip two-sidedp = 0.75).Capability-envelope (descriptive design property).The
+DSM expresses14/14by construction; the three industry baselines achieve identical TCR= 0.429.
+Threshold sweep.Tightening infinite_loop max_retries from3 →5moves DSM to(36/84, 0/72)
+without additional TP-cell loss relative to the default threshold; both thresholds fire on60/72
+infinite_loopcells because Anthropic lacksTOOL_CALLemission.
+Conclusions.The 0.571 expressivity-vs-realization gap is aframework-instrumentation gap, not
+a metamodel-design gap. Under conformant detectors, the DSM’s small realized TCR advantage
+over OpenInference is not statistically reliable; the 4.5×per-framework range dwarfs metamodel-
+choice variance. The actionable recommendation for an SRE today is per-framework instrument-
+ation completeness: OpenAI Agents SDK already saturates 5/9 typed kinds withhandoff and
+guardrail.triggered; CrewAI and Anthropic SDK emit 1–2/9. Methodological contribution: TCR
+
+===== PAGE 2 =====
+2 The Conformance Gap is a Framework Gap
+scored under conformant attributes, with per-framework coverage cited against pinned SDK revisions,
+applied uniformly to four metamodels.
+2012 ACM Subject ClassificationSoftware and its engineering→Software verification and validation;
+Software and its engineering→Software performance; Computing methodologies→Distributed
+artificial intelligence
+Keywords and phrasesAI agent observability, OpenTelemetry, fault detection, empirical software
+engineering, controlled experiment, telemetry metamodels
+Supplementary MaterialReplication package: see Data Availability statement (§8).
+Software (Software, Dataset):Anonymizedforreview.
+1 Introduction
+Autonomous agents built on large language models (LLMs) increasingly execute production
+workflows in customer support, code review, and incident response [5, 7, 6]. Unlike traditional
+software, agents operate through stochastic loops ofplanning,tool execution,reasoning, and
+delegation. As they enter production, observability has become critical, and a growing
+empirical body shows that multi-agent failures are dominated by agent-specific pathologies—
+specification, inter-agent misalignment, and task verification—rather than the network errors
+that dominate microservice incidents [4].
+The de-facto industry standard for distributed tracing, OpenTelemetry (OTel), defines a
+metamodel for spans whoseSpanKind enumeration (CLIENT, SERVER, INTERNAL, PRODUCER,
+CONSUMER) was designed for microservices. Two AI-specific extensions have emerged:
+OpenTelemetry GenAI [11] introduces typed operation names including create_agent,
+invoke_agent, execute_tool, and retrieval; OpenInference [1] introduces ten typed span
+kinds including AGENT, GUARDRAIL, RETRIEVER, and TOOL. Both narrow the gap relative
+to vanilla OTel. Neither, however, exposes typed sub-operations for the cognitive and
+coordination phases that distinguish agent workflows: planning step generation, reasoning
+chains, peer-agent delegation with typed source/target identifiers, memory operations, or
+constrained guardrail outcomes.
+This paper poses an empirical question that has not been answered in prior work:how
+much of the observed cross-stack agent-fault detection variance is attributable to metamodel
+choice versus per-framework instrumentation defaults?We construct a controlled fault-
+injection harness, adopt the multi-agent failure taxonomy (MAST) of an independent prior
+team [4] as externally-anchored ground truth, and survey the default tracing emissions of six
+AI-agent framework SDKs as of 2026-05 with pinned source-survey evidence for each SDK.
+We then measure Typed Capability Rate (TCR) and False-Positive Rate (FPR) under three
+scoring rules: standardized-field dispatch, permissive substring matching on surveyed default
+span names, and extended-attribute dispatch restricted to attributesactually publishedin
+each metamodel’s specification.
+What this paper doesnotclaim.
+The DSM under study was designed by us to add typed kinds for the five phases the industry
+baselines omit, so the capability-envelope gap is a quantification of a designed gap on a
+uniform measurement instrument, not an empirical surprise. Our contribution is therealized
+measurement: per-framework coverage grounded in a direct survey of each SDK’s source,
+scoring restricted to attributes actually published in each metamodel’s convention, and
+
+===== PAGE 3 =====
+Anonymous 3
+uniform application across all four metamodels. We donotclaim generalization beyond
+the surveyed framework versions, the 14-fault MAST-anchored taxonomy, the mocked LLM
+clients, or the three scoring rules; we discuss scope explicitly in Section 6.
+Contributions.
+This is a measurement-methodology paper whose central empirical finding is that the realized
+cross-adapterfault-detectionvarianceisdominatedbyper-frameworkinstrumentationdefaults
+(4.5×range across surveyed SDKs,0.143to0 .643), not by metamodel choice. Once baseline
+detectors are restricted to attributes actually published in the OpenInference and OTel GenAI
+conventions, the realized DSM offers no statistically detectable cross-adapter advantage
+(GEE on adapter clusterp = 0.264; sign-flip permutation two-sidedp = 0.75). The DSM’s
+capability envelope advantage (14/14vs.6 /14) is a designed structural property and is
+reported descriptively, not as inferential evidence.
+(C1) Asurvey-grounded apparatus: 14 fault classes (13 mapped onto MAST with second-
+annotator κ= 0.83,[0 .58, 1.00]; 1 independently motivated) executed across 4 detector
+conditions×7 adapter profiles×6 mocked models×2 DSM privacy levels (3,780
+artifact rows; informativen = 14paired faults, n = 6third-party adapter profiles).
+Per-profile DSM-kind coverage is grounded in a direct survey of each SDK’s source as
+of 2026-05 (pinned commit SHAs and source-query citations incoverage_matrix.md).
+(C2) Three uniform scoring rules(standardized-field, permissive substring on surveyed
+default span names, extended-attribute dispatch restricted to attributesactually pub-
+lishedin each metamodel’s specification) applied uniformly across all four metamodels.
+(C3) Astatistical audit: Wilson CIs; descriptive McNemar/Newcombe/Cohen’s-h for
+the designed capability-envelope gap; computed GEE/GLMM/sign-flip sensitivity for
+the realized contrast; exact adapter range; threshold-sweep ROC with TPR axis;
+detectable-significance floor atn= 14.
+(C4) Aframework-instrumentation reframing: the realized cross-adapter coverage
+variance is dominated by per-framework default tracing emissions, not metamodel
+design. OpenAI Agents SDK alone reaches9/14 = 0.643realized DSM TCR (typed
+handoff, guardrail.triggered); Anthropic SDK reaches2/14 = 0.143(no built-in
+tracing). Standards-extension work cannot close this gap; per-framework instrumenta-
+tion completeness can.
+(C5) Adesign-frozen methodology: workload→taxonomy→DSM→detector with
+timestamps; second-annotator MAST mapping; three predicate banks released; real-
+LLM CLI sanity check on three decision scenarios.
+The remainder of the paper is organized as follows. Section 2 surveys the three industry
+telemetry metamodels and the MAST failure taxonomy. Section 3 describes the controlled
+benchmark, fault taxonomy, scoring rule, and threats to validity prevention. Section 4
+answers the three research questions. Section 5 discusses the per-framework instrumentation
+gap, the methodological choice of standardized-field scoring, and implications for future
+telemetry-standards work. Section 6 states threats to validity. Section 7 concludes. Section 8
+is the mandatory Data Availability statement.
+
+===== PAGE 4 =====
+4 The Conformance Gap is a Framework Gap
+2 Background
+2.1 The OpenTelemetry Span Metamodel
+OpenTelemetry defines a span as the basic unit of execution in a distributed trace, carrying
+a name, typed SpanKind, parent reference, timestamps, status, attributes, events, and
+a Baggage map propagated by W3C Trace Context [13]. The five canonical SpanKind
+literals (CLIENT, SERVER, INTERNAL, PRODUCER, CONSUMER) were designed for microservice
+request–response interactions.
+2.2 The Two AI-Specific Conventions
+OpenTelemetry GenAI semantic conventions.
+[11] adds agen_ai.operation.name attribute with values includingchat, create_agent,
+invoke_agent, execute_tool, retrieval, embeddings; plus a small attribute namespace
+(gen_ai.usage.{input,output}_tokens,gen_ai.tool.name,gen_ai.agent.{id,name}).
+OpenInference.
+[1] defines openinference.span.kind with ten typed values: LLM, EMBEDDING, CHAIN,
+RETRIEVER, RERANKER, TOOL, AGENT, GUARDRAIL, EVALUATOR, PROMPT; plus free-form attrib-
+utes (tool.name,retrieval.documents, etc.).
+2.3 The Coverage Gap and the MAST Taxonomy
+Both AI-specific conventions provide typed entities for thevisiblesurface of an agent (LLM
+call, tool execution, retrieval, agent lifecycle) but neither exposes typed sub-operations for
+thecognitive(planning, reasoning),coordination(peer-agent delegation with typed identifiers,
+memory), orpolicy(constrained guardrail outcomes) surfaces. An independent prior team
+[4] presents the Multi-Agent System Failure Taxonomy (MAST), classifying failures into 14
+modes across system design (FM-1.1–FM-1.5), inter-agent misalignment (FM-2.1–FM-2.6),
+and task verification (FM-3.1–FM-3.3). We adopt MAST as the externally defined reference
+taxonomy against which our fault-injection benchmark is mapped (Section 3.3).
+3 Method
+3.1 Research Questions
+RQ1 How does the typed-capability footprint (TCR/FPR) of the three industry telemetry
+metamodels compare on a controlled benchmark of 14 agent-specific fault classes, and
+is any observed gap between metamodels statistically significant under a paired binary
+analysis with multiple-comparison correction and effect-size estimation?
+RQ2 To what extent does a DSM that adds typed sub-operations for delegation, planning,
+reasoning, guardrails, and memory expand the typed-capability envelope relative to
+the industry baselines, and how does the gap survive the obvious counter-experiments—
+specifically (a) a permissive substring-matching scoring rule that lifts the baselines and
+(b) per-adapter implementation variance characterized by Wilson CIs and the exact
+small-cluster adapter range?
+
+===== PAGE 5 =====
+Anonymous 5
+Trace
+AgentSpan
+{abstract}
++parentId
++agentId
++kind:SpanKind
+SpanKind
+{AGENT,LLM_CALL,
+TOOL_CALL,PLANNING,REASONING,DELEGATION,GUARD_RAIL,RETRIEV AL,MEMORY}
+Attribute
++key,+value
+BaggageEntry
++key,+value
+spans *
+attributes *
+baggage *AGENT LLM_CALL TOOL_CALL PLANNING
+REASONING
+Delegation
++sourceAgent
++targetAgent
+GUARD_RAIL RETRIEV AL
+MEMOR Y
+Figure 1Ecore-style abstract syntax of the DSM under study. Trace contains AgentSpan
+instances; AgentSpan is abstract with nine concrete subclasses. Subclasses carryAttribute and
+BaggageEntry compositions; the Delegation subclass additionally exposes typedsourceAgent and
+targetAgentattributes (delegation.source_agent,delegation.target_agent).
+RQ3 How sensitive are the typed-capability measurements to the detector-threshold dimen-
+sion (characterized by a threshold sweep on the only non-zero-FPR detector), the per-
+framework adapter dimension (Wilson CIs per adapter, exact across-adapter range), and
+the foundation-model dimension (deterministic-replication sanity check)?
+Terminology.
+We useTyped Capability Rate (TCR)rather than “Fault Detection Rate (FDR)” to avoid
+the collision with theFalse Discovery Rateof multiple-testing literature. TCR is defined as
+the fraction of injected faults for which the standardized-field dispatch (or, where indicated,
+permissive) predicate fires on the exported trace. TCR is a binary detection metricper fault
+class, not a per-instance recall measure; Section 6 discusses the construct-validity scope of
+this definition.
+3.2 The Domain-Specific Metamodel (DSM)
+We define the DSM as a metamodel conforming to OMG MOF [10], expressed in Ecore
+[12]. Figure 1 gives the abstract syntax. The root container is Trace, which owns a
+collection of AgentSpan instances. AgentSpan is abstract; nine concrete subclasses cover the
+agent operations one-to-one with aSpanKind enumeration: AGENT, LLM_CALL, TOOL_CALL,
+PLANNING, REASONING, DELEGATION, GUARD_RAIL, RETRIEVAL, MEMORY. Five of the nine kinds
+(PLANNING, REASONING, DELEGATION, GUARD_RAIL, MEMORY) are absent from both AI-specific
+industry conventions.
+The DSM is accompanied by six OCL well-formedness invariants [9]; Listing 1 shows
+two representative ones; the full set is released as an executableagentmm.ocl file in the
+replication package.
+3.3 Fault Taxonomy and MAST Mapping
+We constructed a benchmark of 14 agent-specific fault types and mapped each onto a mode
+of the independent MAST taxonomy [4]. Table 1 gives the complete mapping. Thirteen of
+fourteen faults map directly onto MAST modes;cost_explosion is our addition, motivated
+by published LLM-agent cost-runaway postmortems and not present in MAST (which
+predates large-scale agent deployment).
+
+===== PAGE 6 =====
+6 The Conformance Gap is a Framework Gap
+Listing 1Two representative OCL invariants of the DSM (full set of six inagentmm.ocl).
+contextAgentSpaninvDelegationCarriesIdentity:
+self.kind = SpanKind::DELEGATIONimplies(
+self.attributes->exists(a | a.key=’delegation.source_agent’)and
+self.attributes->exists(a | a.key=’delegation.target_agent’))
+contextAgentSpaninvGuardRailResultIsExplicit:
+self.kind = SpanKind::GUARD_RAILimplies
+self.attributes->exists(a | a.key = ’guardrail.result’and
+Set{’pass’,’fail’,’warn’,’bypass’}->includes(a.value.oclAsType(String)))
+Inter-rater agreement on the mapping.
+The 13 MAST mappings were independently re-coded by a second annotator (a multi-
+agent systems researcher uninvolved in DSM design or detector implementation), working
+only from the MAST paper, the fault names, and one-line fault descriptions. Annotators
+agreed on 11 of 13 mappings; disagreements were onstale_retrieval (FM-2.4 vs. FM-
+2.6) and agent_misroute (FM-2.5 vs. FM-2.2). Cohen’sκ= 0.83(observed agreement
+11/13 = 0.846); Brennan–Predigerκ[2] (uniform-marginal,Pe = 1/14)= 0 .834. Bootstrap
+95% CI on Cohen’sκis[0 .58, 1.00]( B = 10,000paired-item resamples on (annotator-1,
+annotator-2) labels, recomputingκfrom full label marginals each iteration); the lower bound
+straddles the “moderate”/“substantial” Landis–Koch boundary becausen = 13items provide
+limited precision, so we report the CI and avoid the verbal label. Both disagreements were
+resolved by discussion; mast_mapping_review.md preserves both codings and resolution
+notes. κis computed only on the 13 MAST-mapped faults;cost_explosion was coded
+identically by both annotators as “not in MAST.” Of the 14 MAST modes, 12 are exercised
+(FM-3.2 covers both tool_failure and guardrail_bypass, so 13 fault-mappings→12
+distinct MAST modes). FM-1.2 (Disobey Role Specification) and FM-2.2 (Failure to Ask
+for Clarification) are not exercised — precisely the modes where typedAGENT.role and
+GUARD_RAIL kinds are most plausibly diagnostic, a construct-validity scope limit (not a
+neutral future-work pointer).
+Workload-design freeze.
+The agent workload is timestamped 32 days prior to the first taxonomy commit and
+44 days prior to the first DSM commit ( workload_design.md), breaking the work-
+load→taxonomy→DSM circularity in addition to the workload→MAST mapping→DSM
+mapping→detector freeze. The workload is a fixed research-agent flow that exercises
+six of OpenInference’s ten kinds (LLM, TOOL, CHAIN, RETRIEVER, AGENT, GUARDRAIL); the
+four unused kinds (EMBEDDING, RERANKER, EVALUATOR, PROMPT) are not exercised by this
+research-agent workload; EVALUATOR and PROMPT could plausibly lift OpenInference on
+hallucination and planning faults, so we treat this as an external-validity bound rather than
+claiming those kinds are irrelevant.
+3.4 Experimental Matrix
+Detector banks (n= 4); executed conditions (n= 6).
+Four detector banks: (a) Vanilla OTel ( CLIENT/INTERNAL only); (b) OTel GenAI
+(create_agent, invoke_agent, execute_tool, retrieval); (c) OpenInference (six of
+ten kinds: LLM, TOOL, CHAIN, RETRIEVER, AGENT, GUARDRAIL; the EMBEDDING, RERANKER,
+
+===== PAGE 7 =====
+Anonymous 7
+Table 1The 14-fault benchmark and its mapping onto the MAST taxonomy of [4]. Mapping
+was finalized prior to detector implementation; the artifact’sworkload_design.md carries relative
+timestamps and blinded freeze-order digests establishing this order.
+Fault MAST mode MAST category
+wrong_tool FM-2.6 Reasoning–Action Mis-
+match
+Inter-agent misalign-
+ment
+hallucinationFM-3.3 Incorrect Verification Task verification
+infinite_loop FM-1.5 Unaware of Termination
+Conditions
+System design
+context_over. FM-1.4LossofConversationHis-
+tory
+System design
+circular_deleg. FM-2.1 Conversation Reset (cyc-
+lic)
+Inter-agent misalign-
+ment
+tool_failure FM-3.2 No or Incomplete Veri-
+fication
+Task verification
+timeoutFM-3.1 Premature Termination Task verification
+stale_retrieval FM-2.4 Information Withhold-
+ing
+Inter-agent misalign-
+ment
+guardrail_byp. FM-3.2 No or Incomplete Veri-
+fication
+Task verification
+planning_fail. FM-1.1 Disobey Task Specifica-
+tion
+System design
+reasoning_loopFM-1.3 Step Repetition System design
+agent_misroute FM-2.5 Ignored Other Agent’s
+Input
+Inter-agent misalign-
+ment
+memory_corr.FM-2.3 Task Derailment Inter-agent misalign-
+ment
+cost_explosion (independent: cost-runaway
+postmortems)
+(not in MAST)
+EVALUATOR, PROMPT kinds are not invoked); (d) the DSM (all nine kinds + OCL-required
+attributes). Six executed conditions add the DSM under two privacy levels (METADATA_ONLY,
+FULL) plus a no-telemetry control.
+Framework adapter profiles (n= 7).
+LangChain, CrewAI, AutoGen, LlamaIndex, Anthropic SDK, OpenAI Agents SDK, plus
+a conformance-complete reference (custom_agent) are implemented as executable adapter
+profiles in the released harness, not as live executions of those packages. This isolates
+telemetry expressivity and conformance from package-version and provider nondetermin-
+ism. Crucially, the per-profile DSM-kind coverage that the simulation honors isgrounded
+in a direct survey of each SDK’s sourceas of 2026-05, with pinned commit SHAs and
+file/line citations incoverage_matrix.md and source_survey_evidence.tsv: langchain
+3/9 (LLM_CALL, TOOL_CALL, RETRIEVAL viarun_type on BaseTracer); llamaindex
+4/9 (adds AGENT viaCBEventType.AGENT_STEP); autogen4/9 (AGENT viainvoke_agent,
+TOOL_CALL viaexecute_tool, DELEGATION via messaging-runtime spans; LLM_CALL
+via the model client);crewai 2/9 (TOOL_CALL via Tool Usage ; LLM_CALL via the
+model client; optional agent, guardrail, memory, reasoning, and A2A events exist in the
+source but are not credited in the default benchmark profile without the detector-specific
+fields); anthropic_sdk 1/9 (no built-in tracing module; LLM_CALL only via external
+openinference-instrumentation-anthropic); openai_sdk (= openai-agents-python)
+5/9 (typed agent, generation/response, function, handoff with from_agent/to_agent,
+
+===== PAGE 8 =====
+8 The Conformance Gap is a Framework Gap
+and guardrail with explicit triggered flag); custom_agent 9/9 by construction. This
+produces a4.5×realized cross-adapter range(Table 5) that drives the headline finding
+(Section 4.2).
+Mocked foundation models (n= 6).
+model-A1–A3, model-B1–B3 (two commercial provider families, three tiers each). Mocks
+are deterministic; under fixed seed the model dimension contributes±0.000fault-detection
+variance (Section 4.3).
+Run count and effective sample size.
+14faults ×6conditions ×7adapter profiles×6mocked models= 3 ,528fault-injection runs;
+one fault-free control per (condition, adapter profile, model) cell across all six conditions
+yields6×7×6 = 252fault-free controls for total artifact rows3,780. Theinformativesample
+size for the metamodel-comparison RQs isn = 14paired faults (the inferential unit), not
+3,528, since the model dimension contributes no fault-detection variance under deterministic
+mocks and the privacy-level dimension is TCR-neutral by DSM design. We report the larger
+numbers as artifact-execution counts and base all statistical inference on the inferential units
+(n= 14for contrasts,n= 6third-party profiles for the cross-adapter mean).
+3.5 Detection Rule (Scoring) and Counter-Experiment
+For each (telemetry condition, fault) pair we hand-coded a deterministic Python predicate over
+the exported span list (one branch per fault, four banks for vanilla / GenAI / OpenInference
+/ DSM). We report results underthreescoring rules, side-by-side, applied uniformly across
+all four metamodels:
+(a) Standardized-field dispatch (primary rule).Detectors may use only fields stand-
+ardized by the metamodel under test: typed enum fields (gen_ai.operation.name,
+openinference.span.kind, or agentmm.span.kind) plus structured standard fields
+such as status, duration, tool name, token usage, retrieval metadata, or cost. Free-
+form span names and substring heuristics are not allowed. This is the apples-to-apples
+comparison of standardized semantics across metamodels.
+(b) Permissive substring-matching (counter-experiment rule).Detectors may ad-
+ditionally fire on substring matches againstspan.name (e.g. matching plan, reason,
+deleg, guardrail, or memory). This rule lifts the baselines on faults whose phase-name
+appears in the framework’s span naming convention but, as we report (Section 5),
+introduces naming-collision FPR. We pre-specify the regex per fault in the artifact’s
+permissive_predicates.py and apply it uniformly to every metamodel including the
+DSM.
+(c) Extended-attribute dispatch (deployed-baseline counterfactual).Detectors may
+dispatch on any standardized free-form attribute that the metamodel under test specifies
+in its conventions (e.g.gen_ai.tool.name, retrieval.documents, tool.parameters),
+in addition to typed kinds. This is the most realistic “extended-baseline” counterfactual—
+what a sufficiently disciplined practitioner could implement on top of OpenInference or
+OTel GenAI without leaving the published convention. We pre-specify the per-metamodel
+attribute set in the artifact’sextended_predicates.py.
+We adopt rule (a) as the primary scoring rule (apples-to-apples typed semantics across
+metamodels) and report (b) and (c) in parallel to forestall the obvious counter-experiments.
+
+===== PAGE 9 =====
+Anonymous 9
+All three banks share the same fault definitions and positive-iff-predicate-fires scoring. A
+run is a positive iff the predicate fires; we measure binary TCR on fault-injection runs and
+binary FPR on fault-free controls.
+Statistical analysis and inferential frame.
+We separate two analytic targets. At thecapability envelope(standardized-field dispatch
+on 14 faults, baseline catches= 6/14by typed dispatch on its own standardized fields,
+DSM expresses14/14by typed construction, deterministic by design) the McNemar exact
+test, Holm-3 adjustment, paired Newcombe Method 10 score interval [8], and Cohen’sh
+aredescriptiveon the designed gap (the b=0,c= 8discordance is the unique outcome the
+design produces; we do not claim generalization to “future fault classes”). At therealized
+cross-adapterlevel we model the 168 paired binary outcomes for DSM vs. OpenInference
+extended-attribute scoring with computed GEE clustered by adapter and by fault; a crossed
+logistic GLMM (random intercepts on fault and adapter, VB vs. Laplace) is a sensitivity
+check, see Section 4. For per-metamodel TCR we report Wilson 95% CIs [14]; for the
+cross-adapter mean we report the exact range[0.143, 0.643](a CI on this discrete six-vector
+would over-state information [3]).
+3.6 Design Freeze and Threats Prevention
+Design sequence frozen workload→MAST mapping→DSM mapping→detector code (see
+workload_design.md relative timestamps and blinded digests). The benchmark forestalls six
+threats: (i) deterministic seed plus real-LLM sanity check (Section 4.3); (ii) uniform predicate
+code with all three rules in parallel; (iii) mocked LLMs prevent provider quirks; (iv) the
+reference adapter is a harness sanity check, with all discussion-level claims based on the
+third-party mean and the exact across-adapter range; (v) MAST mapping is independently
+re-coded (κ+ bootstrap CI); (vi) workload timestamped 32 days prior to the first taxonomy
+commit, breaking workload→taxonomy→DSM circularity.
+4 Results
+4.1 RQ1: Coverage of Industry Telemetry Metamodels
+Table 3 reports aggregate TCR and FPR per condition with Wilson 95% confidence in-
+tervals. The three industry baselines—vanilla OTel, OTel GenAI, and OpenInference—
+all converge to TCR0.429(6 /14, Wilson 95% CI[0.214, 0.674]) under standardized-field
+dispatch, detecting the same six tool/LLM-attribute faults (wrong_tool, tool_failure,
+timeout, infinite_loop, context_overflow, cost_explosion) by dispatching on each
+metamodel’s own standardized typed fields: vanilla OTel usesSpanKind = CLIENT/INTERNAL
+plus otel.status_code and span-duration; OTel GenAI adds gen_ai.operation.name
+= execute_tool and gen_ai.usage.*; OpenInference uses openinference.span.kind∈
+{TOOL,LLM}plus tool.name. Full predicate code is intyped_predicates.py. None of the
+three baselines expresses the eight coordination, cognitive, or policy faults under standardized-
+field dispatch. All three exhibit FPR0.000on the 42 fault-free controls per condition.
+Capability-envelope characterization (descriptive).
+At the capability envelope (DSM= 14/14by typed construction; each baseline= 6/14by
+typed dispatch on its own standardized fields), theb=0,c= 8discordance pattern is the unique
+
+===== PAGE 10 =====
+10 The Conformance Gap is a Framework Gap
+Table 2RQ1: descriptive characterization of the metamodel-capability gap on 14 paired binary
+outcomes under standardized-field dispatch.b=0,c= 8for every baseline-vs-DSM pair is the unique
+deterministic outcome the design produces; we therefore report McNemar exactp, Holm-3 adjustment,
+and the Newcombe paired-proportion score interval as quantifications of the designed measurement
+gap,notas inferential tests against a sampling null (see Section 3.5, “Inferential frame”). Empirical
+inferential evidence is reported separately at the realized cross-adapter level (GEE/GLMM sensitivity,
+this section).∆ = ( c−b)/n is the per-fault TCR difference; baselines are pairwise identical (0
+discordant cells).
+Pairb cExactpHolm-3p adj ∆(Newcombe score interval) Family
+Vanilla OTel vs OTel GenAI 0 0 1.000 —0.000 [−0.13,+0.13]design symmetry
+Vanilla OTel vs OpenInference 0 0 1.000 —0.000 [−0.13,+0.13]design symmetry
+OTel GenAI vs OpenInference 0 0 1.000 —0.000 [−0.13,+0.13]design symmetry
+Vanilla OTel vs DSM 0 8 0.0078 0.0234+0.571 [+0.245,+0.786]designed gap
+OTel GenAI vs DSM 0 8 0.0078 0.0234+0.571 [+0.245,+0.786]designed gap
+OpenInference vs DSM 0 8 0.0078 0.0234+0.571 [+0.245,+0.786]designed gap
+|h|= 1.71matches π−2 arcsin
+√
+0.429. All threepadj are at the floor attainable forn = 14paired binary
+outcomes (Section 4.3). McNemar two-sided exactp= 2·P(X≤min(b,c)|nd,0.5). The 95% CI uses
+thepairedNewcombe Method 10 score interval [8] with Wilson marginals; witha= 6,b= 0,c= 8,d= 0
+this yields[+0.245,+0.786]. The unpaired variant (which incorrectly treats the two metamodels as
+independent samples) yields[+0.357,+0.898]and is not appropriate. Reproducible inanalysis.py.
+deterministic outcome the design produces. We therefore report the descriptive statistics of
+this designed gap, not as inferential tests against a sampling null but as quantifications of
+the instrument’s measurement spread (Table 2): per-fault gap∆ = +0.571with Newcombe
+paired score interval[+0.245, +0.786], McNemar exactp = 0.0078, Holm-3-adjusted0.0234,
+Cohen’s|h|= 1.71. Baselines are pairwise indistinguishable (zero discordant cells; trivially
+p = 1.000). These numbers characterize how a uniformly-applied standardized-field dispatch
+instrument separates the three baselines from the DSM at the metamodel-capability level;
+the empirical inferential evidence appears below at the realized cross-adapter level.
+Realized cross-adapter comparison.
+The capability envelope is by construction; the deployable question is realized cross-adapter
+performance under survey-grounded per-framework coverage. Per-adapter realized DSM TCR
+ranges from2/14 = 0.143( anthropic_sdk; emits no typed spans without external instru-
+mentation) to9/14 = 0.643( openai_sdk = openai-agents-python; emits typedhandoff and
+guardrail.triggered). The4.5×range across surveyed framework defaults is the dominant
+cross-adapter variance source(Table 5). Cross-adapter mean realized DSM is36/84 = 0.429at
+FPR4/72 = 0.056. Each baseline detects six faults on every adapter that emits LLM_CALL
+and TOOL_CALL; under survey-grounded coverage the baseline cross-adapter mean is
+32/84 = 0.381for vanilla OTel (Anthropic SDK lacks TOOL_CALL spans natively); OTel
+GenAI and OpenInference have the same typed realized count under the uniform adapter pro-
+file. The realized DSM gap over typed OpenInference is therefore∆ = +4/84(AutoGen adds
+circular_delegation; OpenAI Agents adds circular_delegation, guardrail_bypass,
+and hallucination). Triangulation confirms the absence of a statistically detectable cross-
+adapter advantage against the stronger OpenInference extended-attribute comparator: GEE
+clustered on adapter returnsβ= 0.098, p = 0.264; GEE clustered on fault returnsβ= 0.098,
+p = 0.525; fault-cluster sign-flip two-sidedp = 0.75; crossed-GLMM sensitivity remains
+positive under both Laplace-MAP and VB fits (recomputed in the artifact). Under survey-
+grounded coverage the realized DSM advantage seen at the capability envelope vanishes.
+
+===== PAGE 11 =====
+Anonymous 11
+Table 3RQ1/RQ2: aggregate Typed Capability Rate (TCR) and FPR by telemetry condition
+with Wilson 95% confidence intervals. Capability rows usen = 14faults; realized rows use the
+n = 84(fault ×third-party adapter) denominator that honors the survey-grounded per-profile
+coverage (coverage_matrix.md). FPR denominators:n = 42baseline capability (7adapters ×6
+models);n= 36baseline realized (six third-party adapters×six models within the OpenInference
+condition); n = 72realized DSM (six third-party adapters ×six models×two privacy levels).
+The conformance-complete reference adapter (1.000by construction) is reported in Table 5 as a
+harness sanity check, not in this headline table. Production-plausible sensitivity rows retain the
+eight non-oracle fault classes (n= 48).
+Condition TCR TCR 95% CI / range FPR
+No telemetry 0.000[0.000,0.215]0.000 (0/42)
+Vanilla OTel (capability) 0.429 (6/14)[0.214,0.674]0.000 (0/42)
+OTel GenAI capability (current spec) 0.429 (6/14)[0.214,0.674]0.000 (0/42)
+OpenInference capability 0.429 (6/14)[0.214,0.674]0.000 (0/42)
+DSM, metamodel-capability envelope (n= 14) 1.000[0.785,1.000]—
+OpenInference (typed) realized cross-adapter 0.381(32/84) range[0.143, 0.429] 0.000(0/36)
+OpenInference (extended-attr. conformant) realized 0.405(34/84) range[0.143, 0.500] 0.000(0/36)
+DSM realized cross-adapter 0.429(36/84) range[0.143, 0.643] 0.056 (4/72)
+OI extended, production-plausible sensitivity 0.479 (23/48) 8 non-oracle faults 0.000 (0/36)
+DSM default, production-plausible sensitivity 0.500 (24/48) 8 non-oracle faults 0.056 (4/72)
+DSM tuned, production-plausible sensitivity 0.500 (24/48) 8 non-oracle faults 0.000 (0/72)
+Survey-grounded per-adapter realized DSM TCR (coverage_matrix.md, Table 5):anthropic_sdk
+2/14 = 0.143(no built-in tracing; LLM_CALL only via external instrumentation, so only
+context_overflowandcost_explosionare detectable);crewai,langchain,llamaindexeach
+6/14 = 0.429(the easy six tool/LLM-attribute faults);autogen7/14 = 0.500(adds
+circular_delegationvia messaging-runtime spans);openai_sdk= openai-agents-python9/14 = 0.643
+(addscircular_delegationviahandoff,guardrail_bypassviaguardrail.triggered, and
+hallucinationviahandoffrole attribution). A CI on this discrete six-vector would over-state
+information; the exact range is the honest summary.
+4.2 RQ2: DSM Coverage, Per-Fault Distribution, and the Permissive
+Counter-Experiment
+Table 5 shows the per-fault capability matrix. Themetamodel-capabilityenvelope is a by-
+construction upper bound: of the 14 fault classes, the DSM is the only metamodel of the four
+thatexpressesthe eight coordination, cognitive, and policy faults under the standardized-field
+rule. The DSM was designed to add typed kinds for these phases, so this is not an empirical
+surprise; it is reported as the upper TCR row in Table 3; the corresponding reference-adapter
+run produces the constructive1.000that we report only as a sanity check on the detection
+harness.
+Therealizedcross-adapter mean (the deployment summary for the six third-party adapters
+under survey-grounded coverage) is TCR= 36/84 = 0.429over the exact across-adapter range
+[0.143, 0.643](n = 6adapters: {2/14, 6/14×3, 7/14, 9/14}). The 4.5×range is dominated by
+per-frameworkinstrumentationdefaultsratherthanmetamodeldesign(Section4.2discussion).
+Per-adapter Wilson CIs (Table 5, bottom half) range from[0.040, 0.399]for anthropic_sdk
+(LLM_CALL only via external instrumentation) to[0.388, 0.838]for openai_sdk (typed
+handoffandguardrail.triggered).
+Per-kind ablation.
+Table 4 shows the per-DSM-kind contribution to the 14-fault coverage envelope: each missing
+kind costs a fixed number of faults, so the per-adapter realized range0.143–0.643is fully
+determined by which subset of DSM kinds each surveyed framework actually emits by default.
+
+===== PAGE 12 =====
+12 The Conformance Gap is a Framework Gap
+Table 4RQ2: per-DSM-kind ablation. Number of additional faults in the 14-fault benchmark
+that become detectable when the named DSM kind is added to a baseline adapter that emits only
+LLM_CALL and TOOL_CALL. Combined with the survey-grounded per-framework coverage (Table 5),
+this deterministically explains the4.5×realized cross-adapter range[0.143,0.643].
+DSM kind added∆TCR (faults gained) Faults unlocked
+DELEGATION(typed src/tgt) 1/14circular_delegation
+PLANNING1/14planning_failure
+REASONING1/14reasoning_loop
+GUARD_RAIL(typed result) 1/14guardrail_bypass
+MEMORY2/14memory_corruption,agent_misroute
+RETRIEVAL+staleness_seconds1/14stale_retrieval
+AGENT+ DSM-requiredagent.roleattribute 1/14hallucination(role-bound verification context)
+Table 5RQ2: per-fault capability and per-adapter realized TCR with Wilson 95% CIs. Top:
+which metamodel canexpress( ✓) each fault under standardized-field dispatch. Bottom: per-adapter
+realized TCR for the DSM, denominatorn = 14, all denominators identical so Wilson CIs are
+directly comparable. V=Vanilla OTel; G=OTel GenAI; O=OpenInference; D=DSM (capability).
+Fault V G O D Fault V G O D
+wrong_tool✓ ✓ ✓ ✓circular_deleg.– – –✓tool_failure✓ ✓ ✓ ✓agent_misroute– – –✓timeout✓ ✓ ✓ ✓planning_failure– – –✓infinite_loop✓ ✓ ✓ ✓reasoning_loop– – –✓context_overflow✓ ✓ ✓ ✓guardrail_byp.– – –✓cost_explosion✓ ✓ ✓ ✓stale_retrieval– – –✓memory_corr.– – –✓hallucination– – –✓
+Capability:V 6/14, G 6/14, O 6/14,D 14/14.
+Per-adapter realized TCR (DSM, all 14 faults; mean over 6 mocked models; survey-grounded coverage):custom_agent(reference, all 9 kinds emitted):1.000sanity check, Wilson 95% CI [0.785, 1.000]openai_sdk(5/9 typed: AGENT, LLM_CALL, TOOL_CALL, handoff, guardrail): 0.643 (9/14), Wilson 95% CI [0.388, 0.838]autogen(3/9 typed + LLM via model client): 0.500 (7/14), Wilson 95% CI [0.268, 0.732]crewai,langchain,llamaindex(1–4/9 typed): 0.429 (6/14), Wilson 95% CI [0.214, 0.674]anthropic_sdk(1/9 typed: LLM_CALL via external openinference instrumentation): 0.143 (2/14), Wilson 95% CI [0.040, 0.399]Cross-adapter mean (six third-party adapters): 36/84 = 0.429; exact across-adapter range [0.143, 0.643]
+Permissive and extended-attribute counter-experiments (RQ2).
+Table 6 reports each metamodel’s TCR and FPR under both counter-experiment scoring
+rules, with detectors restricted to attributesactually publishedin each metamodel’s spe-
+cification (see Section 3.5). Under the permissive substring-matching rule (rule (b)), the
+surveyed default span names of LangChain, LlamaIndex, AutoGen, CrewAI, and Anthropic
+SDK do not include agent-phase tokens (plan/reason/guardrail /memory); only OTel
+GenAI lifts (gainingplanning_failure via the plan operation name in the GenAI registry)
+and only OpenInference lifts (gaining guardrail_bypass via its typed GUARDRAIL kind
+name). Under the extended-attribute rule (rule (c)) restricted to published keys, OTel
+GenAI gains reasoning_loop via gen_ai.usage.reasoning.output_tokens (a published
+registry attribute), and OpenInference gainsreasoning_loop via content-hash repetition
+on llm.output_messages.<i>.message.content (a published flattened-message attribute).
+Crucially, neither the OTel GenAI registry nor the OpenInference spec publishes any dedicated
+attribute for document staleness or per-step reasoning hashes; under conformant detectors
+stale_retrieval is not detectable via baseline extended attributes, and the previously-
+claimed lift to0.571via retrieval.documents[].staleness_seconds requires a fictitious
+nested key. The DSM expresses all 14 faults at the capability envelope under all three rules;
+the realized cross-adapter DSM has FPR4/72 = 0.056.
+
+===== PAGE 13 =====
+Anonymous 13
+Table 6RQ2: counter-experiments under permissive substring (b) and conformant extended-
+attribute (c) rules. Capability rows use the 14-fault denominator; realized rows use the same
+third-party profile fault denominator (n = 84). FPR denominators per condition:n = 42baseline
+capability checks,n = 36baseline third-party profile checks,n = 72DSM (six third-party adapters×
+6 models×2 privacy levels). Under conformant detectors restricted to attributesactually published
+in each metamodel’s spec (Section 3.5), default realized DSM and OpenInference extended-attribute
+scoring form a TCR/FPR trade-off: DSM36/84 = 0.429at FPR4 /72 = 0.056vs. OpenInference
+34/84 = 0.405at FPR0 /36 = 0.000(∆ TCR = +0.024for DSM,∆ FPR = +0.056for DSM).
+Threshold-tuning the DSMinfinite_loop detector eliminates the FPR penalty and leaves DSM
+2/84TCR cells ahead at equal-zero FPR.
+Condition TCR (typed) TCR (perm.) TCR (ext. attr.) FPR (perm.) FPR (ext.)
+Vanilla OTel 0.429 (6/14) 0.429 (6/14) † 0.429 (6/14) 0.000 (0/42) 0.000 (0/42)
+OTel GenAI (current spec) 0.429 (6/14) 0.500 (7/14) 0.500 (7/14) 0.000 (0/42) 0.000 (0/42)
+OpenInference 0.429 (6/14) 0.500 (7/14) 0.500 (7/14) 0.048 (2/42) 0.000 (0/42)
+DSM (capability envelope) 1.000 (14/14) 1.000 (14/14) 1.000 (14/14) —‡ —‡
+OpenInference (third-party realized) 0.381 (32/84) 0.405 (34/84) 0.405 (34/84) 0.056 (2/36)§ 0.000 (0/36)§
+DSM (third-party realized, default thresh.) 0.429 (36/84) 0.429 (36/84) 0.429 (36/84) 0.056 (4/72) 0.056 (4/72)
+DSM (third-party realized, threshold-tuned) 0.429 (36/84) 0.429 (36/84) 0.429 (36/84) 0.000 (0/72) 0.000 (0/72)
+†Vanilla OTel default span names (HTTP routes, gRPC methods) do not include any agent-phase tokens
+in the surveyed frameworks; permissive substring matching produces no lift.‡The capability envelope is
+a metamodel design property, not an observed runtime condition; no empirical FPR is defined.§Realized
+FPR uses six third-party profiles×six models within the OpenInference condition; the0.056permissive
+FPR originates fromopenai_sdkno-fault traces emitting a typedguardrailspan (passed check) that
+the permissive matcher hits.
+Realized cross-adapter comparison (RQ2).
+Under survey-grounded coverage and conformant detectors, realized DSM (TCR36/84 =
+0.429, FPR4 /72 = 0 .056) trades a+0.024TCR advantage for a+0 .056FPR penalty
+relative to OpenInference under rule (c) on the same denominator (TCR34/84 = 0.405, FPR
+0/36 = 0.000). Threshold-tuning the DSM’sinfinite_loop detector from max_retries=3
+to max_retries=5 moves the DSM operating point to(36/84, 0/72), eliminating the FPR
+penalty without changing aggregate per-adapter binary TCR. The threshold-tuned DSM
+exceeds OpenInference + extended attributes by2/84TCR cells at equal-zero FPR. Trian-
+gulation confirms the absence of a statistically detectable cross-adapter advantage: GEE
+clustered on adapterβ= 0.098,p = 0.264; GEE clustered on faultβ= 0.098,p = 0.525;
+sign-flip permutation two-sidedp = 0.75. The realized DSM advantage seen at the capability
+envelope vanishes under survey-grounded coverage and conformant detectors.
+Production-plausible-only sensitivity.
+Using the predicate-input audit intelemetry_field_audit.tsv, we drop faults whose de-
+tection requires benchmark-oracle fields and retain eight production-plausible faults. On
+this subset, OpenInference extended reaches23 /48 = 0 .479at FPR0 /36 = 0; DSM
+reaches24 /48 = 0.500at default FPR4 /72, and the threshold-tuned DSM reaches the
+same24 /48at FPR0 /72. These production-plausible rows are the operational sensitiv-
+ity result; the all-fault rows remain the construct-validity stress test because they include
+benchmark-oracle diagnostic fields.
+The per-adapter realized TCR ranges from0.143( anthropic_sdk) to0.643( openai_sdk);
+the exact across-adapter range[0.143, 0.643]is the honest small-cluster summary, with per-
+adapter realized TCR mechanically determined by the DSM-kind subset each surveyed frame-
+work emits (the ablation in Table 4).anthropic_sdk has no built-in tracing module: only
+LLM_CALL appears via external openinference instrumentation, so onlycontext_overflow
+
+===== PAGE 14 =====
+14 The Conformance Gap is a Framework Gap
+and cost_explosion are detectable. Three frameworks (crewai, langchain, llamaindex)
+emit LLM_CALL and TOOL_CALL for the easy six but no typedDELEGATION, AGENT+role,
+GUARD_RAIL, PLANNING, REASONING, MEMORY, or retrieval.staleness_seconds. autogen
+adds typed circular_delegation via its messaging-runtime spans (one extra fault).
+openai_sdk = openai-agents-python adds three more (circular_delegation via handoff,
+guardrail_bypass via guardrail.triggered, and hallucination via handoff role
+attribution), reaching9 /14. Six fault classes ( planning_failure, reasoning_loop,
+memory_corruption, agent_misroute, stale_retrieval; plus guardrail_bypass and
+hallucination on five of six adapters) still require typed kinds that most surveyed
+frameworks do not currently emit. This is the empirical content of the “conformance gap”:
+not a metamodel-design problem, a per-framework instrumentation-completeness problem.
+The False-Positive Source and Threshold Sensitivity
+The DSM’s FPR of4/72 = 0.056is non-zero, in contrast to the three baselines (each0/42
+per condition) and conformant OpenInference extended-attribute on the third-party realized
+denominator (0/36 = 0.000). The DSM denominatorn = 72aggregates the two privacy-level
+conditions on six third-party adapters (eachn = 36). All 4 DSM false positives originate
+from the infinite_loop detector firing on the CrewAI multi-agent writer workflow that
+legitimately repeats the same tool call across writer turns: per-cell repetition counts vary
+deterministically by(model,privacy )in[1 , 4](Section 4.2); 4 of the 12 CrewAI cells exceed
+the count-≥3retry budget at the default threshold and fire. This is a thresholding artifact,
+not a metamodel defect; per-cell breakdown is incompute_fpr.py. All other DSM detectors
+achieve FPR= 0/72.
+Threshold sweep.
+We swept theinfinite_loop detector’smax_retries threshold∈{2, 3, 4, 5, 6}and recorded
+both false-positive counts on then = 72DSM controls and true-positive counts on then = 72
+third-party DSM infinite_loop fault runs (Table 7). Non-Anthropic fault-cell loop counts
+are deterministic per(adapter,model )in[5 , 7]; Anthropic cells remain at the no-tool baseline
+count1. Control counts are in[1, 4]for legitimate writer-tool repetition, producing a real
+ROC trade-off rather than a step function. Default threshold 3 yields FP4/72 = 0.056at
+TP60 /72 = 0.833; the missing 12 TP cells are all Anthropic SDK cells, where noTOOL_CALL
+span is emitted. Tightening to 5 zeroes the FPR without additional TP-cell loss relative to
+the default threshold; tightening to 6 over-tightens and loses10more true-positive cells. The
+threshold-tuned operating point(36/84, 0/72)at max_retries=5 removes the FPR penalty
+and sits above OpenInference extended-attribute conformant (34/84, 0/36) by2/84TCR
+cells.
+Privacy-Level Sensitivity
+The DSM defines a three-level privacy filter (NONE, METADATA_ONLY, FULL); the default
+(METADATA_ONLY) provides full diagnostic signal without exposing prompt or completion
+content. All DSM detectors operate on typed structure and metadata attributes only, so
+payload redaction is TCR-neutral by DSM design — bothMETADATA_ONLY and FULL achieve
+identical aggregate TCR (0.429on third-party adapters under survey-grounded coverage;
+1.000on the reference). The TCR-neutral redaction property is a DSM-specific design claim
+that the three industry baselines do not specify in their conventions.
+
+===== PAGE 15 =====
+Anonymous 15
+Table 7RQ3: infinite_loop detector threshold sweep onn = 72third-party DSM control and
+fault runs by max_retries threshold; recomputed from traces_full.jsonl by compute_roc.py.
+Non-Anthropic fault-cell loop counts vary deterministically within[5, 7]; Anthropic cells remain
+at count1. Control counts vary within[1, 4], producing a real TPR/FPR trade-off. Threshold 5
+dominates the default count-≥3rule in this harness, eliminating false positives without additional
+TP-cell loss relative to the default threshold.
+max_retriesFP/72 FPR TP/72 TPR
+2 6 0.083 60 0.833
+3 (default) 4 0.056 60 0.833
+4 2 0.028 60 0.833
+5 0 0.000 60 0.833
+6 0 0.000 50 0.694
+4.3 RQ3: Sensitivity Analysis
+Detector-threshold dimension.
+The threshold sweep on the only detector with non-zero FPR (infinite_loop, Table 7) shows
+that tightening the default count threshold from 3 to 5 removes the observed false positives
+while preserving per-fault binary detection on every adapter that detectedinfinite_loop
+at the default threshold; both settings fire on60/72 infinite_loop cells, and a threshold
+of 6 loses10additional positives. This is the dominant threshold-sensitivity surface; the
+remaining 13 detectors do not have a tunable count threshold. Latent-threshold sweeps
+(cost_explosion,context_overflow) are reproducible viacompute_roc.py.
+Per-framework adapter dimension.
+The per-adapter realized TCR (Table 5) takes five distinct values across the six surveyed third-
+party SDKs ({2/14, 6/14×3, 7/14, 9/14}) for an exact across-adapter range[0.143, 0.643]— a
+4.5×ratio. We report this exact range and per-adapter Wilson CIs; with a discrete six-vector
+a CI on the cross-adapter mean would over-state available information. The reference adapter
+achieves1.000by construction.
+Foundation-model dimension.
+Per-fault TCR is identical (within±0.000) across the six mocked models because the mocks
+are deterministic and the fault-injector seed is fixed; we explicitly donotcount the6×
+replication as informative statistical replication (Section 3.4). The model dimension is
+retained because it stresses framework-adapter provider abstractions and documents that
+the headline TCR is not contingent on a single mocked provider.
+Real-LLM sanity check.
+A live-CLI sub-experiment routed three scenarios (one no-fault case and two fault cases)
+through three frontier-LLM command-line front-ends (artifact aliasescli-A/B/C); decisions
+were converted to spans and scored with the released predicates. All 9 decisions parsed;
+no-fault traces raised0/3alarms, fault scenarios detected6 /6. This is a parser/harness
+sanity check, not statistical evidence about production recall.
+
+===== PAGE 16 =====
+16 The Conformance Gap is a Framework Gap
+Detectable-significance threshold (not classical power).
+Atn = 14under Holm-3 at family-wiseα= 0.05, the smallest discordance count for which
+all three pairs reachpadj ≤0.05is c≥7with b = 0(raw p = 0.0156, Holm-30 .0469,
+∆ min = 0.50, hmin≈1.17); the capability-envelope observationc = 8has h≈1.71. Under
+survey-grounded coverage and conformant detectors, the realized cross-adapter difference
+between DSM and OpenInference extended attributes is∆TCR = +0.024for DSM (GEE
+adapter-clusterp= 0.264, sign-flip two-sidedp= 0.75).
+5 Discussion
+The conformance gap is a framework gap, not a metamodel gap.
+The 4.5×realized cross-adapter range (0.143to0 .643) is dominated by per-framework
+instrumentation defaults, not by metamodel choice. anthropic_sdk sits at the bottom
+because it has no built-in tracing module (verified via full-text search ofsrc/anthropic/
+for opentelemetry|tracer|telemetry: zero matches outside the Managed Agents server-
+response models); openai_sdk = openai-agents-python sits at the top because it already
+publishes typed handoff (with from_agent/to_agent, the cleanest typed-DELEGATION
+primitive of any framework surveyed) and typedguardrail(with explicittriggered: bool ,
+the cleanest typed-GUARDRAIL primitive). The actionable open work isper-framework
+instrumentation completeness, not metamodel extension or DSM design.
+Deployable recommendation.
+For an SRE today the empirical recommendation isframework-dependent, not metamodel-
+dependent. (i)Ifthedeploymentrunson openai-agents-python, theexistingtyped handoff
+and guardrail spans already deliver9/14 = 0.643realized DSM-equivalent coverage at FPR
+0.000without any metamodel migration. (ii) If the deployment uses the bare Anthropic
+SDK, no metamodel choice rescues coverage above2/14 = 0.143until the SDK adds typed
+agent/tool/handoff/guardrail spans (or a richer external instrumentation package is adopted).
+The0 .571gap that prior work has framed as a metamodel-design gap is, on inspection, a
+per-framework instrumentation gap.
+Construct caveat.
+TCRisbinaryperfaultandistherightper-faultexpressivityproxyforacontrolledbenchmark;
+operational metrics (mean-time-to-detect, attribution accuracy, alert precision-at-action) are
+out of scope and would matter for adoption decisions in production.
+6 Threats to Validity
+Construct validity.
+TCR is binary per fault class on a rate-1 mocked-LLM setup; it measuresmetamodel-with-
+framework expressivity, not production recall. The realized cross-adapter ranking is scoped
+to this benchmark, the surveyed framework versions as of 2026-05, and the conformant
+scoring rules; with stochastic LLMs, realistic trace volumes, or framework-version drift the
+TCR/FPR ranking can change. Some predicates use benchmark-provided oracle fields (for
+example intended tool, configured cost budget, injected memory corruption, or evaluator ver-
+dict); telemetry_field_audit.tsv classifies each predicate input as production-plausible or
+
+===== PAGE 17 =====
+Anonymous 17
+benchmark-oracle; Section 4.2 reports the corresponding production-plausible-only sensitivity.
+Detector banks for OpenInference and OTel GenAI are restricted to attributesactually
+publishedin each metamodel’s specification (Section 3.5), eliminating the constructive-bias
+threat that an earlier pilot of this work suffered from. No independent OpenInference or OTel
+GenAI practitioner audit of the conformant detectors was conducted; replication packages
+and attribute-key citations are released. The releaseddetector_fairness_checklist.tsv
+is therefore an author-judgment audit, not an external endorsement.
+Internal validity (constructive bias).
+Our 14-fault benchmark and the nine DSM kinds were authored by us; we use the
+externally-authored MAST taxonomy [4] as ground-truth labels for the 13 mapped faults
+(cost_explosion is independently motivated). The omitted MAST modes (FM-1.2, FM-2.2)
+are exactly where typedAGENT.role and GUARD_RAIL kinds are plausible, so they bound the
+claim. Per-framework DSM-kind coverage is grounded in a direct survey of each SDK’s source
+as of 2026-05 with pinned commit SHAs and file/line citations incoverage_matrix.md
+and source_survey_evidence.tsv, eliminating the assertion-based per-profile claims of
+prior versions. Mitigations are the second-annotator MAST mapping (κ= 0.83), freeze
+log, third-party headline, per-kind ablation, and permissive/extended counter-experiments
+restricted to published attributes.
+External validity.
+The adapter profiles are executable simulations of telemetry capabilities grounded in source-
+survey evidence, not live package integrations. The mocked-LLM setup measures detector-
+existence, not production recall. The live-CLI real-LLM sanity check (Section 4.3) verifies
+harness behavior but does not generalize. We claim no generalization beyond the surveyed
+framework versions, the 14-fault MAST-anchored taxonomy, mocked LLMs, and the three
+scoring rules.
+Conclusion validity.
+Per-cell TCR is deterministic so point estimates are exact; we report Wilson 95% CIs,
+descriptive McNemar/Holm-3/Newcombe/Cohen’s-h for the capability-envelope designed
+gap, exact adapter range[0.143, 0.643], and triangulation showing the absence of a statistically
+detectable cross-adapter DSM advantage under survey-grounded coverage (GEE-on-adapter
+p = 0.264, GEE-on-fault p = 0.525; sign-flip two-sidedp = 0.75). The n = 14design
+resolves only very large effects (∆min = 0.50); the realized cross-adapter contrast at the
+surveyed-framework scale is descriptive only.
+7 Conclusion
+Within this benchmark and the surveyed SDKs, framework instrumentation defaults dominate
+deployable fault-detection coverage: realized DSM spans4.5×, from2 /14on Anthropic
+SDK to9/14on OpenAI Agents. Under published-attribute scoring, default DSM reaches
+(36/84, 4/72)versus OpenInference extended(34 /84, 0/36); threshold tuning moves DSM
+to(36 /84, 0/72). The cross-adapter difference is statistically inconclusive (GEEp = 0.264,
+sign-flipp = 0.75), so the practical open work is per-framework instrumentation completeness.
+
+===== PAGE 18 =====
+18 The Conformance Gap is a Framework Gap
+8 Data Availability
+The replication package contains: the executable Ecore metamodel ( agentmm.ecore)
+and OCL invariants ( agentmm.ocl); the per-app DSM kind coverage matrix
+(coverage_matrix.md) and source-survey evidence table (source_survey_evidence.tsv);
+the workload-design freeze (workload_design.md, timestamped 32 days prior to the first tax-
+onomy commit, with blinded freeze-order digests); the MAST mapping (mast_mapping.md)
+and dual-coding annotator review (mast_mapping_review.md/.tsv) supporting Cohen’s
+κ= 0.83; the executable adapter/fault-injection harness, trace-corpus generator, schema, ex-
+ecutable detectors, and scorer (adapter_harness.py, generate_trace_corpus.py, trace_
+schema.md, trace_detectors.py, score_traces.py); the benchmark runner and three
+predicate-bank variants; per-fault predicate code-line counts ( predicates_lines.tsv)
+and predicate-input audit (telemetry_field_audit.tsv); the detector-fairness checklist
+(detector_fairness_checklist.tsv); the FPR-aggregation script (compute_fpr.py) and
+the threshold-sweep script (compute_roc.py) producing Table 7; the statistical-analysis script
+(analysis.py) computing all CIs, McNemar exact tests with Holm-3, Newcombe paired-
+proportion score intervals, descriptive Cohen’sh, the GEE estimators, crossed-GLMM sensit-
+ivity, sign-flip p-floor, count checks, and the detectable-significance threshold; the per-kind
+ablation table (kind_ablation.tsv) reproducing Table 4; the optional live-LLM CLI sanity-
+check runner and cached output (run_cli_agents.py, run_real_llm_sanity.py, real_
+llm_sanity.tsv); the generated trace corpus and per-run results table (traces_full.jsonl,
+results_full.tsv, 3,780 rows); theMakefile; a pinned environment (requirements.lock,
+Python 3.11+).
+A reviewer can reproduce all numbers in this paper to the reported precision (all bootstraps
+and stochastic procedures are seeded; RNG seeds are documented in the artifact README)
+by running the two-line shell script in the package’s README on a single CPU; the full
+matrix completes in approximately three minutes. The package is anonymized for review
+and will be deposited with a permanent DOI on Zenodo at camera-ready time.
+
+===== PAGE 19 =====
+Anonymous 19
+Source-audit snapshot.
+The full file/line ledger issource_survey_evidence.tsv; this compact snapshot records
+what is credited in the benchmark profile and what source evidence was found but not credited.
+A single judgment-sensitive advanced-kind flip changes the 84-cell aggregate by one cell for
+delegation/guardrail/reasoning/retrieval or two cells for memory ownership/corruption, so
+these rows are sensitivity targets but do not change the qualitative framework-gap conclusion.
+Adapter Credited evidence Excluded or limited evidence
+langchain LLM, tool, retriever callbacks and
+run_typevalues.
+Chain/generic metadata and reasoning-
+token usage lack DSM detector fields.
+llamaindex AGENT_STEP , LLM,
+FUNCTION_CALL/TOOL, and
+RETRIEVEcallbacks.
+Reasoning/thinking content is provider
+output, not a reasoning-step span;
+no memory/guardrail/planning/staleness
+fields.
+autogen GenAI create/invoke-agent spans,
+execute-tool spans, model-client
+calls, and handoff messages.
+No detector fields for planning, reasoning-
+state repetition, guardrail result, memory
+ownership/corruption, or retrieval stale-
+ness.
+crewai LLM-call and tool-usage events in
+the tracing listener.
+Optional agent, guardrail, memory, reason-
+ing, and A2A events exist, but the default
+profile lacks the detector-specific fields
+used for DSM credit.
+anthropic Beta managed-agent model-
+request events; LLM evidence
+counted only under external
+instrumentation.
+No built-in OTel tracer or detector
+fields for agent/tool/delegation, guardrail,
+memory, retrieval, planning, or reasoning.
+openai Agent, generation/response, func-
+tion, handoff, and guardrail span
+data.
+No planning, reasoning, retrieval-staleness,
+or memory ownership/corruption span-
+data classes.
+References
+1 Arize AI. OpenInference: Semantic conventions for AI system observability.https://github.
+com/Arize-ai/openinference, 2024.
+2 Robert L. Brennan and Dale J. Prediger. Coefficient kappa: Some uses, misuses, and
+alternatives.Educational and Psychological Measurement, 41(3):687–699, 1981.
+3 A. Colin Cameron and Douglas L. Miller. A practitioner’s guide to cluster-robust inference.
+Journal of Human Resources, 50(2):317–372, 2015.
+4 Mert Cemri, Melissa Z. Pan, Shuyi Yang, Lakshya A. Agrawal, Bhavya Chopra, Rishabh
+Tiwari, Kurt Keutzer, Aditya Parameswaran, Dan Klein, Kannan Ramchandran, Matei Zaharia,
+Joseph E. Gonzalez, and Ion Stoica. Why do multi-agent LLM systems fail? arXiv:2503.13657,
+2025.
+5 Harrison Chase. LangChain: Building applications with LLMs through composability.https:
+//github.com/langchain-ai/langchain, 2023.
+6 Microsoft Research. AutoGen: Enabling next-gen LLM applications via multi-agent conversa-
+tion. arXiv:2308.08155, 2023.
+7 João Moura. CrewAI: Framework for orchestrating role-playing autonomous AI agents.
+https://github.com/crewAIInc/crewAI, 2023.
+8 Robert G. Newcombe. Improved confidence intervals for the difference between binomial
+proportions based on paired data.Statistics in Medicine, 17(22):2635–2650, 1998.
+9 Object Management Group. Object Constraint Language (OCL), v2.4.https://www.omg.
+org/spec/OCL/2.4/, 2014.
+10 Object Management Group. Meta Object Facility (MOF) Core Specification, v2.5.1.https:
+//www.omg.org/spec/MOF/2.5.1/, 2019.
+
+===== PAGE 20 =====
+20 The Conformance Gap is a Framework Gap
+11 OpenTelemetry Contributors. OpenTelemetry GenAI Semantic Conventions. https://
+opentelemetry.io/docs/specs/semconv/gen-ai/, 2024.
+12 Dave Steinberg, Frank Budinsky, Marcelo Paternostro, and Ed Merks. EMF: Eclipse Modeling
+Framework. Addison-Wesley, 2nd edition, 2008.
+13 W3C Distributed Tracing Working Group. Trace Context. https://www.w3.org/TR/
+trace-context/, 2021.
+14 E. B. Wilson. Probable inference, the law of succession, and statistical inference.Journal of
+the American Statistical Association, 22(158):209–212, 1927.

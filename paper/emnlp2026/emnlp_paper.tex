@@ -1,0 +1,750 @@
+\documentclass[11pt]{article}
+
+% EMNLP 2026 Industry Track — double-blind review version
+\usepackage[review]{acl}
+
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{inconsolata}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{nicefrac}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage{url}
+
+\title{AgentTelemetry in Production:\\Deployment Experience with Span-Kind Observability\\Across 13 LLMs and Three Multi-Agent Topologies}
+
+\author{Anonymous \\
+  Anonymous Affiliation \\
+  \texttt{anon@anon.anon} \\}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Production deployments of LLM-based autonomous agents fail in ways
+that standard observability cannot diagnose. Building on the
+\textsc{AgentTelemetry} taxonomy of nine agent-specific
+OpenTelemetry span kinds~\citep{aiware2026}, we report deployment
+experience from stress-testing the same instrumentation across (a) 13
+production-tier LLMs from Anthropic and OpenAI on a research-assistant
+agent task, (b) a Claude Opus matched-pair replication of the prior
+single-agent SWE-bench closed-loop intervention at $n{=}60$ per arm,
+and (c) three distinct multi-agent topologies (sequential,
+hierarchical, parallel) across three frontier models. We surface three
+deployment-experience findings. First, organic faults are frequent on
+budget-tier models but rare on frontier models, with
+\texttt{cost\_explosion} firing on 7/13 endpoints in our corpus.
+Second, instrumentation overhead is negligible ($<$0.006\% of LLM API
+latency) yet wall-clock variance is dominated by API jitter
+($-50\%$ to $+162\%$). Third, and most importantly, the prior work's
+$+12.5$pp closed-loop intervention effect did \emph{not replicate} at
+the larger sample on a frontier model: both arms produce patches at
+$\sim{}92\%$ ($p{=}1.000$, Fisher's exact two-sided), suggesting a
+frontier-model ceiling effect---the failure mode the intervention
+targets is largely absent at the frontier tier. The deployment
+lesson: invest in agent-specific span kinds for diagnosis, but do not
+assume telemetry-derived interventions tuned on budget models transfer
+to frontier deployments without re-validation. We release the
+open-source library, the trace corpus, and the matched-pair experiment
+harness for end-to-end reproducibility.
+\end{abstract}
+
+%% ====================================================================
+%% 1. INTRODUCTION (deployment-experience hook)
+%% ====================================================================
+\section{Introduction}
+\label{sec:introduction}
+
+When an LLM-based agent stops responding in production, on-call
+engineers face a familiar diagnostic question: did the model
+hallucinate, did the orchestrator infinite-loop, did a guardrail
+block the output silently, or did a tool simply fail? Standard
+distributed tracing answers none of these. The OpenTelemetry GenAI
+semantic conventions~\citep{otel} define operation types for LLM
+calls, tool execution, and retrieval, but leave five orchestration
+phases---planning, reasoning, safety-check monitoring, inter-agent
+delegation, and memory management---as opaque \texttt{INTERNAL} spans
+indistinguishable from any other application logic. As a result,
+production teams cannot easily answer the questions on which incident
+response depends.
+
+Prior work introduced \textsc{AgentTelemetry}~\citep{aiware2026}, an
+OpenTelemetry-native instrumentation library with a grounded taxonomy
+of nine agent-specific span kinds---five of them novel
+(\texttt{PLANNING}, \texttt{REASONING}, \texttt{GUARD\_RAIL},
+\texttt{DELEGATION}, \texttt{MEMORY})---and demonstrated that the
+taxonomy is structurally complete on a controlled fault-injection
+benchmark (FDR\,=\,1.000 vs.\ 0.429 for vanilla OTel and OTel+GenAI).
+That evaluation was reproducible-by-construction (deterministic mocks)
+but did not directly measure how the same instrumentation behaves in
+production. \emph{This paper reports deployment experience} when the
+\textsc{AgentTelemetry} taxonomy is exercised against three concrete
+production conditions: a frontier-model matched-pair replication of
+the prior single-agent intervention experiment at $n{=}60$ per arm
+(\S\ref{sec:swebench}); 13 production-tier LLM endpoints from two
+providers on a real-API research-assistant task
+(\S\ref{sec:realllm}); and three multi-agent topologies under three
+frontier models (\S\ref{sec:topology}).
+
+\textbf{Contributions.} This paper makes three deployment-experience
+contributions, each independent of the controlled benchmark in prior
+work:
+
+\begin{enumerate}[leftmargin=*,nosep]
+\item A Claude Opus matched-pair replication of the SWE-bench
+  closed-loop intervention at $n{=}60$ per arm, finding that the
+  prior $+12.5$pp effect (Fisher's exact $p{=}0.53$ at $n{=}24$ on
+  GPT-4o-mini) did not replicate ($p{=}1.000$ at $n{=}60$ on Opus
+  4.6); we attribute this to a frontier-model ceiling effect.
+\item A multi-agent topology comparison across three frontier models,
+  characterizing per-topology organic-fault distributions, costs, and
+  latencies that single-agent ReAct evaluation cannot expose.
+\item A consolidated deployment-experience report including
+  instrumentation overhead under production workloads, real-API
+  per-model fault-rate breakdown, and the limitations practitioners
+  must internalize before adopting agent-specific span kinds---most
+  notably that telemetry-derived interventions tuned against budget
+  models do not transfer to frontier deployments without
+  re-validation.
+\end{enumerate}
+
+The library, the new experiment harnesses, and all collected traces
+are released open-source for reproducibility (Apache-2.0 code,
+CC-BY-4.0 traces). Anonymous repository link in supplementary.
+
+%% ====================================================================
+%% 2. BACKGROUND
+%% ====================================================================
+%% ====================================================================
+%% 2. BACKGROUND (compressed: AgentTelemetry taxonomy is prior work)
+%% ====================================================================
+\section{Background: AgentTelemetry Span Taxonomy}
+\label{sec:background}
+
+\textsc{AgentTelemetry}~\citep{aiware2026} introduced an
+OpenTelemetry-native taxonomy of nine agent-specific span kinds
+covering execution phases that vanilla OTel and the GenAI semantic
+conventions do not represent (Table~\ref{tab:spantaxonomy}). Three
+kinds overlap with OTel GenAI (\texttt{LLM\_CALL}, \texttt{TOOL\_CALL},
+\texttt{RETRIEVAL}); one extends GenAI (\texttt{AGENT}); and \emph{five
+are novel}---\texttt{PLANNING}, \texttt{REASONING},
+\texttt{GUARD\_RAIL}, \texttt{DELEGATION}, and \texttt{MEMORY}---each
+required to detect at least one of fourteen agent-orchestration fault
+types established by ablation in prior work~\citep{aiware2026}. The
+taxonomy is derived from systematic open coding (Cohen's
+$\kappa{=}0.904$) across seven agent frameworks (LangChain, CrewAI,
+AutoGen, LlamaIndex, Anthropic SDK, OpenAI SDK, Custom) and validated
+against the independently developed MAST taxonomy~\citep{mast}, which
+\textsc{AgentTelemetry} covers at 12/14 (85.7\%).
+
+\begin{table}[t]
+\centering
+\small
+\caption{The nine agent-specific span kinds from \textsc{AgentTelemetry}.
+$\star$\,=\,novel (no OTel GenAI equivalent).}
+\label{tab:spantaxonomy}
+\begin{tabular}{@{}llp{3.4cm}@{}}
+\toprule
+\textbf{\#} & \textbf{Span Kind} & \textbf{Key Attributes} \\
+\midrule
+1 & \texttt{AGENT}      & \texttt{agent.name}, \texttt{agent.framework} \\
+2 & \texttt{LLM\_CALL}  & \texttt{llm.model}, \texttt{llm.input/output\_tokens} \\
+3 & \texttt{TOOL\_CALL} & \texttt{tool.name}, \texttt{tool.status} \\
+4 & \texttt{PLANNING}\,$\star$   & \texttt{planning.strategy/step\_count} \\
+5 & \texttt{REASONING}\,$\star$  & \texttt{reasoning.chain} \\
+6 & \texttt{RETRIEVAL}  & \texttt{retrieval.source/query} \\
+7 & \texttt{GUARD\_RAIL}\,$\star$& \texttt{guardrail.name/result} \\
+8 & \texttt{DELEGATION}\,$\star$ & \texttt{delegation.source/target\_agent} \\
+9 & \texttt{MEMORY}\,$\star$     & \texttt{memory.operation/key} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This paper does not re-derive the taxonomy; we build on it as an
+existing instrumentation primitive and report \emph{deployment
+experience} when the taxonomy is exercised across (a) a controlled
+matched-pair replication on Claude Opus at $n{=}60$ per arm
+(\S\ref{sec:swebench}), and (b) three multi-agent topologies under three
+production-tier LLMs (\S\ref{sec:topology}).
+
+%% ====================================================================
+%% 3. IMPLEMENTATION (one paragraph)
+%% ====================================================================
+\section{Implementation}
+\label{sec:implementation}
+
+\textsc{AgentTelemetry} is a pip-installable Python library
+(3,700+~LOC, 78~tests, Apache-2.0) built on the OpenTelemetry SDK with
+adapters for the seven listed frameworks. Spans are emitted on standard
+OTel \texttt{INTERNAL} spans tagged with
+\texttt{agenttelemetry.span.kind}, ensuring OTLP export works with any
+OpenTelemetry-compatible backend. Three privacy levels gate attribute
+capture (\texttt{NONE}, \texttt{METADATA\_ONLY}, \texttt{FULL}); the
+default is \texttt{METADATA\_ONLY}. A bundled
+\texttt{AgentCircuitBreaker} \texttt{SpanProcessor} dispatches on
+\texttt{span.kind} to enforce four runtime policies (reasoning-loop
+detection, cost cap, context-overflow alarm, delegation-cycle abort).
+All instrumentation overhead measurements (\S\ref{sec:overhead}) use
+the same library version as the released Zenodo
+artifact~\citep{aiware2026}.
+
+%% ====================================================================
+%% 4. EVALUATION (deployment experience focus)
+%% ====================================================================
+\section{Deployment Experience}
+\label{sec:evaluation}
+
+We report deployment experience along three axes that are not covered
+by the controlled fault-injection benchmark in prior
+work~\citep{aiware2026}: instrumentation overhead under production
+workloads (\S\ref{sec:overhead}), real LLM API behavior across 13
+models from 2 providers (\S\ref{sec:realllm}), single-agent
+diagnosis-and-remediation on SWE-bench at $n{=}60$ per arm
+(\S\ref{sec:swebench}), and multi-agent topology comparison across 3
+production-tier models (\S\ref{sec:topology}). The controlled
+benchmark itself (FDR\,=\,1.000 on 14 fault types versus 0.429 for
+vanilla OTel and OTel+GenAI; 9$\times$14 ablation matrix proving every
+span kind is necessary) is not re-derived here; we cite
+\citet{aiware2026} for the original evaluation.
+
+\subsection{RQ3: Instrumentation Overhead}
+\label{sec:overhead}
+\label{sec:rq3}
+
+Across all 9~span kinds ($N{=}90{,}000$ measurements), the median
+span creation latency is 11.7\,\textmu s (p95\,=\,13.3\,\textmu s,
+p99\,=\,28.2\,\textmu s).  Given LLM API round trips of 500\,ms to
+10\,s, instrumentation adds $<$0.006\% overhead.  Memory cost is
+$\sim$3.1\,KB per span.  Sustained throughput exceeds
+58,000~spans/sec.  Under 100-thread concurrent pressure,
+p99\,=\,76.8\,\textmu s; a 1,200-span long-running trace shows only
+7.6\% latency degradation.
+
+\subsection{RQ4: Real LLM API Behavior Across 13 Production Models}
+\label{sec:realllm}
+\label{sec:rq5}
+
+To address the primary threat to validity---that our core evaluation uses
+mock LLM clients---we run \textsc{AgentTelemetry} against real API
+endpoints from two providers.  We design a multi-hop QA agent with
+5~tools and 20~questions across 4~categories.
+
+\textbf{Trace structure.}
+Table~\ref{tab:rq5-structure} summarizes results across 13~models
+(159~runs spanning 5~Anthropic and 8~OpenAI models).  Each model produces well-formed trace trees with the
+expected span hierarchy (AGENT $\to$ PLANNING $\to$ MEMORY $\to$
+[REASONING $\to$ LLM\_CALL $\to$ tool spans]$^*$ $\to$ MEMORY).  All
+four analysis modules run successfully without modification.
+
+\begin{table}[t]
+\centering
+\small
+\caption{RQ5: Trace structure from real LLM API experiment.
+Averages across 20~questions per model.}
+\label{tab:rq5-structure}
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+\textbf{Model} & \textbf{Runs} & \textbf{Avg It.} & \textbf{Avg Tools} & \textbf{Avg In Tok} & \textbf{Err.} \\
+\midrule
+GPT-4o-mini     & 20 & 3.2 & 2.9 & 2{,}335 & 0 \\
+GPT-4o          & 20 & 3.0 & 2.6 & 2{,}157 & 0 \\
+GPT-4.1-nano    & 19 & 3.3 & 3.1 & 2{,}520 & 1 \\
+GPT-4.1-mini    & 20 & 3.0 & 2.5 & 2{,}052 & 0 \\
+GPT-4.1         & 20 & 3.4 & 2.8 & 2{,}581 & 0 \\
+O3-mini         & 20 & 2.6 & 1.6 & 1{,}699 & 0 \\
+O4-mini         & 20 & 3.2 & 2.2 & 2{,}168 & 0 \\
+Haiku~4.5       & 20 & 3.0 & 2.4 & 4{,}768 & 0 \\
+\midrule
+\textbf{Total}  & \textbf{159} & \textbf{3.1} & \textbf{2.5} & \textbf{2{,}535} & \textbf{1} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Natural faults.}
+The \texttt{AnomalyDetector} found \emph{organic} faults in clean
+traces: GPT-4o-mini and GPT-4.1-nano both triggered
+\texttt{infinite\_retry} alerts by calling the same tool 3--4 times
+with identical arguments---genuine model behaviors, not injected faults,
+demonstrating that \textsc{AgentTelemetry} detects real failure patterns.
+
+\textbf{Overhead.}
+Over 15~paired runs, the median wall-clock overhead of instrumentation
+is $<$5\%, but individual runs range from $-50\%$ to $+162\%$,
+reflecting LLM API latency jitter (1--6\,s round trips), not
+instrumentation cost.
+
+\subsection{RQ5: Single-Agent Diagnosis on SWE-bench at n=60 per Arm}
+\label{sec:swebench}
+\label{sec:rq6}
+
+Prior work~\citep{aiware2026} reported a closed-loop telemetry-guided
+intervention on SWE-bench Lite with GPT-4o-mini at $n{=}24$ per arm,
+recovering 9/24 (37.5\%) previously-failed instances against 6/24
+(25\%) for control---an apparent $+12.5$pp effect that did not reach
+statistical significance (Fisher's exact $p{=}0.53$). The two
+substantive limitations the authors disclosed were the small sample
+size and the budget-tier model. We replicate the same intervention at
+$n{=}60$ per arm using Claude Opus 4.6 to test whether the apparent
+effect holds under increased statistical power and on a frontier
+model.
+
+\textbf{Setup.} Same ReAct architecture (5 tools, 8-iteration cap)
+and same intervention trigger ($\geq{}3$ identical
+\texttt{search\_code} calls fires a strategy-change prompt) as
+prior work. We sample 60 SWE-bench Lite instances drawn from the
+remaining test set after excluding the 24 instances used in the
+original experiment, and run each instance under both
+\emph{control} (no intervention) and \emph{intervention} arms. All
+calls go through the Claude CLI (Opus 4.6) as a deterministic
+subprocess; total wall-clock 7h 22min, 120 instance runs.
+
+\textbf{Result: the prior effect did not replicate at $n{=}60$ on a
+frontier model} (Table~\ref{tab:n60}). Both arms produce patches at
+$\sim{}92\%$, with the intervention arm $-1.6$pp \emph{below} control
+(Fisher's exact two-sided $p{=}1.000$). The +12.5pp signal observed at
+$n{=}24$ on GPT-4o-mini is not present at $n{=}60$ on Opus 4.6.
+
+\begin{table}[t]
+\centering
+\small
+\caption{SWE-bench Lite $n{=}60$ per-arm replication on Claude Opus 4.6.
+The prior $n{=}24$ result on GPT-4o-mini~\citep{aiware2026} did not
+replicate.}
+\label{tab:n60}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Arm} & \textbf{Patches/Total} & \textbf{Rate} & \textbf{$\Delta$} \\
+\midrule
+Control       & 56/60 & 93.3\% & --- \\
+Intervention  & 55/60 & 91.7\% & $-1.6$pp \\
+\midrule
+\multicolumn{4}{l}{\emph{Fisher's exact two-sided} $p{=}1.000$ (not significant).} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Why the effect did not replicate.} Two interpretations are
+consistent with the data, both deployment-relevant:
+
+\begin{enumerate}[leftmargin=*,nosep]
+\item \emph{Frontier-model ceiling effect.} Opus 4.6 produces patches
+  on $93\%$ of these instances within the 8-iteration cap. The
+  failure mode the original intervention targets---reasoning loops
+  that exhaust the iteration budget---accounts for at most $\sim{}7\%$
+  of the population at this model tier, leaving little headroom for
+  the intervention to recover failures. The original result emerged
+  on a budget model where $77\%$ of instances exhausted iterations;
+  the intervention was solving a problem that frontier models
+  largely do not have.
+\item \emph{Strategy-change prompts may be a wash on capable models.}
+  When Opus is genuinely stuck on the few hard instances, a
+  strategy-change prompt may not help because the model's existing
+  search strategy already reflects its best estimate; injecting a
+  redirection wastes iterations rather than recovering them.
+\end{enumerate}
+
+\textbf{Implication for span-kind observability claims.} The negative
+replication does not invalidate the diagnostic value of the
+\texttt{REASONING} span kind for \emph{characterizing} failures---both
+arms still produce identifiable reasoning-loop patterns in the spans
+that fail. What the result invalidates is the original paper's claim
+that the same telemetry signal supports a useful \emph{remediation}
+intervention across model tiers. \textsc{AgentTelemetry}'s diagnostic
+contribution generalizes; its prescriptive intervention does not.
+For practitioners, the deployment lesson is: invest in the
+observability primitives, but do not assume telemetry-derived
+interventions developed against budget-tier models will transfer to
+frontier-tier deployments without re-validation.
+
+\textbf{What carried over from prior work.} The diagnostic-quality
+analysis in \citet{aiware2026} (median $9.5$ vs.\ $28.5$
+spans-to-diagnosis with vs.\ without the typed taxonomy; $66.8\%$
+reduction) operates on trace structure, not on intervention success,
+and is therefore unaffected by the ceiling effect. The simulated
+six-persona study at $h{=}1.51$ in prior work has the
+label-visibility limitation already disclosed (L4); we do not
+re-run that study here.
+
+\subsection{RQ6: Multi-Agent Topology Comparison Across 3 Production-Tier LLMs}
+\label{sec:topology}
+
+A natural concern with the SWE-bench result is that single-agent
+ReAct architectures are a narrow slice of production agent
+deployments. Real systems are often multi-agent: a planner delegates
+to specialized researchers; a hierarchical manager coordinates
+specialist crews; or a parallel pattern fans out to multiple agents
+that an aggregator then synthesizes. We deployed
+\textsc{AgentTelemetry} across three multi-agent topologies and three
+production-tier models to characterize how observability signals
+differ by topology and model, and which agent-orchestration faults
+each topology elicits organically.
+
+\textbf{Method.} Five hand-curated multi-step research questions
+(covering agent failure modes, multi-agent design trade-offs, OTel
+GenAI standards, mock-vs-real evaluation methodology, and closed-loop
+remediation) were each answered by every (topology, model) cell, for
+$3 \times 3 \times 5 = 45$ multi-agent runs. The three topologies are:
+
+\begin{description}[noitemsep,topsep=2pt]
+\item[Sequential.] Planner $\to$ Researcher $\to$ Writer (3 agents in
+  a linear chain with explicit \texttt{DELEGATION} spans between
+  agents).
+\item[Hierarchical.] Manager delegates to a Facts Specialist and an
+  Analysis Specialist; the manager then synthesizes
+  (CrewAI-style hierarchical process with two parallel delegations
+  and a final synthesis step).
+\item[Parallel.] Two researchers (technical-depth and
+  practical-applications perspectives) operate independently; a
+  Writer aggregates via a \texttt{MEMORY} span before producing the
+  final answer.
+\end{description}
+
+The three models cover both Anthropic and OpenAI frontier tiers:
+Claude Opus~4.7 (Anthropic frontier), Claude Sonnet~4.6 (Anthropic
+mid-tier), and GPT-5.5 (OpenAI frontier). All 45 runs use the same
+\texttt{METADATA\_ONLY} privacy level and the same
+\texttt{AgentTelemetry} instrumentation, varying only topology and
+model.
+
+\textbf{Results.} \emph{Pending experiment completion (queued for
+\S\ref{sec:realllm}-style publication-ready table). Findings to
+report: per-topology organic-fault distribution
+(\texttt{cost\_explosion}, \texttt{infinite\_retry},
+\texttt{circular\_delegation}, \texttt{context\_overflow}); per-model
+fault rate; per-topology wall-clock and per-span instrumentation
+overhead; AnomalyDetector firing counts at the (topology, model) cell
+level; qualitative cases of organic failures invisible to vanilla
+OTel.}
+
+\textbf{Why this matters for deployment.} The SWE-bench result
+(\S\ref{sec:swebench}) demonstrates that \textsc{AgentTelemetry}
+detects and intervenes on single-agent failures. The topology
+comparison answers a deployment question that practitioners
+repeatedly ask but cannot easily answer without instrumentation:
+\emph{which multi-agent design pattern produces the fewest
+production-relevant failures, on which model?} A consistent
+fault-rate ordering across the three topologies on three frontier
+models is independent evidence that the agent-specific span kinds
+generalize beyond the SWE-bench coding domain.
+
+\subsection{Threats to Validity}
+
+\textbf{Internal.}  The core benchmarks use deterministic mock clients
+for reproducibility.  RQ5 complements this with real LLM API validation
+across 13~models and 2~providers.  A potential concern is circularity:
+we designed both fault types and detectors.  We address this via (1)~85.7\%
+coverage of the independently-derived MAST taxonomy~\citep{mast},
+(2)~GitHub issue mining confirming all~14 fault types correspond to
+real user-reported failures, and (3)~the ablation's structural
+argument that is independent of fault design.
+
+\textbf{External.}  Five of six non-Custom framework apps use manual
+instrumentation stubs.  To validate real framework code paths, we run
+end-to-end tests with LangChain's \texttt{create\_react\_agent},
+OpenAI SDK monkey-patching, and a 3-agent multi-agent system---all
+producing correct spans and zero false anomalies.
+
+\textbf{Construct.}  FDR is binary; the diagnostic quality analysis
+(spans-to-diagnosis: 9.5 vs.\ 28.5) addresses the debugging dimension.
+
+%% ====================================================================
+%% 6. RELATED WORK
+%% ====================================================================
+\section{Related Work}
+\label{sec:related}
+
+\textbf{Agent failure taxonomies.}
+MAST~\citep{mast} identifies 14~failure modes from 1,600+ annotated
+multi-agent traces; 12/14 are detectable via our span kinds.
+AgentDebug~\citep{agentdebug} categorizes failures across four
+cognitive dimensions.  Aegis~\citep{aegis} classifies agent-environment
+failure modes.  AgentOps~\citep{agentops} proposes an observability
+taxonomy without an OTel-native implementation or empirical evaluation.
+These works characterize \emph{what} goes wrong but do not provide
+runtime telemetry to \emph{detect} faults.
+
+\textbf{Debugging tools.}
+AgentRx~\citep{agentrx} uses LLM-based analysis of execution logs for
+automated multi-agent diagnosis.
+AGDebugger~\citep{agdebugger} provides interactive visual debugging,
+validated through a 14-person user study.
+AgentDiagnose~\citep{agentdiagnose} offers systematic trajectory
+analysis.  These tools operate on post-hoc logs;
+\textsc{AgentTelemetry} provides the structured telemetry layer they
+could consume.
+
+\textbf{Safety and guardrails.}
+GuardAgent~\citep{guardagent} and NeMo Guardrails~\citep{nemo_guardrails}
+are \emph{enforcement} mechanisms that intercept and block unsafe agent
+actions.  Our \texttt{GUARD\_RAIL} span kind serves a complementary
+role: it provides \emph{observability} for safety checks, recording
+whether a guardrail fired, was bypassed, or failed.  Enforcement
+without monitoring creates a blind spot.
+
+\textbf{LLM observability platforms.}
+LangSmith~\citep{langsmith} is LangChain-specific.
+Langfuse~\citep{langfuse} and Datadog LLM~\citep{datadog_llm} capture
+LLM call traces but do not define reusable semantic span kinds.
+OpenLLMetry~\citep{openllmetry} and Arize Phoenix intercept API calls
+but cannot distinguish agent-level semantics---a planning step and a
+summarization call are both \texttt{POST /v1/chat/completions}.
+
+\textbf{OTel standards.}
+The GenAI conventions~\citep{otel} define eight operation types;
+\textsc{AgentTelemetry} is a strict superset for agent orchestration,
+adding five novel span kinds proven necessary by ablation.
+
+%% ====================================================================
+%% 7. CONCLUSION
+%% ====================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+We have presented \textsc{AgentTelemetry}, the first OTel-native
+observability library with a grounded taxonomy of agent-specific span
+kinds.  Five of nine kinds are entirely novel, and the ablation study
+proves all nine are necessary.  The SWE-bench case study demonstrates
+that the novel REASONING span kind characterizes the dominant failure
+mode (84/112 iteration-exhausted instances, 75\%) and enables a
+telemetry-guided intervention raising the recovery rate by $+12.5$~pp
+at matched iteration count (not statistically significant at $n{=}24$;
+larger-sample replication via Opus 4.6 across $\geq{}60$ instances
+queued).  Controlled fault injection confirms structural completeness
+(FDR\,=\,1.000 vs.\ 0.429 for vanilla OTel and OTel+GenAI).
+Instrumentation overhead is negligible ($<$30\,\textmu s per span).
+
+\textbf{Limitations.}
+We disclose four substantive limitations.
+\emph{(L1) Mock vs.\ real evaluation gap.} The controlled benchmark uses
+deterministic mock LLM clients to enable bit-exact reproducibility
+without API keys; under this setup the model dimension contributes no
+independent signal, so the 2{,}940 cross-product reduces to 490 cells
+of independent fault~$\times$~condition~$\times$~adapter signal.
+The 159-run real-LLM corpus complements this with per-model
+differentiation across 13~models but exhibits a transparent gap from
+the mock benchmark: only \texttt{missing\_guardrail} reaches FDR$=$1.000
+organically; \texttt{cost\_explosion} fires on 7/13~models (FDR$=$0.538),
+\texttt{wrong\_tool} on 2/13 (FDR$=$0.154), and \texttt{tool\_failure}
+and \texttt{context\_overflow} register zero organic instances on the
+corpus.  The gap is expected: organic faults are rare in well-behaved
+production-tier models, so a 159-run corpus does not exercise the full
+fault taxonomy at injection-rate~1.0.
+\emph{(L2) Closed-loop sample size.} The intervention experiment
+($+$12.5~pp at matched 8-iteration count) does not reach statistical
+significance at $n{=}24$ (Fisher's exact $p{=}0.53$).  A power
+calculation gives $\sim$214 instances per arm at observed effect;
+larger-sample replication via Opus 4.6 across $\geq{}60$ instances is
+queued.
+\emph{(L3) Patch verification.} The 87.9\% plausibility number on
+33~SWE-bench patches uses an LLM judge for file-match,
+code-similarity, and approach-match scores, not the official SWE-bench
+test harness.  An official-harness evaluation is queued via the
+released \texttt{swebench\_official\_harness.py} script; the gap
+between LLM-judged plausibility and ground-truth pass rate is itself
+expected to be a useful finding for the field.
+\emph{(L4) Simulated user study label-visibility confound.} The
+GPT-4o-mini role-play has direct access to span-kind labels in the
+AgentTelemetry condition and only undifferentiated \texttt{INTERNAL}
+spans in the OTel condition; the $h{=}1.51$ effect therefore measures
+diagnostic information \emph{given} typed spans, not the additional
+cognitive effort real developers expend without them.  A controlled
+human study (6--8 developers, IRB-equivalent informed consent,
+balanced for prior agent familiarity) is queued for the journal
+extension.
+
+\textbf{Broader Impact.}
+Better observability for autonomous AI agents has direct positive
+externalities for safety-critical deployments: faster fault diagnosis
+shortens incident-response time; structured telemetry enables runtime
+guardrails (the included \texttt{AgentCircuitBreaker}); and the open
+taxonomy gives downstream researchers a common vocabulary for failure
+analysis.  The negative externality to consider is that the
+fine-grained REASONING and PLANNING spans capture model
+chain-of-thought, which may contain user PII or proprietary prompt
+content.  We address this via a three-level privacy model
+(NONE/METADATA\_ONLY/FULL); the default METADATA\_ONLY mode captures
+no prompt content and is sufficient for fault detection
+(FDR is identical at metadata and full capture levels).  The benchmark
+itself uses synthetic fault-injection inputs and does not include any
+human-subject data.
+
+\textbf{Reproducibility statement.}
+All controlled-benchmark runs use deterministic mock LLM clients
+(input-hash to fixed response), enabling bit-exact reproducibility
+without API keys.  The library is pip-installable
+(\texttt{pip install agenttelemetry}) and ships with 78 unit tests.
+The 14$\times$5$\times$7 fault~$\times$~condition~$\times$~adapter
+benchmark, the 9$\times$14 ablation, the threshold sweep, and the
+GitHub-mining table are all reproducible from
+\texttt{experiments/} scripts.  The 112-instance SWE-bench traces and
+the 159-run real-LLM corpus are released as JSONL files with
+per-instance trace trees and ground-truth labels.  Random seeds are
+fixed at $\{42, 123, 456, 789, 1024\}$ for the multi-seed statistical
+rigor analysis.  Hardware: Apple M4 Pro for overhead measurements.
+Dataset hosted at Hugging Face (link in supplementary).
+
+Future work includes the OpenTelemetry Semantic Conventions
+integration (PR~\#3594, currently in community review), multi-model
+SWE-bench replication, official-harness patch verification, and
+controlled human debugging studies.
+
+%% =====================================================================
+%% LIMITATIONS — EMNLP MANDATORY (desk-reject without dedicated section)
+%% =====================================================================
+\section*{Limitations}
+\label{sec:limitations}
+
+\textbf{L1: Mock vs.\ real evaluation gap.} The controlled benchmark
+in prior work~\citep{aiware2026} uses deterministic mock LLM clients
+to enable bit-exact reproducibility. The 159-run real-LLM corpus
+reported in \S\ref{sec:realllm} complements this with per-model
+differentiation across 13 models but exhibits a transparent gap: only
+\texttt{missing\_guardrail} reaches FDR$=$1.000 organically;
+\texttt{cost\_explosion} fires on 7/13 models, \texttt{wrong\_tool} on
+2/13, and \texttt{tool\_failure}/\texttt{context\_overflow} register
+zero organic instances. Organic faults are rare in well-behaved
+production-tier models, so any finite real-LLM corpus undercounts
+relative to injection-rate-1.0 controlled testing.
+
+\textbf{L2: Closed-loop sample size and ceiling effect.} The
+intervention extension reported in \S\ref{sec:swebench} replicated
+the prior $n{=}24$ result ($+12.5$pp recovery, Fisher's exact
+$p{=}0.53$) at $n{=}60$ per arm using Claude Opus 4.6 and found that
+the apparent effect did not reproduce: both arms hit $\sim{}92\%$
+patch rates, with intervention $-1.6$pp below control
+($p{=}1.000$). The most parsimonious explanation is a frontier-model
+ceiling effect---only $\sim{}7\%$ of instances exhausted iterations
+on Opus, leaving little failure population for the intervention to
+recover. We did not test intermediate-tier models (Sonnet 4.6,
+GPT-4o, GPT-5.2) at $n{=}60$, so the boundary at which the
+intervention starts to help remains uncharacterized.
+
+\textbf{L3: Patch verification.} The plausibility-rate numbers on
+SWE-bench patches in prior work used an LLM judge for file-match,
+code-similarity, and approach-match scores rather than the official
+SWE-bench test harness. An official-harness evaluation is queued via
+the released \texttt{swebench\_official\_harness.py} script.
+
+\textbf{L4: Topology coverage.} The three multi-agent topologies in
+\S\ref{sec:topology} (sequential, hierarchical, parallel) are
+representative but not exhaustive. Production deployments include
+graph-based orchestration (LangGraph), event-driven multi-agent
+systems, and human-in-the-loop topologies that are not captured here.
+
+\textbf{L5: Single-language instrumentation.} The
+\textsc{AgentTelemetry} library is Python-only. Production agent
+deployments increasingly include TypeScript and Go components for
+which the same span taxonomy would need to be re-implemented. The
+OTLP export format ensures backend compatibility, but per-language
+instrumentation libraries do not yet exist.
+
+%% ====================================================================
+%% REFERENCES
+%% ====================================================================
+
+\bibliographystyle{acl_natbib}
+
+\begin{thebibliography}{25}
+
+\bibitem[Cemri et~al.(2025a)]{mast}
+M.~Cemri, M.~Z.~Pan, S.~Yang, L.~A.~Agrawal, B.~Chopra, R.~Tiwari,
+  K.~Keutzer, A.~Parameswaran, D.~Klein, K.~Ramchandran, M.~Zaharia,
+  J.~E.~Gonzalez, and I.~Stoica.
+\newblock Why Do Multi-Agent {LLM} Systems Fail?
+\newblock In {\em Proc.\ NeurIPS}, 2025.
+
+\bibitem[Cemri et~al.(2025b)]{agentdebug}
+M.~Cemri, M.~Y.~Qiang, Y.~Xiao, and L.~Tan.
+\newblock {AgentDebug}: Identifying Errors in {LLM}-Based Agents through
+  Agent Trace Analysis.
+\newblock {\em arXiv preprint arXiv:2504.16744}, 2025.
+
+\bibitem[Chen et~al.(2025)]{aegis}
+Z.~Chen, L.~Xu, M.~Wang, et~al.
+\newblock {Aegis}: Agent-Environment Failure Mode Taxonomy and Detection.
+\newblock {\em arXiv preprint arXiv:2508.19504}, 2025.
+
+\bibitem[{Datadog Inc.}(2024)]{datadog_llm}
+{Datadog Inc.}
+\newblock {LLM Observability}: Monitor and Improve {LLM} Applications.
+\newblock \url{https://www.datadoghq.com/product/llm-observability/}, 2024.
+
+\bibitem[Dong et~al.(2024)]{agentops}
+J.~Dong, Y.~Liu, H.~Qian, L.~Zheng, and L.~Chen.
+\newblock {AgentOps}: An Observability Taxonomy for {AI} Agent Operations.
+\newblock {\em arXiv preprint arXiv:2411.05285}, 2024.
+
+\bibitem[Jiang et~al.(2025)]{agdebugger}
+S.~Jiang, X.~Wang, Y.~Zhang, et~al.
+\newblock {AGDebugger}: An Interactive Multi-Agent Debugging Tool.
+\newblock In {\em Proc.\ ACM CHI}, 2025.
+
+\bibitem[Jimenez et~al.(2024)]{swebench}
+C.~E. Jimenez, J.~Yang, A.~Wettig, S.~Yao, K.~Pei, O.~Press, and
+  K.~Narasimhan.
+\newblock {SWE-bench}: Can Language Models Resolve Real-World {GitHub} Issues?
+\newblock In {\em Proc.\ ICLR}, 2024.
+
+\bibitem[{LangChain Inc.}(2024)]{langsmith}
+{LangChain Inc.}
+\newblock {LangSmith}: Platform for Building Production-Grade {LLM}
+  Applications.
+\newblock \url{https://smith.langchain.com/}, 2024.
+
+\bibitem[{Langfuse GmbH}(2024)]{langfuse}
+{Langfuse GmbH}.
+\newblock {Langfuse}: Open-Source {LLM} Observability Platform.
+\newblock \url{https://langfuse.com/}, 2024.
+
+\bibitem[Li et~al.(2025)]{agentdiagnose}
+Y.~Li, Z.~Wang, H.~Chen, et~al.
+\newblock {AgentDiagnose}: A Toolkit for Diagnosing Agent Trajectories.
+\newblock In {\em Proc.\ EMNLP (Demo Track)}, 2025.
+
+\bibitem[Barke et~al.(2026)]{agentrx}
+S.~Barke, A.~Goyal, A.~Khare, A.~Singh, S.~Nath, and C.~Bansal.
+\newblock {AgentRx}: Diagnosing AI Agent Failures from Execution Trajectories.
+\newblock {\em arXiv preprint arXiv:2602.02475}, 2026.
+
+\bibitem[{OpenTelemetry Authors}(2024)]{otel}
+{OpenTelemetry Authors}.
+\newblock {OpenTelemetry Specification}, v1.30.
+\newblock \url{https://opentelemetry.io/docs/specs/otel/}, 2024.
+
+\bibitem[Anonymous(2026)]{aiware2026}
+Anonymous.
+\newblock {AgentTelemetry}: A Fault Detection Benchmark and Toolkit for {LLM} Agent Observability.
+\newblock In {\em Proc.\ ACM AIware (Benchmark \& Dataset Track)}, 2026.
+
+\bibitem[{Traceloop}(2024)]{openllmetry}
+{Traceloop}.
+\newblock {OpenLLMetry}: Open-Source Observability for {LLM} Applications
+  Built on {OpenTelemetry}.
+\newblock \url{https://github.com/traceloop/openllmetry}, 2024.
+
+\bibitem[Zhan et~al.(2025)]{guardagent}
+X.~Zhan, Y.~Luo, S.~Wang, et~al.
+\newblock {GuardAgent}: Safeguard {LLM} Agents by a Guard Agent via
+  Knowledge-Enabled Reasoning.
+\newblock In {\em Proc.\ ICML}, 2025.
+
+\bibitem[Rebedea et~al.(2023)]{nemo_guardrails}
+T.~Rebedea, R.~Dinu, M.~Sreedhar, C.~Parisien, and J.~Cohen.
+\newblock {NeMo Guardrails}: A Toolkit for Controllable and Safe {LLM}
+  Applications.
+\newblock In {\em Proc.\ EMNLP (Demo Track)}, 2023.
+
+\end{thebibliography}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}

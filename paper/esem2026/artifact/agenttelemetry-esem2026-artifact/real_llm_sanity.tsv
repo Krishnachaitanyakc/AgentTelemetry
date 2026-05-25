@@ -1,0 +1,46 @@
+provider_alias	scenario	trial	exit_code	parsed	expected_detection	detected	span_count	notes
+cli-A	no_fault	1	0	1	0	0	3	
+cli-A	no_fault	2	0	1	0	0	3	
+cli-A	no_fault	3	0	1	0	0	3	
+cli-A	no_fault	4	0	1	0	0	3	
+cli-A	no_fault	5	0	1	0	0	3	
+cli-A	wrong_tool	1	0	1	1	1	3	
+cli-A	wrong_tool	2	0	1	1	1	3	
+cli-A	wrong_tool	3	0	1	1	1	3	
+cli-A	wrong_tool	4	0	1	1	1	3	
+cli-A	wrong_tool	5	0	1	1	1	3	
+cli-A	circular_delegation	1	0	1	1	1	4	
+cli-A	circular_delegation	2	0	1	1	1	4	
+cli-A	circular_delegation	3	0	1	1	1	4	
+cli-A	circular_delegation	4	0	1	1	1	4	
+cli-A	circular_delegation	5	0	1	1	1	4	
+cli-B	no_fault	1	0	1	0	0	3	
+cli-B	no_fault	2	0	1	0	0	3	
+cli-B	no_fault	3	0	1	0	0	3	
+cli-B	no_fault	4	0	1	0	0	3	
+cli-B	no_fault	5	0	1	0	0	3	
+cli-B	wrong_tool	1	0	1	1	1	3	
+cli-B	wrong_tool	2	0	1	1	1	3	
+cli-B	wrong_tool	3	0	1	1	1	3	
+cli-B	wrong_tool	4	0	1	1	1	3	
+cli-B	wrong_tool	5	0	1	1	1	3	
+cli-B	circular_delegation	1	0	1	1	1	4	
+cli-B	circular_delegation	2	0	1	1	1	4	
+cli-B	circular_delegation	3	0	1	1	1	4	
+cli-B	circular_delegation	4	0	1	1	1	4	
+cli-B	circular_delegation	5	0	1	1	1	4	
+cli-C	no_fault	1	2	0	0	0	0	json_parse_failed
+cli-C	no_fault	2	2	0	0	0	0	json_parse_failed
+cli-C	no_fault	3	2	0	0	0	0	json_parse_failed
+cli-C	no_fault	4	2	0	0	0	0	json_parse_failed
+cli-C	no_fault	5	2	0	0	0	0	json_parse_failed
+cli-C	wrong_tool	1	2	0	1	0	0	json_parse_failed
+cli-C	wrong_tool	2	2	0	1	0	0	json_parse_failed
+cli-C	wrong_tool	3	2	0	1	0	0	json_parse_failed
+cli-C	wrong_tool	4	2	0	1	0	0	json_parse_failed
+cli-C	wrong_tool	5	2	0	1	0	0	json_parse_failed
+cli-C	circular_delegation	1	2	0	1	0	0	json_parse_failed
+cli-C	circular_delegation	2	2	0	1	0	0	json_parse_failed
+cli-C	circular_delegation	3	2	0	1	0	0	json_parse_failed
+cli-C	circular_delegation	4	2	0	1	0	0	json_parse_failed
+cli-C	circular_delegation	5	2	0	1	0	0	json_parse_failed

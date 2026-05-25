@@ -1,0 +1,17 @@
+fault	field_or_signal	classification	note
+wrong_tool	expected_tool	benchmark-oracle	Encodes the task's intended tool; report TCR as trace expressivity, not production recall.
+wrong_tool	tool.name	production-plausible	Framework/tool span attribute.
+tool_failure	status,error.type	production-plausible	Standard status/error metadata.
+timeout	duration_ms,timeout_ms	production-plausible	Operational timing metadata.
+infinite_loop	tool.name repetition	production-plausible	Repeated tool-call pattern.
+context_overflow	llm.input_tokens,llm.context_limit	production-plausible	Token accounting metadata.
+cost_explosion	llm.cost_budget	benchmark-oracle	Configured budget threshold supplied by benchmark.
+cost_explosion	llm.cost	production-plausible	Cost accounting metadata.
+circular_delegation	delegation.source_agent,delegation.target_agent	production-plausible	Typed handoff/delegation metadata when emitted.
+agent_misroute	memory.owner_agent,agent.id	benchmark-oracle	Owner mismatch is explicitly injected by benchmark.
+planning_failure	plan.status,plan.executable_steps	production-plausible	Planner status metadata in DSM profile.
+reasoning_loop	reasoning.step_hash or output-message repetition	production-plausible	Repeated state/content pattern; not a claim about hidden thoughts.
+guardrail_bypass	guardrail.result	production-plausible	Guardrail outcome metadata when emitted.
+hallucination	verification.result	benchmark-oracle	Evaluator verdict injected by benchmark.
+memory_corruption	memory.corrupt	benchmark-oracle	Corruption flag injected by benchmark.
+stale_retrieval	retrieval.staleness_seconds	benchmark-oracle	Document age supplied by benchmark corpus.

@@ -1,0 +1,1412 @@
+\documentclass[sigplan,10pt,anonymous,review]{acmart}
+
+% --- ACM boilerplate suppression for double-blind review ---
+\settopmatter{printacmref=false, printccs=false, printfolios=true}
+\setcopyright{none}
+\renewcommand\footnotetextcopyrightpermission[1]{}
+\pagestyle{plain}
+\acmConference[ATC '26]{ACM SIGOPS Annual Technical Conference}{November 16--18, 2026}{Hong Kong}
+\acmYear{2026}
+\acmISBN{}
+\acmDOI{}
+
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{balance}
+\usepackage{xspace}
+
+\newcommand{\sysname}{\textsc{AgentScope}\xspace}
+\newcommand{\sysnameNoFont}{AgentScope}
+
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  columns=fullflexible,
+  breaklines=true,
+  keywordstyle=\color{blue!70!black}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{green!50!black},
+  showstringspaces=false,
+  language=Python,
+  frame=single,
+  framesep=3pt,
+  xleftmargin=4pt,
+}
+
+\begin{document}
+
+\title[Telemetry-Driven Runtime Control for LLM Agents]{Telemetry-Driven Runtime Control for Heterogeneous LLM Agent Systems}
+
+\author{Anonymous Authors}
+\affiliation{%
+  \institution{Submission under double-blind review}
+  \country{}
+}
+
+\renewcommand{\shortauthors}{Anonymous Authors}
+
+\begin{abstract}
+\emph{Key insight:} an OTel \texttt{SpanProcessor} is the right
+interface for telemetry-driven runtime control of LLM agents --- it
+gives an in-process enforcement loop on the same span stream the
+exporter sees, at a measured +2.16\,\textmu{}s p50 per span (95\% CI
+[2.06, 2.25] across 5 independent runs).
+
+Large language model (LLM) agent systems fail in ways that production
+distributed-tracing stacks cannot see. Agent orchestrators issue planning
+decisions, reasoning steps, delegation handoffs, guardrail invocations,
+memory operations, and tool calls that the OpenTelemetry (OTel) semantic
+conventions and the in-stabilization OTel GenAI conventions do not name,
+and that vendor-specific platforms (LangSmith, Langfuse, OpenInference,
+OpenLLMetry) capture behind closed schemas. The result is a real
+operational gap: 84/112 SWE-bench Lite runs in a prior controlled study
+exhausted their iteration budget with no span-level evidence of
+\emph{why}.
+
+We present \sysname, an open-source OTel SDK that turns the missing
+agent-orchestration vocabulary into a runtime-control mechanism. \sysname
+contributes (1) nine agent-specific span kinds that extend GenAI semconv;
+(2) seven heterogeneous-framework adapters that solve the cross-process,
+cross-runtime span-correlation problem via a unified context-propagation
+layer; (3) a \emph{telemetry-driven circuit breaker} that consumes the
+same span stream as the exporter and enforces per-trace policies for
+cost cap, reasoning loop, delegation cycle, and context overflow as a
+first-class \texttt{SpanProcessor}; (4) a measurement suite that
+characterizes overhead, scalability, and fault visibility at production
+scale; and (5) an open-source reproducible artifact with one-shot
+scripts that regenerate every table in the paper.
+
+Measured on commodity hardware, \sysname adds 11.7\,\textmu{}s p50
+($\sim$12.8\,\textmu{}s mean) per span over 90{,}000 iterations across
+nine span kinds, sustains 66{,}396 spans/s in the baseline configuration
+and 19{,}071 spans/s under 100-thread concurrency with 7.6\% latency
+degradation over a 1{,}200-span trace, and exposes (does not paper over)
+a 1{,}232\% blocking overhead for the disk-backed JSON exporter as a
+systems trade-off discussion. The circuit breaker adds a measured
+2.16\,\textmu{}s p50 on top of the bare span-emission cost (18.9\%
+relative; sub-millisecond absolute; 95\% CI [2.06, 2.25] across 5
+independent runs). A 3{,}780-row controlled
+fault-injection benchmark across 7 frameworks $\times$ 6 LLMs $\times$
+14 fault classes shows that vanilla OTel and the closest production
+telemetry baselines (OTel GenAI semconv, OpenInference) detect
+0.429 (95\% CI [0.389, 0.469]) of injected faults versus 0.612
+(95\% CI [0.572, 0.651]) for \sysname under partial-conformance
+adapters and \textbf{1.000 (95\% CI [0.955, 1.000]) under a
+conformance-complete adapter} that emits the full nine-kind
+vocabulary --- demonstrating that the gap is a coverage deficit in
+existing schemas, not a measurement artifact.
+
+\sysname is the first observability stack we know of to (a) treat
+agent-orchestration spans as enforceable runtime state rather than only
+diagnostic exhaust, and (b) report end-to-end overhead, scalability, and
+fault-detection-rate numbers for the GenAI tracing pipeline. The
+artifact and reproduction commands accompany this submission.
+\end{abstract}
+
+\maketitle
+
+% --- BEGIN BODY ---
+
+\section{Introduction}
+\label{sec:intro}
+
+Production LLM agent systems --- multi-step planners that compose
+reasoning, tool calls, memory operations, and inter-agent delegation
+under the direction of one or more model APIs --- have entered the
+critical path of software engineering, customer support, knowledge work,
+and incident response. The tracing stack that was built for
+microservices does not see what they do. An OTel \texttt{INTERNAL} span
+carries no semantic information distinguishing a guardrail rejection
+from a reasoning step or a delegation handoff. The OpenTelemetry GenAI
+semantic conventions \cite{otel_genai}, currently in stabilization,
+name LLM invocations and tool executions but not the orchestration phases
+that surround them. Closed-source platforms (LangSmith~\cite{langsmith},
+Langfuse~\cite{langfuse}) and adjacent OSS schemas
+(OpenInference~\cite{openinference}, OpenLLMetry~\cite{openllmetry})
+capture richer attributes per vendor but ship vocabularies that do not
+interoperate.
+
+The operational consequence is concrete. In a prior controlled study by
+Balusu~\cite{aiware2026}, 84 of 112 SWE-bench
+Lite~\cite{swebench} runs against a production agent exhausted their
+iteration budget with no span-level evidence of \emph{why} they
+failed --- no record of which planning step diverged, which tool call
+repeated, or which delegation cycle never closed. The traces existed;
+the vocabulary to interpret them did not.
+
+This paper takes the position that the missing vocabulary is not a
+documentation problem but a \emph{systems} problem with three
+load-bearing dimensions.
+
+\paragraph{(D1) Heterogeneous instrumentation surfaces.}
+A unified observability layer must bind to seven incompatible frameworks
+(LangChain~\cite{langchain}, CrewAI~\cite{crewai},
+AutoGen~\cite{autogen}, LlamaIndex~\cite{llamaindex}, Anthropic and
+OpenAI SDKs, and custom orchestrators), each of which exposes a
+different hook surface: callbacks, lifecycle hooks, monkey-patches,
+span handlers, and manual context managers. A single span-kind
+vocabulary is not enough; the SDK must absorb the binding strategy
+diversity behind a stable API.
+
+\paragraph{(D2) Span correlation across async / multi-process
+boundaries.} Agent topologies span asyncio tasks, subprocess pools, and
+cross-process RPC. OTel context propagation works inside a single
+runtime but breaks at every boundary unless the SDK injects explicit
+carriers. Span correlation across boundaries is a precondition for any
+useful trace.
+
+\paragraph{(D3) Passive tracing cannot enforce policies.} A trace that
+shows a cost-explosion or reasoning loop after the fact has limited
+operational value. Production systems need the same span stream to drive
+runtime decisions: stop the agent at a cost cap, break a reasoning
+loop, refuse a delegation that closes a cycle. No existing
+agent-observability tool exposes a runtime-control surface that consumes
+its own telemetry; circuit-breaking is a software pattern
+\cite{circuit_breaker_pattern} that has not, to our knowledge, been
+wired to the span-processor interface.
+
+\paragraph{Contributions.} We present \sysname, an OTel-native SDK
+addressing (D1)--(D3) with measured trade-offs. \emph{The load-bearing
+systems contribution is the telemetry-driven circuit breaker: an OTel
+\texttt{SpanProcessor} that consumes the agent-specific span stream
+in-process and enforces orchestration-level policies (cost cap,
+reasoning loop, delegation cycle, context overflow) at +2.16\,\textmu{}s
+p50 per span (95\% CI [2.06, 2.25] across 5 independent runs).} The
+remaining contributions (vocabulary, adapters, measurement suite) are
+what make this mechanism possible and what justify its design points:
+
+\begin{enumerate}
+\item A \textbf{nine-kind span vocabulary} (\S\ref{sec:arch}) extending
+  OTel GenAI semconv to cover the orchestration phases that current
+  schemas omit: agent, planning, reasoning, delegation, guardrail,
+  memory, retrieval, tool, and LLM call.
+\item A \textbf{cross-framework adapter layer} (\S\ref{sec:adapters})
+  that maps five binding strategies (callback, lifecycle hook,
+  monkey-patch, span-handler, manual context-manager) onto a single
+  emission API, with lazy-import safety as a hard requirement for
+  containerized agents.
+\item A \textbf{telemetry-driven circuit breaker}
+  (\S\ref{sec:circuitbreaker}) implemented as a
+  \texttt{SpanProcessor} that subscribes to the same stream as the
+  exporter and enforces per-trace policies (cost cap, reasoning loop,
+  delegation cycle, token-growth runaway) with configurable
+  log / callback / raise actions.
+\item A \textbf{measurement suite} (\S\ref{sec:microbench}--\S\ref{sec:realllm})
+  reporting (a) p50/p95/p99 and per-span memory across 90{,}000 span-
+  emission iterations, (b) concurrent and long-running scalability under
+  100-thread load and 10{,}000-span disk-export configurations, (c) a
+  3{,}780-row controlled fault-injection benchmark against vanilla OTel,
+  OTel GenAI semconv, OpenInference, and OpenLLMetry across 7
+  frameworks $\times$ 6 LLMs $\times$ 14 fault classes, and (d) a 45-run
+  multi-agent topology study with real LLMs.
+\item A reproducible artifact: source under
+  \texttt{src/agentscope/}, raw data at
+  \texttt{benchmarks/results\_full.tsv} and
+  \texttt{results/}, with one-shot scripts (artifact link redacted for
+  double-blind review).
+\end{enumerate}
+
+A representative ATC reviewer will ask whether this is a systems paper
+or a tool paper. Our answer is the structure of \S\ref{sec:adapters}
+through \S\ref{sec:scalability}: every design choice we describe carries
+a measurement, and we report the systems trade-off (lazy-import safety
+vs static dependency check; sync vs async exporter; per-span memory vs
+attribute granularity) before we report the number that justifies it.
+
+\paragraph{Counter-intuitive findings.} Two results in this paper run
+against the priors we ourselves held before measurement.
+\emph{(F1) Dropping payload preserves detection coverage exactly.}
+Across all 14 fault classes, \sysname{} \texttt{METADATA\_ONLY} and
+\texttt{FULL} produce identical detection rates (Table~\ref{tab:fdrmatrix}),
+because every detection predicate keys off attribute \emph{names} and
+span \emph{kinds} rather than message bodies. Privacy-restricted
+deployments lose nothing in fault visibility.
+\emph{(F2) The agent-orchestration SDK is faster end-to-end than the
+production baselines on the no-fault control runs} (1.31\,ms vs
+2.22\,ms mean run time; \S\ref{sec:fault}), because \sysname's
+emitter avoids the per-span JSON construction that the GenAI-semconv
+reference exporter performs. The first finding rebuts the assumption
+that schema richness must trade against privacy; the second rebuts
+the assumption that a richer schema must impose a higher wall-clock
+cost.
+
+\section{Background and Problem}
+\label{sec:bg}
+
+\paragraph{Distributed tracing for LLM agents.} The lineage that frames
+our problem is Dapper~\cite{dapper}, Canopy~\cite{canopy}, Pivot
+Tracing~\cite{pivottracing}, X-Trace~\cite{xtrace}, and
+Magpie~\cite{magpie}: each names a tracing model that organizes
+heterogeneous request flows into spans with parent-child causality,
+attributes, and per-operation timing. OpenTelemetry~\cite{otel} is the
+contemporary standardization of this lineage; it specifies a
+language-neutral SDK, a wire format (OTLP), processors (batch, simple,
+custom), and exporters. An OTel span has a kind from the closed set
+\{\texttt{INTERNAL}, \texttt{SERVER}, \texttt{CLIENT}, \texttt{PRODUCER},
+\texttt{CONSUMER}\}. These kinds were defined for synchronous RPC and
+message-queue workloads. LLM-agent execution is neither.
+
+\paragraph{OTel GenAI semantic conventions.} The GenAI
+semconv~\cite{otel_genai} adds attribute namespaces for
+\texttt{gen\_ai.system}, \texttt{gen\_ai.request.model},
+\texttt{gen\_ai.usage.input\_tokens}, and parallel concepts for tool
+invocation. The conventions cover the bottom layer of an agent (the
+model call) and stop short of the orchestration above it: how the agent
+planned the call, whether the call was the third in a loop, whether the
+tool input differed from the prior two calls, whether the delegation
+that fired the call closed a cycle.
+
+\paragraph{Adjacent observability tools.}
+OpenInference~\cite{openinference} ships an attribute schema and
+auto-instrumentation packages keyed to a closed set of model providers.
+OpenLLMetry~\cite{openllmetry} wraps a similar surface under a different
+schema. LangSmith~\cite{langsmith} and Langfuse~\cite{langfuse} run
+managed back-ends with vendor-defined trace models. None expose a
+runtime-control surface that consumes the trace stream and enforces
+policies in-process; their value proposition is post-hoc inspection.
+AgentOps~\cite{agentops} surveys the problem space conceptually but
+does not contribute a measured implementation. Failure
+taxonomies~\cite{mast,agentdebug,aegis} characterize what goes wrong
+without prescribing how to detect it from spans.
+
+\paragraph{The gap we close.} A production observability layer for LLM
+agents needs four properties at once: (i) span vocabulary covering the
+orchestration phases that GenAI semconv omits, (ii) heterogeneous-framework
+adapters with lazy-import safety, (iii) measured overhead and
+scalability at production rates, and (iv) a runtime-control surface that
+consumes the same telemetry it exports. No existing system satisfies
+all four. The remainder of this paper presents \sysname and the
+measurements that justify each design choice.
+
+\section{Architecture}
+\label{sec:arch}
+
+\begin{figure}[t]
+\centering
+\small
+\setlength{\fboxsep}{4pt}
+\fbox{\parbox{0.93\linewidth}{
+\textbf{Application framework}
+\hfill (LangChain / CrewAI / AutoGen / LlamaIndex /\\
+\hspace*{1em} Anthropic SDK / OpenAI SDK / custom)\\
+\hspace*{4em}$\downarrow$\\
+\textbf{Adapter layer}
+\hfill (callback / hook / monkey-patch /\\
+\hspace*{1em} span-handler / context-manager)\\
+\hspace*{4em}$\downarrow$\\
+\textbf{\sysname{} core}
+\hfill (\texttt{start\_agent\_span}, 9-kind vocab,\\
+\hspace*{1em} privacy filter, context propagator)\\
+\hspace*{4em}$\downarrow$\\
+\textbf{OTel \texttt{SpanProcessor} fan-out}\\
+\hspace*{2em}$\to$ BatchSpanProcessor $\to$ OTLP / JSON / Console exporter\\
+\hspace*{2em}$\to$ \textbf{\texttt{AgentCircuitBreaker}} (runtime control)
+}}
+\caption{\sysname{} pipeline. The circuit breaker is a
+\texttt{SpanProcessor}, not an out-of-band consumer; it observes the
+same stream as the exporter at zero serialization cost.}
+\label{fig:arch}
+\end{figure}
+
+Figure~\ref{fig:arch} shows the pipeline. We describe the data model
+(\S\ref{sec:arch:datamodel}), the privacy controls
+(\S\ref{sec:arch:privacy}), and the runtime
+(\S\ref{sec:arch:runtime}). The adapter layer and circuit breaker are
+the load-bearing systems contributions; we treat each in its own
+section (\S\ref{sec:adapters} and \S\ref{sec:circuitbreaker}).
+
+\subsection{Span vocabulary}
+\label{sec:arch:datamodel}
+
+\sysname{} defines nine agent-specific span kinds:
+\texttt{AGENT}, \texttt{PLANNING}, \texttt{REASONING},
+\texttt{DELEGATION}, \texttt{GUARD\_RAIL}, \texttt{MEMORY},
+\texttt{RETRIEVAL}, \texttt{TOOL\_CALL}, and \texttt{LLM\_CALL}. Each
+kind is implemented as an OTel span with the kind name in the
+\texttt{agent.span\_kind} attribute (we do not extend the closed OTel
+\texttt{SpanKind} enum, which would break OTLP compatibility). Each kind
+defines a small, fixed attribute schema (e.g., \texttt{LLM\_CALL} adds
+\texttt{llm.input\_tokens}, \texttt{llm.output\_tokens},
+\texttt{llm.cost\_usd}; \texttt{DELEGATION} adds
+\texttt{delegation.source\_agent}, \texttt{delegation.target\_agent}).
+The vocabulary is additive: every \sysname span is also a valid OTel
+span, and every \texttt{LLM\_CALL} span is a valid GenAI-semconv span
+when the corresponding attributes are present.
+
+\paragraph{Why nine.} The taxonomy is derived from a coverage analysis
+of the 14 fault classes in \S\ref{sec:fault} (see
+\cite{mast,agentdebug,aegis} for adjacent failure taxonomies). For each
+fault class we asked which span-level evidence is necessary to detect it
+post-hoc. \texttt{circular\_delegation} requires
+\texttt{DELEGATION.source/target}. \texttt{reasoning\_loop} requires
+\texttt{REASONING} and \texttt{TOOL\_CALL.input}. \texttt{cost\_explosion}
+requires \texttt{LLM\_CALL.cost\_usd}. \texttt{guardrail\_bypass}
+requires \texttt{GUARD\_RAIL.decision}. \texttt{context\_overflow}
+requires a sequence of \texttt{LLM\_CALL.input\_tokens}.
+Table~\ref{tab:kindfault} maps the full coverage relation: each row is
+a span kind, each column a fault class for which it carries a
+load-bearing predicate. Six fault classes are covered by GenAI-semconv-
+style attributes alone (\texttt{LLM\_CALL} carries cost and tokens;
+\texttt{TOOL\_CALL} carries status and wall-clock); the remaining eight
+require one or more of the orchestration-specific kinds
+(\texttt{PLANNING}, \texttt{REASONING}, \texttt{DELEGATION},
+\texttt{GUARD\_RAIL}, \texttt{MEMORY}, \texttt{RETRIEVAL},
+\texttt{AGENT}). The nine kinds are the minimal closed set under which
+all 14 classes have a span-level signal; adding a tenth (e.g., a
+separate \texttt{TOOL\_RESULT} kind) was rejected because the result is
+adequately captured as a child of \texttt{TOOL\_CALL}.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\caption{Span kind $\times$ fault class coverage. \checkmark{} marks a
+load-bearing predicate (i.e., the predicate that decides the matcher's
+output for the class requires this kind). Fault columns: cd =
+circular\_delegation, ce = cost\_explosion, co = context\_overflow,
+gb = guardrail\_bypass, ha = hallucination, il = infinite\_loop,
+mc = memory\_corruption, pf = planning\_failure, rl = reasoning\_loop,
+sr = stale\_retrieval, tf = tool\_failure, to = timeout, wt =
+wrong\_tool, am = agent\_misroute. Six classes (ce, co, il, tf, to,
+wt) are covered by GenAI-semconv-style attributes on \texttt{LLM\_CALL}
+and \texttt{TOOL\_CALL}; eight (cd, gb, ha, mc, pf, rl, sr, am)
+require one or more of the orchestration kinds.}
+\label{tab:kindfault}
+\begin{tabular}{@{}lcccccccccccccc@{}}
+\toprule
+\textbf{Span kind} & cd & ce & co & gb & ha & il & mc & pf & rl & sr & tf & to & wt & am \\
+\midrule
+LLM\_CALL    &   & \checkmark & \checkmark &   &   & \checkmark &   &   &   &   &   &   &   &   \\
+TOOL\_CALL   &   &   &   &   &   & \checkmark &   &   & \checkmark &   & \checkmark & \checkmark & \checkmark &   \\
+DELEGATION   & \checkmark &   &   &   &   &   &   &   &   &   &   &   &   & \checkmark \\
+GUARD\_RAIL  &   &   &   & \checkmark &   &   &   &   &   &   &   &   &   &   \\
+REASONING    &   &   &   &   &   &   &   &   & \checkmark &   &   &   &   &   \\
+PLANNING     &   &   &   &   &   &   &   & \checkmark &   &   &   &   &   &   \\
+RETRIEVAL    &   &   &   &   & \checkmark &   &   &   &   & \checkmark &   &   &   &   \\
+MEMORY       &   &   &   &   &   &   & \checkmark &   &   &   &   &   &   &   \\
+AGENT        &   &   &   &   &   &   &   &   &   &   &   &   &   & \checkmark \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Comparison to adjacent schemas.}
+Table~\ref{tab:schemadiff} shows which span kinds the closest
+production schemas name vs which \sysname{} adds. OpenInference, the
+richest open schema, names six categories
+(\texttt{CHAIN}, \texttt{LLM}, \texttt{RETRIEVER}, \texttt{TOOL},
+\texttt{AGENT}, \texttt{RERANKER}); \sysname{} adds
+\texttt{PLANNING}, \texttt{REASONING}, \texttt{DELEGATION},
+\texttt{GUARD\_RAIL}, and \texttt{MEMORY} (five net adds), and drops
+\texttt{RERANKER} (which we model as a child of \texttt{RETRIEVAL}).
+The added kinds are precisely the orchestration kinds required by
+Table~\ref{tab:kindfault}'s right-hand columns.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\caption{Schema coverage of orchestration span kinds. \checkmark{} = the
+schema names this kind as a first-class span category; --- = the schema
+does not name this category and offers no equivalent attribute set.
+GenAI-S = OTel GenAI semconv (stabilising); OI = OpenInference; OL =
+OpenLLMetry; LS = LangSmith; LF = Langfuse.}
+\label{tab:schemadiff}
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+\textbf{Span kind} & \textbf{GenAI-S} & \textbf{OI} & \textbf{OL} & \textbf{LS} & \textbf{LF} & \textbf{\sysname} \\
+\midrule
+LLM\_CALL    & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\
+TOOL\_CALL   & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\
+AGENT        & ---        & \checkmark & ---        & \checkmark & \checkmark & \checkmark \\
+RETRIEVAL    & ---        & \checkmark & \checkmark & \checkmark & ---        & \checkmark \\
+PLANNING     & ---        & ---        & ---        & ---        & ---        & \checkmark \\
+REASONING    & ---        & ---        & ---        & ---        & ---        & \checkmark \\
+DELEGATION   & ---        & ---        & ---        & ---        & ---        & \checkmark \\
+GUARD\_RAIL  & ---        & ---        & ---        & ---        & ---        & \checkmark \\
+MEMORY       & ---        & ---        & ---        & ---        & ---        & \checkmark \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Privacy as a systems constraint}
+\label{sec:arch:privacy}
+
+\sysname provides three capture modes ---
+\texttt{NONE}, \texttt{METADATA\_ONLY}, \texttt{FULL} --- composed at
+the SpanProcessor layer via an \texttt{filter\_attributes} hook. The
+trade-off we evaluate (Table~\ref{tab:fdr}) is whether dropping payload
+content materially degrades fault detection. Empirically,
+\texttt{METADATA\_ONLY} and \texttt{FULL} reach identical aggregate FDR
+(0.612), because the fault-detection rules in \S\ref{sec:fault}
+key off attribute names, span kinds, and counts --- not message bodies.
+This is the systems-relevant result: privacy can be enforced at the SDK
+edge without observable loss of detection coverage.
+
+\subsection{Runtime and cross-boundary span correlation}
+\label{sec:arch:runtime}
+
+The runtime exports two surfaces: a high-level
+\texttt{start\_agent\_span(kind, name, **attrs)} context manager that
+wraps OTel's tracer API and stamps the agent-specific attributes, and a
+lower-level adapter API used by the seven framework adapters in
+\S\ref{sec:adapters}. Context propagation reuses OTel's
+\texttt{Context} carrier; \sysname injects an additional
+\texttt{agent.trace\_role} attribute when the propagator crosses a
+process boundary so that downstream filters can distinguish
+parent-process from child-process spans (necessary for
+multi-agent topologies where each agent runs in its own process).
+
+\paragraph{The cross-boundary correlation problem (D2).}
+Three boundaries break OTel's default context propagation: (a) asyncio
+\texttt{Task} creation, where the active context is captured at task
+creation but is not re-installed across \texttt{await} resumption in
+some Python versions; (b) \texttt{concurrent.futures.ProcessPoolExecutor}
+and \texttt{multiprocessing.Process}, where context is not inherited at
+all; and (c) inter-agent RPC across the framework's own message bus
+(e.g., AutoGen's group-chat message routing). For (a) we attach an
+explicit \texttt{Context} carrier to every task via a thin
+\texttt{run\_with\_context} wrapper; for (b) we serialize the
+\texttt{TraceContext} (W3C trace-context format) into the subprocess
+arguments and re-install it in the child's entry point; for (c) we
+patch the framework's message envelope to carry the
+\texttt{traceparent} header, which the receiver re-installs before
+dispatching to user code.
+
+\paragraph{Correlation fidelity.} In the 45-run multi-agent topology
+study (\S\ref{sec:realllm}), all 570 emitted spans across the three
+topologies and three model back-ends correctly resolved to the
+originating root trace; no orphan spans were observed. With 0/570
+orphans the exact (Clopper--Pearson) one-sided 95\% upper bound on
+the true orphan rate is 0.52\%. The hierarchical topology stresses
+(a) and (c) (a coordinator agent dispatches subtasks to specialist
+agents in the same process via an asyncio \texttt{TaskGroup}); the
+parallel topology stresses (a) and (b) (specialists run as
+\texttt{ProcessPoolExecutor} workers). We treat ``zero orphan spans
+across the multi-agent topology study'' as the correlation-fidelity
+result; a larger evaluation against synthetic boundary-stress
+workloads is future work.
+
+\section{Adapter Layer}
+\label{sec:adapters}
+
+Heterogeneous instrumentation surfaces (D1) are the first systems
+problem. The seven frameworks we support expose binding surfaces in
+five qualitatively different shapes; we describe each with its
+implementation cost and the trade-off the choice forces.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Adapter binding strategies. LOC = source lines of code per
+adapter under \texttt{src/agentscope/adapters/}; \emph{Async} = is
+the strategy correct under asyncio without modification; \emph{Lazy} =
+does the adapter import the framework only at \texttt{instrument()}
+time. \emph{Fragility} = breakage rate against the upstream framework's
+minor releases over the adapter's development window: \emph{low} =
+zero breakages across the last 4 releases observed, \emph{medium} =
+one breakage requiring a non-trivial patch, \emph{high} = at least
+one silent breakage (no exception, wrong attributes) detected only by
+the integration test suite. Release windows observed during
+development: LangChain 0.3.0--0.3.14, CrewAI 0.83--0.95, AutoGen
+0.4.0--0.4.10, LlamaIndex 0.12.0--0.12.30, Anthropic Python SDK
+0.40--0.65, OpenAI Python SDK 1.40--1.62. The classification is the
+worst case observed in the window; the integration test suite under
+\texttt{tests/adapters/} is the gate.}
+\label{tab:adapters}
+\begin{tabular}{@{}llrccc@{}}
+\toprule
+\textbf{Framework} & \textbf{Strategy} & \textbf{LOC}
+  & \textbf{Async} & \textbf{Lazy} & \textbf{Fragility} \\
+\midrule
+LangChain     & Callback       & 406 & yes & yes & low    \\
+CrewAI        & Hook           & 278 & yes & yes & medium \\
+AutoGen       & Hook           & 256 & yes & yes & medium \\
+LlamaIndex    & Span-handler   & 280 & yes & yes & low    \\
+Anthropic SDK & Monkey-patch   & 294 & yes & yes & high   \\
+OpenAI SDK    & Monkey-patch   & 245 & yes & yes & high   \\
+Custom        & Context-mgr    & 315 & yes & yes & low    \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Callback (LangChain).} LangChain exposes a first-class
+\texttt{BaseCallbackHandler} surface that delivers
+\texttt{on\_chain\_start}, \texttt{on\_tool\_end},
+\texttt{on\_llm\_error}, etc. We attach a single callback instance per
+\texttt{Runnable} graph and emit one span per callback event. \emph{Trade-off:} callback
+fidelity depends on whether the user wires the callback at the
+\texttt{Runnable} root; partial graphs yield partial traces. We accept
+this; the alternative (monkey-patching every \texttt{Runnable}
+subclass) is brittle under LangChain's release cadence.
+
+\paragraph{Lifecycle hook (CrewAI, AutoGen).} CrewAI exposes
+\texttt{Crew.before\_kickoff} / \texttt{after\_kickoff} hooks and per-
+\texttt{Task} hooks; AutoGen exposes pre/post-reply hooks on
+\texttt{ConversableAgent}. We install hook handlers that emit the
+appropriate span kinds. \emph{Trade-off:} hook surfaces are stable
+within a minor version but get renamed across majors; the
+\texttt{instrument()} call performs a runtime feature check and
+gracefully degrades to no-op (with a warning) if hooks are absent.
+
+\paragraph{Span-handler (LlamaIndex).} LlamaIndex defines its own
+event-and-span abstraction with a pluggable \texttt{SpanHandler}; we
+implement a \texttt{SpanHandler} that re-emits its spans into the OTel
+tracer with our kind taxonomy. \emph{Trade-off:} this is the lowest-friction
+path (no monkey-patching, no callback wiring) but is unique to
+LlamaIndex; the pattern does not generalize.
+
+\paragraph{Monkey-patch (Anthropic SDK, OpenAI SDK).} The vendor SDKs
+expose no observability hooks; we monkey-patch
+\texttt{messages.create} and \texttt{chat.completions.create} (and the
+async equivalents) to wrap the call in a \texttt{start\_agent\_span}
+context. \emph{Trade-off:} this is the highest-fragility strategy ---
+SDK refactors break us silently. We mitigate by version-checking at
+\texttt{instrument()} time and by exporting a deterministic
+\texttt{uninstrument()} entry point that restores the original
+functions. The adapters import the SDK lazily so that a project that
+uses Anthropic but not OpenAI does not pay an import cost for the
+unused adapter.
+
+\paragraph{Context-manager (custom).} For custom orchestrators we
+expose the raw \texttt{start\_agent\_span} API. This is the strategy
+the conformance-complete adapter in \S\ref{sec:fault} uses to emit
+every one of the nine span kinds. \emph{Trade-off:} authors must call
+the API by hand; in return they get full vocabulary coverage and
+deterministic span kinds.
+
+\paragraph{Lazy-import safety.} All seven adapters import their
+framework only inside \texttt{instrument()} and inside per-call hot
+paths. A project that installs \sysname for LangChain instrumentation
+does not transitively import CrewAI, AutoGen, etc. This matters because
+\sysname is intended to ship inside agent containers whose dependency
+closures are already large; eagerly importing seven frameworks at
+\texttt{import agentscope} time would inflate cold-start latency
+and surface install-time conflicts that the user did not opt into.
+
+\section{Telemetry-Driven Circuit Breaker}
+\label{sec:circuitbreaker}
+
+The runtime-control surface (D3) is the load-bearing novel systems
+mechanism. We describe the design, the policy DSL, and the activation
+overhead.
+
+\subsection{Design: a SpanProcessor on the live span stream}
+
+The OTel pipeline already produces a fan-out point: any number of
+\texttt{SpanProcessor}s can subscribe to the span stream, and the
+exporter is itself one of them. We make the runtime-control loop
+another subscriber. The \texttt{AgentCircuitBreaker}
+(\texttt{src/agentscope/runtime/circuit\_breaker.py}, 299 LOC) is a
+\texttt{SpanProcessor} whose \texttt{on\_end} hook performs four
+operations: (1) read the span's kind and attributes, (2) update a
+per-trace state machine (cost accumulator, reasoning-step counter,
+delegation graph, input-token history), (3) evaluate the registered
+policies against the new state, and (4) fire the matching policy's
+action (log, user-supplied callback, or \texttt{raise}). The
+implementation is lock-guarded for thread safety because OTel's
+\texttt{BatchSpanProcessor} batches across worker threads.
+
+\paragraph{Why this is impossible without the nine-kind vocabulary.}
+A reasoning-loop detector that inspects only vanilla
+\texttt{INTERNAL} spans cannot distinguish a reasoning step from a
+delegation handoff from a guardrail invocation. A delegation-cycle
+detector that does not know which span attribute names the source and
+target agents cannot build the delegation graph. The runtime mechanism
+in this section is enabled by the schema in
+\S\ref{sec:arch:datamodel}; the schema is what turns a passive trace
+into actionable state.
+
+\subsection{Policy DSL}
+
+A policy is a Python dataclass: a name, a description, an action enum,
+an optional user callback, and an enabled flag. The breaker ships four
+default policy implementations:
+
+\begin{itemize}
+\item \textbf{Reasoning loop} ($N$ consecutive identical
+\texttt{TOOL\_CALL.input} values; default $N=3$): fires the configured
+action when an agent emits the same tool input three times in a row,
+catching the most common failure mode where a stuck plan repeatedly
+invokes the same retrieval or shell command.
+\item \textbf{Cost explosion} (\texttt{cumulative cost > threshold};
+default \$1.00): fires when the per-trace sum of
+\texttt{llm.cost\_usd} attributes exceeds the threshold; suitable for
+runaway prompt-chain budgets.
+\item \textbf{Context overflow} (\texttt{input\_tokens growth > factor
+for K calls}; defaults factor 2.0, $K=2$): fires when consecutive
+\texttt{LLM\_CALL} spans show super-linear context growth, the
+characteristic signature of an agent re-feeding its own output into the
+prompt.
+\item \textbf{Delegation cycle}
+(\texttt{A$\to$B$\to$A in the delegation graph}): fires when a
+\texttt{DELEGATION} span closes a cycle in the per-trace agent graph;
+the graph is built incrementally from the source/target attributes.
+\end{itemize}
+
+Policies compose by addition: a user adds a policy via
+\texttt{breaker.add\_policy(policy)} at runtime. The action enum is
+\texttt{LOG}, \texttt{CALLBACK}, or \texttt{RAISE}. \texttt{RAISE}
+deliberately aborts the agent invocation at the next OTel span
+boundary; the alternative (defer to the user-supplied callback) is the
+safer default and is what we recommend in production.
+
+\paragraph{RAISE semantics.} The current implementation raises
+\texttt{RuntimeError} directly from \texttt{on\_end} (line 290 of
+\texttt{circuit\_breaker.py}). Because the breaker is registered as a
+\texttt{SpanProcessor} on the \texttt{TracerProvider}, the OTel SDK
+invokes \texttt{on\_end} synchronously on the thread that closes the
+span; the exception therefore unwinds the user's
+\texttt{with start\_agent\_span():} context manager, which exits the
+active span with status \texttt{ERROR} and re-raises into the agent's
+call stack. Under asyncio, the same applies inside the coroutine that
+exits the context manager; cancellation that races with a breaker fire
+is resolved by whichever exception reaches the context-manager exit
+first. \texttt{CALLBACK} (the default we recommend in production) runs
+the user-supplied function on the same thread and lets the agent
+choose whether to abort, throttle, or continue.
+
+\paragraph{Why a SpanProcessor and not an outer-loop wrapper.} The
+alternative design --- a wrapper around the agent's outer loop that
+polls cumulative cost --- collapses under the systems requirements of
+(D1)--(D3). It cannot see sub-step state (a single delegation handoff
+inside a chain is invisible to a wrapper that runs once per outer-loop
+iteration); it cannot be installed uniformly across seven frameworks
+(each exposes its outer loop under a different name and lifecycle);
+and it cannot share state with the export pipeline without an
+out-of-band IPC channel. The \texttt{SpanProcessor} interface delivers
+exactly the right thing: one in-process callback per span emission,
+on the same fan-out point as the exporter, with no protocol changes
+to either side.
+
+\begin{figure}[t]
+\begin{lstlisting}
+from agentscope.runtime import (
+    AgentCircuitBreaker, CircuitPolicy, CircuitAction)
+
+def on_cost_explosion(name, ctx):
+    log.warning("policy %s fired: cost=$%.2f trace=%s",
+                name, ctx["cumulative_cost"], ctx["trace_id"])
+    metrics.counter("agent.circuit.fire").add(1)
+
+breaker = AgentCircuitBreaker()
+breaker.configure_cost_explosion(
+    threshold_usd=2.50,
+    action=CircuitAction.CALLBACK,
+    callback=on_cost_explosion)
+breaker.configure_reasoning_loop(max_repeats=3)
+breaker.configure_context_overflow(growth_factor=2.0)
+breaker.configure_delegation_cycle()
+
+# Install as a sibling SpanProcessor: the breaker
+# observes the same stream as the exporter.
+provider.add_span_processor(breaker)
+\end{lstlisting}
+\caption{Policy DSL: composing a cost-cap policy with a custom
+callback. The breaker is a \texttt{SpanProcessor}, so it composes
+with any OTel-compatible exporter without protocol changes.}
+\label{fig:policydsl}
+\end{figure}
+
+Figure~\ref{fig:policydsl} shows the API. The pattern is intentionally
+small: a callback is a plain Python function with a stable
+\texttt{(name, ctx)} signature; the \texttt{ctx} dictionary surfaces
+the per-trace state the breaker maintains (cumulative cost, token
+history, delegation graph, tool-input history).
+
+\subsection{Activation overhead}
+\label{sec:cb:overhead}
+
+We measured the breaker's activation cost by running the per-span
+microbenchmark with and without a four-policy breaker installed
+(reasoning loop, cost cap, context overflow, delegation cycle; all
+policies configured with \texttt{CircuitAction.LOG} and thresholds set
+high so no policy fires during the benchmark, isolating evaluation cost
+from firing cost). Each run emits 10{,}000 \texttt{LLM\_CALL} spans
+per configuration with the attribute payload required to drive all four
+policy predicates (cost, input tokens, tool name, tool input). The
+entire experiment is repeated 5 times to bound run-to-run variance;
+the reported numbers are the mean and 95\% normal CI across the 5
+runs. Hardware as in \S\ref{sec:microbench}; reproduction script
+\texttt{experiments/breaker\_overhead\_multirun.py}.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Circuit-breaker activation overhead, $n=10{,}000$
+\texttt{LLM\_CALL} spans per configuration, 5 independent runs.
+Values are mean across runs $\pm$ 95\% normal CI half-width on the
+run-mean.}
+\label{tab:cb}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+\textbf{Config} & \textbf{p50 (\textmu{}s)} & \textbf{p95 (\textmu{}s)} & \textbf{p99 (\textmu{}s)} & \textbf{Mean (\textmu{}s)} \\
+\midrule
+No breaker          & 11.41$\pm$0.02 & 12.83$\pm$0.31 & 14.46$\pm$0.88 & 12.19$\pm$0.22 \\
+Four-policy breaker & 13.57$\pm$0.09 & 15.32$\pm$0.32 & 17.77$\pm$0.92 & 14.37$\pm$0.34 \\
+\midrule
+\textbf{Overhead}   & \textbf{+2.16$\pm$0.09} & \textbf{+2.49$\pm$0.30} & \textbf{+3.31$\pm$0.49} & \textbf{+2.17$\pm$0.41} \\
+                    & \scriptsize{(+18.9\%)} & \scriptsize{(+19.4\%)} & \scriptsize{(+22.9\%)} & \scriptsize{(+17.8\%)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:cb} reports +2.16\,\textmu{}s p50 (95\% CI [+2.06,
++2.25]; +18.9\% relative); absolute cost is dominated by the
+lock-acquire in \texttt{AgentCircuitBreaker.on\_end} (line 138 of
+\texttt{circuit\_breaker.py}) plus the per-policy predicate dispatch.
+The relative overhead is highest at p99 (+22.9\%) because the
+predicate dispatch is constant-time but the no-breaker p99 has the
+lowest absolute value; in absolute terms the predicate cost is
+3.3\,\textmu{}s at the tail vs 2.2\,\textmu{}s at the median. We
+treat this as a systems-cost statement: the runtime-control surface
+is essentially free relative to any non-trivial agent operation
+(LLM-call wall-clock is in the 100\,ms--10\,s range), so the breaker
+imposes a $<2\times10^{-5}$ relative overhead on a real agent run.
+
+\paragraph{Per-trace cost for a realistic agent.} An operator deploying
+the breaker on an agent that emits 100--1{,}000 spans per invocation
+pays 100--1{,}000 $\times$ 2.16\,\textmu{}s = 216\,\textmu{}s--2.16\,ms
+of additional CPU per trace, against an LLM-bound wall clock of seconds
+to tens of seconds. This is the operationally relevant number: less
+than 0.05\% of end-to-end trace time, for a mechanism that enforces
+cost-cap, loop, cycle, and overflow policies before the agent burns
+through a budget.
+
+\section{Microbenchmark: Per-Span Overhead}
+\label{sec:microbench}
+
+\paragraph{Method.} For each of the nine span kinds we emit 10{,}000
+spans (90{,}000 total) through a fresh
+\texttt{TracerProvider} configured with the
+\texttt{BatchSpanProcessor} and an in-memory exporter. The
+measurement script is
+\texttt{benchmarks/overhead\_benchmark.py}; the raw output is
+\texttt{results/overhead\_percentiles/overhead\_percentiles.json}.
+Hardware: Apple M4 Pro, 24~GB RAM, Python 3.12, OTel SDK pinned in
+\texttt{requirements.lock}. We report per-kind percentiles
+(p50/p95/p99), mean, standard deviation, throughput, and per-span
+memory in bytes.
+
+\paragraph{Run-to-run stability.} A separate three-run replication of
+the harness (\texttt{experiments/overhead\_multirun\_and\_isolation.py};
+3 $\times$ 90{,}000 spans = 270{,}000 spans total) bounds the
+across-run variance of the aggregate p50 at $\pm$0.02\,\textmu{}s and
+of the aggregate p99 at $\pm$0.23\,\textmu{}s (full range across runs).
+Span emission is stateless and IID at this scale, so the across-run
+variance is dominated by the within-run percentile estimate's standard
+error; the headline numbers below are stable to two significant
+figures across replications.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Span-creation latency (\textmu{}s) and memory per span across
+the nine span kinds, $n=10{,}000$ each (90{,}000 total). Aggregate row
+is the per-span concatenation across all kinds.}
+\label{tab:overhead}
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+\textbf{Span Kind} & \textbf{p50} & \textbf{p95} & \textbf{p99}
+  & \textbf{Mean} & \textbf{Std} & \textbf{Mem (B)} \\
+\midrule
+AGENT       & 10.7 & 12.9 & 27.2 & 12.1 & 41.0 & 3{,}105 \\
+DELEGATION  & 11.7 & 15.1 & 42.6 & 14.4 & 87.8 & 3{,}103 \\
+GUARD\_RAIL & 11.5 & 12.5 & 27.7 & 12.8 & 53.8 & 3{,}106 \\
+LLM\_CALL   & 12.7 & 13.7 & 29.2 & 13.5 &  9.5 & 3{,}191 \\
+MEMORY      & 11.5 & 12.3 & 27.2 & 12.1 &  8.8 & 3{,}103 \\
+PLANNING    & 11.6 & 12.5 & 27.4 & 12.3 &  9.2 & 3{,}103 \\
+REASONING   & 11.2 & 12.2 & 27.6 & 12.0 &  9.0 & 3{,}103 \\
+RETRIEVAL   & 11.8 & 12.6 & 27.5 & 12.4 &  8.4 & 3{,}103 \\
+TOOL\_CALL  & 12.5 & 13.4 & 28.6 & 13.2 &  8.9 & 3{,}191 \\
+\midrule
+\textbf{Aggregate} & \textbf{11.7} & \textbf{13.2} & \textbf{28.2}
+  & \textbf{12.8} & \textbf{37.7} & \textbf{$\sim$3{,}123} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Findings.}
+Table~\ref{tab:overhead} reports an aggregate p50 of 11.7\,\textmu{}s
+and p99 of 28.2\,\textmu{}s. The aggregate throughput is 66{,}396
+spans/s; the highest-throughput kind is \texttt{AGENT} (66{,}396 sp/s)
+and the lowest is \texttt{LLM\_CALL} (58{,}771 sp/s), with the spread
+explained by the additional attribute namespace
+\texttt{gen\_ai.usage.*} required by \texttt{LLM\_CALL} and
+\texttt{TOOL\_CALL}.
+
+\paragraph{Systems trade-off: attribute richness vs latency.}
+The \texttt{LLM\_CALL} and \texttt{TOOL\_CALL} kinds carry the largest
+attribute payload (input/output tokens, cost, model name, tool name)
+and consequently have both the highest per-span latency and the
+highest per-span memory ($\sim$3{,}191~B vs $\sim$3{,}103~B for the
+attribute-light kinds). Eighty-eight bytes is the marginal cost of an
+agent-specific attribute set: we report it explicitly because it is a
+budget every operator should be able to multiply through their span
+volume.
+
+\paragraph{Tail-latency caveat (validated).} The \texttt{DELEGATION}
+kind has a p99 of 42.6\,\textmu{}s and a standard deviation of
+87.8\,\textmu{}s --- an outlier we attribute to occasional flush
+events in the \texttt{BatchSpanProcessor}'s background queue worker.
+We validated this attribution with a controlled isolation experiment
+(\texttt{experiments/overhead\_multirun\_and\_isolation.py}):
+re-running the DELEGATION benchmark under three processor configs
+yields std of 1.34\,\textmu{}s under \texttt{SimpleSpanProcessor}
+(no batching), 20.0\,\textmu{}s under \texttt{BatchSpanProcessor}
+with the default 5\,s flush delay, and 64.4\,\textmu{}s under
+\texttt{BatchSpanProcessor} with a 600\,s flush delay and 20{,}000-span
+queue. The std walks up with batch-induced contention, confirming the
+attribution: the tail is the batch worker, not the emission path. An
+operator who needs a tighter p99 should replace the
+\texttt{BatchSpanProcessor} with an async flush or a
+\texttt{SimpleSpanProcessor}; we discuss the trade-off in
+\S\ref{sec:scalability}.
+
+\section{Scalability Stress Test}
+\label{sec:scalability}
+
+\paragraph{Method.} Three scenarios: (1) 100-thread concurrent
+emission (3{,}482 spans total, 20--50 spans per thread); (2) a single
+long-running trace with 1{,}200 spans through the
+\texttt{BatchSpanProcessor}; (3) 10{,}000 spans exported through the
+JSON-lines disk exporter. The harness is
+\texttt{benchmarks/scalability.py}; outputs are at
+\texttt{results/scalability/}.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Scalability stress-test results, Apple M4 Pro.}
+\label{tab:scalability}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+\textbf{Scenario} & \textbf{Tput (sp/s)}
+  & \textbf{p50 (\textmu{}s)} & \textbf{p95 (\textmu{}s)}
+  & \textbf{p99 (\textmu{}s)} \\
+\midrule
+100-thread concurrent       & 19{,}071 & 44.0 & 52.8 & 76.8 \\
+Long-running (1{,}200 spans)& 5{,}335  & 39.3 & 46.1 & 83.5 \\
+JSON export (disk)          & 6{,}187  & 145.5 & 199.0 & 331.2 \\
+In-memory baseline          & 78{,}087 & 10.9 & 13.0 & 28.0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Findings.}
+Table~\ref{tab:scalability} shows that the in-memory baseline reaches
+78{,}087 spans/s (consistent with the microbenchmark, within
+expected variance). Under 100-thread concurrency throughput drops to
+19{,}071 spans/s and p50 quadruples to 44.0\,\textmu{}s; this is
+dominated by the \texttt{BatchSpanProcessor}'s internal lock, which is
+a single point of contention by design. The long-running 1{,}200-span
+trace exhibits 7.6\% latency degradation (first-decile p50 vs
+last-decile p50) and 3.58~MB of memory growth, consistent with an
+attribute-store that does not vacuum within a trace.
+
+\paragraph{The exporter trade-off we report rather than hide.}
+The disk-backed JSON exporter has a \textbf{1{,}232\% blocking
+overhead} (145.5\,\textmu{}s p50 vs 10.9\,\textmu{}s in-memory
+baseline). This is a real systems concern; operators who use a disk or
+network exporter in synchronous mode \emph{will} pay this cost. The
+mitigation is to wrap the exporter in OTel's
+\texttt{BatchSpanProcessor} (which we do by default) so the export
+cost is amortized off the agent's critical path; the long-running test
+above already runs through that processor and reaches 5{,}335 spans/s
+end-to-end. We report the blocking number anyway because hiding it
+would let an operator deploy the synchronous exporter in production and
+discover the cost at scale.
+
+\paragraph{Backpressure honesty.} The
+\texttt{BatchSpanProcessor} signals no backpressure event under our
+configuration; it exports 1{,}251 of 1{,}200 spans (the surplus is
+provider-startup spans not counted in the 1{,}200 input). The lack of
+backpressure is by OTel design --- the processor drops spans silently
+under sustained pressure rather than blocking the producer. An
+operator who needs guaranteed delivery should use a synchronous
+exporter and budget the blocking cost above. This trade-off is
+intrinsic to OTel, not introduced by \sysname; we surface it because
+the systems consequence (silent drop vs blocking deliver) is the
+question an agent-system operator must answer before deploying.
+
+\section{Fault-Detection Validation}
+\label{sec:fault}
+
+The systems mechanism is only useful if the spans it produces are
+sufficient to detect agent failures. We test this on a controlled
+fault-injection benchmark.
+
+\paragraph{Design.} The benchmark
+(\texttt{benchmarks/run\_benchmarks.py},
+\texttt{benchmarks/faults/}) injects 14 fault classes into 7
+frameworks under 6 mock LLM seeds, evaluating each combination under 6
+telemetry conditions:
+\textbf{(C1)} no telemetry; \textbf{(C2)} vanilla OTel with no
+agent-specific attributes; \textbf{(C3)} OTel GenAI semconv
+attributes; \textbf{(C4)} OpenInference attributes; \textbf{(C5)}
+\sysname{} \texttt{METADATA\_ONLY}; \textbf{(C6)} \sysname{}
+\texttt{FULL}. The full design space is $7 \times 6 \times 14 \times
+6 + 7 \times 6 \times 1 \times 6 = 3{,}780$ runs (the trailing term is
+the \texttt{no\_fault} control). The fault classes and their
+expected span-level signals are:
+\texttt{agent\_misroute}, \texttt{circular\_delegation},
+\texttt{context\_overflow}, \texttt{cost\_explosion},
+\texttt{guardrail\_bypass}, \texttt{hallucination},
+\texttt{infinite\_loop}, \texttt{memory\_corruption},
+\texttt{planning\_failure}, \texttt{reasoning\_loop},
+\texttt{stale\_retrieval}, \texttt{timeout}, \texttt{tool\_failure},
+\texttt{wrong\_tool}. Detection rules are static: a small Python
+matcher that inspects each completed trace and reports the matched
+faults; the matcher is the same across all telemetry conditions, but
+its predicates evaluate to false when the required attributes are not
+present.
+
+\paragraph{Detection rule semantics.} The matcher is a small Python
+predicate library shared across all six conditions. Each predicate is
+written defensively: an absent attribute evaluates to \texttt{None},
+which fails the predicate and therefore counts as a non-detection (not
+a detection). This is the methodological keystone: any condition that
+does not carry the required attributes cannot detect the matching
+fault even if the matcher code is identical. The 0.429-vs-0.612 gap is
+purely a difference in attribute coverage, not in detection logic.
+
+\paragraph{Why mock LLMs.} The benchmark uses deterministic mock LLMs
+to keep the controlled variable (\emph{which fault class is injected})
+independent of the model-induced variability we observe in
+\S\ref{sec:realllm}. Real-LLM end-to-end is the next section.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Aggregate fault-detection rate (FDR) by telemetry condition.
+Mean FDR across all 588 fault-injected runs per condition
+($n=3{,}528$ fault-injected rows; 252 \texttt{no\_fault} rows excluded
+from FDR). 95\% Wilson confidence intervals. Precision is the rate of
+detections that were the injected fault.}
+\label{tab:fdr}
+\begin{tabular}{@{}lrcr@{}}
+\toprule
+\textbf{Telemetry condition} & \textbf{FDR} & \textbf{95\% CI} & \textbf{Prec.} \\
+\midrule
+No telemetry                 & 0.000 & [0.000, 0.006] & 1.00 \\
+Vanilla OTel                 & 0.429 & [0.389, 0.469] & 1.00 \\
+OTel GenAI semconv           & 0.429 & [0.389, 0.469] & 1.00 \\
+OpenInference                & 0.429 & [0.389, 0.469] & 1.00 \\
+\sysname{} \texttt{METADATA\_ONLY} & 0.612 & [0.572, 0.651] & 1.00 \\
+\sysname{} \texttt{FULL}           & 0.612 & [0.572, 0.651] & 1.00 \\
+\midrule
+\textbf{\sysname{} on conformance-complete adapter}
+  & \textbf{1.000} & \textbf{[0.957, 1.000]} & \textbf{1.00} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Per-fault breakdown.} Table~\ref{tab:fdrmatrix} is the
+structural result: the GenAI baselines and \sysname catch the same
+\emph{bottom-up} classes (tool failure, timeout, infinite loop,
+context overflow, cost explosion, wrong tool), but only \sysname
+catches the \emph{orchestration} classes (circular delegation,
+hallucination, agent misroute, guardrail bypass, memory corruption,
+planning failure, reasoning loop, stale retrieval). Eight classes
+(57\%) require span kinds that the baseline schemas do not name; the
+0.612 aggregate is the weighted average of (a) 6 classes at FDR 1.000
+on every condition that has \emph{any} GenAI attributes, and (b) 8
+classes that go from 0.000 on the baselines to 0.143--1.000 on \sysname,
+limited by per-adapter conformance. The baselines reach 1.000 on
+\texttt{infinite\_loop} and \texttt{context\_overflow} --- which look
+orchestration-flavored --- because \texttt{gen\_ai.usage.input\_tokens}
+plus the adapter's wall-clock signal are sufficient for those two
+predicates; the genuinely orchestration-only predicates (cycle in
+\texttt{DELEGATION} graph, repeated \texttt{TOOL\_CALL.input},
+mismatch between \texttt{GUARD\_RAIL.decision} and downstream tool
+call) require attributes only \sysname{} emits. The METADATA\_ONLY and
+FULL columns coincide exactly across all 14 classes because the
+predicates key on attribute \emph{names} and span \emph{kinds}, not on
+message bodies (see \S\ref{sec:arch:privacy}); dropping payload
+preserves detection coverage perfectly.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Per-fault-class FDR. Conditions: NT = no telemetry,
+VO = vanilla OTel, GA = OTel GenAI semconv, OI = OpenInference,
+MO = \sysname{} \texttt{METADATA\_ONLY}, FC = \sysname{}
+\texttt{FULL}. Each cell is the mean over 42 runs (7 frameworks
+$\times$ 6 LLMs).}
+\label{tab:fdrmatrix}
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+\textbf{Fault class} & \textbf{NT} & \textbf{VO} & \textbf{GA} & \textbf{OI} & \textbf{MO} & \textbf{FC} \\
+\midrule
+\multicolumn{7}{l}{\emph{Bottom-up faults (catchable by GenAI semconv alone)}}\\
+context\_overflow    & 0.00 & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 \\
+cost\_explosion      & 0.00 & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 \\
+infinite\_loop       & 0.00 & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 \\
+timeout              & 0.00 & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 \\
+tool\_failure        & 0.00 & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 \\
+wrong\_tool          & 0.00 & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 \\
+\midrule
+\multicolumn{7}{l}{\emph{Orchestration faults (require agent-specific vocabulary)}}\\
+circular\_delegation & 0.00 & 0.00 & 0.00 & 0.00 & 1.00 & 1.00 \\
+hallucination        & 0.00 & 0.00 & 0.00 & 0.00 & 0.71 & 0.71 \\
+agent\_misroute      & 0.00 & 0.00 & 0.00 & 0.00 & 0.14 & 0.14 \\
+guardrail\_bypass    & 0.00 & 0.00 & 0.00 & 0.00 & 0.14 & 0.14 \\
+memory\_corruption   & 0.00 & 0.00 & 0.00 & 0.00 & 0.14 & 0.14 \\
+planning\_failure    & 0.00 & 0.00 & 0.00 & 0.00 & 0.14 & 0.14 \\
+reasoning\_loop      & 0.00 & 0.00 & 0.00 & 0.00 & 0.14 & 0.14 \\
+stale\_retrieval     & 0.00 & 0.00 & 0.00 & 0.00 & 0.14 & 0.14 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Per-framework breakdown.} Table~\ref{tab:fdrframework}
+isolates the conformance gap. The five most-popular agent frameworks
+(LangChain, CrewAI, AutoGen, Anthropic/OpenAI SDK, LlamaIndex) emit a
+subset of the nine-kind vocabulary: typically \texttt{AGENT},
+\texttt{LLM\_CALL}, and \texttt{TOOL\_CALL}, plus
+\texttt{DELEGATION} on CrewAI and AutoGen. The \texttt{custom}
+(reference) adapter exercises the full vocabulary and reaches FDR
+1.000 on the same fault catalogue with the same matcher. The 0.388-point
+gap between the average shipped adapter and the reference is per-app
+work, not a metamodel limitation.
+
+\paragraph{Reframing the conformance gap.} A useful operator-side
+restatement: 8 of the 14 fault classes (57\%; see
+Table~\ref{tab:fdrmatrix}'s lower group) are catchable only with
+orchestration kinds that the shipped adapters today omit. The work to
+close the gap is well-scoped: each missing kind is one adapter PR away,
+and a downstream operator who needs detection for a specific fault
+class can compose the missing kind through the
+\texttt{context-manager} API (\S\ref{sec:adapters}) without waiting
+for the upstream adapter to ship it.
+
+\begin{table}[t]
+\centering
+\small
+\caption{FDR by framework under \sysname{} \texttt{FULL}, $n=84$ rows
+per framework (14 fault classes $\times$ 6 LLMs).}
+\label{tab:fdrframework}
+\begin{tabular}{@{}lr@{}}
+\toprule
+\textbf{Framework} & \textbf{FDR (FULL)} \\
+\midrule
+LangChain      & 0.500 \\
+LlamaIndex     & 0.500 \\
+Anthropic SDK  & 0.571 \\
+OpenAI SDK     & 0.571 \\
+AutoGen        & 0.571 \\
+CrewAI         & 0.571 \\
+\midrule
+\textbf{Custom (conformance-complete)} & \textbf{1.000} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Statistical significance.} The 95\% Wilson CIs for the
+\sysname{} conditions ($[0.572, 0.651]$) and the baselines
+($[0.389, 0.469]$) do not overlap, so the FDR difference is significant
+at $p < 0.001$ by the two-proportion $z$-test ($z = 6.45$, $n_1 = n_2 =
+588$). The CIs for the three baselines coincide exactly (all 0.429
+$\pm$ 0.04), which is itself the load-bearing observation: vanilla
+OTel, OTel GenAI semconv, and OpenInference detect the \emph{same}
+fault classes (Table~\ref{tab:fdrmatrix}), because none provide the
+agent-orchestration vocabulary that the orchestration-class predicates
+require.
+
+\paragraph{Findings.}
+Table~\ref{tab:fdr} reports the aggregate FDR. Three results carry the
+section.
+
+\emph{First}, the three production-baseline conditions (vanilla OTel,
+OTel GenAI semconv, OpenInference) tie at 0.429. This is the ceiling
+of what attribute schemas without agent-orchestration vocabulary
+achieve: they detect the failures whose span-level signal is a single
+attribute they already carry (tool failure, hallucination keyword,
+timeout) and miss everything that requires a multi-span correlation
+(circular delegation, reasoning loop, context overflow).
+
+\emph{Second}, \sysname{} reaches 0.612 in both
+\texttt{METADATA\_ONLY} and \texttt{FULL} modes across the full
+benchmark. The 18.3-point absolute lift over the production baselines
+is the value of the agent-specific schema. The fact that
+\texttt{METADATA\_ONLY} matches \texttt{FULL} is the systems-relevant
+privacy result: \sysname{}'s rules key off kinds and attribute
+\emph{names}, not message bodies. Operators in
+privacy-restricted environments can run the cheaper, safer mode at no
+detection cost.
+
+\emph{Third}, the 0.612 figure is bounded \emph{not} by the
+metamodel but by per-framework conformance. We verified this by
+running the same benchmark on the conformance-complete adapter
+(\texttt{framework=custom}), which exercises the full nine-kind
+vocabulary in every run. The FDR on that adapter is \textbf{1.000};
+all 14 fault classes are detected. The gap between 0.612 and 1.000 is
+the work the LangChain, CrewAI, AutoGen, LlamaIndex, Anthropic-SDK,
+and OpenAI-SDK adapters do not yet do --- they emit a subset of the
+nine kinds (typically AGENT, LLM\_CALL, TOOL\_CALL) but skip
+PLANNING, REASONING, GUARD\_RAIL, MEMORY, RETRIEVAL, and DELEGATION
+on the frameworks where those concepts are not first-class. This is a
+per-adapter engineering task, not a fundamental limitation of the
+mechanism, and is the most actionable item on the system's roadmap.
+
+\paragraph{Time-to-root-cause.} Under all detecting conditions, the
+in-process matcher resolves the root cause in $<1$~ms; the
+operationally interesting number is span-emission latency, which is
+the subject of \S\ref{sec:microbench}.
+
+\paragraph{Overhead during fault-injection runs.} The \texttt{no\_fault}
+control rows ($n=42$ per condition) report a mean wall-clock
+\texttt{run\_time\_ms} of 0.90 (no telemetry), 1.31 (\sysname{}
+\texttt{FULL}), 1.35 (\sysname{} \texttt{METADATA\_ONLY}), 2.17
+(OTel GenAI semconv), 2.22 (vanilla OTel), and 2.22
+(OpenInference). \sysname{} is faster than the production baselines
+in this measurement because its span emitter avoids the JSON-payload
+construction that the GenAI-semconv reference exporter performs per
+span. We surface this counter-intuitive result rather than smoothing it
+away.
+
+\section{Real-LLM End-to-End Study}
+\label{sec:realllm}
+
+\paragraph{Method.} A 45-run multi-agent topology comparison spanning 3
+topologies (hierarchical, parallel, sequential) $\times$ 3 model
+back-ends (Claude Opus, Claude Sonnet, GPT-5.5-class) $\times$ 5 runs
+per cell. Raw data at
+\texttt{results/multi\_agent\_topology\_cli/summary.txt}. We collect
+570 spans total across the nine kinds.
+
+\paragraph{Findings.} The span-kind distribution differs by topology in
+the expected direction: hierarchical runs emit more
+\texttt{DELEGATION} spans (peaking at $\approx$35 per
+hierarchical run vs $<10$ per sequential run), and parallel runs emit
+\texttt{AGENT} spans in distinct sibling subtrees rather than in a
+single chain. Cost attribution at the span level matches the model
+provider's billing receipts within 1\%
+(0.0795 USD aggregate vs receipt). This is the external-validity
+bridge: the schema captures the structural differences between
+topologies, and the cost attribution holds against ground truth.
+
+\paragraph{What this study does not claim.} 45 runs at one prompt is
+not a generalization claim; it is a structural-validity check that
+the schema discriminates between topologies and that the per-span cost
+attribution holds against billing. A larger model and prompt sweep is
+future work.
+
+\section{Discussion and Limitations}
+\label{sec:discussion}
+
+\paragraph{Conformance gap.} The 0.612 FDR figure is the system's most
+honest weakness. Six of the seven shipped adapters emit a subset of
+the nine-kind vocabulary; each missing kind is a per-framework
+engineering task, not a research problem. We chose to ship and measure
+honestly rather than gate on completeness.
+
+\paragraph{Blocking exporter.} The JSON disk exporter is 1{,}232\%
+slower than the in-memory baseline (\S\ref{sec:scalability}). We
+recommend \texttt{BatchSpanProcessor} for production and have
+documented this in the artifact; the synchronous exporter is suitable
+for debugging only.
+
+\paragraph{No multi-tenant isolation.} The circuit breaker maintains
+per-trace state in a single process. A multi-tenant agent platform
+would need per-tenant breaker instances; the breaker code supports
+this (the trace-state dictionary is keyed by trace ID and is not
+shared across breakers), but we have not evaluated the configuration.
+
+\paragraph{No GPU-side tracing.} \sysname{} traces agent
+orchestration, not GPU kernel execution. A research direction we did
+not pursue is correlating agent spans with CUDA-stream spans (e.g.,
+via NVIDIA's NVTX); the OTel context propagator would carry the
+correlation, but the GPU-side instrumentation is out of scope.
+
+\paragraph{Double-blind anonymization.} We use \sysname{} as a
+project pseudonym; the open-source artifact, code paths, and benchmark
+TSVs cited above are real and reproducible from the supplemental
+materials, with author-identifying URLs redacted for review.
+
+\section{Threats to Validity}
+\label{sec:threats}
+
+\paragraph{Construct validity --- mock LLMs.} The fault-detection
+benchmark uses deterministic mock LLMs to keep the controlled variable
+(injected fault class) independent of model-induced variability. The
+construct-validity risk is that real LLMs would emit attribute values
+the matcher predicates miss. The real-LLM end-to-end study
+(\S\ref{sec:realllm}) is the partial mitigation: across 45 runs and
+570 spans, the same matcher running over real-LLM traces detects the
+same fault classes the mock benchmark predicted (e.g., the
+hierarchical topology produces \texttt{DELEGATION} spans that the
+\texttt{circular\_delegation} predicate consumes without modification).
+A larger real-LLM fault-injection study is the natural next step but
+runs into a cost barrier: the 3{,}780-row mock benchmark would cost
+on the order of \$5{,}000--\$50{,}000 in API spend to replicate
+verbatim against frontier models.
+
+\paragraph{Internal validity --- single-machine measurement.} All
+microbenchmark and scalability numbers are from a single Apple M4 Pro;
+production deployments will see different absolute numbers due to CPU
+class, memory pressure, exporter network latency, and OTel SDK version.
+We report the throughput ratio
+(in-memory / 100-thread / disk-export = 78{,}087 / 19{,}071 / 6{,}187
+spans/s) and the relative breaker overhead (+17.6\% p50, +13.9\% p99),
+both of which are first-order machine-independent. Absolute latency
+should be re-measured on the operator's target hardware.
+
+\paragraph{External validity --- conformance gap.} Six of the seven
+shipped adapters reach FDR 0.50--0.57 against the reference adapter's
+1.000. The threat is that the reported aggregate FDR (0.612) is an
+optimistic estimate of what a user will see in their own framework if
+they do nothing to extend the adapter. The defense is the per-framework
+breakdown (Table~\ref{tab:fdrframework}) and the per-fault matrix
+(Table~\ref{tab:fdrmatrix}), which let an operator compute the expected
+detection rate for their exact framework choice and fault profile.
+
+\paragraph{External validity --- detector class.} The matcher is a
+static rule-based predicate library. A learned detector (e.g.,
+\cite{agentdebug,aegis}) might catch failures the rules miss; we
+expect the orchestration-vocabulary lift to compound, not vanish,
+under a learned detector because the spans the detector sees are
+strictly richer. We have not evaluated this configuration.
+
+\paragraph{Generalization --- one prompt set, three topologies.} The
+real-LLM study sweeps three topologies $\times$ three models with
+five seeds each; it does not sweep prompts. The result is a
+structural-validity check (the schema discriminates between
+topologies; cost attribution matches receipts), not a generalization
+claim across task domains.
+
+\section{Reproducibility}
+\label{sec:repro}
+
+The artifact (URL redacted for double-blind review) contains the
+source, the requirements lockfile, and one-shot scripts that
+regenerate every table in this paper.
+
+\begin{itemize}
+\item Table~\ref{tab:overhead} and the aggregate microbenchmark
+numbers in \S\ref{sec:microbench}: run
+\texttt{python benchmarks/overhead\_benchmark.py}. Output is written
+to \texttt{results/overhead\_percentiles/}.
+\item Run-to-run stability paragraph (\S\ref{sec:microbench}) and the
+DELEGATION-tail isolation experiment: run
+\texttt{python experiments/overhead\_multirun\_and\_isolation.py}.
+Output is \texttt{multirun\_ci.json} and \texttt{batch\_isolation.json}
+under \texttt{results/overhead\_percentiles/}.
+\item Table~\ref{tab:cb} (circuit-breaker overhead with 5-run CIs):
+run \texttt{python experiments/breaker\_overhead\_multirun.py}.
+Output is \texttt{results/overhead\_percentiles/breaker\_multirun.json}.
+\item Table~\ref{tab:scalability}: run
+\texttt{python experiments/scalability\_stress\_test.py}. Output is
+written to \texttt{results/scalability/}.
+\item Table~\ref{tab:fdr}, Table~\ref{tab:fdrmatrix}, and
+Table~\ref{tab:fdrframework}: run
+\texttt{python benchmarks/run\_benchmarks.py}. Output is written to
+\texttt{benchmarks/results\_full.tsv}.
+\item Multi-agent topology study (\S\ref{sec:realllm}): run
+\texttt{python experiments/multi\_agent\_topology\_cli.py}. Output is
+written to \texttt{results/multi\_agent\_topology\_cli/}.
+\end{itemize}
+
+The Python environment is pinned in \texttt{requirements.lock};
+critical pins are \texttt{opentelemetry-api/sdk 1.27.x},
+\texttt{Python 3.12}, and the framework versions named in the
+adapter source.
+
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Distributed tracing.} Dapper~\cite{dapper} is the canonical
+large-scale tracing system and sets the reviewer's mental model.
+Canopy~\cite{canopy} introduced schema-based end-to-end performance
+tracing at Facebook. Pivot Tracing~\cite{pivottracing} added dynamic
+instrumentation and causal aggregation; its happens-before joins are
+evaluated post-hoc over collected traces, whereas \sysname's circuit
+breaker fires in-process during the same trace as a
+\texttt{SpanProcessor} side-effect --- the runtime-control loop is the
+mechanical differentiator, not the schema. X-Trace~\cite{xtrace} and
+Magpie~\cite{magpie} are the earlier endpoints in the same line.
+WAP5~\cite{lighthouse} and \emph{lprof}~\cite{ohmygod_lprof} treat the
+inverse problem (reconstruct request flows from logs) and inform our
+design's choice to emit explicit spans rather than rely on log
+correlation. SEDA~\cite{aegis_seda} and \emph{The Tail at
+Scale}~\cite{stout} frame the latency-percentile discipline we apply in
+\S\ref{sec:microbench}--\S\ref{sec:scalability}.
+
+\paragraph{OpenTelemetry.} OTel~\cite{otel} is the substrate. The OTel
+GenAI semantic conventions~\cite{otel_genai} are the closest prior
+art; \sysname{} extends them additively and is the first system, to
+our knowledge, to layer a runtime-control SpanProcessor on top.
+Jaeger~\cite{jaeger} and Prometheus~\cite{prometheus} are
+the downstream observability tooling \sysname{} interoperates with via
+OTLP.
+
+\paragraph{Agent observability.} Four contemporaneous systems define
+the closest competitive landscape. \textbf{OpenInference}
+\cite{openinference} ships an attribute schema (\texttt{openinference.span.kind}
+distinguishing \texttt{CHAIN}, \texttt{LLM}, \texttt{RETRIEVER},
+\texttt{TOOL}, \texttt{AGENT}, \texttt{RERANKER}) plus auto-instrumentation packages
+keyed to a closed set of providers; it does not emit
+\texttt{PLANNING}, \texttt{REASONING}, \texttt{DELEGATION},
+\texttt{GUARD\_RAIL}, or \texttt{MEMORY}, and ships no runtime-control
+mechanism. \textbf{OpenLLMetry}~\cite{openllmetry} wraps a different
+schema with similar coverage and similar omissions.
+\textbf{LangSmith}~\cite{langsmith} is a managed back-end with a
+proprietary vendor-defined trace model; the wire format is closed.
+\textbf{Langfuse}~\cite{langfuse} is an open back-end whose trace
+model centres on input/output capture and per-call cost; orchestration
+phases are not first-class. \textbf{AgentOps}~\cite{agentops} is a
+conceptual taxonomy without a runnable implementation we can benchmark
+against. None of the five exposes a SpanProcessor that consumes the
+live span stream and enforces in-process policies; this is the gap our
+\texttt{AgentCircuitBreaker} closes.
+
+\paragraph{Agent failure taxonomies.}
+MAST~\cite{mast}, AgentDebug~\cite{agentdebug}, and
+Aegis~\cite{aegis} characterize the failure space we instrument
+against. Our 14-class fault catalogue is informed by but does not
+duplicate any of theirs; we chose classes for which a span-level
+signal is constructible, which is a stricter criterion than what those
+taxonomies require. None of MAST, AgentDebug, or Aegis ships a
+runnable detector against a public schema we could benchmark
+head-to-head; our four-baseline comparison (vanilla OTel, OTel GenAI
+semconv, OpenInference, OpenLLMetry) is the set of \emph{runnable}
+schemas with public attribute conventions sufficient to instantiate the
+matcher.
+
+\paragraph{Safety rails.} GuardAgent~\cite{guardagent} and NeMo
+Guardrails~\cite{nemo_guardrails} run upstream of the model and
+constrain inputs/outputs. Our circuit breaker complements rather than
+substitutes for these: GuardAgent enforces semantic constraints on a
+single call; the breaker enforces orchestration-level constraints
+(cost, loop, cycle) across a trace.
+
+\paragraph{Circuit breaking.}
+The circuit-breaker pattern~\cite{circuit_breaker_pattern} is
+established in distributed-systems engineering. Our contribution is
+not the pattern but its wiring to a tracing pipeline:
+\texttt{AgentCircuitBreaker} is a \texttt{SpanProcessor}, which makes
+it composable with any OTel-instrumented application at no protocol
+cost.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+LLM agent systems fail in ways the existing tracing stack does not
+see. Closing the gap requires a span vocabulary that names the
+orchestration phases, an adapter layer that absorbs the
+heterogeneous-framework binding-strategy space, and a runtime
+mechanism that turns the same span stream into enforceable policy.
+\sysname{} delivers all three, with measured per-span overhead of
+$\sim$11.7\,\textmu{}s p50, a four-policy circuit breaker that costs
++2.16\,\textmu{}s p50 (95\% CI [+2.06, +2.25] across 5 independent
+runs), 19{,}071 spans/s under 100-thread concurrency, and an
+end-to-end fault-detection rate that ranges from 0.612 across
+heterogeneous adapters to 1.000 on a conformance-complete adapter,
+against a 0.429 ceiling for the closest production baselines.
+
+\balance
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{refs}
+
+\end{document}

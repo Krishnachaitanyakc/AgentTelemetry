@@ -1,0 +1,82 @@
+-- AgentTelemetry DSM well-formedness invariants
+-- Companion to agenttelemetry.ecore (MDE Intelligence 2026 paper)
+-- 2026-05-05
+--
+-- The five invariants below correspond one-to-one with Listing 1 of the paper.
+-- They are written in OCL 2.4 syntax and target the Ecore metamodel
+-- agenttelemetry.ecore. They are intended to be executable in Eclipse OCL
+-- or USE.
+
+package agenttelemetry
+
+context Trace
+  inv RootIsAgent:
+    self.spans
+      ->select(s | s.parentId.oclIsUndefined())
+      ->forAll(s | s.kind = SpanKind::AGENT)
+
+context AgentSpan
+  inv DelegationCarriesIdentity:
+    -- A DELEGATION span must record both its source agent identifier
+    -- and the target agent identifier as typed span attributes.
+    self.kind = SpanKind::DELEGATION implies (
+      self.attributes->exists(a | a.key = 'delegation.source_agent') and
+      self.attributes->exists(a | a.key = 'delegation.target_agent'))
+
+context Trace
+  inv NoCircularDelegation:
+    -- Pairwise (2-cycle) check; longer-cycle SCC is handled by the
+    -- runtime conformance checker. The edge endpoints come from the
+    -- delegation.source_agent and delegation.target_agent span attributes
+    -- (not from W3C Baggage; baggage is an orthogonal cross-process
+    -- propagation mechanism for agent identity).
+    let edges =
+      self.spans->select(s | s.kind = SpanKind::DELEGATION)
+        ->collect(s |
+          Tuple {
+            src = s.attributes
+                    ->select(a | a.key = 'delegation.source_agent')
+                    ->first().value,
+            tgt = s.attributes
+                    ->select(a | a.key = 'delegation.target_agent')
+                    ->first().value
+          })
+    in
+    edges->forAll(e1 | edges->forAll(e2 |
+      not (e1.src = e2.tgt and e1.tgt = e2.src)))
+
+context AgentSpan
+  inv CostMetricsRequired:
+    self.kind = SpanKind::LLM_CALL implies (
+      self.attributes->exists(a | a.key = 'llm.input_tokens')  and
+      self.attributes->exists(a | a.key = 'llm.output_tokens') and
+      self.attributes->exists(a | a.key = 'llm.cost'))
+
+context AgentSpan
+  inv GuardRailResultIsExplicit:
+    -- Outcome enum mirrors the detector at run_benchmarks.py: a guardrail
+    -- outcome of 'fail' or 'bypass' indicates a violation; 'pass' and
+    -- 'warn' are non-violating outcomes.
+    self.kind = SpanKind::GUARD_RAIL implies
+      self.attributes->exists(a |
+        a.key = 'guardrail.result' and
+        Set{'pass','fail','warn','bypass'}->includes(
+          a.value.oclAsType(String)))
+
+context AgentSpan
+  inv KindMatchesSubtype:
+    -- The redundant 'kind' discriminator on AgentSpan must equal the
+    -- SpanKind literal of the concrete subclass. This closes the
+    -- discriminator-vs-subclass loophole that an EAnnotation alone
+    -- could not enforce.
+    (self.oclIsKindOf(Agent)      implies self.kind = SpanKind::AGENT)      and
+    (self.oclIsKindOf(LlmCall)    implies self.kind = SpanKind::LLM_CALL)   and
+    (self.oclIsKindOf(ToolCall)   implies self.kind = SpanKind::TOOL_CALL)  and
+    (self.oclIsKindOf(Planning)   implies self.kind = SpanKind::PLANNING)   and
+    (self.oclIsKindOf(Reasoning)  implies self.kind = SpanKind::REASONING)  and
+    (self.oclIsKindOf(Delegation) implies self.kind = SpanKind::DELEGATION) and
+    (self.oclIsKindOf(GuardRail)  implies self.kind = SpanKind::GUARD_RAIL) and
+    (self.oclIsKindOf(Retrieval)  implies self.kind = SpanKind::RETRIEVAL)  and
+    (self.oclIsKindOf(Memory)     implies self.kind = SpanKind::MEMORY)
+
+endpackage
