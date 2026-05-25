@@ -30,25 +30,40 @@ from research prototypes to production deployments, yet the
 observability infrastructure needed to diagnose their failures remains
 fundamentally inadequate.  OpenTelemetry's GenAI semantic conventions
 cover LLM invocation, tool execution, and retrieval, but leave five
-critical agent orchestration
-phases---planning, reasoning, safety-check monitoring, inter-agent delegation,
-and memory management---without any span-level representation.
+critical agent orchestration phases---planning, reasoning, safety-check
+monitoring, inter-agent delegation, and memory management---without
+any span-level representation.
 We present \textsc{AgentTelemetry}, an open-source, OTel-native
-observability library that introduces a \emph{grounded taxonomy} of
-nine agent-specific span kinds derived from systematic analysis of
-seven production agent frameworks.
-We make four contributions: (1)~the taxonomy itself, validated through
-an ablation study showing every span kind is necessary for detecting
-at least one fault type; (2)~a case study on 112~SWE-bench Lite
-instances revealing that reasoning loops account for 75\% of agent
-failures (95\% CI: [66\%, 82\%])---a failure mode invisible to vanilla
-OTel---and a telemetry-guided intervention improving the patch rate by
-$+11$~pp (3-seed mean, $p{<}0.05$); (3)~structural completeness
-via controlled fault injection across 14~fault types, 7~frameworks,
-and 5~observability conditions (FDR\,=\,1.000 vs.\ 0.429 for vanilla
-OTel); and (4)~a pip-installable library with adapters for seven
-frameworks.  Instrumentation overhead is 11.7\,\textmu s median per
-span, negligible relative to LLM API latencies.
+benchmark suite, fault taxonomy, and instrumentation library that
+introduces a \emph{grounded taxonomy} of nine agent-specific span kinds
+derived from systematic analysis of seven production agent frameworks.
+We make six contributions:
+(1)~a taxonomy of 9~span kinds and 14~fault types, derived via
+documented open coding ($\kappa{=}0.904$) and validated against the
+independently-derived MAST taxonomy (12/14 modes covered);
+(2)~a controlled fault-injection benchmark across 14~faults
+$\times$ 5~observability conditions $\times$ 7~frameworks
+where the full taxonomy achieves a structural-ceiling FDR of $1.000$
+versus $0.429$ for vanilla OpenTelemetry and OTel+GenAI;
+(3)~a 9$\times$14 ablation matrix proving every span kind is necessary
+for detecting at least one fault type;
+(4)~a side-by-side comparison with OpenLLMetry on a shared 3{,}060-span
+SWE-bench corpus, showing that the taxonomy detects 72~reasoning-loop
+events, 112~planning steps, 224~memory operations, and 34~guardrail
+events that competing OTel-based stacks cannot represent;
+(5)~a SWE-bench Lite case study on 112~instances showing that 84/112
+iteration-exhausted failures (75\%) are reasoning loops invisible to
+vanilla OTel, with a closed-loop intervention raising the recovery rate
+by $+12.5$~pp at matched iteration count (Fisher's exact $p{=}0.53$;
+demonstrative not significant at $n{=}24$, larger-sample replication
+queued); and
+(6)~a pip-installable Python library (3{,}700+~LOC, 78~tests) with
+adapters for seven frameworks and instrumentation overhead of
+median $11.7$\,\textmu s per span ($<$0.006\% of LLM API latencies).
+The taxonomy proposal has been submitted to OpenTelemetry Semantic
+Conventions as PR~\#3594.
+All code, data, and benchmark configurations are open-source for
+reproducibility under Apache-2.0.
 \end{abstract}
 
 %% ====================================================================
@@ -86,9 +101,11 @@ library that fills this gap with four contributions:
   ablation (\S\ref{sec:taxonomy}).
 
 \item \textbf{A SWE-bench case study demonstrating actionable
-  observability:} reasoning loops account for 75\% of failures on
-  112~instances, and a telemetry-guided intervention improves the patch
-  rate by $+11$~pp (\S\ref{sec:rq6}).
+  observability:} 84/112 iteration-exhausted instances (75\%) are
+  reasoning loops, and a telemetry-guided intervention raises the
+  recovery rate by $+12.5$~pp at matched iteration count
+  (Fisher's exact $p{=}0.53$, demonstrative not significant at $n{=}24$;
+  larger-sample replication queued; \S\ref{sec:rq6}).
 
 \item \textbf{Structural completeness via controlled fault injection:}
   FDR\,=\,1.000 across 14~fault types versus 0.429 for vanilla
@@ -548,8 +565,8 @@ endpoints from two providers.  We design a multi-hop QA agent with
 5~tools and 20~questions across 4~categories.
 
 \textbf{Trace structure.}
-Table~\ref{tab:rq5-structure} summarizes results across 8~models
-(159~runs).  Each model produces well-formed trace trees with the
+Table~\ref{tab:rq5-structure} summarizes results across 13~models
+(159~runs spanning 5~Anthropic and 8~OpenAI models).  Each model produces well-formed trace trees with the
 expected span hierarchy (AGENT $\to$ PLANNING $\to$ MEMORY $\to$
 [REASONING $\to$ LLM\_CALL $\to$ tool spans]$^*$ $\to$ MEMORY).  All
 four analysis modules run successfully without modification.
@@ -604,14 +621,20 @@ GPT-4o-mini.  Total cost: \$2.53.
 26 (23\%) produced patches; 84 (75\%) exhausted the iteration limit.
 
 \textbf{Fault-type distribution.}
-Two dominant failure modes in the 84~failed instances:
+Of 112~instances, 26 (23\%) produced patches with GUARD\_RAIL
+verification; the remaining 84 (75\%) exhausted the 8-iteration limit
+without producing a patch.  The 84~iteration-exhausted failures break
+down into two co-occurring mechanisms:
 \begin{itemize}[nosep]
-\item \textbf{Reasoning loop (75\%, 95\% CI [66\%, 82\%]):} The agent
+\item \textbf{Reasoning loop (84/112 instances, 75\%):} The agent
   repeatedly called \texttt{search\_code} with similar queries without
   converging---visible as $\geq$4 consecutive REASONING$\to$LLM\_CALL
-  cycles.  \emph{Invisible to vanilla OTel.}
-\item \textbf{Tool failure (15\%):} \texttt{read\_file} returned ERROR
-  for files outside the changed set.
+  cycles.  All 84 iteration-exhausted traces matched this pattern; the
+  rate is a structural property of the failed-trace population, not a
+  sampling estimate.  \emph{Invisible to vanilla OTel.}
+\item \textbf{Tool failure (15\% of failed traces):} \texttt{read\_file}
+  returned ERROR for files outside the changed set.  Co-occurs with
+  reasoning-loop traces.
 \end{itemize}
 
 \textbf{Example trace.}  Instance \texttt{django\_\_django-10914}: the
@@ -631,11 +654,15 @@ about \emph{why} the agent failed to converge.
 When the reasoning-loop detector identifies $\geq$3 consecutive
 identical calls (via REASONING spans), it injects a strategy-change
 prompt.  Table~\ref{tab:closed-loop} shows results across 3~seeds.
-At matched iterations, the intervention recovers 9/24 failed instances
-(38\%) versus 6/24 for the control (25\%), yielding $+8.3$~pp
-attributable solely to the REASONING-based detector.  This closes the
-loop from \emph{observability} through \emph{diagnosis} to
-\emph{remediation}.
+At matched 8-iteration count, the intervention recovers 9/24
+previously-failed instances (37.5\%) versus 6/24 for the control
+(25\%), yielding $+12.5$~pp attributable solely to the REASONING-based
+detector (Fisher's exact $p{=}0.53$ two-sided; demonstrative not
+significant at $n{=}24$, larger-sample replication via Opus 4.6
+across $\geq{}60$ instances queued).  This closes the loop from
+\emph{observability} through \emph{diagnosis} to \emph{remediation};
+statistical confirmation of the effect at the observed magnitude
+requires $\sim{}214$ instances per arm at $\alpha{=}0.05$, $\beta{=}0.2$.
 
 \begin{table}[t]
 \centering
@@ -702,7 +729,7 @@ Tech Lead         & 6/6 (100\%) & 1/6 (17\%) & +83\,pp & 10\,yr \\
 
 \textbf{Internal.}  The core benchmarks use deterministic mock clients
 for reproducibility.  RQ5 complements this with real LLM API validation
-across 8~models and 2~providers.  A potential concern is circularity:
+across 13~models and 2~providers.  A potential concern is circularity:
 we designed both fault types and detectors.  We address this via (1)~85.7\%
 coverage of the independently-derived MAST taxonomy~\citep{mast},
 (2)~GitHub issue mining confirming all~14 fault types correspond to
@@ -776,21 +803,88 @@ observability library with a grounded taxonomy of agent-specific span
 kinds.  Five of nine kinds are entirely novel, and the ablation study
 proves all nine are necessary.  The SWE-bench case study demonstrates
 that the novel REASONING span kind characterizes the dominant failure
-mode (75\% of instances) and enables a telemetry-guided intervention
-improving the patch rate by $+11$~pp.  Controlled fault injection
-confirms structural completeness (FDR\,=\,1.000 vs.\ 0.429 for vanilla
-OTel).  Instrumentation overhead is negligible ($<$30\,\textmu s per
-span).
+mode (84/112 iteration-exhausted instances, 75\%) and enables a
+telemetry-guided intervention raising the recovery rate by $+12.5$~pp
+at matched iteration count (not statistically significant at $n{=}24$;
+larger-sample replication via Opus 4.6 across $\geq{}60$ instances
+queued).  Controlled fault injection confirms structural completeness
+(FDR\,=\,1.000 vs.\ 0.429 for vanilla OTel and OTel+GenAI).
+Instrumentation overhead is negligible ($<$30\,\textmu s per span).
 
-\textbf{Limitations.}  Core benchmarks use mock LLM clients (validated
-with real APIs in RQ5).  Six of seven framework apps use manual
-instrumentation stubs.  The SWE-bench study uses a single model and
-seed.  The simulated user study uses LLM-generated personas, not human
-participants.
+\textbf{Limitations.}
+We disclose four substantive limitations.
+\emph{(L1) Mock vs.\ real evaluation gap.} The controlled benchmark uses
+deterministic mock LLM clients to enable bit-exact reproducibility
+without API keys; under this setup the model dimension contributes no
+independent signal, so the 2{,}940 cross-product reduces to 490 cells
+of independent fault~$\times$~condition~$\times$~adapter signal.
+The 159-run real-LLM corpus complements this with per-model
+differentiation across 13~models but exhibits a transparent gap from
+the mock benchmark: only \texttt{missing\_guardrail} reaches FDR$=$1.000
+organically; \texttt{cost\_explosion} fires on 7/13~models (FDR$=$0.538),
+\texttt{wrong\_tool} on 2/13 (FDR$=$0.154), and \texttt{tool\_failure}
+and \texttt{context\_overflow} register zero organic instances on the
+corpus.  The gap is expected: organic faults are rare in well-behaved
+production-tier models, so a 159-run corpus does not exercise the full
+fault taxonomy at injection-rate~1.0.
+\emph{(L2) Closed-loop sample size.} The intervention experiment
+($+$12.5~pp at matched 8-iteration count) does not reach statistical
+significance at $n{=}24$ (Fisher's exact $p{=}0.53$).  A power
+calculation gives $\sim$214 instances per arm at observed effect;
+larger-sample replication via Opus 4.6 across $\geq{}60$ instances is
+queued.
+\emph{(L3) Patch verification.} The 87.9\% plausibility number on
+33~SWE-bench patches uses an LLM judge for file-match,
+code-similarity, and approach-match scores, not the official SWE-bench
+test harness.  An official-harness evaluation is queued via the
+released \texttt{swebench\_official\_harness.py} script; the gap
+between LLM-judged plausibility and ground-truth pass rate is itself
+expected to be a useful finding for the field.
+\emph{(L4) Simulated user study label-visibility confound.} The
+GPT-4o-mini role-play has direct access to span-kind labels in the
+AgentTelemetry condition and only undifferentiated \texttt{INTERNAL}
+spans in the OTel condition; the $h{=}1.51$ effect therefore measures
+diagnostic information \emph{given} typed spans, not the additional
+cognitive effort real developers expend without them.  A controlled
+human study (6--8 developers, IRB-equivalent informed consent,
+balanced for prior agent familiarity) is queued for the journal
+extension.
 
-Future work includes proposing the taxonomy as an OpenTelemetry
-Enhancement Proposal (OTEP), multi-model SWE-bench replication,
-and controlled human debugging studies.
+\textbf{Broader Impact.}
+Better observability for autonomous AI agents has direct positive
+externalities for safety-critical deployments: faster fault diagnosis
+shortens incident-response time; structured telemetry enables runtime
+guardrails (the included \texttt{AgentCircuitBreaker}); and the open
+taxonomy gives downstream researchers a common vocabulary for failure
+analysis.  The negative externality to consider is that the
+fine-grained REASONING and PLANNING spans capture model
+chain-of-thought, which may contain user PII or proprietary prompt
+content.  We address this via a three-level privacy model
+(NONE/METADATA\_ONLY/FULL); the default METADATA\_ONLY mode captures
+no prompt content and is sufficient for fault detection
+(FDR is identical at metadata and full capture levels).  The benchmark
+itself uses synthetic fault-injection inputs and does not include any
+human-subject data.
+
+\textbf{Reproducibility statement.}
+All controlled-benchmark runs use deterministic mock LLM clients
+(input-hash to fixed response), enabling bit-exact reproducibility
+without API keys.  The library is pip-installable
+(\texttt{pip install agenttelemetry}) and ships with 78 unit tests.
+The 14$\times$5$\times$7 fault~$\times$~condition~$\times$~adapter
+benchmark, the 9$\times$14 ablation, the threshold sweep, and the
+GitHub-mining table are all reproducible from
+\texttt{experiments/} scripts.  The 112-instance SWE-bench traces and
+the 159-run real-LLM corpus are released as JSONL files with
+per-instance trace trees and ground-truth labels.  Random seeds are
+fixed at $\{42, 123, 456, 789, 1024\}$ for the multi-seed statistical
+rigor analysis.  Hardware: Apple M4 Pro for overhead measurements.
+Dataset hosted at Hugging Face (link in supplementary).
+
+Future work includes the OpenTelemetry Semantic Conventions
+integration (PR~\#3594, currently in community review), multi-model
+SWE-bench replication, official-harness patch verification, and
+controlled human debugging studies.
 
 %% ====================================================================
 %% REFERENCES
@@ -866,9 +960,9 @@ C.~Ma, J.~Zhang, Z.~Zhu, C.~Yang, Y.~Yang, et~al.
   Agents.
 \newblock In {\em Proc.\ ACL}, 2024.
 
-\bibitem[{Microsoft Research}(2026)]{agentrx}
-{Microsoft Research}.
-\newblock {AgentRx}: Automated Diagnostic Framework for Multi-Agent Systems.
+\bibitem[Barke et~al.(2026)]{agentrx}
+S.~Barke, A.~Goyal, A.~Khare, A.~Singh, S.~Nath, and C.~Bansal.
+\newblock {AgentRx}: Diagnosing AI Agent Failures from Execution Trajectories.
 \newblock {\em arXiv preprint arXiv:2602.02475}, 2026.
 
 \bibitem[{OpenTelemetry Authors}(2024)]{otel}
@@ -899,6 +993,18 @@ T.~Rebedea, R.~Dinu, M.~Sreedhar, C.~Parisien, and J.~Cohen.
 \newblock {NeMo Guardrails}: A Toolkit for Controllable and Safe {LLM}
   Applications.
 \newblock In {\em Proc.\ EMNLP (Demo Track)}, 2023.
+
+\bibitem[Anonymous(2026)]{otep_3594}
+Anonymous.
+\newblock Add semantic conventions for AI agent planning.
+\newblock OpenTelemetry Semantic Conventions PR~\#3594 (under community review),
+  2026.
+
+\bibitem[Gebru et~al.(2021)]{datasheets}
+T.~Gebru, J.~Morgenstern, B.~Vecchione, J.~W.~Vaughan, H.~Wallach,
+  H.~Daum{\'e}~III, and K.~Crawford.
+\newblock Datasheets for Datasets.
+\newblock {\em Communications of the ACM}, 64(12):86--92, 2021.
 
 \end{thebibliography}
 
@@ -937,6 +1043,81 @@ Incorrect Verif.    & FM-3.3 & GR bypass, hallucination    & Full \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\section{Datasheet for Datasets}
+\label{sec:datasheet}
+
+We follow the Datasheet for Datasets template~\citep{datasheets}.
+
+\subsection*{Motivation}
+\textbf{For what purpose was the dataset created?}
+To enable reproducible benchmarking of fault-detection methods for
+LLM-based autonomous agents and to provide ground-truth labels for
+14~agent-orchestration fault types.
+
+\textbf{Who created and funded the dataset?}
+Sole-author independent research; no institutional or commercial
+funding.
+
+\subsection*{Composition}
+\textbf{What do the instances represent?}
+Three sub-corpora: (1) the controlled fault-injection corpus (14
+fault types $\times$ 5 observability conditions $\times$ 7 framework
+adapters $=$ 490 cells with deterministic mock-LLM trace outputs);
+(2) the 112-instance SWE-bench Lite case-study trace corpus
+(3{,}060 spans, 9 span kinds, full attribute capture, GUARD\_RAIL
+verification labels); (3) the 159-run real-LLM validation corpus
+(13 models across Anthropic and OpenAI providers, span trees with
+full timing and cost metadata, organic-fault labels).
+
+\textbf{Total instances.} 490 + 112 + 159 $=$ 761 trace cells with
+$\sim{}10{,}069$ total spans across all corpora plus 33 verified-patch
+records and 33 GitHub-mined real-failure issue references.
+
+\textbf{Are there labels?}
+Yes.  Controlled corpus has ground-truth fault-type labels per cell.
+SWE-bench corpus has per-instance reasoning-loop / tool-failure
+attribution labels and ground-truth diff comparison.  Real-LLM corpus
+has per-run organic-anomaly labels (true positive / false positive
+manually verified).
+
+\subsection*{Collection Process}
+The controlled corpus is generated by deterministic fault injectors at
+benchmark time; no human labeling.  The SWE-bench traces are produced
+by running a ReAct coding agent on
+\texttt{princeton-nlp/SWE-bench\_Lite} (37\% sample, all 12 repos);
+agent uses GPT-4o-mini at \$0.001/run.  Real-LLM traces use the
+producer's personal API keys against Anthropic and OpenAI, prompted
+with a fixed research-assistant task; total spend \$0.62.
+
+\subsection*{Preprocessing}
+Trace JSON is exported in OTLP-compatible format with
+\texttt{agenttelemetry.span.kind} as a string attribute on standard
+INTERNAL spans.  No PII is collected (METADATA\_ONLY default; FULL
+capture is opt-in and not used in any released trace).
+
+\subsection*{Uses}
+Intended uses: benchmarking observability tools; teaching agent
+failure modes; building closed-loop runtime safeguards; OTel
+SemConv standardization (PR~\#3594).
+Out-of-scope: training policy models on the trace corpus (the corpus
+is too small and synthetic for policy learning).
+
+\subsection*{Distribution}
+Dataset hosted on Hugging Face Datasets; URL provided in the
+camera-ready version.  Source code repository linked in supplementary
+material under double-blind review.  License: Apache-2.0 for code;
+CC-BY-4.0 for traces.
+
+\subsection*{Maintenance}
+Maintained by the producer.  Versioned with semver; new fault types and
+framework adapters added in minor releases.  Issue tracker on GitHub.
+
+\subsection*{Croissant Metadata}
+A Croissant 1.0 metadata file (\texttt{metadata/croissant.json}) is
+included with the dataset, containing the mandatory Responsible AI
+fields: data collection process, sensitive data review (none present),
+maintenance plan, social impact statement, and citation.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

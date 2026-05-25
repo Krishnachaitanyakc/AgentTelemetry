@@ -5,12 +5,12 @@
 \item {\bf Claims}
     \item[] Question: Do the main claims made in the abstract and introduction accurately reflect the paper's contributions and scope?
     \item[] Answer: \answerYes{}
-    \item[] Justification: The abstract and introduction state four specific contributions (taxonomy, SWE-bench case study, fault injection evaluation, open-source library), each supported by corresponding experimental sections (\S3--\S5).
+    \item[] Justification: The abstract and introduction state six specific contributions (taxonomy, controlled benchmark, ablation, head-to-head comparison with OpenLLMetry, SWE-bench case study with statistically-disclosed intervention result, and open-source library), each supported by a corresponding experimental research question (RQ1--RQ6) in \S5.
 
 \item {\bf Limitations}
     \item[] Question: Does the paper discuss the limitations of the work performed by the authors?
     \item[] Answer: \answerYes{}
-    \item[] Justification: Section~7 (Conclusion) includes an explicit Limitations paragraph discussing mock LLM clients, manual instrumentation stubs, single-model SWE-bench evaluation, and simulated (not human) user study.
+    \item[] Justification: \S7 (Conclusion) includes an explicit Limitations paragraph with four substantive limitations: (L1) mock-vs-real evaluation gap, (L2) closed-loop intervention sample size and Fisher's exact $p{=}0.53$ at $n{=}24$, (L3) LLM-judged plausibility vs.\ official SWE-bench harness verification, (L4) simulated user study label-visibility confound.
 
 \item {\bf Theory assumptions and proofs}
     \item[] Question: For each theoretical result, does the paper provide the full set of assumptions and a complete (and correct) proof?
@@ -20,57 +20,57 @@
     \item {\bf Experimental result reproducibility}
     \item[] Question: Does the paper fully disclose all the information needed to reproduce the main experimental results of the paper to the extent that it affects the main claims and/or conclusions of the paper (regardless of whether the code and data are provided or not)?
     \item[] Answer: \answerYes{}
-    \item[] Justification: Section~5 specifies all experimental parameters (14 fault types, 5 conditions, 7 frameworks, 6 models, 2,940 configurations). The SWE-bench setup details model, iteration count, tool set, and cost. All benchmarks use deterministic mock clients for reproducibility.
+    \item[] Justification: \S5 specifies all experimental parameters (14 fault types, 5 conditions, 7 frameworks, 13 real-LLM models, 2{,}940 cross-product cells reducing to 490 independent-signal cells under deterministic mocks). The SWE-bench setup details model, iteration count, tool set, and cost. All controlled benchmarks use deterministic mock clients for bit-exact reproducibility. Random seeds fixed at $\{42, 123, 456, 789, 1024\}$ for multi-seed analysis.
 
 \item {\bf Open access to data and code}
     \item[] Question: Does the paper provide open access to the data and code, with sufficient instructions to faithfully reproduce the main experimental results, as described in supplemental material?
     \item[] Answer: \answerYes{}
-    \item[] Justification: The library is published on PyPI (pip install agenttelemetry) under Apache-2.0 license. All code, configurations, and mock data are open-source. An anonymized repository link will be provided in the supplementary material.
+    \item[] Justification: The library is published on PyPI (\texttt{pip install agenttelemetry}) under Apache-2.0 license. Source code at the public GitHub repository (linked in supplementary). Dataset hosted on Hugging Face Datasets with Croissant 1.0 metadata file (\texttt{metadata/croissant.json}) including all mandatory Responsible AI fields. License: Apache-2.0 for code, CC-BY-4.0 for traces.
 
 \item {\bf Experimental setting/details}
     \item[] Question: Does the paper specify all the training and test details (e.g., data splits, hyperparameters, how they were chosen, type of optimizer) necessary to understand the results?
     \item[] Answer: \answerYes{}
-    \item[] Justification: Section~5 provides complete experimental setup including models, frameworks, fault injection rates, privacy levels, iteration counts, and SWE-bench instance selection criteria.
+    \item[] Justification: \S5 provides complete experimental setup including models, frameworks, fault injection rates, privacy levels, iteration counts, SWE-bench instance selection criteria, and detector thresholds. \S5.7 reports a full $\pm{}50\%$ threshold sensitivity sweep with provenance for each default value.
 
 \item {\bf Experiment statistical significance}
     \item[] Question: Does the paper report error bars suitably and correctly defined or other appropriate information about the statistical significance of the experiments?
     \item[] Answer: \answerYes{}
-    \item[] Justification: RQ1 reports FDR with standard deviations across 5 seeds. RQ6 reports 95\% Wilson confidence intervals for reasoning-loop prevalence ([66\%, 82\%]) and closed-loop improvement across 3 seeds. The simulated user study reports Cohen's h effect size.
+    \item[] Justification: RQ1 reports FDR with standard deviations across 5 random seeds at 5 injection rates. The closed-loop intervention reports an exact Fisher's two-sided p-value ($p{=}0.53$ at $n{=}24$) and explicitly discloses non-significance plus the power calculation ($\sim{}214$ instances per arm needed at observed effect). FPR$=$0.000 across all 10 false-positive runs and separately confirmed on 112 clean SWE-bench traces. The simulated user study reports Cohen's $h$ with explicit framing as a label-visibility upper bound.
 
 \item {\bf Experiments compute resources}
     \item[] Question: For each experiment, does the paper provide sufficient information on the computer resources (type of compute workers, memory, time of execution) needed to reproduce the experiments?
     \item[] Answer: \answerYes{}
-    \item[] Justification: Overhead benchmarks specify Apple M4 Pro hardware. SWE-bench cost is reported (\$2.53). Real LLM experiments report models and providers used.
+    \item[] Justification: Overhead benchmarks specify Apple M4 Pro hardware. SWE-bench cost reported (\$2.53). Real-LLM corpus cost reported (\$0.62 across 13 models). Larger-sample replication script ($n{=}60$ via Opus 4.6) released with cost estimate \$10--20.
 
 \item {\bf Code of ethics}
-    \item[] Question: Does the research conducted in the paper conform, in every respect, with the NeurIPS Code of Ethics \url{https://neurips.cc/public/EthicsGuidelines}?
+    \item[] Question: Does the research conducted in the paper conform, in every respect, with the NeurIPS Code of Ethics?
     \item[] Answer: \answerYes{}
-    \item[] Justification: The research involves no human subjects, no personally identifiable data, and no dual-use concerns. The library is designed to improve system reliability and transparency.
+    \item[] Justification: The research involves no human subjects, no personally identifiable data, and no dual-use concerns. The library is designed to improve system reliability and transparency. Privacy controls explicitly mitigate the only plausible negative externality (chain-of-thought capture).
 
 \item {\bf Broader impacts}
     \item[] Question: Does the paper discuss both potential positive societal impacts and negative societal impacts of the work performed?
     \item[] Answer: \answerYes{}
-    \item[] Justification: The work improves reliability and transparency of AI agent systems (positive impact). The privacy-level controls address potential negative impacts of telemetry data collection. The observability primitives could theoretically be used for surveillance of agent behavior, but this is mitigated by the configurable privacy filtering.
+    \item[] Justification: An explicit Broader Impact section discusses positive externalities (faster fault diagnosis, runtime guardrails, common vocabulary) and the only material negative externality (REASONING/PLANNING spans capture chain-of-thought potentially containing user PII), with the three-level privacy model as concrete mitigation.
 
 \item {\bf Safeguards}
-    \item[] Question: Does the paper describe safeguards that have been put in place for responsible release of data or models that have a high risk for misuse (e.g., pre-trained language models, image generators, or scraped datasets)?
-    \item[] Answer: \answerNA{}
-    \item[] Justification: The paper releases an observability library, not a model or dataset with misuse risk. The library includes privacy controls to prevent unintended data exposure.
+    \item[] Question: Does the paper describe safeguards that have been put in place for responsible release of data or models that have a high risk for misuse?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: The released traces use synthetic fault-injection inputs and contain no human-subject data. The default \texttt{METADATA\_ONLY} privacy level captures no prompt content (sufficient for fault detection: FDR is identical at metadata and full capture levels).
 
 \item {\bf Licenses for existing assets}
     \item[] Question: Are the creators or original owners of assets (e.g., code, data, models), used in the paper, properly credited and are the license and terms of use explicitly mentioned and properly respected?
     \item[] Answer: \answerYes{}
-    \item[] Justification: SWE-bench is properly cited. OpenTelemetry is cited. All seven frameworks are referenced. The library uses Apache-2.0 license.
+    \item[] Justification: SWE-bench (\texttt{princeton-nlp/SWE-bench\_Lite}, MIT-licensed) is properly cited. OpenTelemetry (Apache-2.0) is cited. All seven framework adapters (LangChain, CrewAI, AutoGen, LlamaIndex, Anthropic SDK, OpenAI SDK, Custom) are referenced with their respective licenses. MAST and AgentRx datasets/papers cited.
 
 \item {\bf New assets}
     \item[] Question: Are new assets introduced in the paper well documented and is the documentation provided alongside the assets?
     \item[] Answer: \answerYes{}
-    \item[] Justification: The AgentTelemetry library is documented with API reference, installation instructions, and usage examples in the repository. The span taxonomy is fully specified in the paper.
+    \item[] Justification: The AgentTelemetry library is documented with API reference, installation instructions, and usage examples in the repository. The span taxonomy is fully specified in the paper. The dataset includes a Datasheet for Datasets (\S Appendix) and Croissant 1.0 metadata.
 
 \item {\bf Crowdsourcing and research with human subjects}
     \item[] Question: For crowdsourcing experiments and research with human subjects, does the paper include the full text of instructions given to participants and screenshots, if applicable, as well as details about compensation (if any)?
     \item[] Answer: \answerNA{}
-    \item[] Justification: The paper does not involve crowdsourcing or human subjects. The user study uses simulated (LLM-generated) personas, which is explicitly disclosed.
+    \item[] Justification: The paper does not involve crowdsourcing or human subjects. The simulated user study uses LLM-generated personas (GPT-4o-mini role-play), explicitly disclosed and explicitly framed as a label-visibility upper bound rather than a substitute for a controlled human study. A controlled human study is queued for the journal extension.
 
 \item {\bf Institutional review board (IRB) approvals or equivalent for research with human subjects}
     \item[] Question: Does the paper describe potential risks incurred by study participants, whether such risks were disclosed to the subjects, and whether Institutional Review Board (IRB) approvals (or an equivalent approval/review based on the requirements of your country or institution) were obtained?
@@ -78,8 +78,8 @@
     \item[] Justification: No human subjects were involved. The simulated user study uses LLM-generated role-plays, not human participants.
 
 \item {\bf Declaration of LLM usage}
-    \item[] Question: Does the paper describe the usage of LLMs if it is an important, original, or non-standard component of the core methods in this research? Note that if the LLM is used only for writing, editing, or formatting purposes and does \emph{not} impact the core methodology, scientific rigor, or originality of the research, declaration is not required.
+    \item[] Question: Does the paper describe the usage of LLMs if it is an important, original, or non-standard component of the core methods in this research?
     \item[] Answer: \answerYes{}
-    \item[] Justification: LLMs are used as experimental subjects (GPT-4o-mini for SWE-bench, 8 models for real API validation) and for the simulated user study (GPT-4o-mini for persona role-plays). These uses are described in Sections~5.5 and 5.6.
+    \item[] Justification: LLMs are used as experimental subjects (GPT-4o-mini for SWE-bench, 13 models from Anthropic and OpenAI for real-API validation, Opus 4.6 for queued $n{=}60$ matched-control extension) and for the simulated user study (GPT-4o-mini for persona role-plays, framed as label-visibility upper bound). All LLM uses are described in \S5.5--5.6 and \S Limitations.
 
 \end{enumerate}
