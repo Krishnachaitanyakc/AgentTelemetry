@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12915",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3631,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1680,
+      "response_excerpt": "<reasoning>\n1. `ASGIStaticFilesHandler.__call__()` delegates static HTTP requests to `ASGIHandler.__call__()`.\n2. `ASGIHandler.__call__()` expects `get_response_async()` to build a response through an async middleware chain.\n3. `StaticFilesHandlerMixin.load_middleware()` intentionally does nothing, so the inherited async path has no middleware chain and fails with `'NoneType' object is not callable`.\n4. The fix is to give the staticfiles mixin its own async response path that serves static files",
+      "latency_s": 168.0613250732422,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

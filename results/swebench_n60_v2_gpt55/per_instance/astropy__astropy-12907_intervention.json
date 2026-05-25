@@ -1,0 +1,60 @@
+{
+  "instance_id": "astropy__astropy-12907",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 1380,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "def separability_matrix": 1,
+    "def _cstack": 1,
+    "separability_matrix compound model tests": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2259,
+      "response": "<reasoning>The bug is in `_cstack` when the right operand is already a separability matrix from a nested compound model. Filling that block with `1` discards the nested model\u2019s internal separability, so `Linear1D & Linear1D` becomes a fully coupled 2x2 block. Copying the existing `right` matrix preserves the diagonal structure. The test covers the exact reported `Pix2Sky_TAN() & (Linear1D & Linear1D)` case.</reasoning>\n<patch>\ndiff --git a/astropy/modeling/separable.py b/astropy/modeling/separable.py\n--- a/astropy/modeling/separable.py\n+++ b/astropy/modeling/separable.py\n@@ -240,7 +240,7 @@ def _cstack(left, right):\n         cright = _coord_matrix(right, \"right\", noutp)\n     else:\n         cright = np.zeros((noutp, right.shape[1]))\n-        cright[-right.shape[0] :, -right.shape[1] :] = 1\n+        cright[-right.shape[0] :, -right.shape[1] :] = right\n \n     return np.hstack([cleft, cright])\n \ndiff --git a/astropy/modeling/tests/test_separable.py b/astropy/modeling/tests/test_separable.py\n--- a/astropy/modeling/tests/test_separable.py\n+++ b/astropy/modeling/tests/test_separable.py\n@@ -176,6 +176,20 @@ def test_separable(compound_model, result):\n     assert_allclose(is_separable(compound_model), result[0])\n     assert_allclose(separability_matrix(compound_model), result[1])\n \n \n+def test_separability_matrix_nested_compound_models():\n+    cm = models.Linear1D(10) & models.Linear1D(5)\n+    transform = models.Pix2Sky_TAN() & cm\n+\n+    expected = np.array(\n+        [\n+            [T",
+      "latency_s": 181.71841382980347,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4342,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"def separability_matrix\"}}</tool_call>",
+      "latency_s": 14.101323127746582,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 4804,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"def _cstack\"}}</tool_call>",
+      "latency_s": 16.064841985702515,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 5206,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"separability_matrix compound model tests\"}}</tool_call>",
+      "latency_s": 16.019565105438232,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 5753,
+      "response": "<reasoning>The nested `&` path passes an already-computed separability matrix into `_cstack`. The left matrix branch preserves that matrix, but the right matrix branch replaces the nested block with all ones, which makes `(Linear1D & Linear1D)` look fully coupled when it appears on the right side of a larger compound model. Copying the right matrix into the lower-right block preserves the nested model\u2019s actual separability. The added regression test matches the reported `Pix2Sky_TAN() & (Linear1D & Linear1D)` case.</reasoning>\n<patch>diff --git a/astropy/modeling/separable.py b/astropy/modeling/separable.py\n--- a/astropy/modeling/separable.py\n+++ b/astropy/modeling/separable.py\n@@ -240,7 +240,7 @@ def _cstack(left, right):\n         cright = _coord_matrix(right, \"right\", noutp)\n     else:\n         cright = np.zeros((noutp, right.shape[1]))\n-        cright[-right.shape[0] :, -right.shape[1] :] = 1\n+        cright[-right.shape[0] :, -right.shape[1] :] = right\n \n     return np.hstack([cleft, cright])\n \ndiff --git a/astropy/modeling/tests/test_separable.py b/astropy/modeling/tests/test_separable.py\n--- a/astropy/modeling/tests/test_separable.py\n+++ b/astropy/modeling/tests/test_separable.py\n@@ -176,6 +176,20 @@ def test_separable(compound_model, result):\n     assert_allclose(is_separable(compound_model), result[0])\n     assert_allclose(separability_matrix(compound_model), result[1])\n \n \n+def test_separability_matrix_nested_compound_models():\n+    cm = models.Linear1D(10) & models.",
+      "latency_s": 17.643280029296875,
+      "error": null
+    }
+  ]
+}

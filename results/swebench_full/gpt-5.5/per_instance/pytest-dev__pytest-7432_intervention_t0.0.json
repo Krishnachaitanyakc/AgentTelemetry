@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-7432",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2628,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1571,
+      "response_excerpt": "<reasoning>\nThe hook used `--runxfail` as a top-level bypass for `pytest_runtest_makereport`, but the option should only suppress xfail-specific report rewriting. I changed the condition so non-xfail skipped reports still flow through the hook normally, and expanded the regression coverage to include both `skip` and `skipif`.\n\nVerified with:\n`/private/tmp/pytest-venv/bin/python -m pytest -o minversion=0 testing/test_skipping.py::TestXFail -q`\n\nResult: `37 passed`.\n</reasoning>\n\n<patch>\ndiff --gi",
+      "latency_s": 384.09269094467163,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

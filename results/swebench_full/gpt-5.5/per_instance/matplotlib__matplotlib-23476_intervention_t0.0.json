@@ -1,0 +1,26 @@
+{
+  "instance_id": "matplotlib__matplotlib-23476",
+  "repo": "matplotlib/matplotlib",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 984,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4053,
+      "response_excerpt": "<reasoning>\nThe macOS backend was scaling `figure.dpi` from its current value each time `_set_device_scale()` ran. After unpickling, the figure already contains the scaled DPI, so applying the Retina scale again doubles it repeatedly.\n\nThe fix mirrors the existing Qt/WebAgg pattern: store the unscaled `_original_dpi` once, then always derive the displayed DPI from `_original_dpi * device_scale`.\n\nVerification: `python3 -m py_compile lib/matplotlib/backends/backend_macosx.py` passes. Full Matplot",
+      "latency_s": 189.8268539905548,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

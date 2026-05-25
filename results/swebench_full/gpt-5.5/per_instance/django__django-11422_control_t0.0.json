@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11422",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2031,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1463,
+      "response_excerpt": "<reasoning>\nThe autoreloader builds its watch list from loaded modules. In Django 2.2.1, `iter_modules_and_files()` skipped any module with `__spec__ is None`. A script executed as `python manage.py runserver` is loaded as `__main__`, and `__main__` may not have a usable `__spec__`, so `manage.py` never reached `StatReloader.snapshot_files()`.\n\nThe fix is to handle `__main__` before the `__spec__` check and fall back to `__file__` when available. I also added a regression test that creates a fak",
+      "latency_s": 164.47969698905945,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

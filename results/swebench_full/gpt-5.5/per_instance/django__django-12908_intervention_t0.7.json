@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12908",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 713,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1842,
+      "response_excerpt": "<reasoning>\n1. Located the combined queryset guard in `QuerySet.distinct()`: it raises `NotSupportedError` when `query.combinator` is set.\n2. Existing tests covered `combined_qs.distinct()` with no arguments.\n3. The issue report uses the allowed chain `union().order_by(...).distinct(\"field\")`, so I added regression coverage for `distinct(*fields)` after `order_by()` on `union()`, `difference()`, and `intersection()` where supported.\n4. Verified the targeted test passes with `python3 tests/runtes",
+      "latency_s": 162.17618465423584,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

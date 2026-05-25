@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12747",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1248,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1752,
+      "response": "Perfect! Now I see the issue clearly. Let me create a clear analysis:\n\n<reasoning>\nLooking at the code in `/private/tmp/django_full/django/db/models/deletion.py`:\n\n**The problem:**\n\n1. **Line 487** (fast-delete path for single instance): Always returns `{model._meta.label: count}` - includes the model label even when count is 0\n   ```python\n   return count, {model._meta.label: count}\n   ```\n\n2. **Lines 503-504 and 537-538** (normal deletion path): Only adds to counter if count > 0\n   ```python\n ...[truncated]",
+      "latency_s": 177.9273760318756,
+      "error": null
+    }
+  ]
+}

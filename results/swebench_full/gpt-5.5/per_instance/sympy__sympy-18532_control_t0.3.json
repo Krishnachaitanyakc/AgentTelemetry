@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-18532",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3488,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1116,
+      "response_excerpt": "<reasoning>\n`Basic.atoms()` already uses the correct leaf definition (`not node.args`) in this checkout, but matrix `atoms()` wrappers still converted an empty type list into `Atom`, preserving the old incorrect behavior for matrix entries. The patch removes that special case so matrices delegate the no-argument call unchanged, and adds regressions for both core `Basic` and matrix behavior.\n\nVerified with:\n`test_basic.py -k atoms`, `test_expr.py -k atoms`, `test_matrixbase.py -k atoms`, `test_co",
+      "latency_s": 229.25146913528442,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

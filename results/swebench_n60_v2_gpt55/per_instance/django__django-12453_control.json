@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-12453",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 2514,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "deserialize_db_from_string": 1,
+    "serialize_db_to_string sort_dependencies": 1,
+    "constraint_checks_disabled check_constraints loaddata": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3917,
+      "response": "<reasoning>`deserialize_db_from_string()` was saving objects one-by-one outside the fixture-loading safeguards. The patch mirrors `loaddata`: wrap the restore in a transaction, temporarily disable FK checks for backends that need it, collect touched tables, then run a final constraint check. The regression test restores a `Book` before its referenced `Author` to cover forward FK ordering.</reasoning>\n<patch>diff --git a/django/db/backends/base/creation.py b/django/db/backends/base/creation.py\nindex f36d60a..5a34f84 100644\n--- a/django/db/backends/base/creation.py\n+++ b/django/db/backends/base/creation.py\n@@ -5,7 +5,7 @@ from io import StringIO\n from django.apps import apps\n from django.conf import settings\n from django.core import serializers\n-from django.db import router\n+from django.db import router, transaction\n \n # The prefix to put on the default database name when creating\n # the test database.\n@@ -129,8 +129,18 @@ class BaseDatabaseCreation:\n         the serialize_db_to_string() method.\n         \"\"\"\n         data = StringIO(data)\n-        for obj in serializers.deserialize(\"json\", data, using=self.connection.alias):\n-            obj.save()\n+        table_names = set()\n+        # Load data in a transaction to handle forward references and cycles.\n+        with transaction.atomic(using=self.connection.alias):\n+            # Disable constraint checks, because some databases (MySQL) don't\n+            # support deferred checks.\n+            with self.connection.constraint_",
+      "latency_s": 187.27663612365723,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 7742,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"deserialize_db_from_string\"}}</tool_call>",
+      "latency_s": 14.334098100662231,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 8217,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"serialize_db_to_string sort_dependencies\"}}</tool_call>",
+      "latency_s": 13.933257818222046,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 8762,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"constraint_checks_disabled check_constraints loaddata\"}}</tool_call>",
+      "latency_s": 14.985142946243286,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 9372,
+      "response": "<reasoning>Serialized rollback restores fixture data in serializer order, which can place a model with a foreign key before the referenced object. Saving each object outside a transaction makes that ordering visible to databases that defer constraint checks until commit. Wrapping deserialization in `transaction.atomic()` matches `loaddata` behavior and lets valid forward references be restored together.</reasoning>\n<patch>diff --git a/django/db/backends/base/creation.py b/django/db/backends/base/creation.py\nindex bca8376..7bed2be 100644\n--- a/django/db/backends/base/creation.py\n+++ b/django/db/backends/base/creation.py\n@@ -4,7 +4,7 @@ import time\n from django.apps import apps\n from django.conf import settings\n from django.core import serializers\n-from django.db import router\n+from django.db import router, transaction\n from django.utils.six import StringIO\n from django.utils.six.moves import input\n \n@@ -128,8 +128,9 @@ class BaseDatabaseCreation(object):\n         the serialize_db_to_string method.\n         \"\"\"\n         data = StringIO(data)\n-        for obj in serializers.deserialize(\"json\", data, using=self.connection.alias):\n-            obj.save()\n+        with transaction.atomic(using=self.connection.alias):\n+            for obj in serializers.deserialize(\"json\", data, using=self.connection.alias):\n+                obj.save()\n \n     def _get_database_display_str(self, verbosity, database_name):\n         \"\"\"\ndiff --git a/tests/backends/test_creation.py b/tests/backends/test",
+      "latency_s": 19.235469102859497,
+      "error": null
+    }
+  ]
+}

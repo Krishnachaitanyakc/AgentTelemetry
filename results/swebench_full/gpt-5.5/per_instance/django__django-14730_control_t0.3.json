@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14730",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4300,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1319,
+      "response_excerpt": "<reasoning>\n1. Django already detected `related_name` on symmetrical `ManyToManyField`, but only as `fields.W345`.\n2. The issue asks to prevent this, so the check should be an error rather than a warning.\n3. I added a dedicated `ManyToManyField` system check that returns `fields.E349` when `remote_field.symmetrical` and the developer explicitly supplied `related_name`.\n4. I removed the old warning path, updated the checks reference, and covered both implicit self-referential symmetry and explici",
+      "latency_s": 357.87546610832214,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

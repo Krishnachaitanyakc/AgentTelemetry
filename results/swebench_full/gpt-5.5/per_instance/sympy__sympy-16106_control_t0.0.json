@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-16106",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1778,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2933,
+      "response_excerpt": "<reasoning>\nThe failure happens because `Indexed` reaches the generic Content MathML `_print_Basic` path, but `Indexed` is not iterable. Presentation MathML already has indexed printing, so the focused fix is to add Content MathML handlers.\n\n`IndexedBase(a)` now prints as its label, matching symbol behavior. `IndexedBase(a)[b]` prints as a Content MathML `selector` application, e.g. `<apply><selector/><ci>a</ci><ci>b</ci></apply>`, which is the appropriate MathML content construct for indexed se",
+      "latency_s": 173.10088777542114,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

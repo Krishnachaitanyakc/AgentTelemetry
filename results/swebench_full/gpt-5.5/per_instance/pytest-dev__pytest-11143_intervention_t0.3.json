@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-11143",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1574,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 6050,
+      "response_excerpt": "<reasoning>\nThe failure happens because on Python 3.8+ pytest 7.4.0 aliases `astStr` to `ast.Constant`. That makes the rewrite scanner treat any leading constant expression, including `0`, as a possible module docstring and pass the integer into `is_rewrite_disabled`, causing `TypeError`.\n\nThe fix is to keep scanning docstrings only when the leading constant value is actually a `str`. If it is a number, the scanner stops at that node and inserts assertion-rewrite imports before it. I also added ",
+      "latency_s": 437.8434362411499,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

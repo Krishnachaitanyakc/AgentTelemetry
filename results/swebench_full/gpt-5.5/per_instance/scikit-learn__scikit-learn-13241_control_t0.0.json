@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13241",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2817,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1612,
+      "response_excerpt": "<reasoning>\nKernelPCA eigenvectors have arbitrary signs, so repeated eigensolver runs can return equivalent components with flipped signs. Other decomposition code in scikit-learn already normalizes this with `svd_flip`; applying it after sorting KernelPCA eigenvectors makes `fit_transform`/`transform` output deterministic up to the existing limits of eigenspaces with repeated eigenvalues.\n\nI also tightened KernelPCA tests that previously compared `abs(...)`, so they now catch sign instability d",
+      "latency_s": 101.36767268180847,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

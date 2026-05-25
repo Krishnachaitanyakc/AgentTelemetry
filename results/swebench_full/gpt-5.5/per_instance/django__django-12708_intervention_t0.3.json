@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12708",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1007,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1753,
+      "response_excerpt": "<reasoning>\nThe crash happens because deleting `index_together` can see both the auto-created `_idx` index and the `_uniq` constraint for the same columns on backends that allow/report multiple constraints on the same fields. Django already disambiguates this case for `unique_together` by selecting the generated unique constraint name. The patch applies the same strategy for `index_together`: when deleting an index and multiple candidates are found, select the generated `_idx` name before enforc",
+      "latency_s": 168.89612317085266,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

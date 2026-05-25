@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13497",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2648,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1112,
+      "response_excerpt": "<reasoning>\nThe bug is caused by comparing `discrete_features` directly to the string `'auto'`. When `discrete_features` is a NumPy array, `discrete_features == 'auto'` performs elementwise comparison and can warn or error in newer NumPy versions.\n\nThe fix is to only compare to `'auto'` after confirming the value is string-like, using the existing vendored `six.string_types` compatibility helper.\n\nI also added a regression test that passes NumPy array forms of `discrete_features`: integer indice",
+      "latency_s": 129.66045117378235,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

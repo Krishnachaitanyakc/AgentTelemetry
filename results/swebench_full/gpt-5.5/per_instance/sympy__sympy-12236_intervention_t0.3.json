@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-12236",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 670,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2662,
+      "response_excerpt": "<reasoning>\n1. Located the `apart` implementation and existing partial-fraction tests in `sympy/polys`.\n2. Reproduced the reported expression on this checkout; the implementation currently returns the mathematically correct decomposition.\n3. Added a focused regression test using the same symbolic assumptions from the report.\n4. Used a rational-difference assertion instead of direct structural equality, since SymPy may build equivalent expressions with different internal assumptions/structure.\n5.",
+      "latency_s": 200.41769695281982,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

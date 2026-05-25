@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13448",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 7178,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5974,
+      "response_excerpt": "<reasoning>\n`TEST.MIGRATE=False` shouldn\u2019t skip database setup entirely. The crash happens because the test database is then serialized after no tables were created, so migrated app models such as `django_admin_log` are queried against missing tables.\n\nThe patch makes test DB creation always call `migrate --run-syncdb`, but when `TEST.MIGRATE` is false it temporarily disables migration modules for all installed apps. That causes Django to create tables via syncdb without applying migrations. The",
+      "latency_s": 155.8503520488739,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

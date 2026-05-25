@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15781",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3162,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2055,
+      "response_excerpt": "<reasoning>\nThe issue comes from `argparse.HelpFormatter` collapsing whitespace in the command description. Django already uses a custom formatter for command help ordering, but `BaseCommand.create_parser()` hard-coded that formatter. The fix is to expose it as a `BaseCommand.formatter_class` attribute so commands can opt into classes such as `argparse.RawDescriptionHelpFormatter`.\n\nVerified with:\n`python3 ./tests/runtests.py user_commands.tests.CommandTests.test_create_parser_kwargs user_comman",
+      "latency_s": 133.26340079307556,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

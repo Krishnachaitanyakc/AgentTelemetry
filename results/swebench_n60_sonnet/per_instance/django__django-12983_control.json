@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12983",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1061,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1206,
+      "response": "Now I have everything I need. The bug is clear:\n\n- **Old code**: `return re.sub(r'[-\\s]+', '-', value)` \u2014 never strips leading/trailing dashes or underscores\n- **Fix**: add `.strip('-_')` to strip them, and update the docstring accordingly\n\n<reasoning>\nThe `slugify` function in `django/utils/text.py` has two problems:\n1. The return statement `re.sub(r'[-\\s]+', '-', value)` does not strip leading or trailing dashes and underscores from the result. So input `\"___This is a test ---\"` produces `\"___...[truncated]",
+      "latency_s": 205.579833984375,
+      "error": null
+    }
+  ]
+}

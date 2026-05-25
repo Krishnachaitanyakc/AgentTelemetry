@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11133",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1051,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1689,
+      "response_excerpt": "<reasoning>\nThe issue is in Django's `HttpResponse` class. When a `memoryview` object is passed as content, it falls through to the generic `str(value).encode(self.charset)` branch which produces the repr like `b'<memory at 0x...>'` instead of the actual bytes.\n\nThe relevant code is in `django/http/response.py` in the `HttpResponseBase.make_bytes()` method. The current code checks `isinstance(value, bytes)` but doesn't account for `memoryview`, which is a bytes-like object.\n\nThe fix is to extend",
+      "latency_s": 42.101449966430664,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

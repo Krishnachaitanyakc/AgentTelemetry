@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12453",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1426,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3700,
+      "response_excerpt": "<reasoning>\nThe restore path must behave like fixture loading: save all deserialized objects inside one transaction so backends with deferrable constraints can resolve forward references at commit time. For backends that don\u2019t support deferred checks, temporarily disabling constraints and checking them after all objects are saved handles both forward references and cycles while still surfacing invalid fixture data.\n</reasoning>\n\n<patch>\ndiff --git a/django/db/backends/base/creation.py b/django/d",
+      "latency_s": 103.01837396621704,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

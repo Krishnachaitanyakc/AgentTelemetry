@@ -1,0 +1,26 @@
+{
+  "instance_id": "psf__requests-3362",
+  "repo": "psf/requests",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1013,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1324,
+      "response_excerpt": "<reasoning>\n`iter_content(decode_unicode=True)` only decodes when `Response.encoding` is set. For real responses, that value comes from `get_encoding_from_headers()`. JSON without an explicit charset should default to UTF-8, so the fix is to set UTF-8 for `application/json` headers and add a regression test for the no-charset case.\n\nVerified targeted tests with:\n`.venv/bin/python -m pytest tests/test_utils.py::test_get_encoding_from_headers`\n`.venv/bin/python -m pytest tests/test_requests.py::Te",
+      "latency_s": 104.06668305397034,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

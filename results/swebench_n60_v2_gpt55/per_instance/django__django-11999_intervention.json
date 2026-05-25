@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-11999",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 2334,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "contribute_to_class choices get_%s_display": 1,
+    "getfielddisplaytests _get_field_display choices": 1,
+    "get_foo_display override model choices tests": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1523,
+      "response": "<reasoning>The regression comes from `Field.contribute_to_class()` unconditionally installing `get_FOO_display()` for choice fields, overwriting a method explicitly defined on the model class. The fix is to only install Django\u2019s generated method when the class itself didn\u2019t define one, while still allowing subclasses that redefine choices to replace an inherited generated display method.</reasoning>\n<patch>diff --git a/django/db/models/fields/__init__.py b/django/db/models/fields/__init__.py\n--- a/django/db/models/fields/__init__.py\n+++ b/django/db/models/fields/__init__.py\n@@ -763,11 +763,17 @@ class Field(RegisterLookupMixin):\n         if self.column:\n             setattr(cls, self.attname, self.descriptor_class(self))\n         if self.choices is not None:\n-            setattr(\n-                cls,\n-                'get_%s_display' % self.name,\n-                partialmethod(cls._get_FIELD_display, field=self),\n-            )\n+            # Don't override a get_FOO_display() method defined explicitly on\n+            # this class, but don't check methods derived from inheritance, to\n+            # allow overriding inherited choices. For more complex inheritance\n+            # structures users should override contribute_to_class().\n+            if 'get_%s_display' % self.name not in cls.__dict__:\n+                setattr(\n+                    cls,\n+                    'get_%s_display' % self.name,\n+                    partialmethod(cls._get_FIELD_display, field=self),\n+     ",
+      "latency_s": 76.71435189247131,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4637,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"contribute_to_class choices get_%s_display\"}}</tool_call>",
+      "latency_s": 14.741819858551025,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 5192,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"GetFieldDisplayTests _get_FIELD_display choices\"}}</tool_call>",
+      "latency_s": 14.847065687179565,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 5772,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"get_foo_display override model choices tests\"}}</tool_call>",
+      "latency_s": 14.938287734985352,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 6337,
+      "response": "<reasoning>Django 2.2 started adding generated get_FIELD_display() methods during field contribution in a way that overwrites methods explicitly defined on the model class. The generated method should only be installed when the model class does not define that method itself. Checking cls.__dict__ preserves explicit overrides while still allowing a subclass that redeclares a choices field to get a fresh generated display method.</reasoning>\n<patch>diff --git a/django/db/models/fields/__init__.py b/django/db/models/fields/__init__.py\n--- a/django/db/models/fields/__init__.py\n+++ b/django/db/models/fields/__init__.py\n@@ -763,11 +763,15 @@ class Field(RegisterLookupMixin):\n         if self.column:\n             setattr(cls, self.attname, self.descriptor_class(self))\n         if self.choices is not None:\n-            setattr(\n-                cls,\n-                'get_%s_display' % self.name,\n-                partialmethod(cls._get_FIELD_display, field=self),\n-            )\n+            # Don't override a get_FOO_display() method defined explicitly on\n+            # this class, but allow a subclass redeclaring choices to replace\n+            # an inherited generated display method.\n+            if 'get_%s_display' % self.name not in cls.__dict__:\n+                setattr(\n+                    cls,\n+                    'get_%s_display' % self.name,\n+                    partialmethod(cls._get_FIELD_display, field=self),\n+                )\n \n     def get_filter_kwargs_for_object(self",
+      "latency_s": 17.150108814239502,
+      "error": null
+    }
+  ]
+}

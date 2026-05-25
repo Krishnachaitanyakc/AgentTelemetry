@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11620",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 992,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1684,
+      "response_excerpt": "<reasoning>\n`RoutePattern.match()` intentionally treats `ValueError` from converters as \u201cthis URL pattern doesn\u2019t match.\u201d `Http404` should not follow that path: it should propagate to Django\u2019s exception handling so `DEBUG=True` can render the technical 404 response. The patch makes that distinction explicit.\n\nVerified with:\n`uv run --no-project --python 3.12 --with asgiref --with sqlparse python tests/runtests.py view_tests.tests.test_debug.DebugViewTests.test_technical_404_converter_raise_404 -",
+      "latency_s": 586.3428699970245,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

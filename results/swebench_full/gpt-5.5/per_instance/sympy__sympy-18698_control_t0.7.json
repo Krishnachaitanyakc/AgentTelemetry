@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-18698",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1296,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1250,
+      "response_excerpt": "<reasoning>\nThe symbolic `sqf_list` path collects factors from separate `Mul` arguments, so equal multiplicities need to be merged before duplicate collection. I made that merge explicit by grouping factors by multiplicity, then added a regression test for the reported `(x - 2)**3*(x - 3)**3` case. Focused test passed: `python3 -m pytest sympy/polys/tests/test_polytools.py -k test_sqf`.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/sympy/polys/polytools.py b/sympy/polys/polytools.py\n--- a/sympy/pol",
+      "latency_s": 119.84397315979004,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

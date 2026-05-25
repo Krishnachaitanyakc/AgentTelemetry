@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12308",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 810,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1284,
+      "response": "Both files look good. Now let me provide the final answer.\n\n<reasoning>\nThe issue is that `JSONField` values in Django admin are displayed using Python's `str()` representation (e.g., `{'foo': 'bar'}` with single quotes) instead of valid JSON (e.g., `{\"foo\": \"bar\"}` with double quotes) when the field is readonly.\n\n**Root cause:** The `display_for_field` function in `django/contrib/admin/utils.py` has no special case for `JSONField`. When a JSONField value is rendered as readonly, it falls throug...[truncated]",
+      "latency_s": 399.93590092658997,
+      "error": null
+    }
+  ]
+}

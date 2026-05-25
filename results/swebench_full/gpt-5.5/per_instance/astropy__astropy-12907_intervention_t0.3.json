@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-12907",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1453,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2042,
+      "response_excerpt": "<reasoning>\nThe bug comes from `_coord_matrix()` treating a nested `CompoundModel` as an ordinary model. For `&`, that can collapse the nested model\u2019s internal separability into a dense block. The fix is to detect `CompoundModel` in `_coord_matrix()`, recursively compute its separability matrix, and place that matrix into the parent coordinate matrix. A regression test covers `Pix2Sky_TAN() & (Linear1D & Linear1D)`.\n\nI attempted the targeted pytest run, but this environment uses Python 3.14 with",
+      "latency_s": 194.96088814735413,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

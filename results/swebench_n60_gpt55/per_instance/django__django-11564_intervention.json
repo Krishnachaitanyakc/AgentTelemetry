@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11564",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 14537,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1753,
+      "response": "<reasoning>\nThe fix should live at the settings/storage URL layer, because both template tags and storage URLs already flow through `settings.STATIC_URL`, `settings.MEDIA_URL`, or storage `base_url`. The existing prefixing was cached too early, so a changed per-request `SCRIPT_NAME` could be ignored. This patch recomputes the script-prefixed static/media settings on access and avoids snapshotting default storage base URLs. I also added direct tests for settings, file storage, staticfiles storage...[truncated]",
+      "latency_s": 327.1396758556366,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-8273",
+  "repo": "sphinx-doc/sphinx",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3920,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1844,
+      "response_excerpt": "<reasoning>\nThe man builder already supports section directories through `man_make_section_directory`, but its implementation default was `False` while the documented default is `True`. The patch flips the default so generated pages land under `manN/` by default, updates tests to expect `man1/`, and adds coverage for the legacy opt-out behavior.\n\nVerified with:\n`.venv/bin/python -m pytest tests/test_builders/test_build_manpage.py tests/test_markup/test_smartquotes.py -q`\n</reasoning>\n\n<patch>\ndi",
+      "latency_s": 108.8362090587616,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

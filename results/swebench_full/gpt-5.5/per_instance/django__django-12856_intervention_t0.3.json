@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12856",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1594,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1261,
+      "response_excerpt": "<reasoning>\nImplemented the check in `Model._check_constraints()` so every `UniqueConstraint` validates its `fields` through the same `_check_local_fields()` helper used by `unique_together`. This produces `models.E012` for missing fields and keeps the check outside the per-database loop to avoid duplicate errors.\n\nAdded a regression test for a `UniqueConstraint(fields=['missing_field'])`.\n\nVerification: `python3 -m py_compile django/db/models/base.py tests/invalid_models_tests/test_models.py` p",
+      "latency_s": 219.66630601882935,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

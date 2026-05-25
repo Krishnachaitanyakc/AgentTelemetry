@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11422",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1764,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1463,
+      "response_excerpt": "<reasoning>\n1. `manage.py` runs as `__main__`, and in this path Python may leave `__main__.__spec__` unset.\n2. `iter_modules_and_files()` skipped modules without `__spec__`, so `manage.py` never entered the watched file set.\n3. Fix by special-casing `__main__` before the `__spec__` check and falling back to `__file__`.\n4. Add tests for both the normal `__main__.__file__` case and the no-`__file__` case.\n5. Verified the relevant autoreload tests with `python3 -m tests.utils_tests.test_autoreload ",
+      "latency_s": 230.83109593391418,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

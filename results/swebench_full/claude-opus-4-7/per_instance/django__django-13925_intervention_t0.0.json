@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13925",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 572,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4880,
+      "response_excerpt": "I've identified the issue. The fix is to add a check that skips the W042 warning when the primary key is inherited from a parent model via a parent_link OneToOneField.\n\n<reasoning>\nThe bug is in `django/db/models/base.py` in the `_check_default_pk` classmethod (around line 1298 in 3.2a1). \n\nIn Django 3.2a1, when a model uses multi-table inheritance (e.g., `class User(Entity)` where `Entity` is a concrete model with an explicit primary key), Django auto-creates a `OneToOneField` on the child as t",
+      "latency_s": 371.6552858352661,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

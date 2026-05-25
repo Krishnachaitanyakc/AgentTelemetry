@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-14817",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1244,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2802,
+      "response_excerpt": "<reasoning>\nThe failure comes from `_print_MatAdd` asking `S(item.args[0]).is_negative`; for a `MatrixSymbol('y*', ...)`, `item.args[0]` is the raw string name, so `S(...)` tries to parse `y*` and raises `SympifyError`.\n\nThe printer only needs to know whether the matrix-add term has a negative scalar coefficient. `as_coeff_mmul()` provides that coefficient without inspecting or parsing the matrix symbol name. I verified the repro prints `x + y*`, and the narrow pretty-printer regression test pas",
+      "latency_s": 142.99145603179932,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

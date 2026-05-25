@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14997",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2269,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 6805,
+      "response_excerpt": "<reasoning>\nThe crash happens when SQLite remakes a table and replays deferred SQL for an expression unique index. The old table-reference rewrite forced every column inside the expression to use the renamed table as an alias, producing SQL like `\"table\".\"name\"` inside `CREATE INDEX (...)`. SQLite prohibits `.` in index expressions.\n\nThe fix is to relabel only existing expression aliases via `relabeled_clone()`, preserving unqualified `Col(alias=None)` references. I also added a regression test ",
+      "latency_s": 676.4726519584656,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

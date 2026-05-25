@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11815",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4128,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2426,
+      "response": "Now I have full understanding of the issue. The `EnumSerializer` in the buggy version uses `self.value.value` (value-based) generating `Status('Good')`, which breaks when enum values are translated strings. The fix is to use `self.value.name` (name-based) to generate `Status['GOOD']`.\n\n<reasoning>\nThe bug is in `django_media_bug_check/django/db/migrations/serializer.py` in the `EnumSerializer.serialize()` method (lines 115-120). It uses `self.value.value` to serialize enum members, generating `S...[truncated]",
+      "latency_s": 319.84495782852173,
+      "error": null
+    }
+  ]
+}

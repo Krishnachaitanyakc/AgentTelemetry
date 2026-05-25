@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11039",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 674,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1673,
+      "response_excerpt": "All Django repositories I checked already contain the fix. The patch I'll provide represents the change that should be made to a version of `sqlmigrate.py` that has the bug (where `self.output_transaction = migration.atomic` doesn't consider `can_rollback_ddl`).\n\n<reasoning>\nThe issue is in `django/core/management/commands/sqlmigrate.py`. The `sqlmigrate` command sets `self.output_transaction = migration.atomic` based only on whether the migration is atomic, but it should also consider whether t",
+      "latency_s": 155.98647212982178,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

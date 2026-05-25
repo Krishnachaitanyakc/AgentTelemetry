@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14534",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2098,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2434,
+      "response_excerpt": "<reasoning>\n`ChoiceWidget.create_option()` already computes the correct per-option `attrs[\"id\"]`, including custom `auto_id` formats. `BoundWidget.id_for_label` was duplicating that logic with a hardcoded `id_%s_%s` pattern, so it ignored custom IDs. The fix is to return the id from the option attrs. Since plain `<select><option>` subwidgets don\u2019t have ids, their `id_for_label` should now be `None`; radio/checkbox options still get ids from their attrs.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a",
+      "latency_s": 348.20197892189026,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

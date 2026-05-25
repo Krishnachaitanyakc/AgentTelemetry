@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13321",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 939,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5247,
+      "response": "Perfect! So the code in `django_old` DOES have exception handling. This means the issue must be in an earlier version of Django 3.1. Let me check if there was a Django 3.1.0 release that had this bug:\n\nBased on the issue description and traceback, the problem is clear now. The user says they're on Django 3.1, and the traceback shows the error is unhandled. Looking at the code in `django_old`, it HAS the exception handling. This means:\n\n1. Either this is a very early Django 3.1 version before the...[truncated]",
+      "latency_s": 104.92733120918274,
+      "error": null
+    }
+  ]
+}

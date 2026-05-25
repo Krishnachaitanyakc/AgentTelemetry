@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-12184",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 2240,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "regexpattern resolve groupdict args kwargs": 1,
+    "resolve optional named group re_path typeerror positional arguments": 1,
+    "urlpatterns path_urls regex_optional tests resolve kwargs args": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1988,
+      "response": "<reasoning>Named-group detection must happen before filtering out optional groups whose value is None. Otherwise, when all named groups are absent, Django treats the regex as positional-only and forwards unmatched capture groups as positional view args. This keeps the existing behavior of omitting None kwargs while preserving the rule that any named group suppresses positional args.</reasoning>\n<patch>diff --git a/django/urls/resolvers.py b/django/urls/resolvers.py\n--- a/django/urls/resolvers.py\n+++ b/django/urls/resolvers.py\n@@ -158,8 +158,9 @@ class RegexPattern(CheckURLMixin):\n             # If there are any named groups, use those as kwargs, ignoring\n             # non-named groups. Otherwise, pass all non-named arguments as\n             # positional arguments.\n-            kwargs = {k: v for k, v in match.groupdict().items() if v is not None}\n+            kwargs = match.groupdict()\n             args = () if kwargs else match.groups()\n+            kwargs = {k: v for k, v in kwargs.items() if v is not None}\n             return path[match.end():], args, kwargs\n         return None\n \ndiff --git a/tests/urlpatterns/path_urls.py b/tests/urlpatterns/path_urls.py\n--- a/tests/urlpatterns/path_urls.py\n+++ b/tests/urlpatterns/path_urls.py\n@@ -12,6 +12,11 @@ urlpatterns = [\n     path('included_urls/', include('urlpatterns.included_urls')),\n     re_path(r'^regex/(?P&lt;pk&gt;[0-9]+)/$', views.empty_view, name='regex'),\n     re_path(r'^regex_optional/(?P&lt;arg1&gt;\\d+)/(?:(?P&lt;arg2",
+      "latency_s": 99.84192776679993,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4959,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"RegexPattern resolve groupdict args kwargs\"}}</tool_call>",
+      "latency_s": 15.862671136856079,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 5514,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"resolve optional named group re_path TypeError positional arguments\"}}</tool_call>",
+      "latency_s": 15.682260036468506,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 6194,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"urlpatterns path_urls regex_optional tests resolve kwargs args\"}}</tool_call>",
+      "latency_s": 14.890964984893799,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 6849,
+      "response": "<reasoning>Named-group detection must happen before Django drops optional groups whose value is None. Otherwise, if every named group is absent, the resolver incorrectly falls back to positional captures and passes extra positional args to the view.</reasoning>\n<patch>diff --git a/django/urls/resolvers.py b/django/urls/resolvers.py\n--- a/django/urls/resolvers.py\n+++ b/django/urls/resolvers.py\n@@ -158,8 +158,9 @@ class RegexPattern(CheckURLMixin):\n             # If there are any named groups, use those as kwargs, ignoring\n             # non-named groups. Otherwise, pass all non-named arguments as\n             # positional arguments.\n-            kwargs = {k: v for k, v in match.groupdict().items() if v is not None}\n+            kwargs = match.groupdict()\n             args = () if kwargs else match.groups()\n+            kwargs = {k: v for k, v in kwargs.items() if v is not None}\n             return path[match.end():], args, kwargs\n         return None\n \ndiff --git a/tests/urlpatterns/path_urls.py b/tests/urlpatterns/path_urls.py\n--- a/tests/urlpatterns/path_urls.py\n+++ b/tests/urlpatterns/path_urls.py\n@@ -12,6 +12,11 @@ urlpatterns = [\n     path('included_urls/', include('urlpatterns.included_urls')),\n     re_path(r'^regex/(?P<pk>[0-9]+)/$', views.empty_view, name='regex'),\n     re_path(r'^regex_optional/(?P<arg1>\\d+)/(?:(?P<arg2>\\d+)/)?', views.empty_view, name='regex_optional'),\n+    re_path(\n+        r'^regex_only_optional/(?:(?P<arg1>\\d+)/)?',\n+        views.empty_view,\n+  ",
+      "latency_s": 18.823641777038574,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-16503",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1469,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1045,
+      "response_excerpt": "<reasoning>\n1. The misalignment comes from the composed `Sum` pretty form needing its external baseline to match the visual centerline where the summand is placed.\n2. I made that baseline calculation explicit in `_print_Sum`, preserving the existing ASCII odd-height adjustment.\n3. I added a regression case for `Sum(x, (x, 1, oo)) + 3` in both ASCII and Unicode output.\n4. Verified with: `/private/tmp/sympy-venv/bin/python sympy/testing/runtests.py sympy/printing/pretty/tests/test_pretty.py -k tes",
+      "latency_s": 294.2956750392914,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

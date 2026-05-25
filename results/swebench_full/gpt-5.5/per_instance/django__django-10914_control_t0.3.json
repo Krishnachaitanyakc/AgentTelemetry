@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-10914",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4671,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1815,
+      "response_excerpt": "<reasoning>\nThe bug is caused by the default `FILE_UPLOAD_PERMISSIONS = None`, which leaves final file modes dependent on whether the upload went through memory or a temporary file. Setting the default to `0o644` makes `FileSystemStorage` apply a consistent mode after saving. I updated the setting, docs, release note, and tests for both the new default and the explicit `None` opt-out path.\n\nVerification: focused tests pass in the modern checkout with `python3 tests/runtests.py file_storage.tests",
+      "latency_s": 213.01035404205322,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-18698",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 972,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1250,
+      "response_excerpt": "<reasoning>\n**Issue Analysis:**\n\nThe bug is that `sqf_list` returns inconsistent output when given a multiplicative expression with repeated factors of the same multiplicity. For example:\n\n```python\n>>> sqf_list((x**2 + 1) * (x - 1)**2 * (x - 2)**3 * (x - 3)**3)\n(1, [(x**2 + 1, 1), (x - 1, 2), (x - 3, 3), (x - 2, 3)])  # WRONG\n```\n\nMathematically, square-free factorization decomposes `f = c * \u03a0(g_i^i)` where each `g_i` is square-free and gcd(g_i, g_j)=1. So `(x-2)` and `(x-3)`, both at multiplic",
+      "latency_s": 254.0589838027954,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

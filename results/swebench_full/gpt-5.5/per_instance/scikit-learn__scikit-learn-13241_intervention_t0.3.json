@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13241",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3712,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1612,
+      "response_excerpt": "<reasoning>\nKernelPCA eigenvectors are only defined up to sign, so repeated fits can return projections that are numerically identical except for sign flips. The fix applies the existing `svd_flip` convention after eigenvectors are sorted, making `alphas_`, `fit_transform`, and later `transform` deterministic. Tests were tightened to compare signed outputs directly and a new regression test checks repeated RBF KernelPCA fits across dense and ARPACK solvers.\n\nVerification done: `git diff --check`",
+      "latency_s": 227.43767070770264,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13658",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 774,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2062,
+      "response": "The issue is clear. The `django_old` copy shows the unfixed code. Here's the analysis and patch:\n\n<reasoning>\nThe issue is in `ManagementUtility.execute()` in `django/core/management/__init__.py`. \n\n1. `ManagementUtility.__init__` correctly computes `self.prog_name` from the passed `argv` (not from `sys.argv`), and handles the `__main__.py` case.\n2. However, when `execute()` creates a `CommandParser` for early-parsing of `--settings` and `--pythonpath`, it does **not** pass `prog=self.prog_name`...[truncated]",
+      "latency_s": 89.80220103263855,
+      "error": null
+    }
+  ]
+}

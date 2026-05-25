@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-7373",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2659,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1830,
+      "response_excerpt": "<reasoning>\nThe bug is that `cached_eval` stores the boolean result under only the condition string, but evaluating a string mark also depends on the current item globals. The fix removes that shared result cache and compiles/evaluates the condition directly inside `MarkEvaluator._istrue()` using the globals for the current item. I added a regression with two modules that both use `@pytest.mark.skipif(\"skip\")` but define different `skip` globals.\n\nVerified with Python 3.9 against pytest 5.4.3:\n`",
+      "latency_s": 341.5244972705841,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

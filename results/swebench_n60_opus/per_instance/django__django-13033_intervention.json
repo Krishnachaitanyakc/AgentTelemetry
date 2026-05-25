@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13033",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 737,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4557,
+      "response": "The 3.0 branch also has the same bug. The fix is the same: compare against `pieces[-1]` instead of `name`.\n\n<reasoning>\nThe bug is in `django/db/models/sql/compiler.py` in the `find_ordering_name` method.\n\nWhen processing `order_by(\"record__root_id\")`:\n1. `name` is set to `\"record__root_id\"` (the full dotted path, after stripping any `-` prefix)\n2. `pieces` is `[\"record\", \"root_id\"]`\n3. `_setup_joins` resolves through the relations. When it encounters `\"root_id\"`, `get_field(\"root_id\")` returns ...[truncated]",
+      "latency_s": 339.6235291957855,
+      "error": null
+    }
+  ]
+}

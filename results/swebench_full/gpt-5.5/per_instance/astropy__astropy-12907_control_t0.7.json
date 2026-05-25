@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-12907",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1515,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2042,
+      "response_excerpt": "<reasoning>\nThe separability recursion already computes correct coordinate matrices for nested compound models. The bug is in `_cstack`: when the right operand is already a coordinate matrix, it inserts a block of `1`s instead of inserting that matrix. That erases separability information for nested right-hand compound models like `Pix2Sky_TAN() & (Linear1D() & Linear1D())`. The fix is to copy `right` into the lower-right block. I also add regression cases for nested and differently grouped `&` ",
+      "latency_s": 106.11184692382812,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

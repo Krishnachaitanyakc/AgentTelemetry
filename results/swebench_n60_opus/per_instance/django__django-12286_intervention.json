@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12286",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1031,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1566,
+      "response": "The fix is correct. Here's the summary:\n\n**Problem:** `check_language_settings_consistent` only checked if the exact `LANGUAGE_CODE` value was present in `LANGUAGES`. When `LANGUAGE_CODE = \"de-at\"` and only `\"de\"` was in `LANGUAGES`, the check raised `translation.E004` even though Django's translation system would correctly fall back to the base language.\n\n**Fix:** In `django/core/checks/translation.py` line 60, the check now also tries the base language (the part before the first `-`). So `\"de-...[truncated]",
+      "latency_s": 70.57618498802185,
+      "error": null
+    }
+  ]
+}

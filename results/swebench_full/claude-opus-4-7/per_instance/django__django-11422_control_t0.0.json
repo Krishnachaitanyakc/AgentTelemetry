@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11422",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 908,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1463,
+      "response_excerpt": "<reasoning>\nThis is a known Django bug (#30479) where the StatReloader in Django 2.2.1 stopped tracking changes in `manage.py`. \n\nThe root cause: In `django/utils/autoreload.py`, the `iter_modules_and_files()` function iterates through `sys.modules` to determine which files to watch. For each module, it checks `module.__spec__` to find the file location. However, the `__main__` module (which is `manage.py` when running `python manage.py runserver`) doesn't always have `__spec__` set properly, so",
+      "latency_s": 46.78558588027954,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

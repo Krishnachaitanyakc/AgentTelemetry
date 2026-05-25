@@ -1,0 +1,26 @@
+{
+  "instance_id": "psf__requests-2317",
+  "repo": "psf/requests",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1190,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1634,
+      "response_excerpt": "<reasoning>\nThe bug comes from treating a bytes HTTP method with `str()`/`builtin_str()`, which turns `b\"GET\"` into the literal `\"b'GET'\"`. HTTP methods are ASCII tokens, so byte methods should be decoded before normalization. I patched `PreparedRequest.prepare_method` to decode bytes explicitly, then added a non-network regression test for both `b\"GET\"` and `b\"get\"`.\n\nVerified with:\n` .venv/bin/python -m pytest tests/test_requests.py::TestRequests::test_bytes_method_name_with_request_object -q ",
+      "latency_s": 138.36476016044617,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-25500",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1938,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5501,
+      "response_excerpt": "<reasoning>\nThe crash happens because `_CalibratedClassifier.predict_proba` assigns calibrator output into a 1D numpy column. When the calibrator returns a single-column container, such as a pandas DataFrame from global transform output config, numpy sees shape `(n_samples, 1)` and cannot broadcast it into `(n_samples,)`.\n\nThe fix is to coerce each calibrator prediction with the existing `column_or_1d` helper before assignment. I added a regression test that simulates a calibrator returning a co",
+      "latency_s": 118.34178471565247,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

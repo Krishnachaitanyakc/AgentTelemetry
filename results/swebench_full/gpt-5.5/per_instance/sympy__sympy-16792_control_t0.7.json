@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-16792",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2038,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2722,
+      "response_excerpt": "<reasoning>\nThe failing path is `CodeGen.routine(..., argument_sequence=...)` when an argument is supplied explicitly but is absent from the expression. Such arguments are recreated as `InputArgument`s, so `MatrixSymbol` needs dimensions attached there; otherwise C/Cython treats it as a scalar. This checkout already had the core behavior, so I made the `MatrixSymbol` branch explicit and added a Cython wrapper regression test verifying `double *x` plus a NumPy ndarray wrapper.\n\nVerified with:\n`py",
+      "latency_s": 113.58317995071411,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

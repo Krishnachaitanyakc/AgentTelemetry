@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-5413",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1786,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3715,
+      "response_excerpt": "<reasoning>\nImplemented `ExceptionInfo.__str__` so filled `pytest.raises` context variables stringify like the captured exception itself, matching normal `except ... as e: str(e)` behavior. Unfilled `ExceptionInfo` still returns the existing context-manager placeholder string.\n\nUpdated focused tests to keep `repr(excinfo)` diagnostic while asserting `str(excinfo)` follows the exception `__str__`, including the multiline `LookupError(\"A\\nB\\nC\")` case.\n\nVerified with:\n`.venv/bin/python -m pytest t",
+      "latency_s": 113.84813094139099,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

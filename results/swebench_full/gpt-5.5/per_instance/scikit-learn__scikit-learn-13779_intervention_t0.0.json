@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13779",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1521,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1395,
+      "response_excerpt": "<reasoning>\nIteration 1: Located the affected implementation in `sklearn/ensemble/voting_classifier.py`. The failure happens before fitting, while checking whether each estimator supports `sample_weight`; that loop was calling `has_fit_parameter` on `None`.\n\nIteration 2: Added a guard to skip `None` estimators during the `sample_weight` support check, matching the later fit loop which already excludes `None`.\n\nIteration 3: Added a regression case to `test_sample_weight`: fit with `sample_weight`",
+      "latency_s": 94.86321711540222,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11049",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 426,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1531,
+      "response": "Now I have all the context I need. Here is the final patch:\n\n<reasoning>\nThe issue is that `django/forms/fields.py`'s `DurationField` error message for invalid input just says `'Enter a valid duration.'` without indicating the expected format. The `django/db/models/fields/__init__.py`'s `DurationField` already uses the correct format `[DD] [[HH:]MM:]ss[.uuuuuu]`. The forms field should include this format in its error message so users know how to enter a valid duration value. Additionally, the i...[truncated]",
+      "latency_s": 203.37682914733887,
+      "error": null
+    }
+  ]
+}

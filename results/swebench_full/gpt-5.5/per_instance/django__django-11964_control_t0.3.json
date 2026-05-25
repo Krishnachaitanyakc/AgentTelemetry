@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11964",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3748,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3147,
+      "response_excerpt": "<reasoning>\n1. The inconsistency happens before database round-trip: model initialization/direct assignment stores the enum member itself.\n2. Database-loaded values are already plain field values, so the fix belongs in the model field attribute assignment path.\n3. `DeferredAttribute` is the descriptor used by normal concrete model fields. Adding `__set__()` lets Django normalize assigned enum choice members when the field has `choices`.\n4. The normalization is intentionally narrow: only enum val",
+      "latency_s": 481.48731112480164,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

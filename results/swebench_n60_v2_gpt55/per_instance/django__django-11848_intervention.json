@@ -1,0 +1,67 @@
+{
+  "instance_id": "django__django-11848",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 6,
+  "proposed_patch": true,
+  "patch_len": 3311,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 2,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "parse_http_date": 1,
+    "rfc 850": 1,
+    "two-digit year": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1637,
+      "response": "<reasoning>Two-digit RFC 850 years must be resolved relative to the current year, not with a fixed 1970/2069 split. The parser should choose the current century unless the parsed year would be more than 50 years in the future, in which case it should map to the previous century. The tests mock the current year around boundary cases.</reasoning>\n<patch>diff --git a/django/utils/http.py b/django/utils/http.py\nindex 572cfb4347..ff2f08ac1e 100644\n--- a/django/utils/http.py\n+++ b/django/utils/http.py\n@@ -176,10 +176,14 @@ def parse_http_date(date):\n     try:\n         year = int(m.group('year'))\n         if year < 100:\n-            if year < 70:\n-                year += 2000\n+            current_year = datetime.datetime.utcnow().year\n+            current_century = current_year - (current_year % 100)\n+            if year - (current_year % 100) > 50:\n+                # year that appears to be more than 50 years in the future are\n+                # interpreted as representing the past.\n+                year += current_century - 100\n             else:\n-                year += 1900\n+                year += current_century\n         month = MONTHS.index(m.group('mon').lower()) + 1\n         day = int(m.group('day'))\n         hour = int(m.group('hour'))\ndiff --git a/tests/utils_tests/test_http.py b/tests/utils_tests/test_http.py\nindex f8017ae1cb..ed6824429d 100644\n--- a/tests/utils_tests/test_http.py\n+++ b/tests/utils_tests/test_http.py\n@@ -1,5 +1,6 @@\n import unittest\n from datetime import",
+      "latency_s": 85.08775305747986,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 5748,
+      "response": "<reasoning>`parse_http_date()` should resolve RFC 850 two-digit years relative to the current UTC year. The fixed logic uses the current century, and only maps to the previous century when the parsed two-digit year would otherwise appear more than 50 years in the future. Tests mock the current year around the boundary cases.</reasoning>\n<patch>diff --git a/django/utils/http.py b/django/utils/http.py\n--- a/django/utils/http.py\n+++ b/django/utils/http.py\n@@ -176,10 +176,14 @@ def parse_http_date(date):\n     try:\n         year = int(m.group('year'))\n         if year < 100:\n-            if year < 70:\n-                year += 2000\n+            current_year = datetime.datetime.utcnow().year\n+            current_century = current_year - (current_year % 100)\n+            if year - (current_year % 100) > 50:\n+                # Years that appear to be more than 50 years in the future are\n+                # interpreted as representing the past.\n+                year += current_century - 100\n             else:\n-                year += 1900\n+                year += current_century\n         month = MONTHS.index(m.group('mon').lower()) + 1\n         day = int(m.group('day'))\n         hour = int(m.group('hour'))\ndiff --git a/tests/utils_tests/test_http.py b/tests/utils_tests/test_http.py\n--- a/tests/utils_tests/test_http.py\n+++ b/tests/utils_tests/test_http.py\n@@ -1,5 +1,6 @@\n import unittest\n from datetime import datetime\n+from unittest import mock\n \n from django.test import SimpleTestCase, ",
+      "latency_s": 114.61803197860718,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 9778,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"parse_http_date\"}}</tool_call>",
+      "latency_s": 14.147910833358765,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 10198,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"RFC 850\"}}</tool_call>",
+      "latency_s": 17.05567193031311,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 10578,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"two-digit year\"}}</tool_call>",
+      "latency_s": 14.309796810150146,
+      "error": null
+    },
+    {
+      "iteration": 6,
+      "prompt_len": 10993,
+      "response": "<reasoning>The investigation points to `parse_http_date()` using a fixed POSIX-style 00-69 / 70-99 split for RFC 850 two-digit years. RFC 7231 requires interpreting a two-digit year relative to the current year: use the current century unless that date would be more than 50 years in the future, in which case use the previous century. The patch updates that conversion and adds mocked-current-year tests for the boundary behavior.</reasoning>\n<patch>diff --git a/django/utils/http.py b/django/utils/http.py\n--- a/django/utils/http.py\n+++ b/django/utils/http.py\n@@ -176,10 +176,14 @@ def parse_http_date(date):\n     try:\n         year = int(m.group('year'))\n         if year < 100:\n-            if year < 70:\n-                year += 2000\n+            current_year = datetime.datetime.utcnow().year\n+            current_century = current_year - (current_year % 100)\n+            if year - (current_year % 100) > 50:\n+                # Years that appear to be more than 50 years in the future are\n+                # interpreted as representing the past.\n+                year += current_century - 100\n             else:\n-                year += 1900\n+                year += current_century\n         month = MONTHS.index(m.group('mon').lower()) + 1\n         day = int(m.group('day'))\n         hour = int(m.group('hour'))\ndiff --git a/tests/utils_tests/test_http.py b/tests/utils_tests/test_http.py\n--- a/tests/utils_tests/test_http.py\n+++ b/tests/utils_tests/test_http.py\n@@ -1,5 +1,6 @@\n import unitt",
+      "latency_s": 20.80824589729309,
+      "error": null
+    }
+  ]
+}

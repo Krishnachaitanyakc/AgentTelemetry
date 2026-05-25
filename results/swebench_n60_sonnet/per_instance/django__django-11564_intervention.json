@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11564",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2172,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1753,
+      "response": "Now I have all the information I need. Let me write the patch.\n\n<reasoning>\nThe issue is that `{% static %}` template tag and `FileSystemStorage.url()` don't prepend `SCRIPT_NAME` (the WSGI sub-path prefix) to static/media URLs.\n\nDjango already tracks the script prefix per-thread via `get_script_prefix()` (set per-request by the WSGI/ASGI handlers). The `reverse()` function uses this to prefix reversed view URLs. But `FileSystemStorage.url()` and the `{% static %}` tag don't.\n\nTwo code paths nee...[truncated]",
+      "latency_s": 253.91322684288025,
+      "error": null
+    }
+  ]
+}

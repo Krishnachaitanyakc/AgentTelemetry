@@ -1,0 +1,29 @@
+{
+  "topology": "sequential",
+  "model": "claude_cli/claude-sonnet-4-6",
+  "question": "Describe how a closed-loop intervention based on telemetry signals can recover a stuck agent. Give a concrete example using the REASONING span kind.",
+  "run_id": "sequential__claude_cli_claude-sonnet-4-6__q4",
+  "transcript": [
+    {
+      "agent": "planner",
+      "output": "1. What telemetry signals (span attributes, duration thresholds, status codes) indicate a REASONING span is stuck or looping, and how are these exposed via OpenTelemetry or similar frameworks?\n\n2. What mechanisms exist for a supervisor process to detect these signals in real time and inject an intervention (e.g., cancellation, prompt injection, state reset) into a running agent loop?\n\n3. How is a concrete recovery action structured when a REASONING span exceeds a timeout \u2014 specifically, what does the intervention payload look like and how does the agent resume or restart cleanly?",
+      "latency_s": 11.970835208892822
+    },
+    {
+      "agent": "researcher",
+      "output": "The external search tool isn't authorized in this session. I'll answer from established knowledge across OpenTelemetry specs and agent-loop literature.\n\n---\n\n## Findings\n\n### 1. Telemetry Signals for a Stuck REASONING Span\n\n| Signal | Indicator |\n|---|---|\n| `span.duration` | Exceeds configurable threshold (e.g., >30 s for a reasoning step) |\n| `span.status` | Remains `UNSET`/`OK` indefinitely \u2014 never transitions to `ERROR` or ends |\n| `gen_ai.usage.output_tokens` | Flat or zero after expected generation window |\n| Loop counter attribute (`agent.loop.iteration`) | Increments past a max-iterations guard (e.g., >10) |\n| `span.events` | No new events appended after a heartbeat interval |\n\nThese are surfaced via OTLP exporters to a collector (Prometheus, Jaeger, or a custom span processor).\n\n---\n\n### 2. Supervisor Detection & Intervention Mechanisms\n\n- A **span processor** (`OnEnd`/polling hook) or a **sidecar collector rule** watches active spans matching `span.kind = REASONING`.\n- On thr",
+      "latency_s": 31.13024401664734
+    },
+    {
+      "agent": "writer",
+      "output": "## Closed-Loop Recovery of a Stuck Agent via Telemetry\n\nA supervisor span processor continuously monitors active spans, watching for signals that indicate a stuck REASONING span: duration exceeding a threshold, stalled `gen_ai.usage.output_tokens`, and a loop counter (`agent.loop.iteration`) surpassing a guard value.\n\n**Concrete example:** If `span.duration > 30s` and `agent.loop.iteration > 8`, the supervisor fires an intervention payload:\n\n```json\n{\n  \"action\": \"interrupt\",\n  \"reason\": \"reasoning_timeout\",\n  \"injection\": \"Stop current reasoning. State your best answer now.\",\n  \"resume_mode\": \"checkpoint_rollback\",\n  \"checkpoint_id\": \"step_3\"\n}\n```\n\nThe agent receives the injected prompt, forces the stale span to end with `status=ERROR, error.type=timeout_interrupt`, then rolls back to the referenced checkpoint. A fresh REASONING span begins with a reduced token budget, breaking the deadlock.\n\nThis closed loop \u2014 **observe \u2192 detect \u2192 interrupt \u2192 resume** \u2014 ensures the agent never silen",
+      "latency_s": 12.762244939804077
+    }
+  ],
+  "total_cost_usd": 0.017331,
+  "total_input_tokens": 912,
+  "total_output_tokens": 973,
+  "n_agents": 3,
+  "wall_clock_s": 55.88445806503296,
+  "error": null
+}

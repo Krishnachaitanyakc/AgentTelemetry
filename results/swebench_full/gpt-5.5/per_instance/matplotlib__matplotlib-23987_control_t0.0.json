@@ -1,0 +1,26 @@
+{
+  "instance_id": "matplotlib__matplotlib-23987",
+  "repo": "matplotlib/matplotlib",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1481,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2093,
+      "response_excerpt": "<reasoning>\nThe warning is caused during figure construction in v3.6.0. `constrained_layout=False` enters the `elif constrained_layout is not None` branch and unconditionally installs a constrained layout engine. Later, `subplots_adjust` sees an incompatible active engine and warns.\n\nThe fix is to only install `ConstrainedLayoutEngine` when `constrained_layout` is truthy or a parameter dict. Explicit `False` should leave the layout engine unset and override rc defaults.\n</reasoning>\n\n<patch>\ndif",
+      "latency_s": 231.1207890510559,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

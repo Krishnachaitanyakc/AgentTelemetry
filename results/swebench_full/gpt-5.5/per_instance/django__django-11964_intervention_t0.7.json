@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11964",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2359,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3147,
+      "response_excerpt": "<reasoning>\nThe bug happens because freshly assigned `TextChoices`/`IntegerChoices` values remain enum members on the model instance until the object is reloaded from the database. Python\u2019s default enum `__str__()` returns `Class.MEMBER`, so external string conversion differs between a fresh instance and a retrieved instance.\n\nThe fix is to make Django\u2019s `Choices.__str__()` return `str(self.value)`, matching the stored primitive value. I added regression coverage for both `CharField` with `TextC",
+      "latency_s": 157.38663721084595,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

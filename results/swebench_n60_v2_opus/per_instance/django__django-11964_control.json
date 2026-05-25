@@ -1,0 +1,44 @@
+{
+  "instance_id": "django__django-11964",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 3,
+  "proposed_patch": false,
+  "patch_len": 0,
+  "total_searches": 1,
+  "unique_queries": 1,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "class choices enum.enum metaclass choicesmeta": 1
+  },
+  "error": "claude exit 1: Claude Code at Meta (https://fburl.com/claude.code.users)\nUsing AI Gateway\nUsing Claude with claude-opus-4-6 and 'thinking.type=enabled' is deprecated. Use 'thinking.type=adaptive' instead which results in better model performance in our testing: https://platform.claude.com/docs/en/build-with-claude",
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3364,
+      "response": "Now I have full context. The fix needs to be applied to the version where `Choices` has `pass` as its body. The fix adds a `__str__` method to return `str(self.value)`.\n\n<reasoning>\nThe issue is that when a TextChoices or IntegerChoices enum member is assigned to a model field, calling `str()` on it returns the enum's default `__str__` representation (e.g., `'MyChoice.FIRST_CHOICE'`) instead of the actual value (e.g., `'first'`).\n\nThis happens because Python's `enum.Enum.__str__` returns `'ClassName.MEMBER_NAME'` by default. While `TextChoices` inherits from `str`, the `enum.Enum.__str__` takes precedence in the MRO over `str.__str__`.\n\nThe fix is to add a `__str__` method to the `Choices` base class that returns `str(self.value)`, ensuring that when enum members are cast to string (e.g., in templates, API serialization, or direct `str()` calls), they render as their actual value rather than the enum representation.\n\nThis also ensures consistency between freshly-created model instances (which store the enum member) and instances retrieved from the database (which store the plain string/int value from the DB).\n</reasoning>\n\n<patch>\ndiff --git a/django/db/models/enums.py b/django/db/models/enums.py\nindex a96c730431..ae20ef6d93 100644\n--- a/django/db/models/enums.py\n+++ b/django/db/models/enums.py\n@@ -60,7 +60,13 @@ class ChoicesMeta(enum.EnumMeta):\n \n class Choices(enum.Enum, metaclass=ChoicesMeta):\n     \"\"\"Class for creating enumerated choices.\"\"\"\n-    pass\n+\n+    def __str__(",
+      "latency_s": 216.09186673164368,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 5396,
+      "response": "I need to investigate the codebase first. Let me search for the relevant code.\n\n<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"class Choices enum.Enum metaclass ChoicesMeta\"}}</tool_call>",
+      "latency_s": 12.945770025253296,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 6046,
+      "response": "",
+      "latency_s": 10.46612286567688,
+      "error": "claude exit 1: Claude Code at Meta (https://fburl.com/claude.code.users)\nUsing AI Gateway\nUsing Claude with claude-opus-4-6 and 'thinking.type=enabled' is deprecated. Use 'thinking.type=adaptive' instead which results in better model performance in our testing: https://platform.claude.com/docs/en/build-with-claude"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "instance_id": "astropy__astropy-6938",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 6,
+  "proposed_patch": true,
+  "patch_len": 1241,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 2,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "fitsrec d exponent output_field.replace": 1,
+    "ascii table d format exponent marker test_table": 1,
+    "tablehdu from_columns d format raw fits bytes": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1540,
+      "response": "<reasoning>The FITS ASCII table writer formats `D` columns using Python\u2019s `E` exponent marker, then tries to rewrite `E` to `D`. Since `chararray.replace` returns a new array, the current call drops the replacement result. Assigning the returned array back into `output_field[:]` preserves the existing output buffer and fixes the written bytes. The added regression check reads the raw FITS file so the test catches this even though Astropy can read either exponent marker back successfully.</reasoning>\n<patch>diff --git a/astropy/io/fits/fitsrec.py b/astropy/io/fits/fitsrec.py\n--- a/astropy/io/fits/fitsrec.py\n+++ b/astropy/io/fits/fitsrec.py\n@@ -1462,7 +1462,7 @@ class FITS_rec(np.recarray):\n \n         # Replace exponent separator in floating point numbers\n         if 'D' in format:\n-            output_field.replace(encode_ascii('E'), encode_ascii('D'))\n+            output_field[:] = output_field.replace(encode_ascii('E'), encode_ascii('D'))\n \n     def tolist(self):\n         # Override .tolist to take care of special case of VLF\ndiff --git a/astropy/io/fits/tests/test_table.py b/astropy/io/fits/tests/test_table.py\n--- a/astropy/io/fits/tests/test_table.py\n+++ b/astropy/io/fits/tests/test_table.py\n@@ -3344,6 +3344,14 @@ class TestTableFunctions(FitsTestCase):\n         )\n         hdu = fits.TableHDU.from_columns([col1, col2, col3])\n         hdu.writeto(self.temp(\"foo.fits\"))\n+\n+        with open(self.temp(\"foo.fits\"), \"rb\") as f:\n+            raw = f.read()\n+\n+        expected = b",
+      "latency_s": 80.85869526863098,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 3565,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"fitsrec D exponent output_field.replace\"}}</tool_call>",
+      "latency_s": 13.51120376586914,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 4107,
+      "response": "<reasoning>The FITS writer in this checkout already assigns the exponent replacement result back into `output_field`, so the remaining gap is regression coverage. The test now checks the raw written FITS bytes, since reading the file back would not catch this bug. I could not run the focused test because the source checkout has unbuilt FITS extensions (`astropy.io.fits._utils`).</reasoning>\n<patch>diff --git a/astropy/io/fits/tests/test_table.py b/astropy/io/fits/tests/test_table.py\nindex 21746c67db..82a0aa5be7 100644\n--- a/astropy/io/fits/tests/test_table.py\n+++ b/astropy/io/fits/tests/test_table.py\n@@ -3345,6 +3345,12 @@ class TestTableFunctions(FitsTestCase):\n         hdu = fits.TableHDU.from_columns([col1, col2, col3])\n         hdu.writeto(self.temp(\"foo.fits\"))\n \n+        with open(self.temp(\"foo.fits\"), \"rb\") as f:\n+            raw = f.read()\n+\n+        assert b\"1.110000D+01\" in raw\n+        assert b\"1.110000E+01\" not in raw\n+\n         with fits.open(self.temp(\"foo.fits\"), memmap=False) as hdul:\n             assert comparerecords(hdul[1].data, hdu.data)\n </patch>",
+      "latency_s": 197.58930611610413,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 5455,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"ASCII table D format exponent marker test_table\"}}</tool_call>",
+      "latency_s": 14.71256709098816,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 6037,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"TableHDU from_columns D format raw FITS bytes\"}}</tool_call>",
+      "latency_s": 10.49315595626831,
+      "error": null
+    },
+    {
+      "iteration": 6,
+      "prompt_len": 6609,
+      "response": "<reasoning>The FITS ASCII table writer must preserve `D` format exponent separators in the raw output. `chararray.replace` returns a new array, so the replacement has to be assigned back. A regression test should inspect the written bytes directly because reading the table back can succeed with either `E` or `D`.</reasoning>\n<patch>diff --git a/astropy/io/fits/fitsrec.py b/astropy/io/fits/fitsrec.py\n--- a/astropy/io/fits/fitsrec.py\n+++ b/astropy/io/fits/fitsrec.py\n@@ -1462,7 +1462,7 @@ class FITS_rec(np.recarray):\n \n         # Replace exponent separator in floating point numbers\n         if 'D' in format:\n-            output_field.replace(encode_ascii('E'), encode_ascii('D'))\n+            output_field[:] = output_field.replace(encode_ascii('E'), encode_ascii('D'))\n \n     def tolist(self):\n         # Override .tolist to take care of special case of VLF\ndiff --git a/astropy/io/fits/tests/test_table.py b/astropy/io/fits/tests/test_table.py\n--- a/astropy/io/fits/tests/test_table.py\n+++ b/astropy/io/fits/tests/test_table.py\n@@ -3344,6 +3344,14 @@ class TestTableFunctions(FitsTestCase):\n         )\n         hdu = fits.TableHDU.from_columns([col1, col2, col3])\n         hdu.writeto(self.temp(\"foo.fits\"))\n+\n+        with open(self.temp(\"foo.fits\"), \"rb\") as f:\n+            raw = f.read()\n+\n+        expected = b\"1.110000D+01\"\n+        unexpected = b\"1.110000E+01\"\n+        assert expected in raw\n+        assert unexpected not in raw\n \n         with fits.open(self.temp(\"foo.fits\"), memmap",
+      "latency_s": 16.827608108520508,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "mwaskom__seaborn-2848",
+  "repo": "mwaskom/seaborn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2328,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1761,
+      "response_excerpt": "<reasoning>\nThe regression happens when `PairGrid` delegates plotting to axes-level functions. With an explicit `hue_order`, the legend/order is restricted, but the full hue vector is still passed through, so excluded hue levels are plotted or can trigger mapping errors. The fix records whether `hue_order` was explicitly supplied and filters the plotted data to rows whose hue value is in that order before calling delegated diagonal and bivariate plotting functions. I also added a regression test",
+      "latency_s": 160.21122884750366,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

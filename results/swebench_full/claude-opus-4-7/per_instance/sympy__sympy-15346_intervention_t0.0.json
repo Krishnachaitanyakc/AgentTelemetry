@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-15346",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 505,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1951,
+      "response_excerpt": "I can confirm the issue exists in older sympy versions and was already fixed in head. The fix is in `_futrig` at `/private/tmp/sympy/sympy/simplify/trigsimp.py:1211-1212`. The bug occurs because `TRmorrie` ran before `TR10i` in the simplification tree, producing intermediate forms (when arguments are Rational rather than symbols) that `TR10i` can no longer combine into `cos(a-b)`. Swapping the order so `TR10i` runs before `TRmorrie` allows the sin*sin + cos*cos -> cos(a-b) reduction to succeed f",
+      "latency_s": 668.5355317592621,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12747",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 642,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1752,
+      "response": "Perfect! This test on line 700-703 shows that the expected behavior for deleting with no matches is `(0, {})` - an empty dictionary! This is the consistent behavior we're trying to achieve.\n\nNow let me check the issue more carefully. Looking back at the Collector.delete() method, the problem is on line 282 where it returns a non-empty dictionary even when count is 0.\n\nThe fix is simple: we need to modify line 282 to be consistent with line 331. Instead of always returning `{model._meta.label: co...[truncated]",
+      "latency_s": 50.14396810531616,
+      "error": null
+    }
+  ]
+}

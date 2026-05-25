@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-11797",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 2119,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "exact lookup query has_limit_one": 1,
+    "has_select_fields clear_select_clause add_fields pk": 1,
+    "values annotate group by subquery exact lookup": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1767,
+      "response": "<reasoning>The exact lookup was always replacing a sliced subquery\u2019s selected columns with the primary key. For subqueries that explicitly selected an aggregate, this also changed the subquery\u2019s GROUP BY basis. The fix is to preserve an explicit select list and only fall back to pk selection when the RHS query has no selected fields.</reasoning>\n<patch>diff --git a/django/db/models/lookups.py b/django/db/models/lookups.py\n--- a/django/db/models/lookups.py\n+++ b/django/db/models/lookups.py\n@@ -252,9 +252,9 @@ class Exact(FieldGetDbPrepValueMixin, BuiltinLookup):\n         from django.db.models.sql.query import Query\n         if isinstance(self.rhs, Query):\n             if self.rhs.has_limit_one():\n-                # The subquery must select only the pk.\n-                self.rhs.clear_select_clause()\n-                self.rhs.add_fields(['pk'])\n+                if not self.rhs.has_select_fields:\n+                    self.rhs.clear_select_clause()\n+                    self.rhs.add_fields(['pk'])\n             else:\n                 raise ValueError(\n                     'The QuerySet value for an exact lookup must be limited to '\ndiff --git a/tests/lookup/tests.py b/tests/lookup/tests.py\n--- a/tests/lookup/tests.py\n+++ b/tests/lookup/tests.py\n@@ -3,6 +3,7 @@ from datetime import datetime\n from math import ceil\n from operator import attrgetter\n \n from django.core.exceptions import FieldError\n from django.db import connection\n+from django.db.models import Max\n from django.db.models",
+      "latency_s": 180.43912506103516,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4512,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"Exact lookup Query has_limit_one\"}}</tool_call>",
+      "latency_s": 13.357347965240479,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 5017,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"has_select_fields clear_select_clause add_fields pk\"}}</tool_call>",
+      "latency_s": 14.610804796218872,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 5617,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"values annotate group by subquery exact lookup\"}}</tool_call>",
+      "latency_s": 15.388092994689941,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 6192,
+      "response": "<reasoning>The issue is caused by the exact lookup rewriting a limited Query RHS to select the primary key even when the RHS already has an explicit selected column from values()/annotate(). That rewrite changes the grouped subquery from grouping by the original values() column to grouping by pk. The lookup should only inject pk selection for limited subqueries that do not already define selected fields.</reasoning>\n<patch>diff --git a/django/db/models/lookups.py b/django/db/models/lookups.py\n--- a/django/db/models/lookups.py\n+++ b/django/db/models/lookups.py\n@@ -252,9 +252,9 @@ class Exact(FieldGetDbPrepValueMixin, BuiltinLookup):\n         from django.db.models.sql.query import Query\n         if isinstance(self.rhs, Query):\n             if self.rhs.has_limit_one():\n-                # The subquery must select only the pk.\n-                self.rhs.clear_select_clause()\n-                self.rhs.add_fields(['pk'])\n+                if not self.rhs.has_select_fields:\n+                    self.rhs.clear_select_clause()\n+                    self.rhs.add_fields(['pk'])\n             else:\n                 raise ValueError(\n                     'The QuerySet value for an exact lookup must be limited to '\ndiff --git a/tests/lookup/tests.py b/tests/lookup/tests.py\n--- a/tests/lookup/tests.py\n+++ b/tests/lookup/tests.py\n@@ -3,6 +3,7 @@ from datetime import datetime\n from math import ceil\n from operator import attrgetter\n \n from django.core.exceptions import FieldError\n from django.db im",
+      "latency_s": 17.46083116531372,
+      "error": null
+    }
+  ]
+}

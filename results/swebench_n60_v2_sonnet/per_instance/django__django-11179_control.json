@@ -1,0 +1,35 @@
+{
+  "instance_id": "django__django-11179",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 2,
+  "proposed_patch": false,
+  "patch_len": 0,
+  "total_searches": 0,
+  "unique_queries": 0,
+  "max_query_repeats": 0,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {},
+  "error": "claude exit 1: Claude Code at Meta (https://fburl.com/claude.code.users)\nUsing AI Gateway\n",
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1294,
+      "response": "I now have a complete understanding of the bug. Let me write the patch.\n\n**Root cause:** In `Collector.delete()`, there's a fast-path optimization for a single object with no dependencies (lines 275\u2013281 in the buggy version). When this path is taken, the database row IS deleted and the count IS returned, but the Python instance's PK attribute is **never set to `None`** \u2014 the code returns early before reaching the normal post-delete cleanup loop that calls `setattr(instance, model._meta.pk.attname, None)`.\n\nThe normal path (via `with transaction.atomic`) always clears PKs at the end:\n```python\nfor model, instances in self.data.items():\n    for instance in instances:\n        setattr(instance, model._meta.pk.attname, None)\n```\n\nBut the fast path bypasses that entire block and returns directly, leaving the PK stale.\n\n**Fix:** Add `setattr(instance, model._meta.pk.attname, None)` in the fast-delete path before the early `return`.\n\n<reasoning>\nThe bug is in `django/db/models/deletion.py` in the `Collector.delete()` method. There is a fast-path optimization for deleting a single object with no dependencies (no related objects, no signal listeners). In this path, the object's database row is deleted, but the Python instance's PK attribute is never set to `None`. The normal deletion path correctly clears PKs at the end of the method by iterating over `self.data`, but the fast path returns early \u2014 before reaching that cleanup code.\n\nThe fix is to add `setattr(instance, model._meta.pk.a",
+      "latency_s": 374.8009078502655,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 3721,
+      "response": "",
+      "latency_s": 124.26621389389038,
+      "error": "claude exit 1: Claude Code at Meta (https://fburl.com/claude.code.users)\nUsing AI Gateway\n"
+    }
+  ]
+}

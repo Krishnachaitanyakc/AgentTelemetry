@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11099",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 781,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1589,
+      "response": "The fix is clear from the issue. Both validators use `^` and `$` which in Python regex match trailing newlines. The fix is to use `\\A` and `\\Z` instead.\n\n<reasoning>\nThe issue is in `django/contrib/auth/validators.py`. Both `ASCIIUsernameValidator` and `UnicodeUsernameValidator` use the regex `r'^[\\w.@+-]+$'`. In Python, `$` matches at the end of the string **or just before a newline at the end**, so `\"user\\n\"` would pass validation even though it shouldn't. The fix is to use `\\A` (start of stri...[truncated]",
+      "latency_s": 66.41616201400757,
+      "error": null
+    }
+  ]
+}

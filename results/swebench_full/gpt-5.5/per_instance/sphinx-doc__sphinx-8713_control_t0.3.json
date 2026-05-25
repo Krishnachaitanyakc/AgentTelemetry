@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-8713",
+  "repo": "sphinx-doc/sphinx",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2025,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2666,
+      "response_excerpt": "<reasoning>\nI found the napoleon parser and the local checkout already has the intended code path: `_parse_other_parameters_section()` checks `napoleon_use_param` and formats \u201cOther Parameters\u201d with `_format_docutils_params()` when enabled. I added a focused regression test for the exact reported behavior and verified it with `uv run pytest tests/test_ext_napoleon/test_ext_napoleon_docstring.py::TestNumpyDocstring::test_other_parameters_respects_use_param`.\n</reasoning>\n\n<patch>\n```diff\ndiff --g",
+      "latency_s": 149.88775992393494,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

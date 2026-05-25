@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14752",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3138,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3641,
+      "response_excerpt": "<reasoning>\nI located `AutocompleteJsonView.get()` in `django/contrib/admin/views/autocomplete.py`. The low-risk fix is to extract the existing `{id, text}` conversion into `serialize_result()` and have `get()` call it for each object. I added a regression test with a subclass that appends an extra field while preserving the default result shape.\n\nVerification: `/usr/bin/python3 ./tests/runtests.py admin_views.test_autocomplete_view --verbosity=2` passes, with 18 tests run and 3 Selenium tests s",
+      "latency_s": 96.03860592842102,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

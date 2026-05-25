@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12497",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3310,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1581,
+      "response_excerpt": "The fix is already present in `/private/tmp/django/`. The corrected hint uses `ManyToManyField(\"%s\", through=\"%s\")` instead of the buggy `ForeignKey(\"%s\", symmetrical=False, through=\"%s\")`.\n\n<reasoning>\nThe issue points out that the hint in the error message for ambiguous M2M intermediary models incorrectly suggests using `ForeignKey(\"self\", symmetrical=False, through=\"...\")`. The correct guidance is `ManyToManyField(\"self\", through=\"...\")` because:\n1. `symmetrical` and `through` are `ManyToMany",
+      "latency_s": 138.07820391654968,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

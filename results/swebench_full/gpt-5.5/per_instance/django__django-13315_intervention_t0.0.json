@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13315",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3450,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1079,
+      "response_excerpt": "<reasoning>\nThe duplicate options come from applying `limit_choices_to` directly as a joined filter on the form field queryset. If the filter traverses a multi-valued relation, one related model row can be returned multiple times. The fix is to apply the same predicate through a correlated `Exists()` subquery keyed by the outer row primary key, so each selectable object appears once.\n\nThe checkout already contains this fix, and I verified the focused regression test with:\n`python3 tests/runtests",
+      "latency_s": 217.9374086856842,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

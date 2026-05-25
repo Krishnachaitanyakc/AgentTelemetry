@@ -1,0 +1,86 @@
+{
+  "instance_id": "django__django-11564",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 8,
+  "proposed_patch": false,
+  "patch_len": 0,
+  "total_searches": 8,
+  "unique_queries": 8,
+  "max_query_repeats": 1,
+  "patch_suppressions": 0,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "staticnode render static tag static_url": 1,
+    "filesystemstorage url base_url script_name": 1,
+    "request.meta script_name build_absolute_uri get_script_prefix": 1,
+    "get_script_prefix storage.url staticfiles_storage static media_url": 1,
+    "django.templatetags.static staticnode url handle_simple": 1,
+    "django.core.files.storage filesystemstorage url filepath_to_uri base_url": 1,
+    "django.urls get_script_prefix set_script_prefix tests force_script_name": 1,
+    "django.contrib.staticfiles.storage staticfilesstorage base_url settings.static_url": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1939,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"StaticNode render static tag STATIC_URL\"}}</tool_call>",
+      "latency_s": 12.981801986694336,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 2479,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"FileSystemStorage url base_url SCRIPT_NAME\"}}</tool_call>",
+      "latency_s": 14.041028022766113,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 3034,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"request.META SCRIPT_NAME build_absolute_uri get_script_prefix\"}}</tool_call>",
+      "latency_s": 9.36634874343872,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 3684,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"get_script_prefix Storage.url staticfiles_storage static MEDIA_URL\"}}</tool_call>",
+      "latency_s": 14.424028158187866,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 4359,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"django.templatetags.static StaticNode url handle_simple\"}}</tool_call>",
+      "latency_s": 16.500834941864014,
+      "error": null
+    },
+    {
+      "iteration": 6,
+      "prompt_len": 4979,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"django.core.files.storage FileSystemStorage url filepath_to_uri base_url\"}}</tool_call>",
+      "latency_s": 15.096867084503174,
+      "error": null
+    },
+    {
+      "iteration": 7,
+      "prompt_len": 5684,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"django.urls get_script_prefix set_script_prefix tests FORCE_SCRIPT_NAME\"}}</tool_call>",
+      "latency_s": 14.557090044021606,
+      "error": null
+    },
+    {
+      "iteration": 8,
+      "prompt_len": 6384,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"django.contrib.staticfiles.storage StaticFilesStorage base_url settings.STATIC_URL\"}}</tool_call>",
+      "latency_s": 13.961303949356079,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-14817",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1155,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2802,
+      "response_excerpt": "<reasoning>\nThe crash comes from `_print_MatAdd` trying to sympify `item.args[0]`. For a `MatrixSymbol`, `args[0]` is the raw name string, so `MatrixSymbol('y*', ...)` feeds `'y*'` into `S(...)` and the parser fails.\n\nThe sign test should inspect the matrix expression\u2019s scalar coefficient instead. `as_coeff_mmul()` returns that coefficient without touching the symbol name, so the pretty-printer can decide whether to omit `\" + \"` for negative terms without sympifying arbitrary strings.\n\nI verifie",
+      "latency_s": 245.256245136261,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12125",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3493,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2383,
+      "response_excerpt": "<reasoning>\nThe serializer already preserves nested class names in the deconstructed field path, but `_serialize_path()` split that path with `rsplit(\".\", 1)`. For a field like `Outer.Inner`, that made Django generate `import app.models.Outer` instead of `import app.models`, producing invalid migration imports.\n\nThe fix lets serializers pass the real Python module for deconstructible objects and fields, so imports use the module while the serialized expression keeps the full qualified class path",
+      "latency_s": 171.42789888381958,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-12481",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1318,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1199,
+      "response_excerpt": "<reasoning>\nThe constructor already composes list-of-list cycle input left-to-right through `Cycle`, and only rejects repeated elements for array-form input. I added a regression test for repeated non-disjoint cycles producing the identity permutation and updated the constructor docstring so it no longer says cyclic input must contain globally unique elements.\n\nVerification: `python3 -m pytest sympy/combinatorics/tests/test_permutations.py -q` passed with `16 passed`.\n</reasoning>\n\n<patch>\n```di",
+      "latency_s": 106.96311688423157,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

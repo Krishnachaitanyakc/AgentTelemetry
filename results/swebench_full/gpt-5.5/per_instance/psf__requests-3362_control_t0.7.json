@@ -1,0 +1,26 @@
+{
+  "instance_id": "psf__requests-3362",
+  "repo": "psf/requests",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1958,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1324,
+      "response_excerpt": "<reasoning>\n1. `iter_content(decode_unicode=True)` only decodes when `Response.encoding` is set; otherwise `stream_decode_response_unicode` yields bytes unchanged.\n2. `Response.text` can still return Unicode because it falls back to apparent encoding detection.\n3. For `application/json` without an explicit charset, Requests 2.10.0 leaves `Response.encoding` unset, causing the reported mismatch.\n4. JSON should default to UTF-8 when no charset is provided, so set that in `get_encoding_from_headers",
+      "latency_s": 104.52002000808716,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "mwaskom__seaborn-3190",
+  "repo": "mwaskom/seaborn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1199,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2623,
+      "response_excerpt": "<reasoning>\nThe reported failure happens when boolean semantic data is handled like continuous numeric data. In this checkout, the runtime path already infers a `Boolean` color scale and the exact reproducer no longer crashes, so I added a focused regression test to lock down that behavior. Existing unrelated changes in `axisgrid.py` / `test_axisgrid.py` were left untouched.\n\nVerified:\n`python -m pytest tests/_core/test_plot.py::TestScaling::test_inferred_boolean_color`\n`python -m pytest tests/_",
+      "latency_s": 178.88988089561462,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

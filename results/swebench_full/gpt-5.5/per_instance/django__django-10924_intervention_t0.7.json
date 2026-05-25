@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-10924",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1033,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1616,
+      "response_excerpt": "<reasoning>\nFilePathField already stores `path` without resolving callables and `formfield()` evaluates callable paths at runtime. The migration-sensitive part is `deconstruct()`: it must preserve the callable object so `makemigrations` serializes the callable reference instead of a machine-specific absolute path. I added a regression test for that behavior.\n\nVerified with:\n`python3 ./tests/runtests.py field_deconstruction.tests.FieldDeconstructionTests.test_file_path_field model_fields.test_fil",
+      "latency_s": 159.4000117778778,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-11143",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1349,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 6050,
+      "response_excerpt": "<reasoning>\nThe failure happens because on Python 3.8+, pytest aliases `astStr` to `ast.Constant`. That means a leading numeric expression like `0` passes the old `isinstance(item.value, astStr)` check, then pytest calls `\"PYTEST_DONT_REWRITE\" in docstring` with an `int`.\n\nThe fix is to verify the extracted constant value is actually a string before treating it as a module docstring. If it is not a string, stop scanning for docstring/future imports and insert rewrite imports before that first re",
+      "latency_s": 148.88984775543213,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-21379",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1685,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2573,
+      "response_excerpt": "<reasoning>\nThe failure comes from `Mod.eval`: during substitution, SymPy asks assumption questions that can build a modulo expression involving `Piecewise(...) / z`. `Mod.eval` tries to extract a polynomial gcd as an optional simplification, but polynomial conversion rejects `Piecewise` generators and raises `PolynomialError`.\n\nThe fix is to treat that polynomial simplification as best-effort. If `gcd(p, q)` cannot polynomialize the expression, `Mod` should continue unevaluated instead of leaki",
+      "latency_s": 167.92204594612122,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

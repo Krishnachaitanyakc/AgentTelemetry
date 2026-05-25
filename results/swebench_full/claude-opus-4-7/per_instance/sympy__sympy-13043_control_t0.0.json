@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13043",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3376,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1241,
+      "response_excerpt": "<reasoning>\nThe fix:\n1. Added `default_sort_key` import for deterministic sorting of monomials by complexity.\n2. In the `is_Add` branch with `separate=True`, replaced the unordered set comprehension with a list sorted by `(degree, default_sort_key(monom))` \u2014 degree first, then the sympy canonical sort key as a tie-breaker.\n3. In the final `separate=True` return, replaced `set(poly_dict.values())` with a list ordered by ascending degree.\n4. Updated the docstring + doctest example to reflect the n",
+      "latency_s": 652.7052037715912,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

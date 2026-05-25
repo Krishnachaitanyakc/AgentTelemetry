@@ -1,0 +1,26 @@
+{
+  "instance_id": "mwaskom__seaborn-3407",
+  "repo": "mwaskom/seaborn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2245,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3618,
+      "response_excerpt": "<reasoning>\nThe failure comes from treating any tuple-like variable spec as an iterable of column names. With MultiIndex columns, a tuple such as `(\"A\", \"1\")` is itself a single column label, so `list(vars)` incorrectly becomes `[\"A\", \"1\"]`. The patch preserves exact column labels when the spec is present in `data.columns`, while keeping existing scalar/list behavior. I also strengthened the MultiIndex test to use repeated top-level labels and cover explicit tuple column selection.\n\nVerified wit",
+      "latency_s": 218.22529983520508,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

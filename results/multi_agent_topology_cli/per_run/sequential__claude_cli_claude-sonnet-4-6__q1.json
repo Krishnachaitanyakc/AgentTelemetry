@@ -1,0 +1,29 @@
+{
+  "topology": "sequential",
+  "model": "claude_cli/claude-sonnet-4-6",
+  "question": "Compare reasoning-loop failures versus circular delegation in multi-agent systems. Which is more common, and why?",
+  "run_id": "sequential__claude_cli_claude-sonnet-4-6__q1",
+  "transcript": [
+    {
+      "agent": "planner",
+      "output": "1. **What are the documented failure modes?** How do reasoning-loop failures (an agent cycling on its own outputs) and circular delegation (agents indefinitely passing tasks to each other) manifest in practice across published multi-agent benchmarks?\n\n2. **What does empirical frequency data show?** In studies measuring agent failure rates (e.g., AutoGen, LangGraph, or similar frameworks), which failure type appears more often, and under what task or topology conditions?\n\n3. **What are the root causes?** Do reasoning loops stem from insufficient termination conditions, while circular delegation stems from unclear role boundaries \u2014 and which is harder to detect/prevent?",
+      "latency_s": 11.477272033691406
+    },
+    {
+      "agent": "researcher",
+      "output": "**Structured Findings (\u2264200 words)**\n\n---\n\n**1. Prevalence \u2014 Reasoning loops dominate measured data**\n- Meta's Devmate VSCode: reasoning loops peaked at **16% of all sessions** (hard telemetry). Post-intervention dropped ~50%.\n- UC Berkeley arXiv:2503.13657 (151 runs, 5 frameworks): overall failure rates >75%; **37.2% caused by poor system specification** \u2014 the primary driver of reasoning loops.\n\n**2. Circular delegation \u2014 real but less quantified**\n- Closest umbrella: UC Berkeley's \"inter-agent misalignment\" at **31.4%**.\n- Production examples: acknowledgment death spirals, confidence laundering (~30% padding per agent per hop), and a runaway dispatch loop that spawned 6,391 processes \u2014 all qualitative, not frequency-counted.\n\n**3. Root causes**\n- *Reasoning loops*: missing termination conditions, misleading tool output, conflicting rule files, LLM failure to self-recognize cycling.\n- *Circular delegation*: incomplete context serialization at handoff, absent stopping criteria, self-re",
+      "latency_s": 177.31063580513
+    },
+    {
+      "agent": "writer",
+      "output": "**Reasoning-loop failures are more common and better understood than circular delegation.**\n\nReasoning loops \u2014 where an agent cycles through the same steps without progress \u2014 have hard telemetry behind them. Meta's Devmate recorded loops in 16% of sessions; UC Berkeley's study found failure rates exceeding 75% across 151 runs, with poor system specification (37.2% of failures) as the leading cause. Detection is tractable: a tool-call concentration above 0.5 reliably signals repetition within a single agent boundary.\n\nCircular delegation \u2014 where tasks ping-pong between agents without resolution \u2014 is real but harder to measure. It falls under UC Berkeley's \"inter-agent misalignment\" category (31.4%), but that umbrella is broad. Documented instances like acknowledgment spirals, confidence laundering (~30% padding per hop), and a runaway dispatch loop spawning 6,391 processes are vivid but qualitative, not frequency-counted.\n\nThe core asymmetry is architectural: reasoning loops are self-co",
+      "latency_s": 14.758718967437744
+    }
+  ],
+  "total_cost_usd": 0.014994,
+  "total_input_tokens": 723,
+  "total_output_tokens": 855,
+  "n_agents": 3,
+  "wall_clock_s": 203.57065391540527,
+  "error": null
+}

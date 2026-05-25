@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13551",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3188,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1397,
+      "response_excerpt": "<reasoning>\nThe fix is to include the current email field value in `PasswordResetTokenGenerator._make_hash_value()`, using `user.get_email_field_name()` so custom user models with `EMAIL_FIELD` are handled, and `getattr(..., '')` so users without an email attribute still work. A regression test should prove that a token generated before an email change no longer validates afterward.\n\nThe checkout already contains this fix, and the focused test runner could not execute because this Python environ",
+      "latency_s": 93.60164523124695,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "astropy__astropy-6938",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1365,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1354,
+      "response": "<reasoning>\nThe current implementation writes the replacement result back into `output_field`, which is the required behavior because string replacement returns a new array. I added a regression assertion that inspects the written FITS bytes and verifies that ASCII table `D` formats actually emit `D` exponent separators, not `E`.\n\nVerification: `py_compile` passes. The targeted pytest import is blocked in this checkout because Astropy cannot determine its package version during `conftest.py` imp...[truncated]",
+      "latency_s": 263.86424803733826,
+      "error": null
+    }
+  ]
+}

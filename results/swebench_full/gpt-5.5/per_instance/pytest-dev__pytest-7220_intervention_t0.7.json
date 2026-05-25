@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-7220",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4192,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3439,
+      "response_excerpt": "<reasoning>\n1. The failure location is rendered by `_pytest._code.code.FormattedExcinfo._makepath`.\n2. That method used `Path.cwd()` when formatting relative paths, so if a fixture changed CWD before the failure report was rendered, pytest printed paths relative to the fixture\u2019s temporary directory.\n3. Test failure reporting already knows the original invocation directory via `config.invocation_params.dir`.\n4. The patch threads an optional `reprpath` through `ExceptionInfo.getrepr()` into `Forma",
+      "latency_s": 138.01170682907104,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

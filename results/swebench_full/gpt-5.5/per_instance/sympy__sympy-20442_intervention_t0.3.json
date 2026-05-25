@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-20442",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2152,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1523,
+      "response_excerpt": "<reasoning>\n1. The bad result comes from solving an incompatible dimensional conversion with `solve_least_squares`.\n2. Least-squares gives a projection, so `joule*second` can be approximated as a fractional power of `joule`.\n3. Unit conversion should only proceed when the target unit dimensions exactly span the expression dimension.\n4. Replace least-squares with an exact solve and return the original expression when no exact solution exists.\n5. Add a regression test for `convert_to(joule*second,",
+      "latency_s": 211.73220777511597,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

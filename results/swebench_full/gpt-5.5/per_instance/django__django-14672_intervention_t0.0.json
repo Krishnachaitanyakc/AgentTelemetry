@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14672",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1985,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 7554,
+      "response_excerpt": "<reasoning>\nManyToManyRel.identity is used for equality and hashing. Since through_fields may be supplied as a list, placing self.through_fields directly in the identity tuple can make the relation unhashable. ForeignObjectRel already normalizes limit_choices_to with make_hashable for the same reason, so applying the same normalization to through_fields fixes the TypeError while preserving equality semantics. I also include a regression test that hashes inherited reverse M2M relations whose thro",
+      "latency_s": 235.46802687644958,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

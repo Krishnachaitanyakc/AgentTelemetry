@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12856",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1602,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1261,
+      "response_excerpt": "<reasoning>\nThe fix belongs in `UniqueConstraint.check()`, alongside the existing backend feature checks. Reusing `model._check_local_fields()` gives the same `models.E012` behavior as `unique_together` and also preserves the existing checks for M2M and non-local fields. I verified the focused regression test in this checkout with `./.venv/bin/python tests/runtests.py invalid_models_tests.test_models.ConstraintsTests.test_unique_constraint_pointing_to_missing_field --verbosity 1`.\n</reasoning>\n\n",
+      "latency_s": 130.6889340877533,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

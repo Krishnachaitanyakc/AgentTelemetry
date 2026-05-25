@@ -1,0 +1,21 @@
+{
+  "instance_id": "astropy__astropy-14365",
+  "repo": "astropy/astropy",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1203,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2166,
+      "response": "All tests pass. Here's the summary of the fix:\n\n<reasoning>\nThe issue is that `astropy.io.ascii.qdp` assumes QDP commands are uppercase, but QDP itself is case-insensitive. There are two places in `qdp.py` that need fixing:\n\n1. **Line 69 (`_line_type` function)**: The regex that classifies lines is compiled without `re.IGNORECASE`, so `read serr 1 2` doesn't match the pattern `READ [TS]ERR(\\s+[0-9]+)+`. Fix: add `re.IGNORECASE` flag to `re.compile()`.\n\n2. **Line 313 (`_get_tables_from_qdp_file` ...[truncated]",
+      "latency_s": 145.28681683540344,
+      "error": null
+    }
+  ]
+}

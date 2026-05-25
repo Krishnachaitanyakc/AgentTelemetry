@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11630",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1845,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1454,
+      "response_excerpt": "<reasoning>\nThe issue is about Django 2.2's models.E028 check that raises an error when multiple models share the same db_table, even when those models are routed to different databases. This is a regression from Django 2.0.\n\nThe check is located in `django/core/checks/model_checks.py` in the `check_all_models` function. It groups all models by their `db_table` value and reports an error if any table is used by more than one model, without considering whether those models actually live on differ",
+      "latency_s": 55.009087800979614,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

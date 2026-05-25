@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-14092",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3023,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3897,
+      "response_excerpt": "<reasoning>\nNCA\u2019s validation was too strict because it used concrete Python types (`int`, `float`) with `check_scalar`. NumPy scalar integers from `np.arange` are not instances of `int`, and an integer value like `1` is valid for a real-valued tolerance.\n\nThe focused fix is to validate against numeric abstract base classes: `numbers.Integral` for integer parameters and `numbers.Real` for `tol`. The regression test now keeps string values invalid while accepting `np.int64`, `np.float32`, and inte",
+      "latency_s": 96.82757878303528,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

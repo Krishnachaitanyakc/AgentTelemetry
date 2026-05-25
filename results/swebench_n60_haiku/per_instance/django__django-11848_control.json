@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11848",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 815,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1451,
+      "response": "Let me understand the issue better by analyzing what needs to be fixed. Based on my findings, I'll create a patch that fixes the two-digit year logic:\n\n<patch>\n--- a/django/utils/http.py\n+++ b/django/utils/http.py\n@@ -158,13 +158,17 @@ def parse_http_date(date):\n         return calendar.timegm(result.utctimetuple())\n     try:\n         year = int(m.group('year'))\n         if year < 100:\n             current_year = datetime.datetime.utcnow().year\n             current_century = current_year - (curr...[truncated]",
+      "latency_s": 123.7962019443512,
+      "error": null
+    }
+  ]
+}

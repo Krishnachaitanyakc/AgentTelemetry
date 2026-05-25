@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16910",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4977,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2416,
+      "response_excerpt": "<reasoning>\n1. `only()` builds a select mask keyed by the traversed relation object.\n2. For reverse `OneToOneField` paths, `get_related_selections()` was looking up the mask by the forward field (`o.field`) only.\n3. When the reverse one-to-one is also the related model primary key, that missed mask caused all related columns to be selected.\n4. The fix checks the reverse relation object first, with the old field lookup retained as fallback, and adds regression coverage.\n5. Verified with `python3 ",
+      "latency_s": 69.26531314849854,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

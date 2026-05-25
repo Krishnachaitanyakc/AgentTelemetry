@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15902",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 488,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1235,
+      "response_excerpt": "<reasoning>\nThe issue is that the formset's ManagementForm triggers the `default.html` deprecation warning even when users don't explicitly render forms with `{{ form }}`. Since the management form only contains hidden inputs, the actual full form template (which has the deprecation warning logic) isn't needed.\n\nThe fix:\n1. Add a `template_name` class attribute to `ManagementForm` that overrides the `template_name` property inherited from `BaseForm` (which returns `self.renderer.form_template_na",
+      "latency_s": 301.9041268825531,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-25500",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1686,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5501,
+      "response_excerpt": "<reasoning>\nThe crash happens because `_CalibratedClassifier.predict_proba` assigns each calibrator output into a 1D NumPy probability column. With `transform_output=\"pandas\"`, isotonic calibration can produce a single-column pandas object shaped `(n_samples, 1)`, which cannot be broadcast into `proba[:, class_idx]` shaped `(n_samples,)`.\n\nThe fix is to normalize calibrator outputs with the existing `column_or_1d` utility before assignment. I also added a regression test using the reported globa",
+      "latency_s": 179.35489010810852,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

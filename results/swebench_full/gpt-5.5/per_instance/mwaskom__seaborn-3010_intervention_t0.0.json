@@ -1,0 +1,26 @@
+{
+  "instance_id": "mwaskom__seaborn-3010",
+  "repo": "mwaskom/seaborn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1116,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4747,
+      "response_excerpt": "<reasoning>\n`np.polyfit` cannot handle missing values in either coordinate, so `PolyFit` should drop rows with null `x`/`y` before fitting. The regression test should cover the issue case with `None`, not only explicit `np.nan`.\n\nI could not run the focused tests here because the available Python environment is missing `pandas` and `pytest`.\n</reasoning>\n\n<patch>\ndiff --git a/seaborn/_stats/regression.py b/seaborn/_stats/regression.py\n--- a/seaborn/_stats/regression.py\n+++ b/seaborn/_stats/regre",
+      "latency_s": 106.53560423851013,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

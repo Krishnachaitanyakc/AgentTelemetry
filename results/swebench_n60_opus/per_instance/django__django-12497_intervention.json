@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12497",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1706,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1612,
+      "response": "Now I have the full picture. The fix requires two changes:\n\n1. **`django/db/models/fields/related.py`** (lines 1279 and 1296): Change `ForeignKey(\"self\", symmetrical=False, through=\"%s\")` to `ManyToManyField(\"self\", through=\"%s\")` \u2014 fixing the class name and removing the outdated `symmetrical=False` parameter.\n\n2. **`tests/invalid_models_tests/test_relative_fields.py`** (line 156): Same change to match the corrected hint.\n\n<reasoning>\nThe issue is clear: the hint message in Django's model valida...[truncated]",
+      "latency_s": 82.03336715698242,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12497",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1769,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1612,
+      "response": "<reasoning>\nNow I understand the issue! The problem is:\n\n1. The error happens when you have a **non-recursive** relationship (Group \u2192 Person) with an ambiguous through model\n2. The hint says \"If you want to create a recursive relationship, use ManyToManyField(\"self\", ...)\"\n3. But this is wrong because the error is NOT about creating a recursive relationship - it's about disambiguating a non-recursive relationship\n\nThe fix is to remove the misleading hint that talks about recursive relationships,...[truncated]",
+      "latency_s": 98.33671116828918,
+      "error": null
+    }
+  ]
+}

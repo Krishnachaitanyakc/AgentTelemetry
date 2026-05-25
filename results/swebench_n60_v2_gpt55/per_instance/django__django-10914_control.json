@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-10914",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 3775,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "file_upload_permissions": 1,
+    "filesystemstorage file_permissions_mode chmod": 1,
+    "file_upload_permissions default none documentation": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2032,
+      "response": "<reasoning>FILE_UPLOAD_PERMISSIONS currently defaults to None, so FileSystemStorage only applies chmod when users configure the setting explicitly. That leaves saved upload permissions dependent on the upload handler path. Defaulting to 0o644 makes saved files consistent while preserving the documented opt-out behavior when FILE_UPLOAD_PERMISSIONS is explicitly set to None.</reasoning>\n<patch>diff --git a/django/conf/global_settings.py b/django/conf/global_settings.py\n--- a/django/conf/global_settings.py\n+++ b/django/conf/global_settings.py\n@@ -306,7 +306,7 @@ FILE_UPLOAD_TEMP_DIR = None\n \n # The numeric mode to set newly-uploaded files to. The value should be a mode\n # you'd pass directly to os.chmod; see https://docs.python.org/library/os.html#files-and-directories.\n-FILE_UPLOAD_PERMISSIONS = None\n+FILE_UPLOAD_PERMISSIONS = 0o644\n \n # The numeric mode to assign to newly-created directories, when uploading files.\n # The value should be a mode as you'd pass to os.chmod;\ndiff --git a/docs/ref/settings.txt b/docs/ref/settings.txt\n--- a/docs/ref/settings.txt\n+++ b/docs/ref/settings.txt\n@@ -1504,16 +1504,16 @@ FILE_UPLOAD_PERMISSIONS\n \n-Default: ``None``\n+Default: ``0o644``\n \n The numeric mode (i.e. ``0o644``) to set newly uploaded files to. For\n more information about what these modes mean, see the documentation for\n :func:`os.chmod`.\n \n-If this isn't given or is ``None``, you'll get operating-system\n-dependent behavior. On most platforms, temporary files will have a mode\n-of ``",
+      "latency_s": 107.19068908691406,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 7216,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"FILE_UPLOAD_PERMISSIONS\"}}</tool_call>",
+      "latency_s": 12.061438083648682,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 7676,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"FileSystemStorage file_permissions_mode chmod\"}}</tool_call>",
+      "latency_s": 13.149922132492065,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 8246,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"FILE_UPLOAD_PERMISSIONS default None documentation\"}}</tool_call>",
+      "latency_s": 12.523419857025146,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 8841,
+      "response": "<reasoning>Set Django's default upload file permission to `0o644` so saved files no longer inherit inconsistent modes from memory-backed versus temporary-file-backed uploads. Keep `None` as the explicit opt-out for operating-system-dependent behavior, and update docs/tests to match the new default.</reasoning>\n<patch>diff --git a/django/conf/global_settings.py b/django/conf/global_settings.py\n--- a/django/conf/global_settings.py\n+++ b/django/conf/global_settings.py\n@@ -306,7 +306,7 @@ FILE_UPLOAD_TEMP_DIR = None\n \n # The numeric mode to set newly-uploaded files to. The value should be a mode\n # you'd pass directly to os.chmod; see https://docs.python.org/library/os.html#files-and-directories.\n-FILE_UPLOAD_PERMISSIONS = None\n+FILE_UPLOAD_PERMISSIONS = 0o644\n \n # The numeric mode to assign to newly-created directories, when uploading files.\n # The value should be a mode as you'd pass to os.chmod;\ndiff --git a/docs/ref/settings.txt b/docs/ref/settings.txt\n--- a/docs/ref/settings.txt\n+++ b/docs/ref/settings.txt\n@@ -1504,16 +1504,16 @@ FILE_UPLOAD_PERMISSIONS\n \n-Default: ``None``\n+Default: ``0o644``\n \n The numeric mode (i.e. ``0o644``) to set newly uploaded files to. For\n more information about what these modes mean, see the documentation for\n :func:`os.chmod`.\n \n-If this isn't given or is ``None``, you'll get operating-system\n-dependent behavior. On most platforms, temporary files will have a mode\n-of ``0o600``, and files saved from memory will be saved using the\n-system's standa",
+      "latency_s": 20.87651801109314,
+      "error": null
+    }
+  ]
+}

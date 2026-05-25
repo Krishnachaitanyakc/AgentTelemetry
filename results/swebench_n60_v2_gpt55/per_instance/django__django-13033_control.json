@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-13033",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 2300,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "find_ordering_name": 1,
+    "order_by relation attname _id": 1,
+    "trim_joins ordering related model meta.ordering": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4743,
+      "response": "<reasoning>`find_ordering_name()` decides whether an `order_by()` target is a relation that should inherit the related model\u2019s `Meta.ordering`. For traversed attname lookups like `record__root_id`, it compared `field.attname` (`root_id`) with the full lookup string (`record__root_id`), so Django treated it like `record__root`, added the self-join, and applied the related model\u2019s default descending ordering. Comparing against the final lookup component preserves explicit `_id` ordering and lets `trim_joins()` order by the existing FK column.</reasoning>\n<patch>diff --git a/django/db/models/sql/compiler.py b/django/db/models/sql/compiler.py\n--- a/django/db/models/sql/compiler.py\n+++ b/django/db/models/sql/compiler.py\n@@ -723,7 +723,12 @@ class SQLCompiler:\n         # If we get to this point and the field is a relation to another model,\n         # append the default ordering for that model unless the attribute name\n         # of the field is specified.\n-        if field.is_relation and opts.ordering and getattr(field, 'attname', None) != name and name != 'pk':\n+        if (\n+            field.is_relation and\n+            opts.ordering and\n+            getattr(field, 'attname', None) != pieces[-1] and\n+            name != 'pk'\n+        ):\n             # Firstly, avoid infinite loops.\n             already_seen = already_seen or set()\n             join_tuple = tuple(getattr(self.query.alias_map[j], 'join_cols', None) for j in joins)\ndiff --git a/tests/ordering/models.py b/tests/ord",
+      "latency_s": 120.15490198135376,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 7873,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"find_ordering_name\"}}</tool_call>",
+      "latency_s": 14.255934953689575,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 8308,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"order_by relation attname _id\"}}</tool_call>",
+      "latency_s": 13.290178775787354,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 8798,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"trim_joins ordering related model Meta.ordering\"}}</tool_call>",
+      "latency_s": 11.689201831817627,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 9378,
+      "response": "<reasoning>`find_ordering_name()` should only expand a relation into the related model\u2019s default ordering when the user ordered by the relation itself, not when they explicitly ordered by its concrete foreign-key column. For traversed lookups such as `record__root_id`, the current check compares `field.attname` with the whole lookup string, so `root_id != record__root_id` and Django incorrectly treats it like `record__root`. Comparing against the final lookup component preserves explicit `_id` ordering and avoids the unnecessary self join/default ordering inversion.</reasoning>\n<patch>diff --git a/django/db/models/sql/compiler.py b/django/db/models/sql/compiler.py\n--- a/django/db/models/sql/compiler.py\n+++ b/django/db/models/sql/compiler.py\n@@ -723,7 +723,12 @@ class SQLCompiler:\n         # If we get to this point and the field is a relation to another model,\n         # append the default ordering for that model unless the attribute name\n         # of the field is specified.\n-        if field.is_relation and opts.ordering and getattr(field, 'attname', None) != name and name != 'pk':\n+        if (\n+            field.is_relation and\n+            opts.ordering and\n+            getattr(field, 'attname', None) != pieces[-1] and\n+            name != 'pk'\n+        ):\n             # Firstly, avoid infinite loops.\n             already_seen = already_seen or set()\n             join_tuple = tuple(getattr(self.query.alias_map[j], 'join_cols', None) for j in joins)\ndiff --git a/tests/orde",
+      "latency_s": 18.44261384010315,
+      "error": null
+    }
+  ]
+}

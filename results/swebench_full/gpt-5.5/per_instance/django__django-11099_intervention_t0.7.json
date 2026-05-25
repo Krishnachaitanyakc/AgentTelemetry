@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11099",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 899,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1558,
+      "response_excerpt": "<reasoning>\nI found `ASCIIUsernameValidator` and `UnicodeUsernameValidator` in `django/contrib/auth/validators.py`. The issue is caused by line anchors that allow Python\u2019s `$` behavior to match before a final newline. The fix is to use absolute string anchors, `\\A` and `\\Z`, for both validators. I also verified the focused username validator tests with `python3 tests/runtests.py auth_tests.test_validators.UsernameValidatorsTests`; they pass.\n</reasoning>\n\n<patch>\ndiff --git a/django/contrib/auth",
+      "latency_s": 182.25423216819763,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

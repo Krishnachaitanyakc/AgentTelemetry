@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13241",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2002,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1612,
+      "response_excerpt": "<reasoning>\nKernelPCA\u2019s eigenvectors are sign-indeterminate, so repeated eigensolver runs can return equivalent components with opposite signs. The fix is to canonicalize eigenvector signs after decomposition and before using/sorting them. I also add a regression test for the reported RBF + auto/ARPACK path.\n\nI could not run the test suite in this checkout: `pytest` is blocked because the available Python lacks `distutils`, and sklearn is not built locally.\n</reasoning>\n\n<patch>\ndiff --git a/skl",
+      "latency_s": 98.44023013114929,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

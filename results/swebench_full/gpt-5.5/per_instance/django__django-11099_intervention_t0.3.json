@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11099",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 943,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1558,
+      "response_excerpt": "<reasoning>\nThe username validators should use absolute string anchors so Python regex newline quirks cannot allow usernames outside the intended character set. The checkout already had trailing-newline regression coverage, so the code patch only changes the start anchor from `^` to `\\A` for both ASCII and Unicode validators.\n\nVerified with:\n`python3 tests/runtests.py auth_tests.test_validators.UsernameValidatorsTests`\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/django/contrib/auth/validators.py ",
+      "latency_s": 139.6754171848297,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

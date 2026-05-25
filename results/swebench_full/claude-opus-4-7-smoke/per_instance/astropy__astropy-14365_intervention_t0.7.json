@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-14365",
+  "repo": "astropy/astropy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3369,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2135,
+      "response_excerpt": "<reasoning>\nThe issue is that `ascii.qdp` reader rejects QDP commands like `read serr 1 2` (lowercase) even though QDP itself is case-insensitive. The root cause was in `astropy/io/ascii/qdp.py`:\n\n1. The regex `_command_re = r\"READ [TS]ERR(\\s+[0-9]+)+\"` was compiled WITHOUT `re.IGNORECASE`, so it only matched uppercase commands.\n2. The `\"NO\"` masked-value sentinel comparison (`if v == \"NO\":`) was case-sensitive too.\n3. The dictionary key parsed from a command (`command[1]`) was used as-is, so th",
+      "latency_s": 329.14095401763916,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

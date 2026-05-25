@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15814",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1929,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3440,
+      "response_excerpt": "<reasoning>\nThe crash happens because `get_default_columns()` decides whether a field belongs to the currently selected model by comparing the field\u2019s concrete model to `opts.model`. For proxy models, `opts.model` is the proxy class while fields belong to the concrete model, so the primary key can be treated like a parent field and omitted from the related select list. Comparing against `opts.concrete_model` fixes normal models unchanged and handles proxies correctly.\n\nVerified with:\n`PYTHONPATH",
+      "latency_s": 168.52342796325684,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

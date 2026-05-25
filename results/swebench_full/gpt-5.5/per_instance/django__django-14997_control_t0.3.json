@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14997",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2114,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 6805,
+      "response_excerpt": "<reasoning>\nThe SQLite crash comes from recreating an expression unique index during table remake. In this checkout, expression index compilation already avoids table-qualified columns, so the runtime path no longer crashes. I added regression coverage for the exact scenario: a model with `UniqueConstraint(F(\"name\"), F(\"value\"))` has a `CharField` altered, forcing SQLite\u2019s table remake, then verifies the unique index still exists and is enforced.\n\nVerified with:\n`python3 tests/runtests.py schema",
+      "latency_s": 295.7366998195648,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

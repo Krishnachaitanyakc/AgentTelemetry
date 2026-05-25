@@ -1,0 +1,26 @@
+{
+  "instance_id": "pallets__flask-5063",
+  "repo": "pallets/flask",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3700,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2833,
+      "response_excerpt": "<reasoning>\nThe `flask routes` command already knows about `rule.subdomain` and `rule.host`, but it only displayed raw subdomains. The fix reads `SERVER_NAME` while building route rows: with host matching it keeps showing `Host`; with `SERVER_NAME` it shows a `Domain` column containing either `SERVER_NAME` or `<subdomain>.<SERVER_NAME>`; without `SERVER_NAME` it keeps the existing `Subdomain` behavior. Focused route CLI tests pass with `.venv/bin/python -m pytest tests/test_cli.py::TestRoutes -q",
+      "latency_s": 75.88298988342285,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

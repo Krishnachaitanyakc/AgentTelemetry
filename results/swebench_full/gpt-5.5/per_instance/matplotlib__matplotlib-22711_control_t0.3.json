@@ -1,0 +1,26 @@
+{
+  "instance_id": "matplotlib__matplotlib-22711",
+  "repo": "matplotlib/matplotlib",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2840,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4335,
+      "response_excerpt": "<reasoning>\nThe crash happens because `RangeSlider.set_val` mutates `self.poly.xy` as if the polygon always has five vertices. When `valinit=[0, 0]`, `axvspan`/`axhspan` can create a degenerate polygon whose `xy` array has only four vertices, so assigning `xy[4]` raises `IndexError`.\n\nThe fix is to rebuild the selection polygon vertices explicitly instead of assuming the existing vertex array shape. I also added a regression test for equal initial range values in both orientations.\n\nI could not ",
+      "latency_s": 177.6509974002838,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

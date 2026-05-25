@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12284",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1896,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1705,
+      "response": "<reasoning>\nThe generated `get_FOO_display()` method was skipped whenever a subclass inherited any method with the same name. For an abstract base model, that inherited method is bound to the base field and therefore uses the base choices. Checking only `cls.__dict__` preserves methods explicitly defined on the current class while allowing a subclass field override to install a new display method.\n\nVerification: `python3 -m py_compile django/db/models/fields/__init__.py` passed. The matching reg...[truncated]",
+      "latency_s": 240.75852417945862,
+      "error": null
+    }
+  ]
+}

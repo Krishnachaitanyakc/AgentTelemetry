@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-10914",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 511,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1815,
+      "response_excerpt": "<reasoning>\nThe issue requests setting the default `FILE_UPLOAD_PERMISSIONS` to `0o644` to ensure consistent file permissions regardless of whether a `MemoryUploadedFile` or `TemporaryUploadedFile` is used. The fix involves changing the default value in Django's global settings file from `None` to `0o644`.\n\nThe relevant file is `django/conf/global_settings.py` which contains all default Django settings. The `FILE_UPLOAD_PERMISSIONS` setting controls the numeric mode applied to uploaded files in ",
+      "latency_s": 68.57547116279602,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

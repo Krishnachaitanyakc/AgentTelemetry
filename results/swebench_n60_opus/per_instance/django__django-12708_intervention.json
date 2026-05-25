@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12708",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1066,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1784,
+      "response": "The test files aren't in these directories. That's fine \u2014 we have the fix. Let me now provide the final patch.\n\n<patch>\n--- a/django/db/backends/base/schema.py\n+++ b/django/db/backends/base/schema.py\n@@ -377,7 +377,7 @@ class BaseDatabaseSchemaEditor:\n         # Deleted uniques\n         for fields in olds.difference(news):\n-            self._delete_composed_index(model, fields, {'unique': True}, self.sql_delete_unique)\n+            self._delete_composed_index(model, fields, {'unique': True, 'pri...[truncated]",
+      "latency_s": 313.3621048927307,
+      "error": null
+    }
+  ]
+}

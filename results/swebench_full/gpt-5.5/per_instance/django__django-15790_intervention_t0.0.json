@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15790",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 84,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1239,
+      "response_excerpt": "<reasoning>\nThe relevant Django checkout already contains the fix for this issue. `_check_for_template_tags_with_the_same_name()` stores module paths in a `set`, so the same custom library path configured in `TEMPLATES['OPTIONS']['libraries']` is deduplicated against the installed-app discovery result.\n\nI verified the focused regression coverage with:\n\n`python3 tests/runtests.py check_framework.test_templates.CheckTemplateTagLibrariesWithSameName -v 2`\n\nResult: 6 tests passed, including the inst",
+      "latency_s": 143.16444206237793,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

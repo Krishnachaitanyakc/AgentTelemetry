@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-10297",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2363,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2325,
+      "response_excerpt": "<reasoning>\nThe 0.19.1 code already supports `store_cv_values` in `_BaseRidgeCV` and `_RidgeGCV`; `RidgeClassifierCV` simply omits the parameter in its own `__init__`, causing the reported `TypeError`. The fix is to expose `store_cv_values` on `RidgeClassifierCV`, forward it to `_BaseRidgeCV`, document it, and add regression coverage that verifies `cv_values_` is stored and that `cv != None` remains incompatible.\n\nVerification: `python3 -m py_compile sklearn/linear_model/ridge.py sklearn/linear_",
+      "latency_s": 139.27658200263977,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

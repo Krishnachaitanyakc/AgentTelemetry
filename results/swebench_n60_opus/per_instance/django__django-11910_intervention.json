@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11910",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1515,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1997,
+      "response": "These are different Django versions. Let me produce the final patch for the issue.\n\n<reasoning>\nThe bug is in `django/db/migrations/autodetector.py` in the `generate_altered_fields()` method. \n\nWhen a primary key field is renamed (e.g., `field_wrong` -> `field_fixed`), and another model has a ForeignKey pointing to that model, the autodetector:\n\n1. Temporarily sets `new_field.remote_field.model` to `old_field.remote_field.model` (line 952) and `new_field.remote_field.field_name` to the old name ...[truncated]",
+      "latency_s": 451.6774411201477,
+      "error": null
+    }
+  ]
+}

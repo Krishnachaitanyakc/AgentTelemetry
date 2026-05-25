@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11742",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3656,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1122,
+      "response_excerpt": "<reasoning>\nThe field system check already validates that `choices` is iterable and structurally valid. The right place to add this is inside `Field._check_choices()`, while it is already walking all choices, including grouped choices.\n\nThe patch tracks the maximum string choice value length during validation and, after confirming the choices structure is valid, emits `fields.E009` when `max_length` is smaller. Non-string values are ignored so integer choices on non-character fields are unaffect",
+      "latency_s": 136.3585422039032,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

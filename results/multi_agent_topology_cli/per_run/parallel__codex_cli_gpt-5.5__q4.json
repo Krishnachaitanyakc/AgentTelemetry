@@ -1,0 +1,29 @@
+{
+  "topology": "parallel",
+  "model": "codex_cli/gpt-5.5",
+  "question": "Describe how a closed-loop intervention based on telemetry signals can recover a stuck agent. Give a concrete example using the REASONING span kind.",
+  "run_id": "parallel__codex_cli_gpt-5.5__q4",
+  "transcript": [
+    {
+      "agent": "researcher_a",
+      "output": "A closed-loop recovery system treats agent telemetry as a control signal: observe traces, classify non-progress, inject an intervention, then verify progress in later spans.\n\nExample with `REASONING` spans: suppose an agent emits five consecutive `REASONING` spans over 90 seconds, each consuming many tokens, with no tool calls, no file diffs, and semantically similar text like \u201cmaybe the failure is in auth setup.\u201d A monitor flags this as a stuck reasoning loop: high cognitive activity, low external state change.\n\nThe controller can interrupt with a targeted directive:\n\n```text\nYou are looping. Stop hypothesizing. Run the failing test, inspect the first stack frame, then search for that symbol.\n```\n\nRecovery is confirmed when the next trace contains `TOOL` spans, new evidence, and a changed plan. The key is that telemetry closes the loop: detection is automatic, intervention is specific, and success is measured behaviorally.",
+      "latency_s": 13.545557022094727
+    },
+    {
+      "agent": "researcher_b",
+      "output": "Instrument each agent step as telemetry spans: `REASONING`, `TOOL_CALL`, `OBSERVATION`, `FINAL`. A stuck agent often shows repeated or long `REASONING` spans with no tool calls, growing token use, and unchanged task state.\n\nClosed loop: detect the stall, intervene, then verify recovery from the next spans.\n\nExample: in production, a code agent emits `span.kind=REASONING` for 180s, `iteration=7`, `last_tool_age=9m`, `tokens_out=12k`, and `plan_hash` unchanged. A controller marks it stalled, resumes from the last checkpoint, lowers `max_reasoning_tokens` to `1024`, and injects: \u201cStop planning. Run one diagnostic command now: `rg failing_test`.\u201d\n\nRecovery is confirmed when the next trace contains a `TOOL_CALL` span followed by changed state or a new observation. If not, the controller escalates to restart, model switch, or human handoff.",
+      "latency_s": 15.162154197692871
+    },
+    {
+      "agent": "writer",
+      "output": "A closed-loop recovery system uses agent telemetry as feedback: instrument each step as spans such as `REASONING`, `TOOL_CALL`, `OBSERVATION`, and `FINAL`; detect non-progress; inject a targeted intervention; then verify recovery in later spans.\n\nFor example, a code agent emits repeated `REASONING` spans for 180 seconds with `iteration=7`, `tokens_out=12k`, `last_tool_age=9m`, no file diffs, no tool calls, and an unchanged `plan_hash`. The reasoning text keeps circling the same hypothesis, such as \u201cmaybe the failure is in auth setup.\u201d A monitor classifies this as a stuck reasoning loop: high cognitive/token activity, low external state change.\n\nThe controller interrupts with a specific directive:\n\n```text\nYou are looping. Stop planning. Run the failing test, inspect the first stack frame, then search for that symbol.\n```\n\nIt may also resume from a checkpoint and lower `max_reasoning_tokens` to force action.\n\nRecovery is confirmed behaviorally: the next trace should contain a `TOOL_CALL",
+      "latency_s": 10.55512809753418
+    }
+  ],
+  "total_cost_usd": 0.0,
+  "total_input_tokens": 654,
+  "total_output_tokens": 746,
+  "n_agents": 3,
+  "wall_clock_s": 39.288228034973145,
+  "error": null
+}

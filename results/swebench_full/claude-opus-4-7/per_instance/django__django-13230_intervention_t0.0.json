@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13230",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 521,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1136,
+      "response_excerpt": "The patch I provided earlier is complete and addresses the issue:\n\n<patch>\n--- a/django/contrib/syndication/views.py\n+++ b/django/contrib/syndication/views.py\n@@ -212,6 +212,7 @@ class Feed:\n                 author_name=author_name,\n                 author_email=author_email,\n                 author_link=author_link,\n+                comments=self._get_dynamic_attr('item_comments', item),\n                 categories=self._get_dynamic_attr('item_categories', item),\n                 item_copyright",
+      "latency_s": 759.7121212482452,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

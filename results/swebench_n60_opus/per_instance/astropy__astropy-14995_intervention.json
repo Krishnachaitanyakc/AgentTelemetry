@@ -1,0 +1,21 @@
+{
+  "instance_id": "astropy__astropy-14995",
+  "repo": "astropy/astropy",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 519,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3282,
+      "response": "Now I have the complete picture. The bug is in `_arithmetic_mask` in v5.3.0. Here's the fix:\n\n**v5.3.0 (buggy) at line 523:**\n```python\nelif operand is None:\n    return deepcopy(self.mask)\n```\n\n**Should be:**\n```python\nelif operand is None or operand.mask is None:\n    return deepcopy(self.mask)\n```\n\nThe v5.1 code had `elif operand.mask is None:` which correctly handled the case where operand exists but has no mask. The v5.3 refactor changed it to `elif operand is None:` to handle collapse operat...[truncated]",
+      "latency_s": 370.8671772480011,
+      "error": null
+    }
+  ]
+}

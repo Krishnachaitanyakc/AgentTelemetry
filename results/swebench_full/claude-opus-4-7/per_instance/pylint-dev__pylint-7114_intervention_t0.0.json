@@ -1,0 +1,26 @@
+{
+  "instance_id": "pylint-dev__pylint-7114",
+  "repo": "pylint-dev/pylint",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3189,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2490,
+      "response_excerpt": "The fix has been applied. Let me provide the final patch summary.\n\n<patch>\n--- a/pylint/lint/expand_modules.py\n+++ b/pylint/lint/expand_modules.py\n@@ -23,6 +23,15 @@ def _modpath_from_file(filename: str, is_namespace: bool, path: list[str]) -> li\n     )\n \n \n+def _has_same_name_module(directory: str) -> bool:\n+    \"\"\"Check if the directory contains a module with the same name as itself.\"\"\"\n+    basename = os.path.basename(os.path.normpath(directory))\n+    return any(\n+        os.path.exists(os.pa",
+      "latency_s": 682.9942510128021,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-12907",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1599,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2042,
+      "response_excerpt": "<reasoning>\nThe bug happens when a nested `CompoundModel` reaches the `&` stacking helper and is handled as a plain model, which can collapse its internal separability into a dense block. The fix is to normalize compound operands through `_separable()` before `_cstack` pads and horizontally stacks the matrices. I also added regression coverage for both direct `_cstack(rot, sh1 & sh2)` behavior and the public `Pix2Sky_TAN() & (Linear1D & Linear1D)` issue case.\n\nVerification:\n- `git diff --check` ",
+      "latency_s": 179.35620522499084,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

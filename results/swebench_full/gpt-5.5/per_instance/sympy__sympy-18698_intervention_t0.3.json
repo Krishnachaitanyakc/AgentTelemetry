@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-18698",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1275,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1250,
+      "response_excerpt": "<reasoning>\nThe issue is in the high-level symbolic `sqf_list` path, where factors with the same square-free multiplicity are grouped after processing `Mul` arguments. The current grouping used a set of multiplicities, which can produce inconsistent iteration order. I changed that to preserve first-seen multiplicity order, and added a regression test for the reported example to ensure `(x - 2)` and `(x - 3)` are combined into `x**2 - 5*x + 6` at multiplicity 3.\n\nVerified with:\n`python3 -m pytest",
+      "latency_s": 290.19465804100037,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

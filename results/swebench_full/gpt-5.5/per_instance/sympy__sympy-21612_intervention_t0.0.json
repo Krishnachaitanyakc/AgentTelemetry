@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-21612",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 669,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1473,
+      "response_excerpt": "<reasoning>\n1. Inspected the LaTeX parser and found fraction handling in `sympy/parsing/latex/_parse_latex_antlr.py`.\n2. Reproduced the issue expression on this checkout; current parser code already preserves denominator grouping and returns `((a**3 + b)/c)/(1/(c**2))`.\n3. Added a focused regression test to `GOOD_PAIRS` so nested fractions in denominators cannot regress.\n4. Verified with `pytest sympy/parsing/tests/test_latex.py -q`: `5 passed, 1 xfailed`.\n</reasoning>\n\n<patch>\n```diff\ndiff --gi",
+      "latency_s": 165.17935466766357,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

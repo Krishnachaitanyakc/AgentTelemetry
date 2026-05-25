@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13315",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3784,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1079,
+      "response_excerpt": "<reasoning>\nThe duplicate options come from applying `limit_choices_to` directly to the form field queryset. When the predicate traverses multi-valued relations, the SQL join can return the same related object multiple times. Applying `distinct()` would remove duplicates, but wrapping the predicate in an `EXISTS` subquery is more precise: the outer queryset remains one row per candidate object, while the subquery only checks whether that object satisfies the joined predicate.\n\nI verified the foc",
+      "latency_s": 145.41850590705872,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

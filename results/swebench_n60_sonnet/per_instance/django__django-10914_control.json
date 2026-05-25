@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-10914",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 452,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1846,
+      "response": "<reasoning>\nThe issue is clear: Django's `FILE_UPLOAD_PERMISSIONS` defaults to `None`, causing inconsistent file permissions:\n\n1. **MemoryUploadedFile** path: `os.open(..., 0o666)` \u2192 masked by umask \u2192 typically 0o644\n2. **TemporaryUploadedFile** path: `NamedTemporaryFile` creates with 0o600, then `file_move_safe` (rename) preserves that \u2192 0o600\n\nThe `FileSystemStorage._save` method at lines 290-291 does:\n```python\nif self.file_permissions_mode is not None:\n    os.chmod(full_path, self.file_permi...[truncated]",
+      "latency_s": 180.93108320236206,
+      "error": null
+    }
+  ]
+}

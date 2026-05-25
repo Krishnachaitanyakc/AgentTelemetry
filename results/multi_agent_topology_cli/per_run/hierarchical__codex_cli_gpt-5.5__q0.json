@@ -1,0 +1,29 @@
+{
+  "topology": "hierarchical",
+  "model": "codex_cli/gpt-5.5",
+  "question": "What are three concrete ways autonomous AI agents fail in production deployments, and what observability primitives would catch each?",
+  "run_id": "hierarchical__codex_cli_gpt-5.5__q0",
+  "transcript": [
+    {
+      "agent": "facts_specialist",
+      "output": "- **Tool-call loops or runaway plans:** Agents repeatedly call the same tool, retry dead-end actions, or exceed cost/latency budgets. Catch with step traces, tool-call counters, retry histograms, token/cost budgets, and loop detectors.\n\n- **Bad tool use or unsafe side effects:** Agents pass malformed arguments, call the wrong API, mutate the wrong resource, or skip required approvals. Catch with structured tool logs, argument schemas, audit trails, policy checks, and write-operation monitors.\n\n- **Context drift and hallucinated assumptions:** Agents lose task intent, ignore fresh state, or invent facts when context is stale or incomplete. Catch with conversation/state snapshots, retrieved-document provenance, grounding scores, eval probes, and human-review sampling.\n\n- **Silent quality degradation:** Outputs remain syntactically valid but become less useful, slower, or less reliable after model/prompt/data changes. Catch with golden-task evals, success-rate metrics, latency/error SLOs,",
+      "latency_s": 12.689064979553223
+    },
+    {
+      "agent": "analysis_specialist",
+      "output": "- **Agent autonomy vs operational control:** More autonomy enables richer task completion but creates failures like runaway loops, unsafe tool use, or goal drift. Observability must compare intended goals against step traces, tool calls, and policy checks.\n\n- **Final outcome monitoring vs process monitoring:** A bad deployment may fail through wrong answers, partial completion, or silent data corruption. Outcome evals catch result quality, while spans, task state transitions, retries, and intermediate artifacts catch where the agent went off path.\n\n- **Debug visibility vs privacy/cost:** Capturing prompts, tool inputs, retrieved context, and model outputs helps diagnose hallucinations and bad actions, but increases storage cost and sensitive-data exposure. Structured logs, redaction, sampling, and audit trails are the balancing primitives.",
+      "latency_s": 13.757338285446167
+    },
+    {
+      "agent": "manager_synthesis",
+      "output": "Autonomous AI agents commonly fail in three concrete ways:\n\n1. **Runaway execution loops:** The agent repeats the same tool call, retries a dead-end plan, or burns through latency and cost budgets without progress. Catch this with step traces, tool-call counters, retry histograms, budget alerts, and loop detectors.\n\n2. **Unsafe or incorrect tool use:** The agent calls the wrong API, passes malformed arguments, mutates the wrong resource, or skips required approval before a write operation. Catch this with structured tool logs, argument-schema validation, audit trails, policy checks, and write-operation monitors.\n\n3. **Context drift and degraded output quality:** The agent loses the original goal, ignores fresh state, invents unsupported assumptions, or produces syntactically valid but less useful outputs after a model, prompt, or data change. Catch this with conversation/state snapshots, retrieved-document provenance, grounding checks, golden-task evals, success-rate metrics, latency/e",
+      "latency_s": 9.530137777328491
+    }
+  ],
+  "total_cost_usd": 0.0,
+  "total_input_tokens": 668,
+  "total_output_tokens": 765,
+  "n_agents": 3,
+  "wall_clock_s": 35.9896502494812,
+  "error": null
+}

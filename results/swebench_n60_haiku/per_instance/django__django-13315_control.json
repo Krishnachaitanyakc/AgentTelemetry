@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13315",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1001,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1110,
+      "response": "Now I can see the issue! On line 131-132, the problem is:\n\n```python\nformfield.queryset = formfield.queryset.filter(\n    Exists(formfield.queryset.model._base_manager.filter(complex_filter)),\n)\n```\n\nThe outer filter is using `formfield.queryset` which might already have joins applied (e.g., from annotations or other filters), and then it's applying an Exists() subquery that uses the model's base manager. This can cause duplicate results because the outer query already has the join, and the Exist...[truncated]",
+      "latency_s": 173.22474002838135,
+      "error": null
+    }
+  ]
+}

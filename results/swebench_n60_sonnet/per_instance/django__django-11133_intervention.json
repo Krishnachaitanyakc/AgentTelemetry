@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11133",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 998,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1720,
+      "response": "Based on my analysis of the code, I can see the issue clearly. The `make_bytes` method needs to handle `memoryview` objects (converting them to bytes), and the `content.setter` needs to exclude `memoryview` from the iterator branch (since iterating over a memoryview yields integers, not bytes).\n\nHere is the reasoning and patch:\n\n<reasoning>\nThe bug is in `django/http/response.py` in two places:\n\n1. `make_bytes` \u2014 doesn't handle `memoryview` objects. When a `memoryview` is passed and not caught b...[truncated]",
+      "latency_s": 204.01078033447266,
+      "error": null
+    }
+  ]
+}

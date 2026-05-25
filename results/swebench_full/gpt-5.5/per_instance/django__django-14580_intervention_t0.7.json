@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14580",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1887,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2370,
+      "response_excerpt": "<reasoning>\nThe bug is in `TypeSerializer`: it serializes `django.db.models.Model` as `models.Model` but, in Django 3.2.4, returns no import for that symbol. This only surfaces when `models.Model` is explicitly included in `bases`, such as alongside a non-model mixin, because plain `(models.Model,)` bases are omitted by `CreateModel.deconstruct()`.\n\nThe fix is to make the existing `models.Model` special case contribute `from django.db import models`. `MigrationWriter` already merges that into `f",
+      "latency_s": 539.9729678630829,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

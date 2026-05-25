@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14534",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 310,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2434,
+      "response_excerpt": "The file in this checkout already has the fix at line 366-367. The patch that fixes this issue (transforming the buggy original code to the corrected version) is:\n\n<reasoning>\nThe issue describes that `BoundWidget.id_for_label` constructs an id from name+index instead of using the id passed via `attrs`. When a custom `auto_id` format is supplied to a Form using `CheckboxSelectMultiple`/`RadioSelect`, the `<label for=\"...\">` produced by iterating subwidgets points to the wrong id.\n\nThe fix change",
+      "latency_s": 313.428848028183,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

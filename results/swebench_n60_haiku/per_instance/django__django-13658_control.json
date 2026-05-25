@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13658",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 731,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2062,
+      "response": "Excellent! I found the bug! In line 334 of `/private/tmp/django_old/django/core/management/__init__.py`, the `CommandParser` is created **without** the `prog=self.prog_name` parameter. This is the exact issue described in the GitHub issue.\n\nThe bug is on line 334:\n```python\nparser = CommandParser(usage='%(prog)s subcommand [options] [args]', add_help=False, allow_abbrev=False)\n```\n\nIt should be:\n```python\nparser = CommandParser(prog=self.prog_name, usage='%(prog)s subcommand [options] [args]', a...[truncated]",
+      "latency_s": 58.280993938446045,
+      "error": null
+    }
+  ]
+}

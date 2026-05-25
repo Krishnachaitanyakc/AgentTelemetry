@@ -1,0 +1,29 @@
+{
+  "topology": "parallel",
+  "model": "claude_cli/claude-sonnet-4-6",
+  "question": "What are the limitations of using mock LLM clients for benchmarking agent fault detection? Propose two ways to validate against real production traces.",
+  "run_id": "parallel__claude_cli_claude-sonnet-4-6__q3",
+  "transcript": [
+    {
+      "agent": "researcher_a",
+      "output": "## Mock LLM Client Limitations for Agent Fault Detection Benchmarking\n\n**Core limitations:**\n\n- **Determinism bias**: Mocks return fixed responses, missing stochastic failure modes (hallucination cascades, latency spikes, partial token truncation mid-reasoning)\n- **Distribution shift**: Synthetic error injection doesn't match real failure distributions \u2014 production faults cluster temporally and correlate with load patterns\n- **Missing emergent behaviors**: Real agents exhibit fault propagation across tool-call chains that mocks can't replicate (e.g., a malformed intermediate result poisoning downstream context)\n- **Tokenization artifacts**: Mocks skip real tokenization edge cases (BOS/EOS handling, context window pressure degradation)\n\n---\n\n**Two production trace validation approaches:**\n\n1. **Replay harness**: Capture production request/response pairs via middleware, strip PII, then replay against your detection system \u2014 measuring precision/recall against human-labeled fault annotatio",
+      "latency_s": 14.312310934066772
+    },
+    {
+      "agent": "researcher_b",
+      "output": "## Mock LLM Client Limitations for Fault Detection Benchmarking\n\n**Core problems:**\n- Mocks can't reproduce real latency distributions, token-level variability, or subtle model degradation patterns\n- They miss emergent failure modes: cascading retries, partial streaming failures, context window edge cases\n- Fault injection is scripted \u2014 real production faults are correlated and temporally structured in ways mocks don't capture\n\n**Two validation approaches:**\n\n**1. Shadow replay with recorded traces**\nCapture production request/response pairs (sanitized) and replay them through your fault detector. Compare detector decisions against ground-truth labels from incident postmortems. This tests whether your detector fires on *actual* failure signatures, not synthetic ones.\n\n**2. Canary deployment with holdout comparison**\nDeploy the fault detector in shadow mode alongside production traffic. Track false-positive/negative rates against your on-call incident log over a two-week window. Mock be",
+      "latency_s": 13.965975999832153
+    },
+    {
+      "agent": "writer",
+      "output": "## Mock LLM Client Limitations\n\nMocks introduce several fundamental gaps when benchmarking agent fault detection:\n\n- **Determinism bias**: Fixed responses miss stochastic failure modes \u2014 hallucination cascades, latency spikes, partial streaming failures, and context window degradation under pressure.\n- **Distribution mismatch**: Scripted fault injection doesn't match production reality, where failures cluster temporally and correlate with load patterns.\n- **Missing emergent behavior**: Real agents exhibit fault propagation across tool-call chains \u2014 a malformed intermediate result poisoning downstream context \u2014 which mocks can't replicate.\n\nMock benchmarks are useful as sanity checks, but they can't be the acceptance gate.\n\n## Two Validation Approaches\n\n**1. Replay harness against labeled traces**\nCapture production request/response pairs via middleware, sanitize PII, then replay them through your fault detector. Measure precision/recall against ground-truth labels from incident postmor",
+      "latency_s": 13.775786876678467
+    }
+  ],
+  "total_cost_usd": 0.016224,
+  "total_input_tokens": 783,
+  "total_output_tokens": 925,
+  "n_agents": 3,
+  "wall_clock_s": 42.07124900817871,
+  "error": null
+}

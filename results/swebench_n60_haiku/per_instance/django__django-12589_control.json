@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12589",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 558,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3242,
+      "response": "As I suspected, `Ref.as_sql()` at line 835-836 just quotes the name: `return connection.ops.quote_name(self.refs), []`. So when you have a Subquery aliased as \"status\", returning `Ref(\"status\", self)` in `get_group_by_cols()` causes the GROUP BY to use just the column name \"status\" instead of the full subquery.\n\nNow the fix is clear:  **Subquery should NOT return a Ref when alias is provided. It should always return `[self]` because subqueries are always unambiguous.**\n\nLet me look at what the i...[truncated]",
+      "latency_s": 83.06549096107483,
+      "error": null
+    }
+  ]
+}

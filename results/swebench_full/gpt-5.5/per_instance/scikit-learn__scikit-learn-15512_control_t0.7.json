@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-15512",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3964,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2693,
+      "response_excerpt": "<reasoning>\nThe implementation treated non-convergence differently depending on whether the final message state still contained exemplars. If exemplars existed, it returned degenerate centers/labels, which contradicts the documented contract in the issue. The fix is to check `never_converged` before refining exemplars and return an empty center index array plus `-1` labels for all samples.\n\nVerification: `python3 -m py_compile` passed. Focused pytest could not run because the fresh scikit-learn ",
+      "latency_s": 152.29690098762512,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

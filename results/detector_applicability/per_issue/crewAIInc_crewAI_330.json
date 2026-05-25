@@ -1,0 +1,24 @@
+{
+  "issue": {
+    "title": "allow_delegation=True leading to infinite loop",
+    "body": "I'm trying the demo code for crewAI. I've observed when using allow_delegation with any agent (writer in case of demo code), the execution goes in an infinite loop. When false, the execution completes but the writer agent wont be able to delegate tasks to others. ",
+    "state": "closed",
+    "comments": [
+      "Have you tried https://docs.crewai.com/how-to/Hierarchical/ and allow the manager to the delegation? ",
+      "In my case I did 3 agents (researcher, writer, critic reviewer) and all with delegation=true, but there was no loop, they did use their max iterations though in order to come to conclusion of answer to pass to next agent. not sure at what point the agent makes decision that enough iteration was completed and it's time to pass results to next one, but I had no loop as you describe, maybe it was fixed in the last version or smth, worth a try",
+      "I tried the hierarchical process (had a manager_llm) but it still went into infinite loop.",
+      "I have the same issue",
+      "same issue here"
+    ],
+    "labels": [
+      "no-issue-activity"
+    ],
+    "url": "https://github.com/crewAIInc/crewAI/issues/330"
+  },
+  "evidence": {
+    "has_evidence": false,
+    "evidence_type": "narrative_only",
+    "reconstructible_signal": true,
+    "notes": "delegation_keywords"
+  }
+}

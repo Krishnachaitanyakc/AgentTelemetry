@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-11040",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3497,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1553,
+      "response_excerpt": "<reasoning>\nThe failure happens because float `n_neighbors` is only rejected after it reaches the tree heap constructor. I added shared validation for `n_neighbors`, call it during estimator fitting, and call it again for the `kneighbors(..., n_neighbors=...)` override path. This preserves the existing positive-value check while adding a clear integer-type error.\n\nVerification: `python3 -m py_compile sklearn/neighbors/base.py sklearn/neighbors/tests/test_neighbors.py` passed. The focused pytest ",
+      "latency_s": 119.29090213775635,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

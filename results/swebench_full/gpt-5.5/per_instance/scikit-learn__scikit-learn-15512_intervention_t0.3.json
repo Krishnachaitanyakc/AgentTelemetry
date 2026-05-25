@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-15512",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 5954,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2693,
+      "response_excerpt": "<reasoning>\nThe bug is in `affinity_propagation`: when the update loop exhausts `max_iter`, the code still derives exemplars from the last message state, so a non-converged run can return normal-looking centers and labels. The fix tracks whether the `for` loop exited via convergence or exhaustion. On exhaustion, it emits `ConvergenceWarning`, returns an empty integer array for centers, and returns `-1` labels for every sample. I also made `predict` on such a fitted estimator return `-1` labels w",
+      "latency_s": 88.14305901527405,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

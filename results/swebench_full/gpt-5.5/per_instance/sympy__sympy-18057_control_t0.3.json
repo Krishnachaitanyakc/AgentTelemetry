@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-18057",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1131,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2528,
+      "response_excerpt": "<reasoning>\n`Expr.__eq__` was calling `sympify(other)`, which can fall back to parsing an unknown object's string/repr representation. Equality should only allow explicit/internal conversions, so the fix is to use `_sympify(other)`, which runs `sympify(..., strict=True)` and rejects arbitrary objects/strings. I added regression coverage for both reported cases: `repr == \"x.y\"` must not raise, and `repr == \"x\"` must not compare equal to `Symbol(\"x\")`.\n\nVerified with:\n`./.venv/bin/python -m pytest",
+      "latency_s": 115.39977622032166,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

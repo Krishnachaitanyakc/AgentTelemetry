@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-25638",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2992,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2404,
+      "response_excerpt": "<reasoning>\n`type_of_target` currently calls `np.asarray` on pandas nullable integer/float/boolean Series. Those extension dtypes become `object`, so numeric labels are classified as `unknown`, and `unique_labels` rejects mixed target types. The patch detects pandas nullable numeric/boolean dtypes via dtype metadata, converts them to their corresponding NumPy dtype before target-type inference, and leaves non-pandas/non-nullable behavior unchanged. I added a regression test covering `Int64`, `Fl",
+      "latency_s": 148.85046219825745,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

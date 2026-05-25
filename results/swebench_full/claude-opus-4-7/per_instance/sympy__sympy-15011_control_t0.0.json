@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-15011",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1064,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1503,
+      "response_excerpt": "<reasoning>\nThe issue is in `sympy/utilities/lambdify.py` in the `_preprocess` method of `_EvaluatorPrinter`. When iterating over arguments, the code checks `isinstance(arg, Symbol)` to decide whether to dummify a symbol with an unsafe identifier (like `{v}` with curly braces). However, `MatrixSymbol` is not a subclass of `Symbol`, so it falls through to the `else` branch which just calls `str(arg)` without any safety check or dummification.\n\nThe fix: add a branch for `MatrixSymbol` that mirrors",
+      "latency_s": 69.90393590927124,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

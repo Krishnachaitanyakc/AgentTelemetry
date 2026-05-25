@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-22005",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 488,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2301,
+      "response_excerpt": "<reasoning>\nThe issue is in `sympy/solvers/polysys.py` in the `_solve_reduced_system` function. When the system has only one univariate polynomial but multiple generators (variables), the system actually has infinite solutions because at least one variable is free. The current code incorrectly returns a finite solution like `[(1,)]` for `solve_poly_system((y - 1,), x, y)`.\n\nThe fix is to add a check that ensures the number of generators matches when we have one univariate polynomial. If `len(uni",
+      "latency_s": 35.62874102592468,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

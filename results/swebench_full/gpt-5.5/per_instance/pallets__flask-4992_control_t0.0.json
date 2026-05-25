@@ -1,0 +1,26 @@
+{
+  "instance_id": "pallets__flask-4992",
+  "repo": "pallets/flask",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3985,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1929,
+      "response_excerpt": "<reasoning>\nI updated `Config.from_file()` to accept a read-only `mode` parameter so binary loaders such as `tomllib.load` can be used as `mode=\"b\"`. The implementation normalizes shorthand `\"b\"`/`\"t\"` to `\"rb\"`/`\"rt\"` and rejects write/append/update modes, keeping `from_file()` read-only. I kept the existing `text` parameter working for compatibility by deriving the old behavior when `mode` is not provided.\n\nVerification: syntax compilation passed with `python3 -m compileall -q src/flask/config",
+      "latency_s": 156.11539673805237,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

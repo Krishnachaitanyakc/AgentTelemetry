@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11564",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1399,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1722,
+      "response_excerpt": "<reasoning>\nThe issue is about `STATIC_URL` and `MEDIA_URL` not respecting the dynamic `SCRIPT_NAME` WSGI parameter when Django is served on a sub-path.\n\nI explored the codebase:\n1. `django/templatetags/static.py` - The `static` template tag uses `staticfiles_storage.url(path)` or joins with `STATIC_URL`\n2. `django/core/files/storage/filesystem.py` - `FileSystemStorage.url()` uses `self.base_url` which comes from `settings.MEDIA_URL`\n3. `django/contrib/staticfiles/storage.py` - `StaticFilesStora",
+      "latency_s": 426.24525213241577,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

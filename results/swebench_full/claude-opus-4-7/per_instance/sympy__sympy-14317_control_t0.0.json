@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-14317",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1543,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1395,
+      "response_excerpt": "<reasoning>\nThe current code in `/private/tmp/sympy/sympy/printing/latex.py` (lines 2459-2514) already has the fix that iterates `poly.terms()`. This produces the correct order. The buggy version would have used `poly.as_expr()` which gets reordered by `_print_Add`. Let me construct the unified diff that fixes this.\n\nI confirmed:\n- `latex(p.as_expr())` produces the buggy output: `'a x^{5} + b x^{3} + c x + x^{4} + 2 x^{2} + 3'`  \n- The fix is to iterate `poly.terms()` (like str/pretty do) and bu",
+      "latency_s": 823.414635181427,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

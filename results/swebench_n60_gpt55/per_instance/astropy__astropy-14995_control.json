@@ -1,0 +1,21 @@
+{
+  "instance_id": "astropy__astropy-14995",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2424,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3282,
+      "response": "<reasoning>\n1. The v5.3 mask path already returns the existing mask when `self.mask is None`, but only checked `operand is None` for the opposite case.\n2. For arithmetic against a scalar or an `NDDataRef` without a mask, `operand.mask` can be `None`; v5.3 then calls `handle_mask(self.mask, None)`, which breaks for integer bitmasks with `np.bitwise_or`.\n3. The fix is to treat `operand.mask is None` the same as `operand is None`: return a deepcopy of `self.mask`.\n4. I added a regression test for i...[truncated]",
+      "latency_s": 446.4071102142334,
+      "error": null
+    }
+  ]
+}

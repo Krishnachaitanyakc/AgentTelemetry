@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13551",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1753,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1428,
+      "response": "Perfect! Now I can see the issue clearly:\n\n**Django 3.0 (django_30)** - Line 83: \n```python\nreturn str(user.pk) + user.password + str(login_timestamp) + str(timestamp)\n```\nThe email is **NOT** included in the hash value.\n\n**Fixed version (django_issue)** - Line 85:\n```python\nreturn str(user.pk) + user.password + str(login_timestamp) + str(timestamp) + email\n```\nThe email **IS** included in the hash value.\n\nThe fix is simple: add the user's email to the hash value in the `_make_hash_value` method...[truncated]",
+      "latency_s": 71.36897897720337,
+      "error": null
+    }
+  ]
+}

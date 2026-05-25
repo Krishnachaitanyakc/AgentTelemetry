@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-14983",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2094,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2103,
+      "response_excerpt": "<reasoning>\n1. `_RepeatedSplits` does not inherit `BaseCrossValidator`, so it did not get the shared `__repr__`.\n2. Adding `__repr__` to `_RepeatedSplits` lets both repeated splitters use the existing `_build_repr` formatting.\n3. `_build_repr` reads constructor parameters from attributes, so `RepeatedKFold` and `RepeatedStratifiedKFold` need to expose `n_splits` directly instead of only storing it inside `cvargs`.\n4. Added a regression test covering both repeated CV classes.\n5. Verified syntax w",
+      "latency_s": 106.42971682548523,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

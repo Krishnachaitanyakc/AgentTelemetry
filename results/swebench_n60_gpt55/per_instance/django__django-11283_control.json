@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11283",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4332,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2018,
+      "response": "<reasoning>\nThe migration fails because it bulk-updates old proxy permissions to the proxy content type even when matching permissions already exist there, violating the unique `(content_type, codename)` constraint. The patch wraps the update in an atomic block, catches `IntegrityError`, and emits an audit warning instead of aborting the migration. A regression test creates the duplicate target permissions and verifies the migration reports the warning.\n\nVerification: `python3 -m py_compile ...`...[truncated]",
+      "latency_s": 132.53028512001038,
+      "error": null
+    }
+  ]
+}

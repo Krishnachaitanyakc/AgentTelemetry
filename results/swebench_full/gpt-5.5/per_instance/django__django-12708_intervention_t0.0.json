@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12708",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2338,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1753,
+      "response_excerpt": "<reasoning>\nThe crash happens because deleting `index_together` searches only for `index=True`; on backends that expose unique constraints as indexes, a matching `unique_together` constraint is returned too. The fix is to make `alter_index_together()` delete only non-unique indexes by passing `unique=False`. A regression test covers adding and then removing `index_together` on the same fields as `unique_together`, verifying the index is removed while the unique constraint remains.\n\nVerified with",
+      "latency_s": 137.72559118270874,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12747",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 495,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1752,
+      "response": "The fix is correct. Here's the summary:\n\n<reasoning>\nThe issue is in `django/db/models/deletion.py` in the `Collector.delete()` method.\n\nThere are two code paths that handle deletion:\n\n1. **Single-object fast-delete optimization** (line 449-457): When there's exactly one model with one instance and it qualifies for fast delete, it returns early with `return count, {model._meta.label: count}`. When `count` is 0 (object doesn't exist), this returns `(0, {'app.Model': 0})`.\n\n2. **Normal deletion pa...[truncated]",
+      "latency_s": 175.35023713111877,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-16503",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1467,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1045,
+      "response_excerpt": "<reasoning>\n1. The bad alignment comes from `_print_Sum` resetting the final pretty form baseline after composing the summation sign and summand.\n2. The existing code stores the ASCII-only compensation in `ascii_adjustment`, but the boolean expression is too opaque and was leaving the unicode `Sum` baseline inconsistent with the summand row used when `Add` appends `+ 3`.\n3. Computing `sum_center` explicitly and only applying the extra row for ASCII odd-height sigma forms keeps unicode sums cente",
+      "latency_s": 86.64100193977356,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-21627",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 569,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1083,
+      "response_excerpt": "<reasoning>\nThe reported expression now evaluates `expr.is_zero` to `None` rather than recursing. The relevant `cosh._eval_is_zero` guard is already present in this checkout, so I added a regression test covering the exact nested `cosh(acos(... acosh ...))` form. The focused hyperbolic test file passes: `76 passed`.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/sympy/functions/elementary/tests/test_hyperbolic.py b/sympy/functions/elementary/tests/test_hyperbolic.py\nindex fd9f2bb..a0b180a 100644\n---",
+      "latency_s": 95.43220400810242,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13768",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 642,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1418,
+      "response_excerpt": "<reasoning>\nThe Django issue requests adding `logger.exception()` (or equivalent) in the `except` clause of `Signal.send_robust()` so that exceptions raised by signal receivers are logged and visible in error tracking tools like Sentry.\n\nLooking at `/private/tmp/django324/extract/django/dispatch/dispatcher.py`:\n- Line 1: `import logging` is already present\n- Line 9: `logger = logging.getLogger('django.dispatch')` is already configured\n- The `send_robust()` method (lines 185-223) catches exceptio",
+      "latency_s": 175.95013523101807,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13265",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 5465,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2717,
+      "response": "<reasoning>\nThe crash happens because `_order` is created by `AlterOrderWithRespectTo`, while `AddIndex` only depended on the model and related fields. The patch adds an explicit dependency type for \u201corder_with_respect_to has been set\u201d and attaches it to indexes that include `_order`, including compound indexes such as `[\"book\", \"_order\"]`.\n\nVerified with:\n`python3 tests/runtests.py migrations.test_autodetector.AutodetectorTests.test_set_alter_order_with_respect_to_index_constraint_unique_togeth...[truncated]",
+      "latency_s": 249.6325650215149,
+      "error": null
+    }
+  ]
+}

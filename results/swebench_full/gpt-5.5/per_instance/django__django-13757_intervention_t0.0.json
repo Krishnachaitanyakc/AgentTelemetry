@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13757",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 67,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1732,
+      "response_excerpt": "<reasoning>\nI inspected `django/db/models/fields/json.py` and `tests/model_fields/test_jsonfield.py`. This checkout already contains the intended fix: SQLite uses `JSON_TYPE(..., path) IS NULL`, which treats missing keys as SQL NULL but JSON null as the string `'null'`, and Oracle uses key-existence logic for the transformed key. The regression assertion for `value__j__isnull=True` is also already present.\n\nI verified the focused SQLite regression with:\n`python3 tests/runtests.py model_fields.te",
+      "latency_s": 228.3333969116211,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11564",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 6878,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1722,
+      "response_excerpt": "<reasoning>\nThe existing code already prepends `SCRIPT_NAME` for relative `STATIC_URL`/`MEDIA_URL`, but it caches the first computed value. That breaks dynamic per-request `SCRIPT_NAME`. The storage classes also cache/freeze their default `base_url`, so `FileSystemStorage.url()` and `StaticFilesStorage.url()` can keep using an old prefix.\n\nThe patch makes prefixed settings and default storage `base_url` values dynamic, while preserving explicit storage `base_url` behavior. Focused regression tes",
+      "latency_s": 602.0243220329285,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

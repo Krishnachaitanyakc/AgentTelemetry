@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14999",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3582,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1056,
+      "response_excerpt": "<reasoning>\n`RenameModel.database_forwards()` already no-ops the table rename when `old_db_table == new_db_table`, but it still calls `alter_field()` for incoming relations. That causes unnecessary FK constraint churn on PostgreSQL and table rebuilds on SQLite. The fix detects whether the database table actually changes and skips both the table rename and incoming relation rewrites when it does not. Local auto-created M2M handling is left intact because those implicit column names can still depe",
+      "latency_s": 302.2215609550476,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

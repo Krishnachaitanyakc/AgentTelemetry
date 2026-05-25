@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12589",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2628,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3211,
+      "response_excerpt": "<reasoning>\nThe regression comes from using the annotation alias in `GROUP BY` when that alias matches a column name from a joined table. PostgreSQL then sees `GROUP BY \"status\"` / `GROUP BY \"rating\"` as ambiguous. The fix keeps alias grouping where safe, but falls back to grouping by the expression when the annotation alias collides with any joined model column.\n\nVerified with:\n`/usr/bin/python3 tests/runtests.py aggregation.tests.AggregateTestCase.test_aggregation_subquery_annotation_values ag",
+      "latency_s": 145.62376499176025,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

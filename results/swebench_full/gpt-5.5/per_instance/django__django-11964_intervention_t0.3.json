@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11964",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2274,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3147,
+      "response_excerpt": "<reasoning>\nThe issue is that freshly assigned `Choices` members can stringify as enum names instead of model field values, while values reloaded from the database are plain primitives. The fix makes `Choices.__str__()` explicitly return `str(self.value)`, so `TextChoices` and `IntegerChoices` behave consistently wherever they are stringified. Regression tests now check freshly created `CharField` and `IntegerField` model instances before `refresh_from_db()`.\n\nVerified with:\n`python3 tests/runte",
+      "latency_s": 264.7850019931793,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

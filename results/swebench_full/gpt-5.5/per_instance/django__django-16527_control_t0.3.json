@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16527",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1988,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1287,
+      "response_excerpt": "<reasoning>\nThe checkout already contains the requested `has_add_permission` guard for `show_save_as_new`. I kept that behavior and made the button require `has_change_permission` as well, matching the change-form action it appears on. I added a focused regression test for a staff user with add+view but no change permission. The targeted tests pass with `python3 tests/runtests.py admin_views.test_templatetags.AdminTemplateTagsTest.test_submit_row_save_as_new_add_permission_required admin_views.t",
+      "latency_s": 149.38501572608948,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

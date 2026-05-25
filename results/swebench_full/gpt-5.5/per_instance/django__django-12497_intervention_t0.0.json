@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12497",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2395,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1581,
+      "response_excerpt": "<reasoning>\nThe incorrect hint is emitted by `ManyToManyField._check_relationship_model()` for ambiguous intermediary models (`fields.E334` and `fields.E335`). Since `symmetrical` and `through` are `ManyToManyField` arguments, the hint should recommend `ManyToManyField(\"self\", through=\"...\")`, not `ForeignKey(..., symmetrical=False, through=...)`. The focused regression tests are the existing ambiguous relationship checks in `tests/invalid_models_tests/test_relative_fields.py`.\n\nVerification run",
+      "latency_s": 139.2962291240692,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

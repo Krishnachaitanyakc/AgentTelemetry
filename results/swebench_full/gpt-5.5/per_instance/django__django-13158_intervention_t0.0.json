@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13158",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1862,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1970,
+      "response_excerpt": "<reasoning>\nThe root cause is that `QuerySet.none()` only marked the outer query empty. For combined querysets (`union()`, etc.), SQL generation uses `query.combined_queries`, so the outer `NothingNode` can be bypassed and the original union results can still be returned. The fix is to propagate `set_empty()` into every combined child query.\n\nI also added a regression test for the reported `ModelMultipleChoiceField`/`ModelForm` path: an empty submission with a `union()` queryset must save no man",
+      "latency_s": 184.25011110305786,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

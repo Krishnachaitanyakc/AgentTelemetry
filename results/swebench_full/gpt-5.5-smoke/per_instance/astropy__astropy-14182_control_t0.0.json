@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-14182",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2393,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2667,
+      "response_excerpt": "<reasoning>\n1. `ascii.rst` subclasses the fixed-width writer, whose `header_rows` support already exists.\n2. The failure happens because `RST.__init__` does not accept or forward `header_rows`.\n3. RST separator placement must use the number of header rows, not a hard-coded `lines[1]`.\n4. Reading also needs to skip the top separator, all header rows, and the second separator.\n5. I attempted the focused pytest run, but the local environment lacks the built `astropy.table._column_mixins` extension,",
+      "latency_s": 168.65025305747986,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

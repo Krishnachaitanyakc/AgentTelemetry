@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-12983",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 1642,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "def slugify": 1,
+    "slugify allow_unicode": 1,
+    "slugify test_text": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1392,
+      "response": "<reasoning>slugify() already removes invalid characters and collapses whitespace/dashes, but the final collapsed value can still keep leading/trailing dashes or preserved underscores. The fix trims those boundary characters after normalization, with regression tests for the reported example, ASCII underscores, and Unicode mode.</reasoning>\n<patch>diff --git a/django/utils/text.py b/django/utils/text.py\nindex 110e088ddf..a54f8196c9 100644\n--- a/django/utils/text.py\n+++ b/django/utils/text.py\n@@ -395,7 +395,8 @@ def slugify(value, allow_unicode=False):\n     \"\"\"\n     Convert to ASCII if 'allow_unicode' is False. Convert spaces to hyphens.\n     Remove characters that aren't alphanumerics, underscores, or hyphens.\n-    Convert to lowercase. Also strip leading and trailing whitespace.\n+    Convert to lowercase. Also strip leading and trailing whitespace,\n+    dashes, and underscores.\n     \"\"\"\n     value = str(value)\n     if allow_unicode:\n@@ -403,7 +404,7 @@ def slugify(value, allow_unicode=False):\n     else:\n         value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore').decode('ascii')\n     value = re.sub(r'[^\\w\\s-]', '', value.lower()).strip()\n-    return re.sub(r'[-\\s]+', '-', value)\n+    return re.sub(r'[-\\s]+', '-', value).strip('-_')\n \n \n def camel_case_to_spaces(value):\ndiff --git a/tests/utils_tests/test_text.py b/tests/utils_tests/test_text.py\nindex 66dbd5b366..c33eed97b9 100644\n--- a/tests/utils_tests/test_text.py\n+++ b/tests/utils_tests/test_text.py\n@@ -",
+      "latency_s": 120.66541981697083,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 3654,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"def slugify\"}}</tool_call>",
+      "latency_s": 23.417603969573975,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 4054,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"slugify allow_unicode\"}}</tool_call>",
+      "latency_s": 10.757884979248047,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 4504,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"slugify test_text\"}}</tool_call>",
+      "latency_s": 14.816789150238037,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 4934,
+      "response": "<reasoning>The slug generation keeps underscores as valid characters, but leading/trailing underscores and trailing collapsed hyphens should not remain in the final slug. Applying `.strip(\"-_\")` after whitespace/dash collapsing fixes the reported case without changing internal underscores.</reasoning>\n<patch>diff --git a/django/utils/text.py b/django/utils/text.py\nindex 110e088ddf..a54f8196c9 100644\n--- a/django/utils/text.py\n+++ b/django/utils/text.py\n@@ -395,7 +395,8 @@ def slugify(value, allow_unicode=False):\n     \"\"\"\n     Convert to ASCII if 'allow_unicode' is False. Convert spaces to hyphens.\n     Remove characters that aren't alphanumerics, underscores, or hyphens.\n-    Convert to lowercase. Also strip leading and trailing whitespace.\n+    Convert to lowercase. Also strip leading and trailing whitespace,\n+    dashes, and underscores.\n     \"\"\"\n     value = str(value)\n     if allow_unicode:\n@@ -403,7 +404,7 @@ def slugify(value, allow_unicode=False):\n     else:\n         value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore').decode('ascii')\n     value = re.sub(r'[^\\w\\s-]', '', value.lower()).strip()\n-    return re.sub(r'[-\\s]+', '-', value)\n+    return re.sub(r'[-\\s]+', '-', value).strip('-_')\n \n \n def camel_case_to_spaces(value):\ndiff --git a/tests/utils_tests/test_text.py b/tests/utils_tests/test_text.py\nindex 66dbd5b366..c33eed97b9 100644\n--- a/tests/utils_tests/test_text.py\n+++ b/tests/utils_tests/test_text.py\n@@ -197,6 +197,9 @@ class TestUtilsText(Sim",
+      "latency_s": 17.7046480178833,
+      "error": null
+    }
+  ]
+}

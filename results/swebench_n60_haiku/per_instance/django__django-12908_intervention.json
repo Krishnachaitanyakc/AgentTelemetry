@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12908",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 5212,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1873,
+      "response": "Good, now let me finalize the patch:\n\n<patch>\n--- a/django/db/models/query.py\n+++ b/django/db/models/query.py\n@@ -677,6 +677,7 @@ class QuerySet:\n     def delete(self):\n         \"\"\"Delete the records in the current QuerySet.\"\"\"\n+        self._not_support_combined_queries('delete')\n         assert self.query.can_filter(), \\\n             \"Cannot use 'limit' or 'offset' with delete.\"\n \n@@ -717,6 +718,7 @@ class QuerySet:\n \n     def update(self, **kwargs):\n         \"\"\"Update all objects in this Quer...[truncated]",
+      "latency_s": 274.16428899765015,
+      "error": null
+    }
+  ]
+}

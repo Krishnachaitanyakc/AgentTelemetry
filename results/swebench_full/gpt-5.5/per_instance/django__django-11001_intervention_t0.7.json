@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11001",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1737,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3014,
+      "response_excerpt": "<reasoning>\nThe duplicate ORDER BY detection strips ASC/DESC with a regex before adding clauses to `seen`. Without `re.DOTALL`, multiline `RawSQL` only compares the final line, so different expressions with identical trailing lines are treated as duplicates. The fix is to make the regex span newlines and add a regression test with two multiline `RawSQL` orderings sharing the same last line.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/django/db/models/sql/compiler.py b/django/db/models/sql/compile",
+      "latency_s": 146.03949689865112,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

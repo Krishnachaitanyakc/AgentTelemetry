@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-15535",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1415,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1351,
+      "response_excerpt": "<reasoning>\nThe regression comes from `check_clusterings` calling `check_array(..., dtype=None)` with the default finite-value check enabled. For object-dtype string labels, that finite check attempts float conversion before `type_of_target` can classify them as discrete labels. Cluster labels can be non-numeric, so `check_clusterings` should preserve shape validation but avoid generic finite checking here.\n\nI added a regression test for object-dtype string labels in `mutual_info_score`.\n\nVerifi",
+      "latency_s": 110.44088816642761,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14411",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 346,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1196,
+      "response_excerpt": "The fix is in place. Here's the summary:\n\n<reasoning>\nThe `ReadOnlyPasswordHashWidget` renders a `<div>` with text content (algorithm/hash details), not an input element. Labels with `for` attributes should only point to labelable elements (inputs, selects, textareas, etc.).\n\nIn `BoundField.label_tag()` (django/forms/boundfield.py), the `for` attribute is conditionally added based on whether `widget.id_for_label(id_)` returns a truthy value. The default `Widget.id_for_label()` returns the passed",
+      "latency_s": 225.883939743042,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-20154",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3622,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1344,
+      "response_excerpt": "<reasoning>\n`partitions()` mutates the internal `ms` dictionary between yields, so callers that store yielded dictionaries see later mutations. The fix is to keep the internal mutation strategy but yield `ms.copy()` each time, including the `(size, partition)` form. Tests are updated to collect partitions directly and to assert yielded dictionaries are distinct objects.\n\nI verified the behavior with a direct Python check. Full pytest collection on this old SymPy checkout is blocked by environmen",
+      "latency_s": 247.2688479423523,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13933",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2103,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2001,
+      "response_excerpt": "<reasoning>\n1. Located `ModelChoiceField` in `django/forms/models.py`.\n2. Confirmed `ModelChoiceField.to_python()` already passes `params={\"value\": value}` when raising `invalid_choice`.\n3. Updated the default `invalid_choice` message to include `%(value)s`, matching `ModelMultipleChoiceField` behavior.\n4. Updated affected tests to expect the invalid value in the rendered validation message.\n5. Verified with `python3 ./tests/runtests.py model_forms.test_modelchoicefield forms_tests.tests.test_er",
+      "latency_s": 108.54871797561646,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

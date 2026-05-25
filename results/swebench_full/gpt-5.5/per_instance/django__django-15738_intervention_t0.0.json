@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15738",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4790,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2816,
+      "response_excerpt": "<reasoning>\nThe failure happens because the generated migration can remove/re-add the FK field before dropping the `unique_together` constraint. Once the field name points at a `ManyToManyField`, schema constraint lookup no longer resolves the original FK column (`project_data_set_id`), so `_delete_composed_index()` finds zero constraints.\n\nThe fix is in the migration autodetector: emit the `AlterUniqueTogether(..., set())` operation before field removal/addition, then emit any newly added `uniq",
+      "latency_s": 206.23697590827942,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

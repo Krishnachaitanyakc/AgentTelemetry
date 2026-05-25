@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12113",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 747,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5599,
+      "response": "Now I have the full picture. The git diff shows exactly what the fix is \u2014 the repository's committed `HEAD` is missing the connection-close loop in `TestCase.setUpClass`. Here's my analysis and the patch:\n\n<reasoning>\n**Root cause:** When using persistent SQLite test databases (via `TEST[\"NAME\"]` + `--keepdb`), the database setup phase (migrations, etc.) opens connections that may hold SQLite locks. When `TestCase.setUpClass()` subsequently calls `_enter_atomics()`, it tries to `BEGIN TRANSACTIO...[truncated]",
+      "latency_s": 203.1110270023346,
+      "error": null
+    }
+  ]
+}

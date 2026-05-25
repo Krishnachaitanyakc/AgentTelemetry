@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-12113",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 1416,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "test_db_signature sqlite creation": 1,
+    "sqlite test name database locked": 1,
+    "databasecreation test_db_signature test name": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5785,
+      "response": "<reasoning>The failure comes from SQLite's test database signature. With two aliases that both have an empty/default NAME but different TEST[\"NAME\"] values, Django treated them as the same test database because the signature ignored the resolved file-backed test database name. That made the aliases share one SQLite file, and TestCase transactions on both aliases could lock each other. Include the resolved test database name in the signature for non-memory SQLite databases, and add a regression test.</reasoning>\n<patch>diff --git a/django/db/backends/sqlite3/creation.py b/django/db/backends/sqlite3/creation.py\n--- a/django/db/backends/sqlite3/creation.py\n+++ b/django/db/backends/sqlite3/creation.py\n@@ -96,4 +96,6 @@ class DatabaseCreation(BaseDatabaseCreation):\n         sig = [self.connection.settings_dict['NAME']]\n         if self.is_in_memory_db(test_database_name):\n             sig.append(self.connection.alias)\n+        else:\n+            sig.append(test_database_name)\n         return tuple(sig)\ndiff --git a/tests/backends/sqlite/test_creation.py b/tests/backends/sqlite/test_creation.py\nnew file mode 100644\n--- /dev/null\n+++ b/tests/backends/sqlite/test_creation.py\n@@ -0,0 +1,18 @@\n+import copy\n+import unittest\n+\n+from django.db import connection\n+from django.test import SimpleTestCase\n+\n+\n+@unittest.skipUnless(connection.vendor == 'sqlite', 'SQLite tests')\n+class TestDbSignatureTests(SimpleTestCase):\n+    def test_custom_test_name(self):\n+        saved_settings = copy.deep",
+      "latency_s": 132.85982489585876,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 7936,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"test_db_signature sqlite creation\"}}</tool_call>",
+      "latency_s": 13.815112113952637,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 8446,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"sqlite TEST NAME database locked\"}}</tool_call>",
+      "latency_s": 15.01316499710083,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 8951,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"DatabaseCreation test_db_signature TEST NAME\"}}</tool_call>",
+      "latency_s": 12.036908864974976,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 9516,
+      "response": "<reasoning>SQLite aliases with distinct TEST[\"NAME\"] values must not be grouped as the same test database. The SQLite test database signature currently keys persistent file-backed test databases from the original NAME, so two aliases with empty/default NAME values can share setup/transaction handling even when their resolved test database names differ. Including the resolved test database name in the signature for file-backed SQLite databases keeps the aliases separate while preserving the alias-specific behavior for in-memory databases.</reasoning>\n<patch>diff --git a/django/db/backends/sqlite3/creation.py b/django/db/backends/sqlite3/creation.py\n--- a/django/db/backends/sqlite3/creation.py\n+++ b/django/db/backends/sqlite3/creation.py\n@@ -96,4 +96,6 @@ class DatabaseCreation(BaseDatabaseCreation):\n         sig = [self.connection.settings_dict['NAME']]\n         if self.is_in_memory_db(test_database_name):\n             sig.append(self.connection.alias)\n+        else:\n+            sig.append(test_database_name)\n         return tuple(sig)\ndiff --git a/tests/backends/sqlite/test_creation.py b/tests/backends/sqlite/test_creation.py\nnew file mode 100644\n--- /dev/null\n+++ b/tests/backends/sqlite/test_creation.py\n@@ -0,0 +1,23 @@\n+import copy\n+import unittest\n+\n+from django.db import connection\n+from django.test import SimpleTestCase\n+\n+\n+@unittest.skipUnless(connection.vendor == 'sqlite', 'SQLite tests')\n+class TestDbSignatureTests(SimpleTestCase):\n+    def test_custom_test_name_is_",
+      "latency_s": 17.0969181060791,
+      "error": null
+    }
+  ]
+}

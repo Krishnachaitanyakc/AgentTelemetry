@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12113",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1919,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5568,
+      "response_excerpt": "<reasoning>\n`MultiDatabaseTests` only verifies that admin views call `transaction.atomic()` with the routed database alias. It doesn\u2019t need `TestCase`\u2019s class-level atomic wrappers, and those wrappers can hold SQLite transactions open across multiple aliases when persistent test databases are used. Switching this test class to `TransactionTestCase` avoids those long-lived transactions. Because Django\u2019s test suite requires `available_apps` for transaction tests, the patch declares the apps needed",
+      "latency_s": 307.99906396865845,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

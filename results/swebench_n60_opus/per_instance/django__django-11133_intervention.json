@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11133",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 512,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1720,
+      "response": "<reasoning>\nThe issue is clear. In the original Django code, the `make_bytes` method in `HttpResponse` only checked for `isinstance(value, bytes)`, so when a `memoryview` object was passed, it fell through to the catch-all `str(value).encode(self.charset)` which produced `b'<memory at 0x...>'` instead of the actual bytes content.\n\nThe fix is to add `memoryview` to the `isinstance` check alongside `bytes`. When `bytes()` is called on a `memoryview` object, it correctly returns the underlying byte...[truncated]",
+      "latency_s": 47.094563007354736,
+      "error": null
+    }
+  ]
+}

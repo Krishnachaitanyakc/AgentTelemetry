@@ -1,0 +1,35 @@
+{
+  "instance_id": "django__django-12286",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 2,
+  "proposed_patch": true,
+  "answer_len": 963,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1535,
+      "response_excerpt": "The patch has been proposed. The background find command also completed.",
+      "latency_s": 659.9106249809265,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 1643,
+      "response_excerpt": "<reasoning>\nThe bug is in `django/core/checks/translation.py` in the `check_language_settings_consistent` function. In Django 3.0.2, this function only checked if `LANGUAGE_CODE` was directly in `LANGUAGES` (plus `'en-us'`), without considering the documented sublanguage fallback behavior.\n\nThe fix is to use `get_supported_language_variant()` which properly handles the sublanguage-to-base-language fallback (e.g., `de-at` \u2192 `de`). This function:\n1. First tries the exact code (`de-at`)\n2. Then tri",
+      "latency_s": 392.81073689460754,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

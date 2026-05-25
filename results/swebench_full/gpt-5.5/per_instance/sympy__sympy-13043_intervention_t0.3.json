@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13043",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1259,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1241,
+      "response_excerpt": "<reasoning>\nI found `decompose()` in `sympy/integrals/intpoly.py`. For `separate=True`, the caller wants constituent monomials without relying on order, so a `set` matches the existing tests and avoids arbitrary list ordering. I also updated the docstring and added an explicit regression assertion for the return type.\n\nVerification note: `python3 -m pytest sympy/integrals/tests/test_intpoly.py -k test_decompose` could not collect in this checkout because `sympy/release.py` is missing.\n</reasonin",
+      "latency_s": 130.03703927993774,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

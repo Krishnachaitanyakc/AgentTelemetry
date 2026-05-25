@@ -1,0 +1,1429 @@
+{
+  "summary": {
+    "n_runs": 45,
+    "n_topologies": 3,
+    "n_models": 3,
+    "per_cell": {
+      "hierarchical__claude_cli/claude-opus-4-7": {
+        "topology": "hierarchical",
+        "model": "claude_cli/claude-opus-4-7",
+        "n_runs": 5,
+        "n_completed": 5,
+        "completion_rate": 1.0,
+        "avg_cost_usd": 0.079521,
+        "avg_wall_clock_s": 48.373721551895144,
+        "avg_input_tokens": 765.4,
+        "avg_output_tokens": 907.2
+      },
+      "hierarchical__claude_cli/claude-sonnet-4-6": {
+        "topology": "hierarchical",
+        "model": "claude_cli/claude-sonnet-4-6",
+        "n_runs": 5,
+        "n_completed": 5,
+        "completion_rate": 1.0,
+        "avg_cost_usd": 0.014688000000000001,
+        "avg_wall_clock_s": 44.26248598098755,
+        "avg_input_tokens": 728.0,
+        "avg_output_tokens": 833.6
+      },
+      "hierarchical__codex_cli/gpt-5.5": {
+        "topology": "hierarchical",
+        "model": "codex_cli/gpt-5.5",
+        "n_runs": 5,
+        "n_completed": 5,
+        "completion_rate": 1.0,
+        "avg_cost_usd": 0.0,
+        "avg_wall_clock_s": 33.96516933441162,
+        "avg_input_tokens": 640.2,
+        "avg_output_tokens": 730.4
+      },
+      "parallel__claude_cli/claude-opus-4-7": {
+        "topology": "parallel",
+        "model": "claude_cli/claude-opus-4-7",
+        "n_runs": 5,
+        "n_completed": 5,
+        "completion_rate": 1.0,
+        "avg_cost_usd": 0.078516,
+        "avg_wall_clock_s": 47.38597903251648,
+        "avg_input_tokens": 742.4,
+        "avg_output_tokens": 898.4
+      },
+      "parallel__claude_cli/claude-sonnet-4-6": {
+        "topology": "parallel",
+        "model": "claude_cli/claude-sonnet-4-6",
+        "n_runs": 5,
+        "n_completed": 5,
+        "completion_rate": 1.0,
+        "avg_cost_usd": 0.015116399999999999,
+        "avg_wall_clock_s": 44.65521035194397,
+        "avg_input_tokens": 719.8,
+        "avg_output_tokens": 863.8
+      },
+      "parallel__codex_cli/gpt-5.5": {
+        "topology": "parallel",
+        "model": "codex_cli/gpt-5.5",
+        "n_runs": 5,
+        "n_completed": 5,
+        "completion_rate": 1.0,
+        "avg_cost_usd": 0.0,
+        "avg_wall_clock_s": 37.25606741905212,
+        "avg_input_tokens": 703.0,
+        "avg_output_tokens": 830.0
+      },
+      "sequential__claude_cli/claude-opus-4-7": {
+        "topology": "sequential",
+        "model": "claude_cli/claude-opus-4-7",
+        "n_runs": 5,
+        "n_completed": 5,
+        "completion_rate": 1.0,
+        "avg_cost_usd": 0.078747,
+        "avg_wall_clock_s": 53.50879883766174,
+        "avg_input_tokens": 772.8,
+        "avg_output_tokens": 895.4
+      },
+      "sequential__claude_cli/claude-sonnet-4-6": {
+        "topology": "sequential",
+        "model": "claude_cli/claude-sonnet-4-6",
+        "n_runs": 5,
+        "n_completed": 5,
+        "completion_rate": 1.0,
+        "avg_cost_usd": 0.0157056,
+        "avg_wall_clock_s": 82.32898683547974,
+        "avg_input_tokens": 789.2,
+        "avg_output_tokens": 889.2
+      },
+      "sequential__codex_cli/gpt-5.5": {
+        "topology": "sequential",
+        "model": "codex_cli/gpt-5.5",
+        "n_runs": 5,
+        "n_completed": 5,
+        "completion_rate": 1.0,
+        "avg_cost_usd": 0.0,
+        "avg_wall_clock_s": 54.94811940193176,
+        "avg_input_tokens": 684.8,
+        "avg_output_tokens": 788.6
+      }
+    },
+    "organic_faults": {
+      "anomaly_detector_error": "ModuleNotFoundError: No module named 'agenttelemetry.analysis.anomaly'",
+      "total_spans": 570,
+      "spans_by_kind": {
+        "PLANNING": 45,
+        "LLM_CALL": 135,
+        "AGENT": 165,
+        "DELEGATION": 105,
+        "RETRIEVAL": 15,
+        "REASONING": 30,
+        "MEMORY": 30,
+        "GUARD_RAIL": 45
+      }
+    }
+  },
+  "runs": [
+    {
+      "topology": "hierarchical",
+      "model": "claude_cli/claude-opus-4-7",
+      "question": "What are three concrete ways autonomous AI agents fail in production deployments, and what observability primitives would catch each?",
+      "run_id": "hierarchical__claude_cli_claude-opus-4-7__q0",
+      "transcript": [
+        {
+          "agent": "facts_specialist",
+          "output": "- **Tool-call loops / runaway recursion**: Agent repeatedly calls the same tool (or cycles between tools) without progress, burning tokens and budget. *Catch with*: per-trace tool-call counters, cycle detection on tool+args hashes, and step-count/cost ceilings emitted as span attributes.\n\n- **Silent capability degradation (prompt/context drift)**: After context compaction, model swap, or upstream prompt edits, the agent stops calling a critical tool or misroutes intents \u2014 no error fires. *Catch with*: tool-invocation rate metrics per intent class, golden-trace replay in CI, and embedding-drift alerts on system-prompt and tool-schema hashes.\n\n- **Hallucinated tool arguments / schema violations**: Agent fabricates IDs, paths, or fields that pass JSON validation but reference nonexistent entities, causing downstream 404s or data corruption. *Catch with*: structured logging of tool inputs joined to downstream success/error codes, argument-provenance tracing (was this ID seen in prior conte",
+          "latency_s": 17.642858028411865
+        },
+        {
+          "agent": "analysis_specialist",
+          "output": "**Key trade-offs in this question:**\n\n1. **Detection latency vs. cost** \u2014 Catching silent failures (e.g., agent loops, hallucinated tool calls, goal drift) requires fine-grained tracing of every step, token, and tool invocation. Full per-step logging catches issues fast but balloons storage costs and signal-to-noise; sampled telemetry is cheap but misses rare-but-catastrophic failure modes.\n\n2. **Behavioral correctness vs. system health** \u2014 Traditional observability (latency, error rates, traces) catches infrastructure failures but misses *semantic* failures: an agent that completes successfully while doing the wrong thing. Adding LLM-as-judge evals or trajectory scoring catches these but introduces its own failure surface and judgment lag.\n\n3. **Reactive alerting vs. proactive guardrails** \u2014 Observability primitives (eval scores, tool-call audit logs, output classifiers) can either *alert* after harm or *block* inline. Inline guardrails prevent damage but add latency and false-positiv",
+          "latency_s": 16.34974694252014
+        },
+        {
+          "agent": "manager_synthesis",
+          "output": "**Three production failure modes for autonomous agents:**\n\n1. **Tool-call loops / runaway recursion** \u2014 Agents cycle through the same tool calls without progress, burning budget. Catch with per-trace tool-call counters, cycle detection on tool+args hashes, and step/cost ceilings as span attributes.\n\n2. **Silent capability degradation** \u2014 After context compaction, model swap, or prompt edits, the agent quietly stops invoking a critical tool. No error fires. Catch with tool-invocation rate metrics per intent class, golden-trace replay in CI, and embedding-drift alerts on system-prompt and tool-schema hashes.\n\n3. **Hallucinated tool arguments** \u2014 Agents fabricate IDs or paths that pass schema validation but reference nonexistent entities, causing 404s or corruption. Catch with structured logging joining tool inputs to downstream status codes, argument-provenance tracing (was this ID actually seen upstream?), and per-tool reject-rate dashboards.\n\n**Design tensions worth naming:** fine-grai",
+          "latency_s": 15.13876485824585
+        }
+      ],
+      "total_cost_usd": 0.076305,
+      "total_input_tokens": 732,
+      "total_output_tokens": 871,
+      "n_agents": 3,
+      "wall_clock_s": 49.150513887405396,
+      "error": null
+    },
+    {
+      "topology": "hierarchical",
+      "model": "claude_cli/claude-opus-4-7",
+      "question": "Compare reasoning-loop failures versus circular delegation in multi-agent systems. Which is more common, and why?",
+      "run_id": "hierarchical__claude_cli_claude-opus-4-7__q1",
+      "transcript": [
+        {
+          "agent": "facts_specialist",
+          "output": "- **Reasoning-loop failures**: An agent gets stuck repeating the same chain-of-thought, retrying failed actions, or oscillating between two hypotheses without converging \u2014 typically caused by missing termination criteria, hallucinated state, or tool errors that don't update the agent's belief.\n\n- **Circular delegation**: Agent A hands a task to B, B routes it back to A (or via C \u2192 A), forming a cycle \u2014 typically caused by overlapping role definitions, weak routing logic, or each agent believing the other is better suited.\n\n- **Reasoning loops are more common** in practice because they occur within a single agent and need only one bad feedback signal, whereas circular delegation requires multiple agents with mis-specified responsibilities to coincide.\n\n- **Detection differs**: reasoning loops show as repeated tokens/tool calls and are catchable with step limits; circular delegation shows as growing handoff chains and needs graph-level cycle detection.\n\n- **Common mitigations**: max-iter",
+          "latency_s": 16.700392246246338
+        },
+        {
+          "agent": "analysis_specialist",
+          "output": "**Reasoning-loop failures vs. circular delegation: key trade-offs**\n\n1. **Detection difficulty**: Reasoning loops (an agent re-deriving the same conclusion) are harder to detect \u2014 they look like productive thinking. Circular delegation (A\u2192B\u2192A) leaves a clear call graph and is trivially caught with cycle detection on the handoff trace.\n\n2. **Containment cost**: Reasoning loops burn tokens inside one context and degrade silently. Circular delegation multiplies cost across agents and often trips timeout/depth guards faster, surfacing the failure earlier but wasting more compute per incident.\n\n3. **Root cause**: Loops stem from weak termination criteria or missing state (\"am I done?\"). Delegation cycles stem from unclear ownership or overlapping agent scopes.\n\n**Which is more common**: Reasoning-loop failures, by a wide margin. Most frameworks ship cycle-detection or max-depth guards on delegation, but termination logic inside a single agent's loop is bespoke per task \u2014 so it fails more of",
+          "latency_s": 15.54557490348816
+        },
+        {
+          "agent": "manager_synthesis",
+          "output": "**Reasoning-loop failures vs. circular delegation**\n\nReasoning loops occur when a single agent repeats the same chain-of-thought, retries failed actions, or oscillates between hypotheses \u2014 typically from missing termination criteria, hallucinated state, or tool errors that fail to update belief. Circular delegation occurs when agents form a handoff cycle (A\u2192B\u2192A or A\u2192B\u2192C\u2192A), driven by overlapping roles, weak routing logic, or each agent assuming another is better suited.\n\n**Reasoning loops are substantially more common.** Three reasons:\n\n1. **Lower threshold to trigger**: a loop needs only one bad feedback signal inside one context, while a delegation cycle requires multiple agents with mis-specified responsibilities to coincide.\n2. **Weaker default guards**: most frameworks ship cycle detection and max-depth limits on delegation, but per-task termination logic inside an agent's reasoning loop is bespoke and frequently underspecified.\n3. **Harder to detect**: loops resemble productive t",
+          "latency_s": 13.846014976501465
+        }
+      ],
+      "total_cost_usd": 0.075315,
+      "total_input_tokens": 721,
+      "total_output_tokens": 860,
+      "n_agents": 3,
+      "wall_clock_s": 46.12071108818054,
+      "error": null
+    },
+    {
+      "topology": "hierarchical",
+      "model": "claude_cli/claude-opus-4-7",
+      "question": "Summarize the trade-offs between OpenTelemetry GenAI semantic conventions and OpenInference for agent observability.",
+      "run_id": "hierarchical__claude_cli_claude-opus-4-7__q2",
+      "transcript": [
+        {
+          "agent": "facts_specialist",
+          "output": "- **Standardization & ecosystem**: OpenTelemetry GenAI conventions are part of the broader OTel CNCF standard, giving vendor-neutral interop with any OTel-compatible backend (Datadog, Honeycomb, Grafana, Jaeger). OpenInference (by Arize) is OTel-compatible but more narrowly governed and tightly integrated with Phoenix/Arize.\n- **Maturity**: OTel GenAI conventions are still in development/experimental status with evolving attribute names; OpenInference is more stable and production-used in LLM-eval workflows, but smaller community.\n- **Agent-specific coverage**: OpenInference has richer first-class semantics for agents, tools, retrievers, embeddings, and re-rankers (spans like `AGENT`, `TOOL`, `CHAIN`). OTel GenAI focuses on LLM calls and is just adding agent/tool span coverage.\n- **Instrumentation breadth**: OpenInference ships auto-instrumentors for LangChain, LlamaIndex, CrewAI, AutoGen, etc. OTel GenAI relies on community/vendor instrumentors that are less complete for agent framewo",
+          "latency_s": 16.29399871826172
+        },
+        {
+          "agent": "analysis_specialist",
+          "output": "**Trade-offs: OpenTelemetry GenAI vs. OpenInference**\n\n1. **Standards governance vs. domain depth**: OTel GenAI conventions inherit CNCF governance, vendor neutrality, and stable spec processes, but evolve slowly and remain narrower in agent-specific semantics. OpenInference (Arize) iterates faster with richer attributes for retrievers, tools, agent steps, and evaluations \u2014 at the cost of single-vendor stewardship and less cross-ecosystem buy-in.\n\n2. **Ecosystem reach vs. tooling fit**: OTel plugs into any OTLP-compatible backend (Datadog, Honeycomb, Grafana, Jaeger), maximizing portability. OpenInference is optimized for Phoenix/Arize and LLM-native UIs that understand prompt/response, token, and evaluation spans out of the box; generic APM tools render its spans less meaningfully.\n\n3. **Stability vs. coverage**: OTel GenAI is still \"experimental\" but converging on durable names. OpenInference already covers multi-agent traces, tool I/O, and eval scores today \u2014 useful now, but with hi",
+          "latency_s": 15.993605852127075
+        },
+        {
+          "agent": "manager_synthesis",
+          "output": "**OpenTelemetry GenAI vs. OpenInference: Trade-offs for Agent Observability**\n\nThe choice hinges on three axes:\n\n**Governance and portability**: OTel GenAI inherits CNCF stewardship and vendor-neutral OTLP interop, exporting cleanly to Datadog, Honeycomb, Grafana, or Jaeger. OpenInference is OTel-compatible but Arize-governed, with deepest fidelity in Phoenix/Arize UIs; generic APM backends render its richer spans less meaningfully.\n\n**Domain depth and instrumentation**: OpenInference offers first-class semantics for agents, tools, retrievers, embeddings, and re-rankers, plus auto-instrumentors for LangChain, LlamaIndex, CrewAI, and AutoGen \u2014 making multi-agent traces and evaluation scores usable today. OTel GenAI focuses on LLM calls and is only beginning to add agent/tool coverage through less-complete community instrumentors.\n\n**Stability vs. coverage**: OTel GenAI conventions remain experimental but are converging on durable, broadly adopted names. OpenInference is more stable in p",
+          "latency_s": 19.085745334625244
+        }
+      ],
+      "total_cost_usd": 0.07653,
+      "total_input_tokens": 732,
+      "total_output_tokens": 874,
+      "n_agents": 3,
+      "wall_clock_s": 51.39571976661682,
+      "error": null
+    },
+    {
+      "topology": "hierarchical",
+      "model": "claude_cli/claude-opus-4-7",
+      "question": "What are the limitations of using mock LLM clients for benchmarking agent fault detection? Propose two ways to validate against real production traces.",
+      "run_id": "hierarchical__claude_cli_claude-opus-4-7__q3",
+      "transcript": [
+        {
+          "agent": "facts_specialist",
+          "output": "**Limitations of mock LLM clients:**\n- **Determinism gap**: Mocks return scripted responses, missing the stochastic variance (temperature, sampling) that produces real-world fault modes like hallucinated tool calls or malformed JSON.\n- **Distribution shift**: Hand-crafted mock traces over-represent obvious failures and under-represent subtle ones (silent context truncation, partial tool outputs, latency-induced retries).\n- **Missing emergent behavior**: Mocks can't reproduce multi-turn drift, context-window exhaustion, or model-specific quirks (e.g., refusal patterns, tool-calling format errors per model version).\n- **No infrastructure faults**: Real systems fail on rate limits, timeouts, partial streams, and provider-side 5xx \u2014 these are rarely modeled.\n- **Overfitting risk**: Detectors tuned on mocks learn the mock's signature, not the fault.\n\n**Validation against production traces:**\n1. **Shadow replay**: Re-run the detector against sampled, anonymized production traces (with ground",
+          "latency_s": 16.87385892868042
+        },
+        {
+          "agent": "analysis_specialist",
+          "output": "**Limitations of mock LLM clients:**\n\n1. **Distributional fidelity vs. reproducibility** \u2014 Mocks give deterministic, fast, cheap runs, but synthetic fault patterns (timeouts, malformed JSON, hallucinated tool calls) rarely match the long-tail, correlated failure modes seen in production. Detectors tuned on mocks overfit to scripted faults.\n\n2. **Behavioral coupling** \u2014 Real LLMs produce faults *contingent* on prompt state (context length, tool history, temperature drift). Mocks decouple fault injection from semantic state, so detectors miss faults that only emerge from genuine reasoning chains.\n\n3. **Coverage blind spots** \u2014 Mocks can't surface unknown-unknown failure classes (e.g., novel jailbreak echoes, model-version regressions).\n\n**Validation against production traces:**\n\n- **Shadow replay**: Re-run captured production traces through the detector offline, comparing flagged events to ground-truth incident labels (precision/recall on real faults).\n- **Canary mirroring**: Tee a small",
+          "latency_s": 15.294589757919312
+        },
+        {
+          "agent": "manager_synthesis",
+          "output": "**Limitations of mock LLM clients for fault-detection benchmarks:**\n\n1. **Distributional gap**: Mocks return scripted, deterministic outputs and miss the stochastic variance (sampling, temperature drift) that produces real fault modes \u2014 hallucinated tool calls, malformed JSON, refusal patterns. Hand-crafted traces over-represent obvious failures and under-represent the long-tail.\n2. **Decoupled from semantic state**: Real LLM faults are contingent on prompt history, context length, and tool chains. Mocks inject faults independently of reasoning state, so detectors miss emergent issues like multi-turn drift or context-window exhaustion.\n3. **No infrastructure faults**: Rate limits, partial streams, provider 5xx, and latency-induced retries are rarely modeled.\n4. **Overfitting**: Detectors learn the mock's signature rather than the underlying fault, and cannot surface unknown-unknown classes (novel jailbreaks, model-version regressions).\n\n**Two validation approaches against production tr",
+          "latency_s": 17.22923493385315
+        }
+      ],
+      "total_cost_usd": 0.08703,
+      "total_input_tokens": 837,
+      "total_output_tokens": 993,
+      "n_agents": 3,
+      "wall_clock_s": 49.425549030303955,
+      "error": null
+    },
+    {
+      "topology": "hierarchical",
+      "model": "claude_cli/claude-opus-4-7",
+      "question": "Describe how a closed-loop intervention based on telemetry signals can recover a stuck agent. Give a concrete example using the REASONING span kind.",
+      "run_id": "hierarchical__claude_cli_claude-opus-4-7__q4",
+      "transcript": [
+        {
+          "agent": "facts_specialist",
+          "output": "- **Detection signal**: Telemetry spans (e.g., OpenTelemetry GenAI semantic conventions) emit a `REASONING` span kind capturing model deliberation; a stuck agent typically shows anomalies like span duration exceeding p99, repeated identical reasoning content (loop detection via hash), or token counts plateauing without tool calls.\n\n- **Closed-loop architecture**: An observer subscribes to span streams, evaluates rules/ML detectors, and emits an intervention back into the agent's control plane (e.g., context injection, tool unlock, plan reset, or model swap) \u2014 forming sense \u2192 decide \u2192 act \u2192 re-observe.\n\n- **Concrete REASONING example**: Agent debugging a flaky test enters a loop \u2014 three consecutive `REASONING` spans contain \u226580% cosine similarity and no intervening `TOOL` span. Detector fires; controller injects a system message (\"You've repeated this reasoning 3x; list assumptions and pick a different hypothesis\") and forces a `tool_choice` to `run_tests`.\n\n- **Recovery verification**:",
+          "latency_s": 16.391952991485596
+        },
+        {
+          "agent": "analysis_specialist",
+          "output": "**Closed-loop recovery via REASONING spans:** Telemetry emits REASONING spans capturing the agent's chain-of-thought. A monitor detects stuck patterns (e.g., 3+ consecutive REASONING spans with high token similarity, no tool calls, or looping goal restatements). The intervention injects a corrective system message (\"You've repeated this reasoning 3x \u2014 switch strategy or ask for clarification\") and resets the planning context.\n\n**Trade-offs:**\n\n1. **Detection latency vs. false positives** \u2014 Intervening after 2 spans catches loops fast but misinterprets legitimate deliberation; waiting for 5+ wastes tokens but is more reliable.\n\n2. **Intervention strength vs. agent autonomy** \u2014 Hard resets (clearing context) reliably break loops but discard valid partial progress; soft nudges (appended hints) preserve state but the agent may ignore them.\n\n3. **Observability overhead vs. signal fidelity** \u2014 Capturing full REASONING content enables semantic loop detection but inflates trace storage and ris",
+          "latency_s": 15.81853699684143
+        },
+        {
+          "agent": "manager_synthesis",
+          "output": "A closed-loop recovery system treats the agent as a controllable process: telemetry spans stream into an observer that detects pathological patterns, a controller decides on an intervention, and the action feeds back into the agent's control plane \u2014 sense \u2192 decide \u2192 act \u2192 re-observe.\n\n**Concrete example:** An agent debugging a flaky test emits three consecutive `REASONING` spans whose embeddings show \u226580% cosine similarity, with no intervening `TOOL` span and token counts plateauing. A detector subscribed to the span stream fires a loop alert. The controller injects a system message (\"You've repeated this reasoning 3x; list assumptions and pick a different hypothesis\") and forces `tool_choice=\"run_tests\"` to break deliberation paralysis. The next `REASONING` span's embedding distance from the prior cluster confirms escape; otherwise the controller escalates to human handoff or terminates.\n\n**Key trade-offs:** detecting at 2 spans catches loops fast but risks false positives on legitima",
+          "latency_s": 13.541771173477173
+        }
+      ],
+      "total_cost_usd": 0.082425,
+      "total_input_tokens": 805,
+      "total_output_tokens": 938,
+      "n_agents": 3,
+      "wall_clock_s": 45.776113986968994,
+      "error": null
+    },
+    {
+      "topology": "hierarchical",
+      "model": "claude_cli/claude-sonnet-4-6",
+      "question": "What are three concrete ways autonomous AI agents fail in production deployments, and what observability primitives would catch each?",
+      "run_id": "hierarchical__claude_cli_claude-sonnet-4-6__q0",
+      "transcript": [
+        {
+          "agent": "facts_specialist",
+          "output": "- **Tool call loops** \u2014 agent repeatedly invokes the same tool without progress. Catch with: step-count metrics, cycle detection on tool call sequences, latency histograms per tool.\n\n- **Context window exhaustion** \u2014 long-running tasks bloat the prompt until the model truncates or halts. Catch with: token-count gauges per turn, alerts at 80% window capacity, trace spans annotating compaction events.\n\n- **Silent semantic drift** \u2014 agent completes steps but pursues the wrong goal after misinterpreting ambiguous instructions. Catch with: LLM-as-judge eval probes on intermediate outputs, goal-consistency checks comparing final state to original intent, structured output validation.\n\n- **Tool failure cascades** \u2014 one flaky API call causes the agent to fabricate results or halt. Catch with: per-tool error rate counters, timeout alerts, structured logs tagging each tool response as success/failure/timeout.\n\n- **Reward hacking** \u2014 agent satisfies the literal metric while violating intent. Catc",
+          "latency_s": 15.275053977966309
+        },
+        {
+          "agent": "analysis_specialist",
+          "output": "**Trade-off 1: Observability depth vs. latency**\nRich tracing (full prompt/response logging, tool call chains) catches most failures but adds latency and cost. Lightweight metrics (token counts, error rates) are fast but miss semantic drift and reasoning failures.\n\n**Trade-off 2: Determinism vs. capability**\nHighly constrained agents (strict tool allowlists, output schemas) are easy to monitor with schema validators and assertion checks \u2014 but fail on novel tasks. Flexible agents handle edge cases but require semantic similarity scoring and LLM-as-judge evaluators to catch subtle failures, which are themselves unreliable.\n\n**Trade-off 3: Reactive vs. proactive observability**\nPost-hoc log analysis (structured spans, replay buffers) identifies what failed after the fact. Real-time guardrails (confidence thresholds, circuit breakers on tool call frequency) prevent cascading failures but introduce false positives that interrupt valid workflows.",
+          "latency_s": 17.96979808807373
+        },
+        {
+          "agent": "manager_synthesis",
+          "output": "**Three Production Failure Modes for Autonomous AI Agents**\n\n**1. Tool call loops.** The agent repeatedly invokes the same tool without progress. Catch with step-count metrics and cycle detection on tool call sequences; latency histograms per tool surface stuck states early.\n\n**2. Context window exhaustion.** Long-running tasks bloat the prompt until the model truncates or halts mid-task. Catch with per-turn token-count gauges, alerts at 80% window capacity, and trace spans annotating compaction events.\n\n**3. Silent semantic drift.** The agent completes all steps but pursues the wrong goal after misinterpreting ambiguous instructions \u2014 the hardest failure to detect. Catch with LLM-as-judge probes on intermediate outputs and goal-consistency checks comparing final state to original intent.\n\n**Key trade-off:** rich tracing catches semantic drift but adds latency; lightweight metrics are fast but blind to reasoning failures. A tiered approach \u2014 cheap counters for loops and token pressure,",
+          "latency_s": 12.088046073913574
+        }
+      ],
+      "total_cost_usd": 0.013839,
+      "total_input_tokens": 708,
+      "total_output_tokens": 781,
+      "n_agents": 3,
+      "wall_clock_s": 45.3551549911499,
+      "error": null
+    },
+    {
+      "topology": "hierarchical",
+      "model": "claude_cli/claude-sonnet-4-6",
+      "question": "Compare reasoning-loop failures versus circular delegation in multi-agent systems. Which is more common, and why?",
+      "run_id": "hierarchical__claude_cli_claude-sonnet-4-6__q1",
+      "transcript": [
+        {
+          "agent": "facts_specialist",
+          "output": "- **Reasoning-loop failures** occur when a single agent cycles through the same reasoning steps without progress (e.g., re-evaluating the same dead-end plan repeatedly).\n- **Circular delegation** occurs when Agent A delegates to Agent B, which delegates back to A (or through a chain returning to A), creating an infinite handoff cycle.\n- **Reasoning loops are more common** because they arise from a single agent's internal state \u2014 no coordination infrastructure required to trigger them.\n- Circular delegation requires architectural conditions: multiple agents, a shared task-routing mechanism, and insufficient loop-detection \u2014 making it rarer but harder to debug.\n- Reasoning loops are amplified by long context windows and chain-of-thought prompting, where models are encouraged to \"keep thinking\" past a useful stopping point.\n- Both share a root cause: **lack of termination conditions** \u2014 either an explicit step limit, a confidence threshold, or a visited-state check.",
+          "latency_s": 14.492791175842285
+        },
+        {
+          "agent": "analysis_specialist",
+          "output": "## Reasoning-Loop Failures vs. Circular Delegation\n\n**1. Detection difficulty**\nReasoning-loop failures are self-contained \u2014 a single agent spins on its own state, producing observable token waste or timeout. Circular delegation is distributed across agents, making the cycle harder to trace and terminate.\n\n**2. Root cause**\nReasoning loops stem from poor termination conditions or reward shaping within one model. Circular delegation stems from underspecified ownership boundaries between agents \u2014 an architectural flaw, not a model flaw.\n\n**3. Recovery cost**\nReasoning loops fail fast and cheaply (one agent restarts). Circular delegation can corrupt shared state across multiple agents before detection, making recovery more expensive.\n\n**Which is more common: Reasoning-loop failures.**\nThey occur even in single-agent systems and scale with model complexity. Circular delegation requires multi-agent orchestration with ambiguous routing \u2014 a narrower, more avoidable design mistake. Most produc",
+          "latency_s": 14.389915227890015
+        },
+        {
+          "agent": "manager_synthesis",
+          "output": "Reasoning-loop failures are more common than circular delegation. A reasoning loop requires only one agent and one bad termination condition \u2014 it emerges naturally from chain-of-thought prompting and long context windows that encourage models to keep deliberating past any useful stopping point. This makes them endemic to single-agent systems, not just multi-agent ones.\n\nCircular delegation, by contrast, demands a specific architectural stack: multiple agents, a shared routing mechanism, and absent loop-detection. That's a narrower failure mode \u2014 rarer, but significantly harder to debug when it does occur, because the cycle is distributed across agents rather than visible in one agent's output.\n\nBoth failures share the same root cause: missing termination conditions. The difference is scope. Reasoning loops are a model-level flaw \u2014 fixable with step limits or confidence thresholds applied to a single agent. Circular delegation is an architectural flaw \u2014 requiring ownership boundaries an",
+          "latency_s": 12.781675100326538
+        }
+      ],
+      "total_cost_usd": 0.014366999999999998,
+      "total_input_tokens": 704,
+      "total_output_tokens": 817,
+      "n_agents": 3,
+      "wall_clock_s": 41.678366899490356,
+      "error": null
+    },
+    {
+      "topology": "hierarchical",
+      "model": "claude_cli/claude-sonnet-4-6",
+      "question": "Summarize the trade-offs between OpenTelemetry GenAI semantic conventions and OpenInference for agent observability.",
+      "run_id": "hierarchical__claude_cli_claude-sonnet-4-6__q2",
+      "transcript": [
+        {
+          "agent": "facts_specialist",
+          "output": "- **Standardization**: OTel GenAI conventions are vendor-neutral, CNCF-backed, and integrate with the broader OTel ecosystem (traces, metrics, logs); OpenInference is Arize-led and more narrowly focused on LLM/agent telemetry.\n- **Maturity**: OTel GenAI semantic conventions are still stabilizing (many attributes experimental); OpenInference has more established, opinionated schemas for LLM spans (prompts, completions, embeddings, retrievals).\n- **Ecosystem fit**: OTel slots naturally into existing observability stacks (Jaeger, Prometheus, Grafana); OpenInference targets AI-specific platforms (Arize Phoenix, others) with richer out-of-box LLM UX.\n- **Agent support**: OpenInference has first-class support for agentic patterns (tool calls, chain steps, retrievals); OTel GenAI is catching up but agent-specific conventions lag behind.\n- **Portability**: OTel offers better long-term portability and avoids vendor lock-in; OpenInference trades that for faster iteration on AI-native features.",
+          "latency_s": 14.675371170043945
+        },
+        {
+          "agent": "analysis_specialist",
+          "output": "**OpenTelemetry GenAI Semantic Conventions vs. OpenInference**\n\n**1. Standardization vs. Specificity**\nOTel GenAI is a vendor-neutral, CNCF-backed standard integrating with the broader observability ecosystem (traces, metrics, logs unified). OpenInference is purpose-built for LLM/agent workflows, offering richer semantic attributes (token counts, prompt templates, retrieval spans) out of the box \u2014 at the cost of a narrower, less universal adoption base.\n\n**2. Ecosystem Fit vs. Maturity**\nOTel slots into existing infra (Jaeger, Grafana, Datadog) without friction. OpenInference requires compatible backends (Arize Phoenix, LangSmith-adjacent tools), limiting portability but providing deeper GenAI-native UX.\n\n**3. Stability vs. Expressiveness**\nOTel GenAI conventions are still evolving (experimental status as of 2025), so schemas may break. OpenInference has more stable, opinionated schemas for agentic patterns (tool calls, chain steps) but lacks the long-term governance weight of the OTel",
+          "latency_s": 14.697352170944214
+        },
+        {
+          "agent": "manager_synthesis",
+          "output": "**OTel GenAI vs. OpenInference for Agent Observability**\n\nOTel GenAI offers vendor neutrality, CNCF governance, and seamless integration with existing observability stacks (Jaeger, Grafana, Datadog) \u2014 making it the safer long-term bet for organizations with mature infra. The cost: its semantic conventions are still experimental and agent-specific attributes (tool calls, chain steps, retrievals) lag behind real-world needs.\n\nOpenInference inverts that trade-off. It provides richer, more opinionated schemas for agentic patterns today, with first-class support for the constructs that matter most in LLM pipelines. The penalty is narrower backend compatibility (primarily Arize Phoenix and adjacent tools) and dependence on a single vendor's roadmap rather than a foundation-backed standard.\n\n**The core tension:** portability and ecosystem breadth vs. semantic expressiveness and agent-native maturity. For teams already invested in OTel infrastructure, GenAI conventions are the natural path for",
+          "latency_s": 14.96955394744873
+        }
+      ],
+      "total_cost_usd": 0.014646,
+      "total_input_tokens": 722,
+      "total_output_tokens": 832,
+      "n_agents": 3,
+      "wall_clock_s": 44.36635899543762,
+      "error": null
+    },
+    {
+      "topology": "hierarchical",
+      "model": "claude_cli/claude-sonnet-4-6",
+      "question": "What are the limitations of using mock LLM clients for benchmarking agent fault detection? Propose two ways to validate against real production traces.",
+      "run_id": "hierarchical__claude_cli_claude-sonnet-4-6__q3",
+      "transcript": [
+        {
+          "agent": "facts_specialist",
+          "output": "**Limitations of Mock LLM Clients for Benchmarking Agent Fault Detection**\n\n- Mock clients produce deterministic, idealized outputs \u2014 they cannot replicate the stochastic variability, latency spikes, or partial failures of real LLMs\n- They miss emergent failure modes: cascading tool-call errors, context-window edge cases, and token-budget exhaustion that only appear under realistic load\n- Mocks rarely simulate API-level faults (rate limits, 529s, malformed JSON mid-stream), so fault detectors trained on them undercount real error classes\n- Coverage is bounded by the test author's imagination \u2014 unknown unknowns go untested\n- Benchmark scores become inflated proxies; detectors overfit to scripted fault signatures\n\n**Two Validation Approaches Against Real Production Traces**\n\n- **Shadow replay:** Record real agent sessions (inputs, LLM responses, tool calls) and replay them through the fault detector offline, measuring precision/recall against human-labeled ground truth\n- **Canary inserti",
+          "latency_s": 15.302451133728027
+        },
+        {
+          "agent": "analysis_specialist",
+          "output": "## Mock LLM Client Limitations for Fault Detection Benchmarking\n\n**Trade-offs:**\n\n1. **Determinism vs. Realism** \u2014 Mocks return scripted responses, eliminating the stochastic variability (token sampling, latency jitter, context window edge cases) that triggers real faults. Benchmarks pass; production fails.\n\n2. **Coverage vs. Distribution Fidelity** \u2014 Hand-crafted failure scenarios miss the long-tail failure modes (malformed JSON mid-stream, partial tool calls, rate-limit cascades) that only emerge from real traffic patterns at scale.\n\n3. **Speed vs. Ecological Validity** \u2014 Mocks run fast and cheaply but cannot reproduce emergent multi-turn degradation (context drift, compounding hallucinations) that real agents exhibit over extended sessions.\n\n**Validation Against Real Production Traces:**\n\n1. **Trace replay** \u2014 Capture production request/response pairs via a logging proxy, then replay them through the fault detector offline, comparing detected vs. observed ground-truth outcomes.\n\n2. ",
+          "latency_s": 15.691112041473389
+        },
+        {
+          "agent": "manager_synthesis",
+          "output": "Mock LLM clients produce deterministic, scripted outputs that cannot replicate the stochastic variability, latency spikes, or partial failures of real systems. This creates three core problems: fault detectors overfit to scripted signatures and miss long-tail failures; API-level faults (rate limits, malformed JSON mid-stream, token-budget exhaustion) go untested; and emergent multi-turn degradation \u2014 context drift, cascading tool-call errors \u2014 only appears under realistic load. Benchmark scores consequently become inflated proxies for real-world performance.\n\nTwo validation approaches address this gap:\n\n1. **Shadow replay** \u2014 Log real production sessions (inputs, LLM responses, tool calls) and replay them through the fault detector offline, measuring precision and recall against human-labeled ground truth. This is safe, repeatable, and exposes failure modes the test author never anticipated.\n\n2. **Canary insertion** \u2014 Inject known synthetic faults into a small slice of live traffic and",
+          "latency_s": 14.255552768707275
+        }
+      ],
+      "total_cost_usd": 0.015993,
+      "total_input_tokens": 791,
+      "total_output_tokens": 908,
+      "n_agents": 3,
+      "wall_clock_s": 45.264437198638916,
+      "error": null
+    },
+    {
+      "topology": "hierarchical",
+      "model": "claude_cli/claude-sonnet-4-6",
+      "question": "Describe how a closed-loop intervention based on telemetry signals can recover a stuck agent. Give a concrete example using the REASONING span kind.",
+      "run_id": "hierarchical__claude_cli_claude-sonnet-4-6__q4",
+      "transcript": [
+        {
+          "agent": "facts_specialist",
+          "output": "- **Telemetry spans expose agent internals**: The `REASONING` span kind (from OpenTelemetry-based agent tracing) captures a model's chain-of-thought steps, including duration, token counts, and intermediate outputs.\n\n- **Stuck detection via span metrics**: A watchdog monitors `reasoning.duration_ms` and loop-count attributes. If a `REASONING` span exceeds a threshold (e.g., 30s or 10 iterations with no tool call emitted), it triggers an intervention.\n\n- **Concrete example**: An agent looping on a math proof emits repeated `REASONING` spans with identical `thought.content` hashes. The controller detects stale hashes across 3 consecutive spans and injects a system message: *\"You appear stuck. Abandon current approach and try a different strategy.\"*\n\n- **Recovery actions**: Intervention options include prompt injection, tool-call forcing, context truncation, or agent restart with a modified system prompt.\n\n- **Closed-loop closure**: The controller re-subscribes to subsequent `REASONING` s",
+          "latency_s": 14.889379978179932
+        },
+        {
+          "agent": "analysis_specialist",
+          "output": "## Key Trade-offs\n\n**1. Responsiveness vs. False Positive Rate**\nTriggering recovery on short reasoning spans catches real stalls quickly, but may interrupt legitimate deep-thinking loops. A tight timeout (e.g., 30s no progress) recovers fast; a loose one (120s) reduces spurious interrupts but wastes wall-clock time.\n\n**2. Recovery Fidelity vs. Complexity**\nSimple recovery (kill + restart) is easy to implement but loses in-progress reasoning state. Richer interventions (inject a \"rethink\" prompt, roll back to last checkpoint) preserve context but require the telemetry layer to understand span semantics \u2014 coupling observability to agent internals.\n\n**3. Automation vs. Observability Cost**\nA fully closed loop (telemetry \u2192 detector \u2192 actuator) recovers without human involvement, but every intervention fires a new REASONING span, potentially inflating trace volume and obscuring root cause. Human-in-the-loop adds latency but keeps the trace interpretable.",
+          "latency_s": 14.67465615272522
+        },
+        {
+          "agent": "manager_synthesis",
+          "output": "A watchdog subscribes to the agent's OpenTelemetry trace stream and monitors `REASONING` spans for stall signals: elapsed `reasoning.duration_ms` exceeding a threshold, loop-count attributes climbing without a tool call emitted, or repeated identical `thought.content` hashes across consecutive spans.\n\n**Concrete example:** An agent solving a math proof emits three `REASONING` spans in succession, each with the same content hash and no downstream tool-call span. The controller detects stale hashes on the third occurrence and injects a system message \u2014 *\"You appear stuck. Abandon current approach and try a different strategy.\"* \u2014 directly into the model's context. It then re-subscribes to subsequent `REASONING` spans; if a new, distinct content hash appears within the timeout window, the alert clears. If not, escalation options include forcing a specific tool call, truncating accumulated context, or restarting the agent with a modified system prompt.\n\nThe key trade-off is threshold tunin",
+          "latency_s": 15.07041311264038
+        }
+      ],
+      "total_cost_usd": 0.014595,
+      "total_input_tokens": 715,
+      "total_output_tokens": 830,
+      "n_agents": 3,
+      "wall_clock_s": 44.64811182022095,
+      "error": null
+    },
+    {
+      "topology": "hierarchical",
+      "model": "codex_cli/gpt-5.5",
+      "question": "What are three concrete ways autonomous AI agents fail in production deployments, and what observability primitives would catch each?",
+      "run_id": "hierarchical__codex_cli_gpt-5.5__q0",
+      "transcript": [
+        {
+          "agent": "facts_specialist",
+          "output": "- **Tool-call loops or runaway plans:** Agents repeatedly call the same tool, retry dead-end actions, or exceed cost/latency budgets. Catch with step traces, tool-call counters, retry histograms, token/cost budgets, and loop detectors.\n\n- **Bad tool use or unsafe side effects:** Agents pass malformed arguments, call the wrong API, mutate the wrong resource, or skip required approvals. Catch with structured tool logs, argument schemas, audit trails, policy checks, and write-operation monitors.\n\n- **Context drift and hallucinated assumptions:** Agents lose task intent, ignore fresh state, or invent facts when context is stale or incomplete. Catch with conversation/state snapshots, retrieved-document provenance, grounding scores, eval probes, and human-review sampling.\n\n- **Silent quality degradation:** Outputs remain syntactically valid but become less useful, slower, or less reliable after model/prompt/data changes. Catch with golden-task evals, success-rate metrics, latency/error SLOs,",
+          "latency_s": 12.689064979553223
+        },
+        {
+          "agent": "analysis_specialist",
+          "output": "- **Agent autonomy vs operational control:** More autonomy enables richer task completion but creates failures like runaway loops, unsafe tool use, or goal drift. Observability must compare intended goals against step traces, tool calls, and policy checks.\n\n- **Final outcome monitoring vs process monitoring:** A bad deployment may fail through wrong answers, partial completion, or silent data corruption. Outcome evals catch result quality, while spans, task state transitions, retries, and intermediate artifacts catch where the agent went off path.\n\n- **Debug visibility vs privacy/cost:** Capturing prompts, tool inputs, retrieved context, and model outputs helps diagnose hallucinations and bad actions, but increases storage cost and sensitive-data exposure. Structured logs, redaction, sampling, and audit trails are the balancing primitives.",
+          "latency_s": 13.757338285446167
+        },
+        {
+          "agent": "manager_synthesis",
+          "output": "Autonomous AI agents commonly fail in three concrete ways:\n\n1. **Runaway execution loops:** The agent repeats the same tool call, retries a dead-end plan, or burns through latency and cost budgets without progress. Catch this with step traces, tool-call counters, retry histograms, budget alerts, and loop detectors.\n\n2. **Unsafe or incorrect tool use:** The agent calls the wrong API, passes malformed arguments, mutates the wrong resource, or skips required approval before a write operation. Catch this with structured tool logs, argument-schema validation, audit trails, policy checks, and write-operation monitors.\n\n3. **Context drift and degraded output quality:** The agent loses the original goal, ignores fresh state, invents unsupported assumptions, or produces syntactically valid but less useful outputs after a model, prompt, or data change. Catch this with conversation/state snapshots, retrieved-document provenance, grounding checks, golden-task evals, success-rate metrics, latency/e",
+          "latency_s": 9.530137777328491
+        }
+      ],
+      "total_cost_usd": 0.0,
+      "total_input_tokens": 668,
+      "total_output_tokens": 765,
+      "n_agents": 3,
+      "wall_clock_s": 35.9896502494812,
+      "error": null
+    },
+    {
+      "topology": "hierarchical",
+      "model": "codex_cli/gpt-5.5",
+      "question": "Compare reasoning-loop failures versus circular delegation in multi-agent systems. Which is more common, and why?",
+      "run_id": "hierarchical__codex_cli_gpt-5.5__q1",
+      "transcript": [
+        {
+          "agent": "facts_specialist",
+          "output": "- **Reasoning-loop failures** are agents repeatedly re-evaluating, planning, or revising without reaching an action or stop condition.\n\n- **Circular delegation** is a multi-agent coordination failure where Agent A delegates to B, B delegates back to A or a chain returns to A, producing no net progress.\n\n- **Reasoning-loop failures are generally more common** because they can occur inside any single agent, even without delegation or multiple-agent infrastructure.\n\n- **Circular delegation is narrower**: it requires multiple agents, permission to delegate, and weak task ownership or cycle prevention. Many orchestrators reduce it with DAG workflows, max-depth limits, TTLs, and explicit owners.\n\n- Both failures usually come from poor termination criteria, ambiguous responsibility, missing progress checks, or agents optimizing for \u201ckeep reasoning\u201d instead of producing a bounded result.",
+          "latency_s": 14.915727138519287
+        },
+        {
+          "agent": "analysis_specialist",
+          "output": "1. **Failure Mode:** Reasoning-loop failures happen inside one agent as it repeats analysis without grounding or terminating. Circular delegation happens across agents when responsibility is passed around without ownership.\n\n2. **Frequency:** Reasoning-loop failures are generally more common because they can arise from ordinary prompt ambiguity, weak stopping criteria, or over-analysis in a single model. Circular delegation requires a multi-agent setup with delegation authority, so it appears in narrower systems.\n\n3. **Root Cause:** Reasoning loops usually reflect poor task framing, insufficient confidence thresholds, or lack of external checks. Circular delegation reflects orchestration design flaws: unclear roles, missing escalation paths, and no single agent accountable for completion.",
+          "latency_s": 8.84794306755066
+        },
+        {
+          "agent": "manager_synthesis",
+          "output": "Reasoning-loop failures and circular delegation both stem from weak termination criteria, unclear responsibility, and missing progress checks, but they occur at different levels.\n\nA reasoning-loop failure happens within a single agent: the agent keeps re-analyzing, planning, or revising instead of acting or stopping. This can happen in any agentic system, even without delegation, when the prompt is ambiguous, confidence thresholds are unclear, or the agent is rewarded for continued reasoning rather than producing a bounded result.\n\nCircular delegation is a coordination failure across multiple agents. It occurs when Agent A delegates to B, B delegates back to A, or a delegation chain eventually returns to A, producing no net progress. This usually reflects poor orchestration: unclear ownership, missing escalation paths, no cycle detection, or no accountable agent for completion.\n\nReasoning-loop failures are generally more common because they can arise inside any single agent. Circular d",
+          "latency_s": 8.739277124404907
+        }
+      ],
+      "total_cost_usd": 0.0,
+      "total_input_tokens": 606,
+      "total_output_tokens": 724,
+      "n_agents": 3,
+      "wall_clock_s": 32.520973682403564,
+      "error": null
+    },
+    {
+      "topology": "hierarchical",
+      "model": "codex_cli/gpt-5.5",
+      "question": "Summarize the trade-offs between OpenTelemetry GenAI semantic conventions and OpenInference for agent observability.",
+      "run_id": "hierarchical__codex_cli_gpt-5.5__q2",
+      "transcript": [
+        {
+          "agent": "facts_specialist",
+          "output": "- OpenTelemetry GenAI semantic conventions align with the broader OTel ecosystem: standard exporters, collectors, backends, and cross-service traces. Trade-off: GenAI/agent coverage can lag fast-changing use cases.\n\n- OpenInference is more agent/LLM-native, with richer conventions for prompts, messages, tools, retrieval, embeddings, evaluations, and Phoenix-style debugging. Trade-off: it is less universal than OTel.\n\n- OTel is better when observability must integrate with existing infra telemetry, SLOs, service maps, and production monitoring.\n\n- OpenInference is better when the main goal is detailed AI behavior analysis: agent steps, tool calls, RAG quality, prompt/version debugging, and eval workflows.\n\n- A practical pattern is to use OTel transport/instrumentation where possible, while mapping richer OpenInference attributes into traces for AI-specific analysis.",
+          "latency_s": 11.332429647445679
+        },
+        {
+          "agent": "analysis_specialist",
+          "output": "1. **Standardization vs specificity:** OpenTelemetry GenAI semantic conventions align with the broader OTel ecosystem, making them better for vendor-neutral tracing, metrics, and infra correlation. OpenInference is more narrowly tailored to LLM and agent workflows, often capturing prompts, tools, retrieval, chains, and evaluations more naturally.\n\n2. **Interoperability vs depth:** OTel fits existing observability pipelines and backends with less integration friction. OpenInference may provide richer agent-level semantics, but support depends more on AI observability tools that understand its schema.\n\n3. **Stability vs velocity:** OTel conventions benefit from formal standardization but can evolve slowly and may lag fast-moving agent patterns. OpenInference can adapt faster to LLM app needs, but that can mean more schema churn or less universal compatibility.",
+          "latency_s": 11.414216041564941
+        },
+        {
+          "agent": "manager_synthesis",
+          "output": "OpenTelemetry GenAI semantic conventions and OpenInference optimize for different parts of agent observability.\n\nOTel GenAI is strongest when AI traces need to live inside the broader production observability stack. It works well with standard exporters, collectors, tracing backends, service maps, SLOs, and cross-service correlation. That makes it a better fit for teams that already rely on OTel for infrastructure and application monitoring. Its trade-off is that GenAI and agent-specific coverage can lag behind fast-changing LLM patterns.\n\nOpenInference is stronger for deep AI behavior analysis. Its schema is more LLM-native, with richer support for prompts, messages, tool calls, retrieval, embeddings, evaluations, and debugging workflows such as Phoenix. That makes it useful for understanding agent steps, RAG quality, prompt/version behavior, and eval results. The trade-off is lower universality: fewer general observability tools understand its semantics directly.\n\nA practical approac",
+          "latency_s": 10.013490915298462
+        }
+      ],
+      "total_cost_usd": 0.0,
+      "total_input_tokens": 622,
+      "total_output_tokens": 726,
+      "n_agents": 3,
+      "wall_clock_s": 32.769927978515625,
+      "error": null
+    },
+    {
+      "topology": "hierarchical",
+      "model": "codex_cli/gpt-5.5",
+      "question": "What are the limitations of using mock LLM clients for benchmarking agent fault detection? Propose two ways to validate against real production traces.",
+      "run_id": "hierarchical__codex_cli_gpt-5.5__q3",
+      "transcript": [
+        {
+          "agent": "facts_specialist",
+          "output": "- Mock LLM clients often underrepresent real model variability: nondeterminism, latency spikes, refusals, partial outputs, tool-call schema drift, and context-window effects.\n\n- They can bake in benchmark assumptions, causing fault detectors to overfit to synthetic error patterns instead of detecting messy production failures.\n\n- Mock clients usually miss multi-turn dynamics: cascading mistakes, recovery attempts, user ambiguity, tool side effects, and failures caused by prior hidden state.\n\n- Validation path 1: replay anonymized production traces through the detector in shadow mode, comparing detections against human-reviewed incident labels or postmortem outcomes.\n\n- Validation path 2: sample real agent sessions with known tool/model/user outcomes, inject only controlled perturbations where needed, and measure precision/recall against production observability signals such as retries, escalations, rollbacks, and user corrections.",
+          "latency_s": 10.046497821807861
+        },
+        {
+          "agent": "analysis_specialist",
+          "output": "- **Control vs realism:** Mock LLM clients make benchmarks repeatable and cheap, but they miss real model variance, latency spikes, refusals, malformed outputs, tool-call drift, and context-sensitive failures.\n\n- **Coverage vs representativeness:** Synthetic faults can target known failure modes, but may overfit detectors to clean, labeled scenarios that do not match messy production traces, partial failures, retries, or user-specific workflows.\n\n- **Safety vs fidelity:** Mocks avoid privacy and operational risk, but cannot fully capture production distributions.\n\nTwo validations:\n1. Replay sampled, anonymized production traces through the detector and compare alerts against human-reviewed fault labels.\n2. Run shadow evaluation in production: detector observes live traces without acting, then measure precision/recall against incident reports, user escalations, and post-hoc audits.",
+          "latency_s": 14.639071941375732
+        },
+        {
+          "agent": "manager_synthesis",
+          "output": "Mock LLM clients are useful for cheap, repeatable benchmarks, but they are a weak proxy for production agent behavior. They often miss real model variability: nondeterminism, latency spikes, refusals, partial or malformed outputs, tool-call schema drift, and context-window effects. They also tend to encode benchmark assumptions, which can make fault detectors overfit to clean synthetic failures rather than messy production incidents. Most importantly, mocks rarely capture multi-turn dynamics such as cascading mistakes, recovery attempts, ambiguous user intent, hidden prior state, tool side effects, retries, and user-specific workflows.\n\nTwo stronger validation paths are:\n\n1. Replay sampled, anonymized production traces through the detector in shadow mode, then compare detections with human-reviewed incident labels, postmortems, or audit outcomes.\n\n2. Evaluate on real agent sessions with known model, tool, and user outcomes, injecting only controlled perturbations where needed. Measure ",
+          "latency_s": 10.14612889289856
+        }
+      ],
+      "total_cost_usd": 0.0,
+      "total_input_tokens": 671,
+      "total_output_tokens": 748,
+      "n_agents": 3,
+      "wall_clock_s": 34.84891486167908,
+      "error": null
+    },
+    {
+      "topology": "hierarchical",
+      "model": "codex_cli/gpt-5.5",
+      "question": "Describe how a closed-loop intervention based on telemetry signals can recover a stuck agent. Give a concrete example using the REASONING span kind.",
+      "run_id": "hierarchical__codex_cli_gpt-5.5__q4",
+      "transcript": [
+        {
+          "agent": "facts_specialist",
+          "output": "- A closed-loop intervention uses telemetry to detect abnormal agent behavior, apply a corrective action, then monitor whether the agent recovers.\n\n- \u201cStuck\u201d signals can include long-running spans, repeated reasoning patterns, no tool calls, no state changes, excessive token use, or repeated failed attempts.\n\n- With a `REASONING` span, telemetry might show the agent spending 90 seconds and thousands of tokens reasoning without producing an action.\n\n- A controller can intervene by injecting a directive such as: \u201cStop analyzing. Summarize the current blocker in one sentence, choose the next executable step, and call the relevant tool.\u201d\n\n- Recovery is confirmed when subsequent telemetry shows a new tool/action span, reduced reasoning duration, or forward progress toward the task.",
+          "latency_s": 10.313388109207153
+        },
+        {
+          "agent": "analysis_specialist",
+          "output": "1. **Intervention sensitivity vs. false positives**: Telemetry can detect a stuck agent when repeated `REASONING` spans show no state change, rising token use, or repeated plans. Aggressive triggers recover faster but may interrupt valid deep reasoning.\n\n2. **Autonomy vs. control**: A closed loop can automatically inject a new instruction, switch tools, or reset context. This helps recovery, but too much automation may override the agent\u2019s intended strategy.\n\n3. **Observability cost vs. recovery quality**: Rich `REASONING` span signals, such as duration, token growth, repeated hypotheses, and missing tool calls, make stuck detection more accurate. The trade-off is extra telemetry complexity and privacy/debug overhead.\n\nExample: if several consecutive `REASONING` spans repeat \u201cI need to inspect the file\u201d without any tool call, the controller can intervene: \u201cStop reasoning and run a file search now.\u201d",
+          "latency_s": 12.439669132232666
+        },
+        {
+          "agent": "manager_synthesis",
+          "output": "A closed-loop intervention recovers a stuck agent by using telemetry to detect nonproductive behavior, applying a corrective directive, and then checking whether the agent resumes progress. The controller watches signals such as long `REASONING` spans, repeated plans, rising token use, no tool calls, no state changes, or repeated failed attempts. When those signals cross a threshold, it intervenes without fully taking over the task.\n\nFor example, telemetry might show three consecutive `REASONING` spans where the agent spends 90 seconds and thousands of tokens repeating, \u201cI need to inspect the file,\u201d but never calls a search or read tool. The controller can inject: \u201cStop analyzing. Summarize the blocker in one sentence, choose the next executable step, and call the relevant tool now.\u201d Recovery is confirmed if the next spans show a file-search or read action, shorter reasoning duration, and observable task progress.\n\nThe key trade-off is sensitivity: earlier intervention speeds recovery,",
+          "latency_s": 10.93284296989441
+        }
+      ],
+      "total_cost_usd": 0.0,
+      "total_input_tokens": 634,
+      "total_output_tokens": 689,
+      "n_agents": 3,
+      "wall_clock_s": 33.69637989997864,
+      "error": null
+    },
+    {
+      "topology": "parallel",
+      "model": "claude_cli/claude-opus-4-7",
+      "question": "What are three concrete ways autonomous AI agents fail in production deployments, and what observability primitives would catch each?",
+      "run_id": "parallel__claude_cli_claude-opus-4-7__q0",
+      "transcript": [
+        {
+          "agent": "researcher_a",
+          "output": "**1. Tool-call loops / runaway recursion.** Agent re-invokes the same tool with near-identical args, burning tokens/$ without progress (e.g., retrying a failing API forever).\n*Catch:* per-trace tool-call frequency histograms + n-gram repetition detector on the action sequence; alert when Levenshtein distance between consecutive tool inputs < threshold over a sliding window.\n\n**2. Silent context corruption.** Stale/poisoned data from RAG or prior tool output gets laundered into \"facts\" the agent acts on. No exception fires.\n*Catch:* provenance tags on every context span (source URI, retrieval timestamp, trust tier) propagated through the trace; assertion checks that grounded claims cite a span with trust \u2265 required tier.\n\n**3. Goal drift across long horizons.** Agent quietly substitutes an easier sub-goal (deletes failing tests instead of fixing them).\n*Catch:* embedding-distance monitor between the original task spec and the current plan/state at each step; spike \u2192 human review. Pair w",
+          "latency_s": 15.160526037216187
+        },
+        {
+          "agent": "researcher_b",
+          "output": "**1. Tool-call loops / runaway cost.** Agent retries a failing tool (e.g., flaky API) hundreds of times, burning tokens. *Catch with:* per-trace tool-call counters, token spend budgets per session, and rate-of-change alerts on cost/trace_id.\n\n**2. Silent capability drift after model/prompt updates.** Agent still \"succeeds\" but quality degrades \u2014 wrong tool selected, shallower reasoning, hallucinated arguments. *Catch with:* golden-set replay on every deploy, structured eval scores logged per turn (tool-choice accuracy, argument validity), and shadow-traffic diffing between model versions.\n\n**3. Goal misgeneralization on out-of-distribution inputs.** Agent confidently completes the wrong task \u2014 e.g., refunds instead of escalates, deletes instead of archives. *Catch with:* action-class telemetry (counts of irreversible operations per user segment), human-in-the-loop sampling on high-blast-radius tools, and anomaly detection on action-distribution shifts vs. baseline.\n\nCommon thread: inst",
+          "latency_s": 14.334836959838867
+        },
+        {
+          "agent": "writer",
+          "output": "**1. Tool-call loops / runaway cost.** Agent retries the same tool with near-identical args (flaky API, unsatisfiable query), burning tokens without progress.\n*Catch:* per-trace tool-call counters and token/cost budgets per session; n-gram repetition detector on the action sequence with Levenshtein distance between consecutive inputs; rate-of-change alerts on cost per trace_id.\n\n**2. Silent context & capability drift.** Stale or poisoned RAG output gets laundered into \"facts,\" or post-deploy model/prompt changes quietly degrade tool choice and argument quality \u2014 no exception fires either way.\n*Catch:* provenance tags on every context span (source URI, retrieval timestamp, trust tier) with assertions that grounded claims cite a span at the required tier; golden-set replay on every deploy with structured eval scores per turn (tool-choice accuracy, argument validity); shadow-traffic diffing between versions.\n\n**3. Goal drift / misgeneralization.** Agent substitutes an easier sub-goal (del",
+          "latency_s": 15.46358609199524
+        }
+      ],
+      "total_cost_usd": 0.07872,
+      "total_input_tokens": 738,
+      "total_output_tokens": 902,
+      "n_agents": 3,
+      "wall_clock_s": 44.975749254226685,
+      "error": null
+    },
+    {
+      "topology": "parallel",
+      "model": "claude_cli/claude-opus-4-7",
+      "question": "Compare reasoning-loop failures versus circular delegation in multi-agent systems. Which is more common, and why?",
+      "run_id": "parallel__claude_cli_claude-opus-4-7__q1",
+      "transcript": [
+        {
+          "agent": "researcher_a",
+          "output": "**Reasoning-loop failures** occur when a single agent gets stuck in repetitive thought cycles\u2014re-planning the same step, oscillating between hypotheses, or invoking the same tool with minor variations. Root causes: missing termination conditions, ambiguous success criteria, or context that lacks the information needed to make progress.\n\n**Circular delegation** happens across agents: A delegates to B, B delegates back to A (or A\u2192B\u2192C\u2192A). Root causes: overlapping role definitions, no central coordinator tracking call stacks, and agents trained to \"escalate when unsure\" without knowing what the recipient can actually do.\n\n**Reasoning loops are more common** because they emerge from a single agent's local state\u2014any agent with weak stopping criteria can hit them, and they don't require multiple participants to coordinate failure. Circular delegation needs a topology that permits cycles plus mutual uncertainty, which is rarer. Most production frameworks now cap recursion depth, making delegat",
+          "latency_s": 14.28840708732605
+        },
+        {
+          "agent": "researcher_b",
+          "output": "**Reasoning-loop failures** dominate in production. An agent re-reads the same file, retries a tool with cosmetic variations, or oscillates between two hypotheses without converging \u2014 typically triggered by ambiguous tool errors, missing context, or weak stop conditions. They surface in every deployment because they're a single-agent failure mode that scales with run count.\n\n**Circular delegation** (A\u2192B\u2192A, or A\u2192B\u2192C\u2192A) is rarer because most production systems enforce strict hierarchies: an orchestrator dispatches to workers that cannot delegate back upward. It only emerges in peer-to-peer architectures with symmetric capabilities (e.g., AutoGen-style group chats, swarm frameworks).\n\nFrequency ratio in deployed systems is roughly 10\u201320:1 favoring reasoning loops. However, circular delegation is harder to detect \u2014 token budgets get burned across multiple agents before anyone notices \u2014 so teams instrument depth limits and parent-tracking even when the topology shouldn't permit cycles.",
+          "latency_s": 18.369556188583374
+        },
+        {
+          "agent": "writer",
+          "output": "**Reasoning-loop failures** occur within a single agent: re-reading the same file, retrying tools with cosmetic variations, or oscillating between hypotheses without converging. Root causes include weak stop conditions, ambiguous success criteria, ambiguous tool errors, and missing context needed to make progress.\n\n**Circular delegation** occurs across agents (A\u2192B\u2192A, or A\u2192B\u2192C\u2192A). Root causes include overlapping role definitions, no central coordinator tracking call stacks, and agents trained to \"escalate when unsure\" without knowing recipients' actual capabilities. It typically only emerges in peer-to-peer architectures with symmetric capabilities (AutoGen-style group chats, swarm frameworks).\n\n**Reasoning loops are far more common** \u2014 roughly 10\u201320:1 in deployed systems. Two reasons: (1) they're a single-agent failure mode that scales with every run, requiring no coordination to manifest; (2) most production frameworks enforce strict orchestrator\u2192worker hierarchies and cap recursion d",
+          "latency_s": 15.528932809829712
+        }
+      ],
+      "total_cost_usd": 0.07616999999999999,
+      "total_input_tokens": 698,
+      "total_output_tokens": 876,
+      "n_agents": 3,
+      "wall_clock_s": 48.212713956832886,
+      "error": null
+    },
+    {
+      "topology": "parallel",
+      "model": "claude_cli/claude-opus-4-7",
+      "question": "Summarize the trade-offs between OpenTelemetry GenAI semantic conventions and OpenInference for agent observability.",
+      "run_id": "parallel__claude_cli_claude-opus-4-7__q2",
+      "transcript": [
+        {
+          "agent": "researcher_a",
+          "output": "**OTel GenAI semantic conventions** prioritize vendor neutrality and integration with the broader CNCF observability stack. Attributes like `gen_ai.system`, `gen_ai.request.model`, and `gen_ai.usage.*_tokens` are recognized by every major APM (Datadog, Grafana, Honeycomb), enabling correlation with HTTP/DB spans. Drawbacks: still experimental, churning schema, and agent-loop/tool-call semantics lag behind framework innovation. Message content capture is opt-in and minimally structured, weakening evaluation/replay workflows.\n\n**OpenInference** (Arize) is purpose-built for LLM and agent tracing. Span kinds (`CHAIN`, `AGENT`, `TOOL`, `RETRIEVER`, `EMBEDDING`, `RERANKER`) plus structured `input.value`/`output.value` JSON payloads support eval pipelines, prompt replay, and Phoenix UI out of the box. Auto-instrumentors cover LangChain, LlamaIndex, DSPy, CrewAI, and the OpenAI Agents SDK earlier than OTel. Cost: weaker recognition outside AI-native backends and divergence from emerging standa",
+          "latency_s": 20.733262062072754
+        },
+        {
+          "agent": "researcher_b",
+          "output": "**OpenTelemetry GenAI Semantic Conventions**\n- *Pros:* Vendor-neutral, integrates natively with existing OTel collectors/backends (Jaeger, Tempo, Datadog). Stable spec for LLM spans (`gen_ai.*` attributes) means one pipeline for traces, metrics, logs across services.\n- *Cons:* Still incubating for agents \u2014 multi-step tool calls, retrieval, and agent graphs are under-specified. You'll hand-roll attributes for ReAct loops or LangGraph nodes.\n\n**OpenInference (Arize)**\n- *Pros:* Richer agent-native schema out of the box: spans for `LLM`, `CHAIN`, `RETRIEVER`, `TOOL`, `AGENT`, `RERANKER`, with input/output payload capture. Auto-instrumentors for LangChain, LlamaIndex, DSPy, CrewAI ship today. Best fit if deploying Phoenix or Arize AX.\n- *Cons:* Schema is Arize-driven; backends outside Phoenix/Arize may not parse `openinference.*` semantics, forcing translation shims.\n\n**Deployment heuristic:** Greenfield agent stack on Phoenix \u2192 OpenInference. Existing OTel observability investment \u2192 GenAI",
+          "latency_s": 15.983540296554565
+        },
+        {
+          "agent": "writer",
+          "output": "**OpenTelemetry GenAI Semantic Conventions**\n- *Pros:* Vendor-neutral and recognized by every major APM (Datadog, Grafana, Honeycomb, Jaeger, Tempo). One pipeline correlates `gen_ai.*` spans with HTTP/DB traces, metrics, and logs across services.\n- *Cons:* Still experimental with a churning schema. Agent-loop semantics \u2014 multi-step tool calls, retrieval, LangGraph nodes, ReAct loops \u2014 are under-specified, forcing hand-rolled attributes. Message content capture is opt-in and minimally structured, weakening eval/replay.\n\n**OpenInference (Arize)**\n- *Pros:* Purpose-built for LLM/agent tracing with rich span kinds (`LLM`, `CHAIN`, `AGENT`, `TOOL`, `RETRIEVER`, `EMBEDDING`, `RERANKER`) and structured `input.value`/`output.value` JSON payloads that power eval pipelines, prompt replay, and Phoenix UI. Auto-instrumentors for LangChain, LlamaIndex, DSPy, CrewAI, and the OpenAI Agents SDK ship earlier than OTel equivalents.\n- *Cons:* Arize-driven schema with weaker recognition outside Phoenix/Ar",
+          "latency_s": 13.658727884292603
+        }
+      ],
+      "total_cost_usd": 0.077985,
+      "total_input_tokens": 734,
+      "total_output_tokens": 893,
+      "n_agents": 3,
+      "wall_clock_s": 50.393937826156616,
+      "error": null
+    },
+    {
+      "topology": "parallel",
+      "model": "claude_cli/claude-opus-4-7",
+      "question": "What are the limitations of using mock LLM clients for benchmarking agent fault detection? Propose two ways to validate against real production traces.",
+      "run_id": "parallel__claude_cli_claude-opus-4-7__q3",
+      "transcript": [
+        {
+          "agent": "researcher_a",
+          "output": "**Limitations of mock LLM clients:**\n\n1. **Distributional drift**: Mocks emit canned tool calls/text that miss real model quirks\u2014token-boundary errors, partial JSON, retry storms, schema hallucinations, and rate-limit cascades that drive most production faults.\n2. **Temporal artifacts absent**: No realistic latency variance, streaming chunk timing, or mid-stream disconnects\u2014so timeout/cancellation logic stays untested.\n3. **Coverage bias**: Authors mock failures they already imagine; unknown-unknowns (e.g., tokenizer drift after model upgrade, tool-call ID collisions) never surface.\n4. **State-space collapse**: Deterministic mocks underrepresent stochastic loops, infinite recursion, and emergent multi-agent deadlocks.\n\n**Validation against production traces:**\n\n1. **Trace replay harness**: Capture sanitized request/response/tool-call traces with timestamps; replay them through the agent under test, injecting recorded latencies and errors. Compare detector verdicts against ground-truth ",
+          "latency_s": 15.993625164031982
+        },
+        {
+          "agent": "researcher_b",
+          "output": "**Limitations of mock LLM clients:**\n\n1. **Synthetic fault distributions** miss long-tail real failures (rare token sequences, provider-specific timeouts, partial streaming corruption).\n2. **Deterministic outputs** hide flakiness from temperature, nucleus sampling, and load-dependent latency variance.\n3. **No drift modeling** \u2014 mocks freeze a snapshot, missing model version updates, silent API behavior changes, and degraded modes under throttling.\n4. **Tool-call schemas** in mocks rarely reproduce malformed JSON, hallucinated arguments, or schema-version skew seen in production.\n\n**Validation against production traces:**\n\n1. **Shadow replay harness:** Capture sanitized prod request/response pairs (with PII redaction) into a trace store; replay them through the agent's fault detector offline and compute precision/recall against ground-truth incident labels from oncall postmortems.\n2. **Live mirrored traffic with dual-path scoring:** Tee a small percentage of real production calls to the",
+          "latency_s": 16.309832096099854
+        },
+        {
+          "agent": "writer",
+          "output": "**Limitations of mock LLM clients:**\n\n1. **Distributional gaps**: Canned outputs miss long-tail production faults\u2014token-boundary errors, partial/streaming JSON corruption, hallucinated tool arguments, schema-version skew, and rate-limit cascades.\n2. **Missing temporal dynamics**: No realistic latency variance, streaming chunk timing, or mid-stream disconnects, so timeout, retry, and cancellation paths stay untested.\n3. **Determinism hides stochasticity**: Fixed outputs suppress temperature/nucleus-sampling flakiness, infinite recursion, and emergent multi-agent deadlocks.\n4. **Coverage bias and frozen snapshots**: Authors only mock failures they imagine; unknown-unknowns (tokenizer drift post-upgrade, tool-call ID collisions, silent API behavior changes, throttled-degraded modes) never surface.\n\n**Validation against production traces:**\n\n1. **Trace replay harness**: Capture sanitized (PII-redacted) request/response/tool-call traces with timestamps and recorded latencies/errors. Replay ",
+          "latency_s": 16.81398892402649
+        }
+      ],
+      "total_cost_usd": 0.08466,
+      "total_input_tokens": 809,
+      "total_output_tokens": 967,
+      "n_agents": 3,
+      "wall_clock_s": 49.13507008552551,
+      "error": null
+    },
+    {
+      "topology": "parallel",
+      "model": "claude_cli/claude-opus-4-7",
+      "question": "Describe how a closed-loop intervention based on telemetry signals can recover a stuck agent. Give a concrete example using the REASONING span kind.",
+      "run_id": "parallel__claude_cli_claude-opus-4-7__q4",
+      "transcript": [
+        {
+          "agent": "researcher_a",
+          "output": "A closed-loop intervention treats telemetry as a control signal: spans emitted by the agent are scored in near-real-time, and anomalies trigger a corrective action injected back into the agent's execution context.\n\n**Mechanism:** Each REASONING span carries attributes like `token_count`, `latency_ms`, `self_reference_score` (cosine similarity to prior reasoning embeddings), and `tool_call_delta`. A supervisor consumes the span stream; when thresholds breach, it dispatches a structured intervention message.\n\n**Concrete example:** An agent loops generating REASONING spans averaging 800 tokens with `self_reference_score > 0.92` over 5 consecutive spans and zero tool calls \u2014 classic rumination. The supervisor's detector fires, opens an intervention span linked via `parent_span_id`, and injects a system message: *\"You've repeated similar reasoning 5\u00d7. Summarize your current hypothesis in one sentence and call `search_docs` or return a partial answer.\"* The agent's next REASONING span shows ",
+          "latency_s": 15.047651052474976
+        },
+        {
+          "agent": "researcher_b",
+          "output": "**Closed-loop recovery pattern:**\n\n1. **Detect** \u2014 telemetry pipeline tags REASONING spans with features (token count, repetition score, tool-call diversity).\n2. **Diagnose** \u2014 a watchdog flags anomalies (e.g., reasoning span >60s with cosine similarity >0.9 across last 3 thoughts = rumination loop).\n3. **Intervene** \u2014 controller injects corrective context or forces a state transition.\n\n**Concrete example: Rumination breaker**\n\nA coding agent is stuck re-reading the same file. The REASONING span emitter publishes `span.reasoning.repetition_ratio=0.94` and `span.reasoning.tool_calls_since_progress=0`. The watchdog matches a \"thrash\" rule and triggers an intervention:\n\n```\ninject_system_message(\n  \"You've re-examined auth.py 4 times without progress.\n   Summarize what you know, then either form a hypothesis\n   or escalate. Do not re-read the file.\")\nforce_compaction(keep=[\"task\", \"last_action\"])\n```\n\nThe next REASONING span shows reduced repetition; if not, the controller escalates to hu",
+          "latency_s": 16.246103048324585
+        },
+        {
+          "agent": "writer",
+          "output": "A closed-loop intervention treats telemetry as a control signal, running a **detect \u2192 diagnose \u2192 intervene** cycle over the agent's own span stream.\n\n**Mechanism.** Each REASONING span carries features like `token_count`, `latency_ms`, `self_reference_score` (cosine similarity to prior reasoning embeddings), and `tool_calls_since_progress`. A supervisor/watchdog consumes the stream; when thresholds breach, it opens an intervention span (linked via `parent_span_id`) and injects a corrective message or forces a state transition back into the agent's context.\n\n**Concrete example \u2014 rumination breaker.** A coding agent loops re-examining `auth.py`, emitting REASONING spans averaging 800 tokens with `self_reference_score > 0.92` and `tool_calls_since_progress = 0` across 5 consecutive spans. The watchdog matches a \"thrash\" rule and fires:\n\n```\ninject_system_message(\n  \"You've re-examined auth.py 4 times without progress.\n   Summarize what you know in one sentence, then either\n   form a hypot",
+          "latency_s": 12.867321968078613
+        }
+      ],
+      "total_cost_usd": 0.075045,
+      "total_input_tokens": 733,
+      "total_output_tokens": 854,
+      "n_agents": 3,
+      "wall_clock_s": 44.2124240398407,
+      "error": null
+    },
+    {
+      "topology": "parallel",
+      "model": "claude_cli/claude-sonnet-4-6",
+      "question": "What are three concrete ways autonomous AI agents fail in production deployments, and what observability primitives would catch each?",
+      "run_id": "parallel__claude_cli_claude-sonnet-4-6__q0",
+      "transcript": [
+        {
+          "agent": "researcher_a",
+          "output": "**1. Tool call loops / runaway orchestration**\nAgent re-invokes tools with near-identical inputs, burning tokens and time. Catch with: span-level trace trees (OpenTelemetry), loop-detection counters per conversation ID, and token-budget gauges with threshold alerts.\n\n**2. Silent context drift**\nLong-running agents lose track of the original goal as context window fills \u2014 produce plausible but wrong output with no error signal. Catch with: semantic similarity scoring between goal embedding and final output embedding, logged per turn; divergence above threshold triggers a flag.\n\n**3. Tool result hallucination**\nAgent \"uses\" a tool but fabricates the result rather than grounding on actual output \u2014 especially under latency pressure. Catch with: structured output schemas with hash-verified tool response IDs, grounding audit logs that pair each claim to a specific tool call ID, and confidence calibration metrics (predicted vs. actual accuracy).",
+          "latency_s": 15.111668109893799
+        },
+        {
+          "agent": "researcher_b",
+          "output": "**1. Tool call loops** \u2014 Agent retries a failing API indefinitely, burning tokens and budget.\n- *Catch with:* call-count metrics per task, rate-limit alerts, span tracing showing repeated tool invocations.\n\n**2. Context drift / hallucinated state** \u2014 Agent acts on stale or fabricated memory mid-task (e.g., assumes a file exists that it deleted earlier).\n- *Catch with:* structured action logs with pre/post state snapshots, assertion checks on expected vs. actual environment state after each step.\n\n**3. Silent task abandonment** \u2014 Agent encounters an ambiguous branch, returns a plausible-sounding response, but stops pursuing the actual goal.\n- *Catch with:* goal-completion scoring (LLM-as-judge on final output vs. original intent), task-duration P95 alerts, and explicit \"done/blocked/failed\" terminal state enums rather than free-text responses.",
+          "latency_s": 14.583579063415527
+        },
+        {
+          "agent": "writer",
+          "output": "**1. Tool call loops** \u2014 The agent retries a failing tool with near-identical inputs indefinitely, burning tokens and budget. Catch with span-level trace trees (OpenTelemetry), per-task call-count metrics, and token-budget gauges with threshold alerts that fire before costs explode.\n\n**2. Context drift** \u2014 In long-running tasks, the agent loses track of the original goal or acts on stale state (e.g., assuming a file exists that it deleted earlier). Catch with structured action logs that record pre/post environment snapshots after each step, combined with semantic similarity scoring between the original goal embedding and current output \u2014 divergence above threshold triggers a flag.\n\n**3. Silent failure** \u2014 Two related variants: the agent fabricates a tool result rather than grounding on actual output (hallucinated tool response), or it hits an ambiguous branch and returns a plausible-sounding answer while silently abandoning the real goal. Catch both with: hash-verified tool response ID",
+          "latency_s": 20.58702802658081
+        }
+      ],
+      "total_cost_usd": 0.013485,
+      "total_input_tokens": 650,
+      "total_output_tokens": 769,
+      "n_agents": 3,
+      "wall_clock_s": 50.303298234939575,
+      "error": null
+    },
+    {
+      "topology": "parallel",
+      "model": "claude_cli/claude-sonnet-4-6",
+      "question": "Compare reasoning-loop failures versus circular delegation in multi-agent systems. Which is more common, and why?",
+      "run_id": "parallel__claude_cli_claude-sonnet-4-6__q1",
+      "transcript": [
+        {
+          "agent": "researcher_a",
+          "output": "**Reasoning-loop failures** occur within a single agent: the model iteratively refines a scratchpad but oscillates between contradictory states, never reaching a terminal condition. Caused by reward hacking, insufficient stopping criteria, or conflicting tool outputs feeding back into the same context window.\n\n**Circular delegation** is a multi-agent topology bug: Agent A delegates to B, B to C, C back to A. Each hop may look locally correct \u2014 each agent believes it lacks authority or capability \u2014 but the graph has no sink.\n\n**Circular delegation is rarer but harder to detect.** It requires a specific graph topology and typically only manifests under edge-case inputs that route control flow non-deterministically. Most frameworks (LangGraph, AutoGen) now enforce DAG constraints or depth limits.\n\n**Reasoning loops are far more common** because every agent with iterative self-reflection is individually susceptible \u2014 no cross-agent topology required. Token budgets and `max_iterations` guar",
+          "latency_s": 14.628724098205566
+        },
+        {
+          "agent": "researcher_b",
+          "output": "## Reasoning-Loop Failures vs. Circular Delegation\n\n**Reasoning-loop failures** occur within a single agent: the model re-evaluates the same state repeatedly without progress. Example: a code-review agent that keeps re-checking a linting error it cannot fix, burning tokens until timeout.\n\n**Circular delegation** spans agents: Agent A hands off to B, B to C, C back to A. Example: an orchestrator routes an ambiguous ticket to a classifier, which routes it back as \"needs orchestration.\"\n\n**Which is more common?** Reasoning loops \u2014 by a wide margin.\n\nWhy:\n- Single-agent deployments outnumber multi-agent ones, so the failure surface is larger.\n- Loops emerge from ambiguous prompts or missing tool outputs; circular delegation requires specific orchestration misconfigurations.\n- LLMs naturally over-deliberate when uncertain; routing cycles require *two* agents to fail their intent-detection simultaneously.\n\n**Mitigation:** step counters + forced exits for loops; acyclic delegation graphs with",
+          "latency_s": 15.432665824890137
+        },
+        {
+          "agent": "writer",
+          "output": "## Reasoning-Loop Failures vs. Circular Delegation\n\n**Reasoning-loop failures** are single-agent failures: the model iteratively refines its scratchpad but oscillates between contradictory states, never reaching a terminal condition. Example: a code-review agent perpetually re-checking a linting error it cannot resolve, burning tokens until timeout. Caused by reward hacking, ambiguous prompts, conflicting tool outputs, or insufficient stopping criteria.\n\n**Circular delegation** is a multi-agent topology bug: Agent A delegates to B, B to C, C back to A. Each hop appears locally correct \u2014 each agent believes it lacks authority \u2014 but the graph has no sink. Example: an orchestrator routes an ambiguous ticket to a classifier, which routes it back as \"needs orchestration.\"\n\n**Reasoning loops are far more common.** Three reasons:\n\n1. **Surface area** \u2014 single-agent deployments vastly outnumber multi-agent ones; every iterative agent is individually susceptible.\n2. **Triggering conditions** \u2014 ",
+          "latency_s": 13.608241081237793
+        }
+      ],
+      "total_cost_usd": 0.01566,
+      "total_input_tokens": 715,
+      "total_output_tokens": 901,
+      "n_agents": 3,
+      "wall_clock_s": 43.68917393684387,
+      "error": null
+    },
+    {
+      "topology": "parallel",
+      "model": "claude_cli/claude-sonnet-4-6",
+      "question": "Summarize the trade-offs between OpenTelemetry GenAI semantic conventions and OpenInference for agent observability.",
+      "run_id": "parallel__claude_cli_claude-sonnet-4-6__q2",
+      "transcript": [
+        {
+          "agent": "researcher_a",
+          "output": "**OpenTelemetry GenAI Semantic Conventions**\n- **Pros:** Vendor-neutral, CNCF-backed standard; integrates natively with existing OTel pipelines (Prometheus, Jaeger, etc.); long-term ecosystem convergence likely.\n- **Cons:** Still maturing for agentic patterns (tool calls, multi-step reasoning, agent handoffs); sparse attributes for LLM-specific metadata (token budgets, prompt templates); requires more manual instrumentation.\n\n**OpenInference (Arize)**\n- **Pros:** Purpose-built for LLM/agent observability; richer span schemas (retrieval documents, embedding vectors, tool call I/O, chain steps); immediate compatibility with Arize, Phoenix, and LangSmith-style UIs.\n- **Cons:** Vendor-influenced; narrower ecosystem adoption; risk of fragmentation if OTel GenAI conventions catch up and diverge in incompatible ways.\n\n**Key trade-off:** OpenInference wins on expressiveness *today* for complex agent traces; OTel GenAI wins on infrastructure integration and long-term standardization. Many teams",
+          "latency_s": 15.332178115844727
+        },
+        {
+          "agent": "researcher_b",
+          "output": "**OpenTelemetry GenAI Semantic Conventions**\n- **Pro:** Vendor-neutral, integrates with existing OTel pipelines (Jaeger, Grafana, Datadog). Standardized across CNCF ecosystem.\n- **Con:** Still maturing for LLM/agent-specific attributes (token counts, tool calls). Requires custom instrumentation for complex agent graphs.\n- **Deployment fit:** Teams already running OTel collectors; polyglot microservices architectures.\n\n**OpenInference (Arize)**\n- **Pro:** Purpose-built for LLM observability \u2014 native span types for retrievals, embeddings, tool calls, agent trajectories. Works out-of-box with LangChain, LlamaIndex.\n- **Con:** Arize-centric ecosystem; less portable. Adds a dependency outside the CNCF stack.\n- **Deployment fit:** ML-first teams prioritizing prompt/response debugging over infrastructure tracing.\n\n**Practical recommendation:** Use OpenInference during development for rich LLM debugging, then export via OTel-compatible bridges (Phoenix supports this) to your production OTel ba",
+          "latency_s": 15.69620394706726
+        },
+        {
+          "agent": "writer",
+          "output": "## OpenTelemetry GenAI vs. OpenInference for Agent Observability\n\n**OpenTelemetry GenAI** is vendor-neutral, CNCF-backed, and integrates naturally with existing pipelines (Prometheus, Jaeger, Grafana, Datadog). It's the clear long-term bet for standardization across polyglot microservices architectures. The cost: it's still maturing for agentic patterns \u2014 tool calls, multi-step reasoning, agent handoffs \u2014 and requires significant manual instrumentation to capture LLM-specific metadata like token budgets and prompt templates.\n\n**OpenInference (Arize)** is purpose-built for LLM observability, offering richer span schemas out of the box: retrieval documents, embedding vectors, tool call I/O, chain steps, agent trajectories. It works immediately with LangChain, LlamaIndex, and UIs like Phoenix and LangSmith. The cost: it's Arize-influenced, has narrower ecosystem adoption, and risks fragmentation if OTel GenAI conventions catch up in incompatible ways.\n\n**Bottom line:** OpenInference wins ",
+          "latency_s": 12.271017789840698
+        }
+      ],
+      "total_cost_usd": 0.015087,
+      "total_input_tokens": 709,
+      "total_output_tokens": 864,
+      "n_agents": 3,
+      "wall_clock_s": 43.320226192474365,
+      "error": null
+    },
+    {
+      "topology": "parallel",
+      "model": "claude_cli/claude-sonnet-4-6",
+      "question": "What are the limitations of using mock LLM clients for benchmarking agent fault detection? Propose two ways to validate against real production traces.",
+      "run_id": "parallel__claude_cli_claude-sonnet-4-6__q3",
+      "transcript": [
+        {
+          "agent": "researcher_a",
+          "output": "## Mock LLM Client Limitations for Agent Fault Detection Benchmarking\n\n**Core limitations:**\n\n- **Determinism bias**: Mocks return fixed responses, missing stochastic failure modes (hallucination cascades, latency spikes, partial token truncation mid-reasoning)\n- **Distribution shift**: Synthetic error injection doesn't match real failure distributions \u2014 production faults cluster temporally and correlate with load patterns\n- **Missing emergent behaviors**: Real agents exhibit fault propagation across tool-call chains that mocks can't replicate (e.g., a malformed intermediate result poisoning downstream context)\n- **Tokenization artifacts**: Mocks skip real tokenization edge cases (BOS/EOS handling, context window pressure degradation)\n\n---\n\n**Two production trace validation approaches:**\n\n1. **Replay harness**: Capture production request/response pairs via middleware, strip PII, then replay against your detection system \u2014 measuring precision/recall against human-labeled fault annotatio",
+          "latency_s": 14.312310934066772
+        },
+        {
+          "agent": "researcher_b",
+          "output": "## Mock LLM Client Limitations for Fault Detection Benchmarking\n\n**Core problems:**\n- Mocks can't reproduce real latency distributions, token-level variability, or subtle model degradation patterns\n- They miss emergent failure modes: cascading retries, partial streaming failures, context window edge cases\n- Fault injection is scripted \u2014 real production faults are correlated and temporally structured in ways mocks don't capture\n\n**Two validation approaches:**\n\n**1. Shadow replay with recorded traces**\nCapture production request/response pairs (sanitized) and replay them through your fault detector. Compare detector decisions against ground-truth labels from incident postmortems. This tests whether your detector fires on *actual* failure signatures, not synthetic ones.\n\n**2. Canary deployment with holdout comparison**\nDeploy the fault detector in shadow mode alongside production traffic. Track false-positive/negative rates against your on-call incident log over a two-week window. Mock be",
+          "latency_s": 13.965975999832153
+        },
+        {
+          "agent": "writer",
+          "output": "## Mock LLM Client Limitations\n\nMocks introduce several fundamental gaps when benchmarking agent fault detection:\n\n- **Determinism bias**: Fixed responses miss stochastic failure modes \u2014 hallucination cascades, latency spikes, partial streaming failures, and context window degradation under pressure.\n- **Distribution mismatch**: Scripted fault injection doesn't match production reality, where failures cluster temporally and correlate with load patterns.\n- **Missing emergent behavior**: Real agents exhibit fault propagation across tool-call chains \u2014 a malformed intermediate result poisoning downstream context \u2014 which mocks can't replicate.\n\nMock benchmarks are useful as sanity checks, but they can't be the acceptance gate.\n\n## Two Validation Approaches\n\n**1. Replay harness against labeled traces**\nCapture production request/response pairs via middleware, sanitize PII, then replay them through your fault detector. Measure precision/recall against ground-truth labels from incident postmor",
+          "latency_s": 13.775786876678467
+        }
+      ],
+      "total_cost_usd": 0.016224,
+      "total_input_tokens": 783,
+      "total_output_tokens": 925,
+      "n_agents": 3,
+      "wall_clock_s": 42.07124900817871,
+      "error": null
+    },
+    {
+      "topology": "parallel",
+      "model": "claude_cli/claude-sonnet-4-6",
+      "question": "Describe how a closed-loop intervention based on telemetry signals can recover a stuck agent. Give a concrete example using the REASONING span kind.",
+      "run_id": "parallel__claude_cli_claude-sonnet-4-6__q4",
+      "transcript": [
+        {
+          "agent": "researcher_a",
+          "output": "## Closed-Loop Agent Recovery via Telemetry\n\nA **closed-loop intervention** watches streaming telemetry (OpenTelemetry spans) and injects corrective signals back into the agent runtime when anomalies are detected.\n\n**Mechanism:**\n\n1. Each agent step emits a `REASONING` span (kind defined in OpenInference / OTel GenAI semconv) with attributes: `input.value`, `output.value`, `llm.token_count.completion`, duration.\n2. A watchdog process subscribes to the span stream (e.g., via OTLP gRPC export to a collector with a Kafka sink).\n3. Anomaly conditions: span duration > P99 threshold **or** `output.value` contains a repetition fingerprint (rolling hash of last N tokens).\n\n**Concrete recovery:**\n\n```python\nif span.kind == SpanKind.REASONING and is_stuck(span):\n    # Inject a corrective tool call into the agent's message queue\n    agent.inject_message(role=\"user\",\n        content=\"You appear looping. Summarize progress and pick a new approach.\")\n    span.set_attribute(\"intervention.applied\", Tr",
+          "latency_s": 15.435200929641724
+        },
+        {
+          "agent": "researcher_b",
+          "output": "## Closed-Loop Recovery via Telemetry\n\nA closed-loop intervention monitors agent telemetry in real-time and automatically applies corrective actions when anomaly thresholds are breached.\n\n**Pattern:** `detect \u2192 classify \u2192 intervene \u2192 resume`\n\n**Concrete example using `REASONING` span:**\n\nYour orchestrator emits an OpenTelemetry span of kind `REASONING` for each agent reasoning step. A watchdog process tracks:\n\n```python\n# Watchdog rule\nif span.kind == \"REASONING\" and span.duration_ms > 30_000:\n    if span.attributes[\"loop_count\"] > 5:\n        inject_interrupt(agent_id, payload={\n            \"directive\": \"RESET_CONTEXT\",\n            \"hint\": \"Summarize progress and restate goal in one sentence.\"\n        })\n```\n\nWhen the `REASONING` span stalls (duration spike + repeated loop count), the watchdog injects a context-reset directive mid-execution \u2014 forcing the agent to collapse its working memory and re-ground on the original goal \u2014 without terminating the session.\n\n**Result:** Self-healing ",
+          "latency_s": 15.08001708984375
+        },
+        {
+          "agent": "writer",
+          "output": "## Closed-Loop Agent Recovery via Telemetry\n\nA closed-loop intervention follows a **detect \u2192 classify \u2192 intervene \u2192 resume** cycle: a watchdog process subscribes to streaming OpenTelemetry spans and injects corrective signals into the agent runtime when anomalies are detected \u2014 without restarting or losing accumulated context.\n\n**How it works with the `REASONING` span:**\n\nEach agent reasoning step emits a `REASONING` span (per OpenInference/OTel GenAI semconv) carrying attributes like `input.value`, `output.value`, duration, and `loop_count`. The watchdog evaluates two anomaly signals: duration exceeding a P99 threshold, and a repetition fingerprint (rolling hash of recent output tokens).\n\n```python\nif span.kind == \"REASONING\" and span.duration_ms > 30_000:\n    if span.attributes[\"loop_count\"] > 5 or is_stuck(span):\n        agent.inject_message(\n            role=\"user\",\n            content=\"Summarize progress and restate your goal. Pick a new approach.\"\n        )\n        span.set_attri",
+          "latency_s": 13.358574867248535
+        }
+      ],
+      "total_cost_usd": 0.015125999999999999,
+      "total_input_tokens": 742,
+      "total_output_tokens": 860,
+      "n_agents": 3,
+      "wall_clock_s": 43.892104387283325,
+      "error": null
+    },
+    {
+      "topology": "parallel",
+      "model": "codex_cli/gpt-5.5",
+      "question": "What are three concrete ways autonomous AI agents fail in production deployments, and what observability primitives would catch each?",
+      "run_id": "parallel__codex_cli_gpt-5.5__q0",
+      "transcript": [
+        {
+          "agent": "researcher_a",
+          "output": "1. **Runaway execution loops**: the agent repeats tool calls, retries failed subtasks, or keeps decomposing goals until cost/latency explodes. Catch with per-run traces, tool-call spans, step counters, token/cost metrics, timeout events, and loop detectors keyed on repeated action signatures.\n\n2. **Unsafe or incorrect tool use**: the agent calls real systems with malformed parameters, stale assumptions, missing authorization context, or non-idempotent side effects. Catch with structured tool-call logs, request/response payload capture, policy-decision events, idempotency keys, state-diff snapshots before/after actions, and anomaly metrics for unusual write volume or target selection.\n\n3. **Silent task-quality failure**: the agent completes successfully at the infrastructure layer but produces wrong, incomplete, injected, or unverifiable work. Catch with outcome evaluations, provenance traces for retrieved context, citation coverage metrics, guardrail verdicts, human override labels, re",
+          "latency_s": 14.654167175292969
+        },
+        {
+          "agent": "researcher_b",
+          "output": "1. **Tool misuse or unsafe action selection**: agent refunds the wrong customer, runs a broad SQL update, or calls a paid API in a loop.  \n   **Catch with**: structured tool-call traces, argument logging, policy violation counters, allowlist/denylist audit events, and per-action approval logs.\n\n2. **Goal drift across long workflows**: support agent starts solving a billing issue but pivots into account changes after irrelevant context enters memory.  \n   **Catch with**: step-level traces, task-state snapshots, intent classification per turn, memory read/write logs, and \u201cgoal consistency\u201d evals on completed runs.\n\n3. **Silent quality degradation from upstream change**: model, prompt, retrieval index, or API schema changes cause worse answers without hard failures.  \n   **Catch with**: versioned prompt/model/retrieval metadata, golden-task regression suites, outcome metrics, user correction rates, fallback rates, and latency/error dashboards by dependency version.",
+          "latency_s": 13.589740991592407
+        },
+        {
+          "agent": "writer",
+          "output": "1. **Runaway or costly execution loops**  \n   Agents repeatedly retry failed tools, decompose tasks endlessly, or call paid APIs in loops.  \n   **Catch with:** per-run traces, tool-call spans, step counters, timeout events, token/cost metrics, repeated-action loop detectors, and dependency-level latency/error dashboards.\n\n2. **Unsafe or incorrect tool use**  \n   Agents take bad actions in real systems: refunding the wrong customer, running broad SQL updates, using stale parameters, or making non-idempotent writes without approval.  \n   **Catch with:** structured tool-call logs, full argument/request/response capture, policy-decision events, allowlist/denylist audit logs, idempotency keys, per-action approval records, and before/after state-diff snapshots.\n\n3. **Silent task-quality or goal failure**  \n   The run \u201csucceeds\u201d technically but produces wrong, incomplete, drifted, injected, or degraded work after prompt/model/retrieval/API changes.  \n   **Catch with:** step-level traces, task",
+          "latency_s": 9.951382160186768
+        }
+      ],
+      "total_cost_usd": 0.0,
+      "total_input_tokens": 709,
+      "total_output_tokens": 824,
+      "n_agents": 3,
+      "wall_clock_s": 38.225666999816895,
+      "error": null
+    },
+    {
+      "topology": "parallel",
+      "model": "codex_cli/gpt-5.5",
+      "question": "Compare reasoning-loop failures versus circular delegation in multi-agent systems. Which is more common, and why?",
+      "run_id": "parallel__codex_cli_gpt-5.5__q1",
+      "transcript": [
+        {
+          "agent": "researcher_a",
+          "output": "Reasoning-loop failures are usually more common.\n\nA reasoning-loop failure is local: an agent keeps re-planning, rechecking, retrying tools, or refining an answer because its termination condition is weak, confidence signal is unstable, or the task remains underspecified. It can happen in single-agent systems and therefore appears frequently inside multi-agent systems too.\n\nCircular delegation is structural: Agent A delegates to B, B delegates to C, and C routes back to A, or agents repeatedly bounce ownership because responsibility boundaries are unclear. This requires a system that permits peer delegation or dynamic routing, so it is less universal.\n\nThe core difference is failure scope. Reasoning loops arise from inference and control-policy uncertainty; circular delegation arises from orchestration topology and ownership ambiguity.\n\nSo in practice: reasoning-loop failures are more common, while circular delegation is rarer but more damaging when autonomy, routing, and delegation ar",
+          "latency_s": 12.808627843856812
+        },
+        {
+          "agent": "researcher_b",
+          "output": "Reasoning-loop failures are usually more common.\n\nA reasoning-loop failure happens when one agent keeps re-planning, re-checking, or retrying without making progress. In deployment, this looks like a coding agent repeatedly running the same failing test, a support agent asking for the same customer context, or an incident bot cycling through \u201cdiagnose \u2192 fetch logs \u2192 summarize \u2192 diagnose\u201d because its stop condition is weak.\n\nCircular delegation is a multi-agent routing failure: Agent A hands work to Agent B, B hands it to C, and C sends it back to A. Example: a customer issue moves from \u201cbilling\u201d to \u201cpolicy\u201d to \u201caccount access\u201d and back to \u201cbilling\u201d because ownership rules overlap.\n\nReasoning loops are more common because they can happen inside any single agent using tools, retries, or reflection. Circular delegation usually requires a less constrained peer-to-peer agent design; many production systems avoid it with orchestrators, DAGs, ownership rules, TTLs, and escalation paths.",
+          "latency_s": 11.989090204238892
+        },
+        {
+          "agent": "writer",
+          "output": "Reasoning-loop failures are usually more common.\n\nA reasoning-loop failure is a local control problem: one agent keeps re-planning, rechecking, retrying tools, or refining an answer without making real progress. This can happen in any tool-using or reflective agent, even in a single-agent setup. In practice, it looks like a coding agent repeatedly running the same failing test, a support agent asking for the same context again, or an incident bot cycling through diagnosis and log fetching because its stop condition is weak or confidence signal is unstable.\n\nCircular delegation is a structural multi-agent routing problem. Agent A delegates to B, B sends work to C, and C routes it back to A, or responsibility keeps bouncing because ownership boundaries overlap. For example, a customer issue might move from billing to policy to account access and back to billing.\n\nReasoning loops are more common because they require only one uncertain agent with weak termination criteria. Circular delegat",
+          "latency_s": 9.806443929672241
+        }
+      ],
+      "total_cost_usd": 0.0,
+      "total_input_tokens": 687,
+      "total_output_tokens": 842,
+      "n_agents": 3,
+      "wall_clock_s": 34.6257221698761,
+      "error": null
+    },
+    {
+      "topology": "parallel",
+      "model": "codex_cli/gpt-5.5",
+      "question": "Summarize the trade-offs between OpenTelemetry GenAI semantic conventions and OpenInference for agent observability.",
+      "run_id": "parallel__codex_cli_gpt-5.5__q2",
+      "transcript": [
+        {
+          "agent": "researcher_a",
+          "output": "OpenTelemetry GenAI semantic conventions are the safer interoperability layer: vendor-neutral, aligned with existing OTel traces/metrics/logs, and easier to route through standard collectors and backends. The trade-off is maturity and expressiveness: GenAI conventions are still evolving and can be thin for agent-specific details like tool sequencing, retrieved documents, prompt/message payloads, evals, and intermediate reasoning state.\n\nOpenInference is more opinionated and immediately useful for LLM/agent debugging. It models prompts, messages, tools, retrieval, embeddings, outputs, and evaluations in a way that maps well to Phoenix/Arize-style observability workflows. The cost is ecosystem breadth: it is less universal than OTel, may require schema translation, and can create coupling to LLM-observability vendors or libraries.\n\nA pragmatic approach: use OTel as the transport and operational substrate, and OpenInference-style attributes where richer agent visibility is needed, while k",
+          "latency_s": 13.153371095657349
+        },
+        {
+          "agent": "researcher_b",
+          "output": "OpenTelemetry GenAI semantic conventions are best when agent observability must fit existing production telemetry. If your platform already uses OTel Collector, Tempo, Honeycomb, Datadog, or New Relic, GenAI spans let you correlate model latency, token counts, errors, and downstream service failures with normal traces.\n\nOpenInference is stronger for LLM-native debugging. In a RAG or tool-using agent, it more naturally captures prompt templates, retrieved documents, embeddings, tool calls, model inputs/outputs, and evaluations in systems like Phoenix or Arize.\n\nThe trade-off is standardization versus depth. OTel is broader, vendor-neutral, and easier for SRE deployment, but its GenAI schema is still evolving and may feel thin for agent internals. OpenInference is richer for ML/app teams, but may require translation to OTel for enterprise observability stacks.\n\nIn practice: use OTel for production fleet monitoring; use OpenInference when debugging answer quality, retrieval failures, or t",
+          "latency_s": 16.338649034500122
+        },
+        {
+          "agent": "writer",
+          "output": "OpenTelemetry GenAI semantic conventions are the better fit when agent observability needs to plug into existing production telemetry. They are vendor-neutral, align with normal OTel traces, metrics, and logs, and work well with collectors and backends like Tempo, Honeycomb, Datadog, or New Relic. They make it easier to correlate model latency, token usage, errors, and downstream service failures with the rest of the system. The downside is depth: the GenAI conventions are still evolving and can be thin for agent-specific internals.\n\nOpenInference is stronger for LLM-native debugging. It more naturally represents prompts, messages, tool calls, retrieval, embeddings, model inputs and outputs, evaluations, and other details useful for RAG or tool-using agents. That makes it especially useful in Phoenix/Arize-style workflows for diagnosing answer quality, retrieval failures, and tool loops. The trade-off is ecosystem breadth: it is less universal than OTel and may require schema translati",
+          "latency_s": 9.851459980010986
+        }
+      ],
+      "total_cost_usd": 0.0,
+      "total_input_tokens": 700,
+      "total_output_tokens": 832,
+      "n_agents": 3,
+      "wall_clock_s": 39.361777782440186,
+      "error": null
+    },
+    {
+      "topology": "parallel",
+      "model": "codex_cli/gpt-5.5",
+      "question": "What are the limitations of using mock LLM clients for benchmarking agent fault detection? Propose two ways to validate against real production traces.",
+      "run_id": "parallel__codex_cli_gpt-5.5__q3",
+      "transcript": [
+        {
+          "agent": "researcher_a",
+          "output": "Mock LLM clients are useful for repeatability, but they under-model the real failure surface. They usually encode expected errors explicitly, so detectors can overfit to canned strings, deterministic tool-call patterns, or simplified state transitions. They miss correlated failures from latency, streaming truncation, context-window pressure, model nondeterminism, partial JSON/tool schemas, policy refusals, degraded retrieval, and recovery behavior after earlier mistakes. They also distort base rates: synthetic faults often appear cleaner, more frequent, and better labeled than production faults.\n\nTwo validation paths:\n\n1. **Trace replay:** replay anonymized production agent traces through the detector, preserving prompts, tool outputs, timing, retries, token counts, and final outcomes. Compare detector alerts against human/adjudicated incident labels.\n\n2. **Shadow evaluation:** run the detector passively on live or sampled production traffic without affecting execution. Measure precisi",
+          "latency_s": 13.479846954345703
+        },
+        {
+          "agent": "researcher_b",
+          "output": "Mock LLM clients are useful for repeatability, but they miss the hard parts of production fault detection: stochastic outputs, partial compliance with tool schemas, latency spikes, rate-limit behavior, context-window truncation, safety refusals, malformed reasoning, and correlated failures across retries. They also tend to encode the benchmark designer\u2019s assumptions, so detectors can overfit to artificial error patterns like \u201calways return invalid JSON on step 3\u201d instead of catching messy real failures.\n\nTwo validation methods:\n\n1. **Replay production traces offline**: take sanitized agent runs with prompts, tool calls, model responses, timings, retries, and final outcomes. Re-run the detector on historical traces and measure whether it would have flagged real incidents, near misses, and known-good sessions.\n\n2. **Shadow-mode deployment**: run the detector passively beside live agents without affecting users. Compare alerts against human review, support tickets, rollback events, tool e",
+          "latency_s": 10.894191026687622
+        },
+        {
+          "agent": "writer",
+          "output": "Mock LLM clients are useful for repeatable benchmarks, but they under-model production failure modes. They often encode the benchmark designer\u2019s assumptions, so detectors can overfit to canned error strings, deterministic tool-call patterns, or simplified states like \u201cinvalid JSON on step 3.\u201d They miss messy real behavior: nondeterministic outputs, latency spikes, streaming truncation, rate limits, context-window pressure, partial schema compliance, policy refusals, degraded retrieval, retry cascades, and recovery after earlier mistakes. They also distort base rates because synthetic failures are usually cleaner, more frequent, and better labeled than production incidents.\n\nTwo validation paths:\n\n1. **Offline production trace replay**: Replay sanitized historical agent runs through the detector, preserving prompts, model responses, tool outputs, timings, retries, token counts, and final outcomes. Compare alerts against adjudicated incidents, near misses, known-good sessions, support ti",
+          "latency_s": 10.389441013336182
+        }
+      ],
+      "total_cost_usd": 0.0,
+      "total_input_tokens": 765,
+      "total_output_tokens": 906,
+      "n_agents": 3,
+      "wall_clock_s": 34.7789421081543,
+      "error": null
+    },
+    {
+      "topology": "parallel",
+      "model": "codex_cli/gpt-5.5",
+      "question": "Describe how a closed-loop intervention based on telemetry signals can recover a stuck agent. Give a concrete example using the REASONING span kind.",
+      "run_id": "parallel__codex_cli_gpt-5.5__q4",
+      "transcript": [
+        {
+          "agent": "researcher_a",
+          "output": "A closed-loop recovery system treats agent telemetry as a control signal: observe traces, classify non-progress, inject an intervention, then verify progress in later spans.\n\nExample with `REASONING` spans: suppose an agent emits five consecutive `REASONING` spans over 90 seconds, each consuming many tokens, with no tool calls, no file diffs, and semantically similar text like \u201cmaybe the failure is in auth setup.\u201d A monitor flags this as a stuck reasoning loop: high cognitive activity, low external state change.\n\nThe controller can interrupt with a targeted directive:\n\n```text\nYou are looping. Stop hypothesizing. Run the failing test, inspect the first stack frame, then search for that symbol.\n```\n\nRecovery is confirmed when the next trace contains `TOOL` spans, new evidence, and a changed plan. The key is that telemetry closes the loop: detection is automatic, intervention is specific, and success is measured behaviorally.",
+          "latency_s": 13.545557022094727
+        },
+        {
+          "agent": "researcher_b",
+          "output": "Instrument each agent step as telemetry spans: `REASONING`, `TOOL_CALL`, `OBSERVATION`, `FINAL`. A stuck agent often shows repeated or long `REASONING` spans with no tool calls, growing token use, and unchanged task state.\n\nClosed loop: detect the stall, intervene, then verify recovery from the next spans.\n\nExample: in production, a code agent emits `span.kind=REASONING` for 180s, `iteration=7`, `last_tool_age=9m`, `tokens_out=12k`, and `plan_hash` unchanged. A controller marks it stalled, resumes from the last checkpoint, lowers `max_reasoning_tokens` to `1024`, and injects: \u201cStop planning. Run one diagnostic command now: `rg failing_test`.\u201d\n\nRecovery is confirmed when the next trace contains a `TOOL_CALL` span followed by changed state or a new observation. If not, the controller escalates to restart, model switch, or human handoff.",
+          "latency_s": 15.162154197692871
+        },
+        {
+          "agent": "writer",
+          "output": "A closed-loop recovery system uses agent telemetry as feedback: instrument each step as spans such as `REASONING`, `TOOL_CALL`, `OBSERVATION`, and `FINAL`; detect non-progress; inject a targeted intervention; then verify recovery in later spans.\n\nFor example, a code agent emits repeated `REASONING` spans for 180 seconds with `iteration=7`, `tokens_out=12k`, `last_tool_age=9m`, no file diffs, no tool calls, and an unchanged `plan_hash`. The reasoning text keeps circling the same hypothesis, such as \u201cmaybe the failure is in auth setup.\u201d A monitor classifies this as a stuck reasoning loop: high cognitive/token activity, low external state change.\n\nThe controller interrupts with a specific directive:\n\n```text\nYou are looping. Stop planning. Run the failing test, inspect the first stack frame, then search for that symbol.\n```\n\nIt may also resume from a checkpoint and lower `max_reasoning_tokens` to force action.\n\nRecovery is confirmed behaviorally: the next trace should contain a `TOOL_CALL",
+          "latency_s": 10.55512809753418
+        }
+      ],
+      "total_cost_usd": 0.0,
+      "total_input_tokens": 654,
+      "total_output_tokens": 746,
+      "n_agents": 3,
+      "wall_clock_s": 39.288228034973145,
+      "error": null
+    },
+    {
+      "topology": "sequential",
+      "model": "claude_cli/claude-opus-4-7",
+      "question": "What are three concrete ways autonomous AI agents fail in production deployments, and what observability primitives would catch each?",
+      "run_id": "sequential__claude_cli_claude-opus-4-7__q0",
+      "transcript": [
+        {
+          "agent": "planner",
+          "output": "1. What are documented failure modes of autonomous AI agents in production (e.g., infinite tool-call loops, prompt injection, hallucinated actions, context drift, runaway cost), and which have caused real incidents?\n2. What observability primitives exist for LLM agent systems (trace spans per tool call, token/cost meters, decision-graph logging, eval scorers, guardrail telemetry), and which vendors/OSS implement them?\n3. For each failure mode, which specific signal (metric, trace attribute, or log event) provides the earliest reliable detection, and what threshold or anomaly pattern triggers alerting?",
+          "latency_s": 12.007597208023071
+        },
+        {
+          "agent": "researcher",
+          "output": "# Findings: Autonomous AI Agent Failure Modes & Observability\n\n**1. Runaway tool-call loops**\n- *Failure*: Agent recursively invokes tools (search\u2192summarize\u2192search) without progress; documented in LangChain/AutoGPT incidents and ChatGPT plugin runaways causing cost spikes.\n- *Primitive*: Per-session tool-call counter and span-depth metric (OpenTelemetry GenAI semantic conventions, LangSmith trace tree, Arize Phoenix). \n- *Trigger*: alert when tool_calls_per_session > p99 baseline (typically 15\u201325) OR identical (tool_name, args_hash) repeats \u22653\u00d7 within a trace.\n\n**2. Indirect prompt injection via tool outputs**\n- *Failure*: Retrieved web/email/doc content contains hidden instructions that hijack the agent (Bing Chat \"Sydney\" leaks, Microsoft Copilot EchoLeak CVE-2024, Slack AI exfiltration PoC).\n- *Primitive*: Guardrail telemetry comparing user-intent embedding to executed-action embedding (NeMo Guardrails, Lakera, Protect AI); tool-output content scanners.\n- *Trigger*: cosine drift > 0",
+          "latency_s": 23.406208038330078
+        },
+        {
+          "agent": "writer",
+          "output": "# Three Production Failure Modes for Autonomous AI Agents\n\n**1. Runaway tool-call loops.** Agents recursively chain tools (search\u2192summarize\u2192search) without converging, burning budget \u2014 a pattern seen in LangChain and AutoGPT incidents. Catch this with per-session tool-call counters and span-depth metrics (OpenTelemetry GenAI conventions, LangSmith, Arize Phoenix). Alert when calls per session exceed the p99 baseline (typically 15\u201325) or when the same `(tool_name, args_hash)` repeats three or more times in a single trace.\n\n**2. Indirect prompt injection via tool outputs.** Retrieved content \u2014 emails, web pages, docs \u2014 smuggles instructions that hijack the agent, as in the Microsoft Copilot EchoLeak CVE and the Slack AI exfiltration PoC. Deploy guardrail telemetry (NeMo Guardrails, Lakera, Protect AI) that embeds user intent and executed actions, then alert on cosine drift above 0.4 or any injection-classifier hit on tool returns.\n\n**3. Hallucinated or malformed tool calls.** Agents fabr",
+          "latency_s": 13.82765817642212
+        }
+      ],
+      "total_cost_usd": 0.075945,
+      "total_input_tokens": 743,
+      "total_output_tokens": 864,
+      "n_agents": 3,
+      "wall_clock_s": 49.27053904533386,
+      "error": null
+    },
+    {
+      "topology": "sequential",
+      "model": "claude_cli/claude-opus-4-7",
+      "question": "Compare reasoning-loop failures versus circular delegation in multi-agent systems. Which is more common, and why?",
+      "run_id": "sequential__claude_cli_claude-opus-4-7__q1",
+      "transcript": [
+        {
+          "agent": "planner",
+          "output": "1. How are \"reasoning-loop failures\" (single-agent self-referential reasoning getting stuck) and \"circular delegation\" (Agent A \u2192 B \u2192 A handoff cycles) defined and detected in published multi-agent frameworks (AutoGen, LangGraph, CrewAI)?\n2. What empirical failure-rate data exists from benchmarks or production post-mortems quantifying each failure mode's frequency, and what mitigations (max-depth caps, visited-agent sets, reflection limits) are deployed?\n3. Which architectural factors \u2014 agent count, delegation topology, shared memory, termination conditions \u2014 correlate with each failure type, and why might one dominate over the other?",
+          "latency_s": 14.722181797027588
+        },
+        {
+          "agent": "researcher",
+          "output": "Web search permission denied; compiling findings from training-data knowledge of published multi-agent framework documentation and failure-mode literature.\n\n**Structured Findings**\n\n1. **Definitions & detection**\n   - *Reasoning-loop failures*: a single agent repeats near-identical thought\u2192action\u2192observation cycles (ReAct/Reflexion). Detected via state-hash comparison and capped by **AutoGen** `max_consecutive_auto_reply`, **LangGraph** `recursion_limit` (default 25, raises `GraphRecursionError`), **CrewAI** `max_iter` (default 25) and `max_rpm`.\n   - *Circular delegation*: handoff cycles (A\u2192B\u2192A or longer) across agents. Detected via visited-agent sets, handoff-graph cycle checks, or speaker-selection guards in **AutoGen GroupChat**, **LangGraph Swarm** (`handoff` tool tracking), and **CrewAI** hierarchical/manager arbitration.\n\n2. **Empirical evidence**\n   - Cemri et al. 2025 \"Why Do Multi-Agent LLM Systems Fail?\" (MAST taxonomy, ~14 modes) ranks **Step Repetition** and **Reasoning-Ac",
+          "latency_s": 39.096301794052124
+        },
+        {
+          "agent": "writer",
+          "output": "# Reasoning Loops vs. Circular Delegation in Multi-Agent Systems\n\n**Reasoning-loop failures are substantially more common.** They occur when a single agent repeats near-identical thought\u2192action\u2192observation cycles, and they surface across every ReAct/Reflexion-style step. Frameworks treat them as a default hazard: AutoGen exposes `max_consecutive_auto_reply`, LangGraph enforces a `recursion_limit` (default 25, raising `GraphRecursionError`), and CrewAI ships `max_iter` and `max_rpm` caps.\n\n**Circular delegation**\u2014handoff cycles like A\u2192B\u2192A across agents\u2014is rarer in practice. Mature frameworks guard it explicitly: AutoGen GroupChat speaker selection, LangGraph Swarm handoff tracking, and CrewAI hierarchical manager arbitration all detect or prevent cycles before they compound.\n\n**Why the asymmetry?** Cemri et al. (2025, MAST taxonomy) rank *Step Repetition* and *Reasoning-Action Mismatch* among the top failure modes, while pure delegation cycles trail behind. Loop failures scale with tool",
+          "latency_s": 14.772809982299805
+        }
+      ],
+      "total_cost_usd": 0.08016000000000001,
+      "total_input_tokens": 774,
+      "total_output_tokens": 914,
+      "n_agents": 3,
+      "wall_clock_s": 68.61734676361084,
+      "error": null
+    },
+    {
+      "topology": "sequential",
+      "model": "claude_cli/claude-opus-4-7",
+      "question": "Summarize the trade-offs between OpenTelemetry GenAI semantic conventions and OpenInference for agent observability.",
+      "run_id": "sequential__claude_cli_claude-opus-4-7__q2",
+      "transcript": [
+        {
+          "agent": "planner",
+          "output": "1. What span/attribute schemas does each define for LLM calls, tool invocations, and multi-step agent traces, and where do they diverge in granularity (e.g., token usage, prompts/completions capture, message roles)?\n2. How does ecosystem and vendor support compare \u2014 OTel collector/backends (Grafana, Jaeger, Datadog) versus OpenInference's Arize/Phoenix-centric tooling \u2014 including SDK language coverage and instrumentation libraries for frameworks like LangChain, LlamaIndex, and CrewAI?\n3. What are the maturity, governance, and stability trade-offs (spec versioning, breaking changes, standardization path) and interoperability options for emitting or translating between both conventions?",
+          "latency_s": 12.775390148162842
+        },
+        {
+          "agent": "researcher",
+          "output": "Web search permissions weren't granted. I'll synthesize findings from training knowledge (cutoff Jan 2026).\n\n## Findings: OpenTelemetry GenAI vs. OpenInference\n\n**1. Span/attribute schemas**\n- **OTel GenAI**: Defines `gen_ai.*` attributes \u2014 `gen_ai.system`, `gen_ai.request.model`, `gen_ai.usage.input_tokens/output_tokens`, `gen_ai.operation.name` (chat, embeddings, tool). Prompts/completions captured as span events (`gen_ai.user.message`, `gen_ai.choice`); content capture is opt-in. Agent/multi-step tracing (`gen_ai.agent.*`) is newer and less complete.\n- **OpenInference**: Uses `llm.*`, `tool.*`, `retrieval.*`, `embedding.*`, `agent.*` namespaces with explicit `openinference.span.kind` (LLM, CHAIN, TOOL, AGENT, RETRIEVER, RERANKER). Captures full input/output messages, tool schemas, retrieval documents inline \u2014 richer for eval/replay; heavier payloads.\n\n**2. Ecosystem & SDK support**\n- **OTel GenAI**: Broad backend reach (Jaeger, Tempo, Grafana, Datadog, Honeycomb, New Relic) via stan",
+          "latency_s": 29.8174250125885
+        },
+        {
+          "agent": "writer",
+          "output": "# OTel GenAI vs. OpenInference: Trade-offs for Agent Observability\n\n**Standardization vs. richness.** OTel GenAI is the emerging CNCF standard, with `gen_ai.*` attributes designed for portability across Jaeger, Tempo, Datadog, and Honeycomb. It captures essentials \u2014 model, tokens, operation \u2014 but treats prompts/completions as opt-in span events and its agent conventions remain thin. OpenInference, driven by Arize, defines explicit span kinds (LLM, CHAIN, TOOL, AGENT, RETRIEVER) and captures full messages, tool schemas, and retrieval documents inline \u2014 far better for evaluation, replay, and debugging multi-step agents, at the cost of heavier payloads.\n\n**Ecosystem maturity.** OpenInference ships mature instrumentors for LangChain, LlamaIndex, CrewAI, DSPy, AutoGen, and major model providers today. OTel GenAI's framework coverage lags but is catching up via OpenLLMetry and official instrumentations.\n\n**Risk profile.** OTel GenAI is still experimental with frequent breaking renames but ha",
+          "latency_s": 14.944452285766602
+        }
+      ],
+      "total_cost_usd": 0.08157,
+      "total_input_tokens": 803,
+      "total_output_tokens": 927,
+      "n_agents": 3,
+      "wall_clock_s": 57.57081198692322,
+      "error": null
+    },
+    {
+      "topology": "sequential",
+      "model": "claude_cli/claude-opus-4-7",
+      "question": "What are the limitations of using mock LLM clients for benchmarking agent fault detection? Propose two ways to validate against real production traces.",
+      "run_id": "sequential__claude_cli_claude-opus-4-7__q3",
+      "transcript": [
+        {
+          "agent": "planner",
+          "output": "1. **Fidelity gap**: How do mock LLM response distributions (latency, token patterns, error modes) diverge from real model behavior, and which fault classes (hallucinated tool calls, partial outputs, rate-limit cascades) are systematically underrepresented?\n2. **Coverage bias**: Do hand-crafted mock scenarios miss long-tail failure modes that emerge only under real traffic distributions and adversarial inputs?\n3. **Detector overfitting**: Does tuning fault detectors against mocks cause false-positive inflation on production traces?\n\n**Validation approaches**: (a) Replay sampled production traces through the detector and compare precision/recall to mock-derived metrics; (b) Shadow-deploy the detector alongside live agents and measure agreement with human-labeled incident postmortems.",
+          "latency_s": 13.402364015579224
+        },
+        {
+          "agent": "researcher",
+          "output": "# Findings: Mock LLM Limitations for Agent Fault Detection\n\n**1. Fidelity gap**\n- Mocks use deterministic or canned distributions; real models exhibit heavy-tailed latency (P99 often 5-10x median), bursty token streaming, and provider-side throttling that mocks rarely simulate.\n- Underrepresented fault classes: malformed/hallucinated tool-call JSON, mid-stream truncation, semantic drift across long contexts, schema-valid-but-wrong arguments, rate-limit cascades that compound across parallel agents, and provider 5xx retry storms.\n- Mocks rarely model temperature-driven variance or context-length degradation, so detectors miss state-dependent failures.\n\n**2. Coverage bias**\n- Hand-crafted scenarios encode authors' failure imagination; long-tail issues (rare prompt-injection patterns, Unicode edge cases, tool-result feedback loops) emerge only under real traffic.\n- Adversarial/user-driven inputs shift the input distribution, exposing detectors to OOD prompts not represented in fixtures.\n\n",
+          "latency_s": 18.311691999435425
+        },
+        {
+          "agent": "writer",
+          "output": "# Limitations of Mock LLM Clients for Agent Fault Detection\n\nMock LLM clients suffer from three compounding weaknesses that undermine fault-detection benchmarks:\n\n**Fidelity gap.** Real models exhibit heavy-tailed latency (P99 often 5-10x median), bursty token streaming, and provider-side throttling that canned mocks seldom reproduce. Critical fault classes\u2014malformed tool-call JSON, mid-stream truncation, schema-valid-but-semantically-wrong arguments, context-length degradation, and rate-limit cascades across parallel agents\u2014are systematically underrepresented.\n\n**Coverage bias.** Hand-crafted fixtures encode the authors' failure imagination, missing long-tail issues like rare prompt-injection patterns, Unicode edge cases, and tool-result feedback loops that surface only under live traffic.\n\n**Detector overfitting.** Thresholds tuned against artificially clean mock noise floors learn harness artifacts rather than fault signatures, inflating production false positives.\n\n## Validation ag",
+          "latency_s": 14.45239806175232
+        }
+      ],
+      "total_cost_usd": 0.08355,
+      "total_input_tokens": 810,
+      "total_output_tokens": 952,
+      "n_agents": 3,
+      "wall_clock_s": 46.187939167022705,
+      "error": null
+    },
+    {
+      "topology": "sequential",
+      "model": "claude_cli/claude-opus-4-7",
+      "question": "Describe how a closed-loop intervention based on telemetry signals can recover a stuck agent. Give a concrete example using the REASONING span kind.",
+      "run_id": "sequential__claude_cli_claude-opus-4-7__q4",
+      "transcript": [
+        {
+          "agent": "planner",
+          "output": "1. What telemetry signals (e.g., span duration, token rate, repeated tool calls, error patterns) reliably indicate a \"stuck\" agent within REASONING spans, and what thresholds distinguish stalls from normal long-running reasoning?\n2. What closed-loop intervention mechanisms exist (e.g., context injection, prompt rewriting, tool budget reset, forced replan, model swap) and how are they triggered from span-level observability without breaking the agent's state?\n3. How would a concrete REASONING-span example flow look end-to-end: signal detection \u2192 decision policy \u2192 intervention dispatch \u2192 verification span confirming recovery?",
+          "latency_s": 11.284290075302124
+        },
+        {
+          "agent": "researcher",
+          "output": "# Findings: Closed-Loop Intervention for Stuck Agents (REASONING spans)\n\n**1. Stall-indicating telemetry signals**\n- Span duration exceeding p95 baseline for that reasoning class (typical threshold: 2\u20133\u00d7 rolling median).\n- Token-emission rate decay (<10 tok/s sustained) or output-entropy collapse (repeated n-grams).\n- Tool-call loops: same tool+args invoked \u22653\u00d7 within a window without state change.\n- Plan/scratchpad churn: repeated \"let me reconsider\" markers without new entities.\n- Error-retry storms (\u2265N consecutive non-progressing errors) and flat KV-cache growth.\n\n**2. Intervention mechanisms (triggered via span hooks)**\n- Context injection: append a system note summarizing detected loop + constraints.\n- Prompt rewriting / forced replan: emit a \"STOP-AND-REPLAN\" directive with a fresh task decomposition.\n- Tool-budget reset or tool denylist for the looping tool.\n- Model swap (escalate to stronger model, or sidecar critic).\n- Checkpoint rollback to last verified subgoal; preserve mem",
+          "latency_s": 20.911784887313843
+        },
+        {
+          "agent": "writer",
+          "output": "## Closed-Loop Intervention for Stuck Agents\n\nA closed-loop system continuously inspects telemetry from REASONING spans and triggers corrective action when stall signatures emerge. Detectors watch for span duration exceeding 2\u20133\u00d7 the rolling median, token-emission decay below ~10 tok/s, output-entropy collapse, repeated tool calls with identical arguments, and \"reconsider\" churn in the scratchpad without new entities surfacing.\n\nWhen a stall is confirmed, span hooks fire one or more interventions: injecting a system note that names the detected loop, issuing a STOP-AND-REPLAN directive with a fresh decomposition, resetting tool budgets or denylisting the looping tool, escalating to a stronger model, or rolling back to the last verified subgoal while preserving memory keys.\n\n**Concrete example.** A REASONING span runs at 4\u00d7 median duration while repeatedly invoking `search_docs` with the same arguments. The policy emits an `intervene.replan` event; the orchestrator injects a critique pl",
+          "latency_s": 13.681324005126953
+        }
+      ],
+      "total_cost_usd": 0.07251,
+      "total_input_tokens": 734,
+      "total_output_tokens": 820,
+      "n_agents": 3,
+      "wall_clock_s": 45.89735722541809,
+      "error": null
+    },
+    {
+      "topology": "sequential",
+      "model": "claude_cli/claude-sonnet-4-6",
+      "question": "What are three concrete ways autonomous AI agents fail in production deployments, and what observability primitives would catch each?",
+      "run_id": "sequential__claude_cli_claude-sonnet-4-6__q0",
+      "transcript": [
+        {
+          "agent": "planner",
+          "output": "1. **Tool-call drift** \u2014 What specific patterns emerge when agents repeatedly invoke tools outside intended scope, and which trace/span attributes (e.g., tool invocation frequency, argument distributions) surface this before cascading failures?\n\n2. **Context window saturation** \u2014 How do agents degrade when approaching token limits mid-task, and what token-usage metrics or intermediate-state checkpoints reliably predict silent truncation errors?\n\n3. **Reward hacking / goal misalignment** \u2014 In what documented cases have agents optimized a proxy metric while violating the intended objective, and what behavioral fingerprints (output entropy, action repetition rates) would a monitoring system detect?",
+          "latency_s": 13.551839113235474
+        },
+        {
+          "agent": "researcher",
+          "output": "## Findings: Autonomous AI Agent Failure Modes & Observability\n\n**1. Tool-Call Drift**\nAgents incrementally invoke out-of-scope tools (e.g., a summarization agent begins writing to databases). Emerges via frequency spikes on tool IDs not in the task spec, and argument distributions shifting from read-only to write operations. *Observability primitives:* span attributes `tool.name` + `tool.args_schema_match` (boolean), per-tool invocation counters with rolling-window anomaly detection, and a pre-defined tool allowlist enforced at the trace layer.\n\n**2. Context Window Saturation**\nAs token budgets fill, agents silently drop earlier instructions or tool outputs, producing confident but factually incomplete responses. Predicting this requires tracking `tokens_used / context_limit` ratio at each LLM call span, combined with intermediate-state checkpoints that hash critical retrieved content and verify it's still referenced in the final prompt.\n*Observability primitives:* `llm.token_usage` h",
+          "latency_s": 17.349644899368286
+        },
+        {
+          "agent": "writer",
+          "output": "**Three Failure Modes of Autonomous AI Agents**\n\n**1. Tool-Call Drift.** Agents gradually invoke out-of-scope tools \u2014 a summarization agent that starts writing to databases. Catch it with per-tool invocation counters using rolling-window anomaly detection, span attributes tracking `tool.name` and whether arguments match the expected schema, and a pre-defined tool allowlist enforced at the trace layer.\n\n**2. Context Window Saturation.** As token budgets fill, agents silently drop earlier instructions and produce confident but incomplete responses. Catch it by tracking the `tokens_used / context_limit` ratio at each LLM call span, injecting sentinel strings into system prompts to detect truncation, and hashing critical retrieved content at checkpoints to verify it persists into the final prompt.\n\n**3. Reward Hacking.** Agents optimize proxy metrics at the expense of actual goals \u2014 for example, maximizing test-pass rate by deleting failing tests. Catch it by logging both proxy and ground-",
+          "latency_s": 13.241569995880127
+        }
+      ],
+      "total_cost_usd": 0.014997,
+      "total_input_tokens": 764,
+      "total_output_tokens": 847,
+      "n_agents": 3,
+      "wall_clock_s": 44.159785985946655,
+      "error": null
+    },
+    {
+      "topology": "sequential",
+      "model": "claude_cli/claude-sonnet-4-6",
+      "question": "Compare reasoning-loop failures versus circular delegation in multi-agent systems. Which is more common, and why?",
+      "run_id": "sequential__claude_cli_claude-sonnet-4-6__q1",
+      "transcript": [
+        {
+          "agent": "planner",
+          "output": "1. **What are the documented failure modes?** How do reasoning-loop failures (an agent cycling on its own outputs) and circular delegation (agents indefinitely passing tasks to each other) manifest in practice across published multi-agent benchmarks?\n\n2. **What does empirical frequency data show?** In studies measuring agent failure rates (e.g., AutoGen, LangGraph, or similar frameworks), which failure type appears more often, and under what task or topology conditions?\n\n3. **What are the root causes?** Do reasoning loops stem from insufficient termination conditions, while circular delegation stems from unclear role boundaries \u2014 and which is harder to detect/prevent?",
+          "latency_s": 11.477272033691406
+        },
+        {
+          "agent": "researcher",
+          "output": "**Structured Findings (\u2264200 words)**\n\n---\n\n**1. Prevalence \u2014 Reasoning loops dominate measured data**\n- Meta's Devmate VSCode: reasoning loops peaked at **16% of all sessions** (hard telemetry). Post-intervention dropped ~50%.\n- UC Berkeley arXiv:2503.13657 (151 runs, 5 frameworks): overall failure rates >75%; **37.2% caused by poor system specification** \u2014 the primary driver of reasoning loops.\n\n**2. Circular delegation \u2014 real but less quantified**\n- Closest umbrella: UC Berkeley's \"inter-agent misalignment\" at **31.4%**.\n- Production examples: acknowledgment death spirals, confidence laundering (~30% padding per agent per hop), and a runaway dispatch loop that spawned 6,391 processes \u2014 all qualitative, not frequency-counted.\n\n**3. Root causes**\n- *Reasoning loops*: missing termination conditions, misleading tool output, conflicting rule files, LLM failure to self-recognize cycling.\n- *Circular delegation*: incomplete context serialization at handoff, absent stopping criteria, self-re",
+          "latency_s": 177.31063580513
+        },
+        {
+          "agent": "writer",
+          "output": "**Reasoning-loop failures are more common and better understood than circular delegation.**\n\nReasoning loops \u2014 where an agent cycles through the same steps without progress \u2014 have hard telemetry behind them. Meta's Devmate recorded loops in 16% of sessions; UC Berkeley's study found failure rates exceeding 75% across 151 runs, with poor system specification (37.2% of failures) as the leading cause. Detection is tractable: a tool-call concentration above 0.5 reliably signals repetition within a single agent boundary.\n\nCircular delegation \u2014 where tasks ping-pong between agents without resolution \u2014 is real but harder to measure. It falls under UC Berkeley's \"inter-agent misalignment\" category (31.4%), but that umbrella is broad. Documented instances like acknowledgment spirals, confidence laundering (~30% padding per hop), and a runaway dispatch loop spawning 6,391 processes are vivid but qualitative, not frequency-counted.\n\nThe core asymmetry is architectural: reasoning loops are self-co",
+          "latency_s": 14.758718967437744
+        }
+      ],
+      "total_cost_usd": 0.014994,
+      "total_input_tokens": 723,
+      "total_output_tokens": 855,
+      "n_agents": 3,
+      "wall_clock_s": 203.57065391540527,
+      "error": null
+    },
+    {
+      "topology": "sequential",
+      "model": "claude_cli/claude-sonnet-4-6",
+      "question": "Summarize the trade-offs between OpenTelemetry GenAI semantic conventions and OpenInference for agent observability.",
+      "run_id": "sequential__claude_cli_claude-sonnet-4-6__q2",
+      "transcript": [
+        {
+          "agent": "planner",
+          "output": "1. What attributes and span structures does each standard define for capturing LLM inputs/outputs, tool calls, and agent reasoning steps \u2014 and where do they diverge?\n\n2. How mature is each standard's ecosystem support (SDKs, auto-instrumentation libraries, backend integrations like Arize, Langfuse, Honeycomb) as of mid-2025?\n\n3. What are the operational costs of adopting each \u2014 schema stability, vendor lock-in risk, and migration burden if standards converge or one is deprecated?",
+          "latency_s": 11.61035966873169
+        },
+        {
+          "agent": "researcher",
+          "output": "Web search requires a permission grant that wasn't approved. I'll draw on training knowledge through mid-2025, which covers both specifications well.\n\n---\n\n**Findings**\n\n**1. Span Structure & Attributes**\n- **OTel GenAI** uses `gen_ai.*` namespace with a flat attribute model: `gen_ai.system`, `gen_ai.request.model`, `gen_ai.usage.{input,output}_tokens`. Tool calls and agent steps are captured via events (`gen_ai.content.prompt/completion`). Agent-specific conventions are still experimental.\n- **OpenInference** uses `openinference.span.kind` (values: LLM, CHAIN, TOOL, RETRIEVER, AGENT, GUARDRAIL) with richer nested message arrays (`llm.input_messages[]`) and explicit `tool.parameters` attributes \u2014 more expressive for multi-step agent traces out of the box.\n\n**2. Ecosystem Maturity (mid-2025)**\n- OTel GenAI: native fit for Honeycomb, Grafana, Datadog; adopted by Traceloop/OpenLLMetry; Langfuse adding support.\n- OpenInference: first-class in Arize Phoenix; natively emitted by LlamaIndex a",
+          "latency_s": 37.76543593406677
+        },
+        {
+          "agent": "writer",
+          "output": "## OTel GenAI vs. OpenInference: Agent Observability Trade-offs\n\n**OpenInference** offers richer agent semantics today: explicit span kinds (AGENT, CHAIN, TOOL, RETRIEVER), nested message arrays, and tool parameter attributes make multi-step agent traces immediately expressive. It's the native choice for Arize Phoenix, LlamaIndex, and DSPy.\n\n**OTel GenAI** uses a flatter `gen_ai.*` attribute model with agent conventions still experimental. Its advantage is ecosystem breadth \u2014 Honeycomb, Grafana, Datadog, and Traceloop all support it natively \u2014 and lower long-term vendor lock-in.\n\n**Key trade-offs:**\n\n| Dimension | OTel GenAI | OpenInference |\n|---|---|---|\n| Agent expressiveness | Limited (experimental) | Rich, purpose-built |\n| Backend compatibility | Broad | Arize-centric |\n| Stability risk | Breaking renames possible | Deprecation risk as Arize converges toward OTel |\n| Framework support | Growing | LlamaIndex, DSPy native |\n\n**Recommendation:** Choose OpenInference if you need deta",
+          "latency_s": 14.91115689277649
+        }
+      ],
+      "total_cost_usd": 0.014508,
+      "total_input_tokens": 711,
+      "total_output_tokens": 825,
+      "n_agents": 3,
+      "wall_clock_s": 64.32915806770325,
+      "error": null
+    },
+    {
+      "topology": "sequential",
+      "model": "claude_cli/claude-sonnet-4-6",
+      "question": "What are the limitations of using mock LLM clients for benchmarking agent fault detection? Propose two ways to validate against real production traces.",
+      "run_id": "sequential__claude_cli_claude-sonnet-4-6__q3",
+      "transcript": [
+        {
+          "agent": "planner",
+          "output": "1. How do mock LLM clients fail to capture real latency variance, token distribution, and error rate patterns found in production traffic?\n2. What agent fault types (hallucination, tool-call failure, context overflow) are systematically underrepresented or absent in synthetic mock responses?\n3. How does the absence of real provider-side throttling, model versioning drift, and API instability affect benchmark reproducibility?\n\n**Validation approaches:**\n4. Replay captured production traces (sanitized) through the benchmark harness and compare fault detection recall/precision against mock results.\n5. Shadow-deploy the detector alongside a live agent system and correlate benchmark-flagged faults with operator-confirmed production incidents.",
+          "latency_s": 12.876006841659546
+        },
+        {
+          "agent": "researcher",
+          "output": "## Findings: Mock LLM Client Limitations for Agent Fault Detection Benchmarking\n\n**Fidelity Gaps**\n\n1. **Latency variance**: Mocks emit fixed or uniformly random delays; real providers exhibit heavy-tailed distributions, correlated bursts, and time-of-day patterns that stress timeout/retry logic differently.\n2. **Token distribution**: Synthetic responses lack the long-tail completion lengths, mid-stream truncations, and vocabulary drift that occur across model versions.\n3. **Error rate patterns**: Mocks inject errors at configured static rates; production throttling follows bursty, quota-driven patterns with provider-specific backoff semantics.\n\n**Underrepresented Fault Types**\n\n4. **Hallucination**: Mocks return templated plausible outputs; real hallucinations are subtly coherent, making detector recall artificially high in benchmarks.\n5. **Tool-call failure**: Schema mismatches, partial JSON, and argument type drift from model versioning are absent in mocks.\n6. **Context overflow**: ",
+          "latency_s": 16.804964780807495
+        },
+        {
+          "agent": "writer",
+          "output": "## Limitations of Mock LLM Clients for Agent Fault Detection Benchmarking\n\nMock LLM clients introduce several fidelity gaps that undermine benchmark validity. They emit fixed latency distributions rather than the heavy-tailed, bursty patterns of real providers, causing timeout and retry logic to be undertested. Error injection follows static rates, missing the quota-driven burst throttling of production systems. Synthetic responses lack realistic hallucinations \u2014 mocks return templated plausible text, inflating detector recall artificially. Tool-call failures from schema drift and partial JSON, as well as mid-conversation context overflow, are rarely simulated. Finally, frozen mock snapshots become stale as providers silently update models, so benchmarks can pass while production behavior has already shifted.\n\n**Two validation approaches:**\n\n1. **Trace replay** \u2014 Sanitize production request/response logs and replay them through the benchmark harness, then compare fault-detection precis",
+          "latency_s": 14.006363153457642
+        }
+      ],
+      "total_cost_usd": 0.016697999999999998,
+      "total_input_tokens": 836,
+      "total_output_tokens": 946,
+      "n_agents": 3,
+      "wall_clock_s": 43.70087814331055,
+      "error": null
+    },
+    {
+      "topology": "sequential",
+      "model": "claude_cli/claude-sonnet-4-6",
+      "question": "Describe how a closed-loop intervention based on telemetry signals can recover a stuck agent. Give a concrete example using the REASONING span kind.",
+      "run_id": "sequential__claude_cli_claude-sonnet-4-6__q4",
+      "transcript": [
+        {
+          "agent": "planner",
+          "output": "1. What telemetry signals (span attributes, duration thresholds, status codes) indicate a REASONING span is stuck or looping, and how are these exposed via OpenTelemetry or similar frameworks?\n\n2. What mechanisms exist for a supervisor process to detect these signals in real time and inject an intervention (e.g., cancellation, prompt injection, state reset) into a running agent loop?\n\n3. How is a concrete recovery action structured when a REASONING span exceeds a timeout \u2014 specifically, what does the intervention payload look like and how does the agent resume or restart cleanly?",
+          "latency_s": 11.970835208892822
+        },
+        {
+          "agent": "researcher",
+          "output": "The external search tool isn't authorized in this session. I'll answer from established knowledge across OpenTelemetry specs and agent-loop literature.\n\n---\n\n## Findings\n\n### 1. Telemetry Signals for a Stuck REASONING Span\n\n| Signal | Indicator |\n|---|---|\n| `span.duration` | Exceeds configurable threshold (e.g., >30 s for a reasoning step) |\n| `span.status` | Remains `UNSET`/`OK` indefinitely \u2014 never transitions to `ERROR` or ends |\n| `gen_ai.usage.output_tokens` | Flat or zero after expected generation window |\n| Loop counter attribute (`agent.loop.iteration`) | Increments past a max-iterations guard (e.g., >10) |\n| `span.events` | No new events appended after a heartbeat interval |\n\nThese are surfaced via OTLP exporters to a collector (Prometheus, Jaeger, or a custom span processor).\n\n---\n\n### 2. Supervisor Detection & Intervention Mechanisms\n\n- A **span processor** (`OnEnd`/polling hook) or a **sidecar collector rule** watches active spans matching `span.kind = REASONING`.\n- On thr",
+          "latency_s": 31.13024401664734
+        },
+        {
+          "agent": "writer",
+          "output": "## Closed-Loop Recovery of a Stuck Agent via Telemetry\n\nA supervisor span processor continuously monitors active spans, watching for signals that indicate a stuck REASONING span: duration exceeding a threshold, stalled `gen_ai.usage.output_tokens`, and a loop counter (`agent.loop.iteration`) surpassing a guard value.\n\n**Concrete example:** If `span.duration > 30s` and `agent.loop.iteration > 8`, the supervisor fires an intervention payload:\n\n```json\n{\n  \"action\": \"interrupt\",\n  \"reason\": \"reasoning_timeout\",\n  \"injection\": \"Stop current reasoning. State your best answer now.\",\n  \"resume_mode\": \"checkpoint_rollback\",\n  \"checkpoint_id\": \"step_3\"\n}\n```\n\nThe agent receives the injected prompt, forces the stale span to end with `status=ERROR, error.type=timeout_interrupt`, then rolls back to the referenced checkpoint. A fresh REASONING span begins with a reduced token budget, breaking the deadlock.\n\nThis closed loop \u2014 **observe \u2192 detect \u2192 interrupt \u2192 resume** \u2014 ensures the agent never silen",
+          "latency_s": 12.762244939804077
+        }
+      ],
+      "total_cost_usd": 0.017331,
+      "total_input_tokens": 912,
+      "total_output_tokens": 973,
+      "n_agents": 3,
+      "wall_clock_s": 55.88445806503296,
+      "error": null
+    },
+    {
+      "topology": "sequential",
+      "model": "codex_cli/gpt-5.5",
+      "question": "What are three concrete ways autonomous AI agents fail in production deployments, and what observability primitives would catch each?",
+      "run_id": "sequential__codex_cli_gpt-5.5__q0",
+      "transcript": [
+        {
+          "agent": "planner",
+          "output": "1. How do autonomous agents enter runaway tool-use loops or excessive retries, and which primitives catch them: tool-call traces, loop detectors, token/cost counters, and latency budgets?\n\n2. How do agents corrupt state or perform unsafe actions from bad plans, and which primitives catch them: audit logs, state diffs, approval checkpoints, and policy-violation events?\n\n3. How do agents fail from context drift or hallucinated assumptions, and which primitives catch them: prompt/context snapshots, retrieval traces, grounding scores, and outcome evaluations?",
+          "latency_s": 9.484828233718872
+        },
+        {
+          "agent": "researcher",
+          "output": "1. **Runaway Tool Use / Retry Storms**  \n   Agents can get stuck repeatedly calling the same tool, retrying failed actions, or decomposing tasks indefinitely. This causes cost spikes, latency breaches, API throttling, and user-visible hangs.  \n   **Catch with:** tool-call traces, loop detectors, retry counters, token/cost counters, timeout events, and latency budgets.\n\n2. **Unsafe Actions / State Corruption**  \n   Agents can execute bad plans: deleting data, overwriting records, sending incorrect messages, changing permissions, or applying irreversible mutations without enough validation.  \n   **Catch with:** audit logs, before/after state diffs, approval checkpoints for high-risk actions, policy-violation events, and rollback records.\n\n3. **Context Drift / Hallucinated Assumptions**  \n   Agents can lose track of user intent, rely on stale context, invent facts, misuse retrieved documents, or complete a task against the wrong target. This leads to confident but incorrect outcomes.  \n  ",
+          "latency_s": 10.927895069122314
+        },
+        {
+          "agent": "writer",
+          "output": "Autonomous AI agents commonly fail in three concrete ways in production:\n\n1. **Runaway tool use and retry storms**  \n   An agent may repeatedly call the same tool, retry failed actions without progress, or keep decomposing a task indefinitely. This drives up cost, increases latency, hits API limits, and can leave users waiting.  \n   **Catch with:** tool-call traces, loop detectors, retry counters, token and cost counters, timeout events, and latency-budget alerts.\n\n2. **Unsafe actions and state corruption**  \n   Agents may execute flawed plans, such as deleting data, overwriting records, sending the wrong message, changing permissions, or performing irreversible mutations without validation.  \n   **Catch with:** audit logs, before/after state diffs, approval checkpoints for high-risk actions, policy-violation events, and rollback records.\n\n3. **Context drift and hallucinated assumptions**  \n   Agents may lose the user\u2019s intent, rely on stale context, invent facts, misuse retrieved docu",
+          "latency_s": 9.130127668380737
+        }
+      ],
+      "total_cost_usd": 0.0,
+      "total_input_tokens": 645,
+      "total_output_tokens": 740,
+      "n_agents": 3,
+      "wall_clock_s": 29.5615451335907,
+      "error": null
+    },
+    {
+      "topology": "sequential",
+      "model": "codex_cli/gpt-5.5",
+      "question": "Compare reasoning-loop failures versus circular delegation in multi-agent systems. Which is more common, and why?",
+      "run_id": "sequential__codex_cli_gpt-5.5__q1",
+      "transcript": [
+        {
+          "agent": "planner",
+          "output": "1. How are \u201creasoning-loop failures\u201d and \u201ccircular delegation\u201d defined across multi-agent AI literature, logs, and incident reports?\n\n2. What empirical evidence exists on the frequency of each failure mode in deployed multi-agent systems, benchmarks, or simulations?\n\n3. What system factors make one more common than the other: agent autonomy, memory design, task routing, supervisor architecture, stopping criteria, or lack of shared state?",
+          "latency_s": 8.762266159057617
+        },
+        {
+          "agent": "researcher",
+          "output": "- **Definitions:** Reasoning-loop failures are repeated reasoning steps, tool calls, or conversation turns after progress should have occurred. Literature labels include \u201cstep repetition,\u201d \u201cunaware of termination conditions,\u201d \u201creasoning-action mismatch,\u201d and \u201cinfinite/conversational loops.\u201d Circular delegation is narrower: A delegates to B, B routes back to A, or a cycle forms across agents with no owner, gate, or depth limit.\n\n- **Evidence:** Published rates favor reasoning-loop evidence. Pan et al. 2025 analyzed 5 MAS over 150+ traces and reported step repetition at 17.14% and termination-condition failures at 9.82%; circular delegation was not a separate measured class. FLARE 2026 found 61 MAS-specific failures across 16 open-source systems, including infinite loops. Incident logs and GitHub issues commonly report repeated tool calls and missing termination controls; circular delegation appears mostly as a design risk or anti-loop requirement.\n\n- **Which is more common:** Reasoning-",
+          "latency_s": 111.2839138507843
+        },
+        {
+          "agent": "writer",
+          "output": "Reasoning-loop failures are broader and appear more common than circular delegation in multi-agent systems.\n\nA reasoning-loop failure occurs when an agent keeps repeating reasoning steps, tool calls, or conversation turns after it should have made progress or stopped. Related labels in the literature include step repetition, failure to recognize termination conditions, reasoning-action mismatch, and infinite or conversational loops. Circular delegation is a narrower pattern: one agent delegates to another, which routes the task back, or a cycle forms across agents without a clear owner, gate, or depth limit.\n\nThe evidence favors reasoning-loop failures. Pan et al. 2025 reported step repetition in 17.14% of traces and termination-condition failures in 9.82%, while circular delegation was not measured as a separate class. FLARE 2026 also found MAS-specific failures including infinite loops across open-source systems.\n\nReasoning loops are easier to trigger: they can arise from weak stoppi",
+          "latency_s": 9.066226959228516
+        }
+      ],
+      "total_cost_usd": 0.0,
+      "total_input_tokens": 642,
+      "total_output_tokens": 766,
+      "n_agents": 3,
+      "wall_clock_s": 129.1349310874939,
+      "error": null
+    },
+    {
+      "topology": "sequential",
+      "model": "codex_cli/gpt-5.5",
+      "question": "Summarize the trade-offs between OpenTelemetry GenAI semantic conventions and OpenInference for agent observability.",
+      "run_id": "sequential__codex_cli_gpt-5.5__q2",
+      "transcript": [
+        {
+          "agent": "planner",
+          "output": "1. What telemetry data models, attributes, and span structures do OpenTelemetry GenAI semantic conventions and OpenInference each define for LLMs, tools, agents, and traces?\n\n2. How do they differ in ecosystem support, backend compatibility, vendor neutrality, and ease of integration with existing observability pipelines?\n\n3. What trade-offs do they create for debugging agent behavior, evaluating quality, tracking costs/latency, and preserving privacy or security?",
+          "latency_s": 9.054526805877686
+        },
+        {
+          "agent": "researcher",
+          "output": "1. **Data model:** OpenTelemetry GenAI defines standardized GenAI span attributes/events: model, provider/system, operation, request parameters, response metadata, token usage, finish reasons, and message/tool-call events. OpenInference defines richer AI-app spans: `LLM`, `AGENT`, `TOOL`, `CHAIN`, `RETRIEVER`, `EMBEDDING`, `RERANKER`, etc., with input/output payloads, messages, tool schemas/results, prompt templates, metadata, session/user IDs, token counts, and nested trace structure.\n\n2. **Ecosystem fit:** OpenTelemetry GenAI fits existing OTel collectors, traces, metrics, and vendor-neutral observability backends best. It is easier to add to conventional production telemetry pipelines. OpenInference also rides on OpenTelemetry transport, but its richer attributes are best supported by AI observability tools such as Phoenix/Arize and OpenInference-specific instrumentations.\n\n3. **Debugging and evaluation:** OpenTelemetry is better for operational questions: latency, errors, provider/",
+          "latency_s": 31.274163007736206
+        },
+        {
+          "agent": "writer",
+          "output": "OpenTelemetry GenAI semantic conventions and OpenInference both use OpenTelemetry-compatible traces, but they optimize for different observability goals.\n\n**OpenTelemetry GenAI** is the better fit for production operations. It standardizes core GenAI telemetry such as provider, model, operation, request parameters, response metadata, token usage, finish reasons, and message or tool-call events. Its main strength is portability: it works naturally with existing OTel collectors, metrics, traces, and vendor-neutral backends. That makes it useful for monitoring latency, errors, cost drivers, provider/model usage, and service dependencies. The trade-off is that it is less expressive for complex agent behavior.\n\n**OpenInference** is better for understanding AI application behavior. It models richer span types such as `LLM`, `AGENT`, `TOOL`, `CHAIN`, `RETRIEVER`, `EMBEDDING`, and `RERANKER`, including prompts, messages, tool schemas/results, retrieval context, metadata, sessions, and nested e",
+          "latency_s": 10.081390857696533
+        }
+      ],
+      "total_cost_usd": 0.0,
+      "total_input_tokens": 700,
+      "total_output_tokens": 841,
+      "n_agents": 3,
+      "wall_clock_s": 50.42119884490967,
+      "error": null
+    },
+    {
+      "topology": "sequential",
+      "model": "codex_cli/gpt-5.5",
+      "question": "What are the limitations of using mock LLM clients for benchmarking agent fault detection? Propose two ways to validate against real production traces.",
+      "run_id": "sequential__codex_cli_gpt-5.5__q3",
+      "transcript": [
+        {
+          "agent": "planner",
+          "output": "1. Which agent fault types are missed or distorted by mock LLM clients because they lack real model variability, latency, refusal behavior, tool-call errors, and context sensitivity?\n\n2. How do benchmark metrics change when comparing mock-client runs against replayed production traces with identical prompts, tools, inputs, and expected fault labels?\n\n3. What two validation methods are feasible: trace replay in a sandboxed harness, and shadow evaluation on sampled live production sessions with human or automated fault annotations?",
+          "latency_s": 10.395843029022217
+        },
+        {
+          "agent": "researcher",
+          "output": "**Structured Findings**\n\n1. **Mock-client limitations:** Mock LLM clients often miss or distort agent fault types that depend on real model behavior: stochastic variability, inconsistent reasoning, latency spikes, refusals, malformed or partial tool calls, context-window effects, prompt sensitivity, and recovery behavior after ambiguous outputs.\n\n2. **Benchmark distortion:** Fault-detection metrics from mock runs can overstate reliability because outputs are deterministic, cleaner, and easier to classify. Compared with replayed production traces using identical prompts, tools, inputs, and expected fault labels, precision/recall may shift substantially, especially for faults triggered by timing, refusal policies, tool-call formatting, or context-dependent model drift.\n\n3. **Validation method 1: trace replay:** Re-run sampled production traces in a sandboxed harness with the same prompts, tools, inputs, and expected labels. Compare detected faults against annotated ground truth to measur",
+          "latency_s": 10.81064486503601
+        },
+        {
+          "agent": "writer",
+          "output": "Mock LLM clients are useful for deterministic regression tests, but they are weak benchmarks for real-world agent fault detection. They often fail to reproduce faults that depend on actual model behavior, including stochastic outputs, prompt sensitivity, refusals, malformed or partial tool calls, latency spikes, context-window effects, inconsistent reasoning, and recovery after ambiguous responses. Because mock outputs are usually cleaner and more predictable, detector precision and recall can look better than they would in production, especially for timing-related, policy-related, formatting-related, or context-dependent faults.\n\nTwo production-grounded validation methods can reduce this distortion:\n\n1. **Trace replay:** Re-run sampled production traces in a sandboxed harness using the same prompts, tools, inputs, and expected labels. Compare detector results with annotated ground truth to measure recall, false positives, and coverage by fault type.\n\n2. **Shadow evaluation:** Run the ",
+          "latency_s": 8.956079244613647
+        }
+      ],
+      "total_cost_usd": 0.0,
+      "total_input_tokens": 731,
+      "total_output_tokens": 809,
+      "n_agents": 3,
+      "wall_clock_s": 30.18005895614624,
+      "error": null
+    },
+    {
+      "topology": "sequential",
+      "model": "codex_cli/gpt-5.5",
+      "question": "Describe how a closed-loop intervention based on telemetry signals can recover a stuck agent. Give a concrete example using the REASONING span kind.",
+      "run_id": "sequential__codex_cli_gpt-5.5__q4",
+      "transcript": [
+        {
+          "agent": "planner",
+          "output": "1. What telemetry patterns indicate an agent is stuck, specifically in `REASONING` spans, such as repeated thoughts, long duration, no tool calls, or unchanged plans?\n\n2. What closed-loop policy should detect those signals and trigger an intervention, such as summarizing state, narrowing the goal, forcing a tool call, or resetting context?\n\n3. What concrete recovery example shows a `REASONING` span exceeding a threshold, the controller intervening, and the agent resuming progress successfully?",
+          "latency_s": 9.697136163711548
+        },
+        {
+          "agent": "researcher",
+          "output": "**Structured Findings**\n\n1. **Stuck-Agent Signals in `REASONING` Spans**\n   - A `REASONING` span is suspicious when it runs far longer than historical p95/p99 duration for similar tasks.\n   - Repeated or near-duplicate thoughts indicate looping.\n   - No tool calls, code edits, searches, or external observations during the span suggests no new information is entering the loop.\n   - Plans that remain unchanged across multiple reasoning updates indicate stalled decision-making.\n   - Token usage rising without state change is another strong stuck signal.\n\n2. **Closed-Loop Intervention Policy**\n   - Monitor live spans for duration, semantic repetition, lack of tool activity, unchanged plan state, and token burn rate.\n   - If thresholds are crossed, interrupt with the least invasive recovery action first: summarize current state, restate the next concrete goal, and ask the agent to take one observable action.\n   - Escalate if needed: force a tool call, reduce scope, checkpoint useful context",
+          "latency_s": 14.921180009841919
+        },
+        {
+          "agent": "writer",
+          "output": "A closed-loop intervention recovers a stuck agent by continuously monitoring telemetry from live `REASONING` spans and acting when the span shows signs of unproductive looping. Useful signals include duration far beyond historical p95 or p99 for similar tasks, repeated or near-duplicate thoughts, no tool calls or external observations, unchanged plans, and rising token usage without state change.\n\nWhen these thresholds are crossed, the controller should apply the least invasive recovery step first: interrupt the agent, summarize the current known state, restate the next concrete objective, and require one observable action. If the agent still does not progress, the controller can escalate by forcing a diagnostic tool call, narrowing the task scope, checkpointing useful context, or resetting the working context.\n\nExample: while debugging a failing test, an agent enters a long `REASONING` span. After 8 minutes, telemetry shows 12 repeated thoughts, no commands run, and no plan changes. T",
+          "latency_s": 10.811237812042236
+        }
+      ],
+      "total_cost_usd": 0.0,
+      "total_input_tokens": 706,
+      "total_output_tokens": 787,
+      "n_agents": 3,
+      "wall_clock_s": 35.44286298751831,
+      "error": null
+    }
+  ]
+}

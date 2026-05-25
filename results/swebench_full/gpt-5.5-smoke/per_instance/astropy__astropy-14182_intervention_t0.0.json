@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-14182",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 5671,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2667,
+      "response_excerpt": "<reasoning>\nThe RST writer failed because `header_rows` was passed through as a writer constructor keyword, but `RST.__init__` did not accept it. RST also relies on the fixed-width writer, which only emitted the column name row and assumed the separator was always at index 1. The patch adds fixed-width support for configurable column info header rows, preserves the default `name` behavior, has RST pass the option through, and places the RST border after the emitted header rows. I added a regress",
+      "latency_s": 228.47022104263306,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

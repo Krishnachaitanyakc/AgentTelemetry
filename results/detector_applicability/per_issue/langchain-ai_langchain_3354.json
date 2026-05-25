@@ -1,0 +1,22 @@
+{
+  "issue": {
+    "title": "Add update method on vectorstores",
+    "body": "I am building a chain to analyze codebases. This involves documents that's constantly changing as the user modifies the files. As far as I can see, there doesn't seem to be a way to update the embeddings that are saved in vector stores once they have been embedded and submitted to the backing vectorstore.\r\n\r\nThis appears to be possible at least for chromaDB based on: (https://docs.trychroma.com/api-reference) and (https://github.com/chroma-core/chroma/blob/79c891f8f597dad8bd3eb5a42645cb99ec553440/chromadb/api/models/Collection.py#L258). ",
+    "state": "closed",
+    "comments": [
+      "Wrote the following to address this specifically for chromaDB: https://github.com/vyeevani/langchain/tree/vyeevani/update-vectorstore-entry-chromadb",
+      "I think you might be able to query your documents, embed a new one, and add it back into the database.",
+      "I have been working on something similar. But I was taking a more low level approach like file tools. Can the chroma db function insert the code in the right place? That would be awe",
+      "Hey folks, I am also working on a similar problem\r\n@vyeevani did you get a solution? \r\n\r\n",
+      "Hi, @vyeevani! I'm Dosu, and I'm here to help the LangChain team manage their backlog. I wanted to let you know that we are marking this issue as stale. \n\nFrom what I understand, you opened this issue requesting the addition of an update method on vectorstores to allow for updating embeddings that have already been submitted. You mentioned that this functionality is possible with chromaDB and provided references to support this. There have been a few comments on the issue, with you providing a solution specifically for chromaDB and other users discussing alternative approaches and asking for updates on the progress.\n\nBefore we close this issue, we wanted to check with you if it is still relevant to the latest version of the LangChain repository. If it is, please let us know by commenting on the issue. Otherwise, feel free to close the issue yourself, or the issue will be automatically closed in 7 days.\n\nThank you for your contribution to the LangChain repository!"
+    ],
+    "labels": [],
+    "url": "https://github.com/langchain-ai/langchain/issues/3354"
+  },
+  "evidence": {
+    "has_evidence": false,
+    "evidence_type": "narrative_only",
+    "reconstructible_signal": true,
+    "notes": "retrieval_keywords"
+  }
+}

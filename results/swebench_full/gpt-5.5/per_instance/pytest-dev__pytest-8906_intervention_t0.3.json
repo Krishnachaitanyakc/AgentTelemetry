@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-8906",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1636,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2768,
+      "response_excerpt": "<reasoning>\nThe misleading part is the collection error raised when `pytest.skip()` is used at module import time without `allow_module_level=True`. The docs and API already support the correct solution, so the smallest fix is to update that error message to mention it explicitly while keeping the existing `pytestmark` guidance for cases where importing the module is still safe.\n\nVerification:\n- `python3 -m py_compile src/_pytest/python.py testing/test_skipping.py` passed.\n- `git diff --check --",
+      "latency_s": 163.26728296279907,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

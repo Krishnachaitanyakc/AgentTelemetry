@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11910",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2326,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1966,
+      "response_excerpt": "<reasoning>\nI inspected Django\u2019s migration autodetector around field renames and `ForeignKey.to_field` handling. The current code already normalizes renamed FK targets during comparison, so the reported scenario now generates only `RenameField`. I added a regression test for the missing implicit-primary-key case to ensure Django doesn\u2019t emit an `AlterField` with `to_field` set to the old primary key name.\n\nVerified with:\n`python3 ./tests/runtests.py migrations.test_autodetector.AutodetectorTests",
+      "latency_s": 298.68512320518494,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13033",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 788,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4557,
+      "response": "Let me actually think about what the correct fix should be, based on my understanding:\n\nThe problem is in `find_ordering_name()` when it encounters a self-referencing FK field accessed via its attname. The check at line 1054 is:\n\n```python\ngetattr(field, \"attname\", None) != pieces[-1]\n```\n\nThis check should prevent default ordering when the user explicitly accesses the \"_id\" version of a FK. But there might be an edge case with self-referencing FKs.\n\nActually, I just realized - maybe the issue i...[truncated]",
+      "latency_s": 333.76281690597534,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-14024",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 751,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1477,
+      "response_excerpt": "<reasoning>\nThe current checkout no longer reproduces the numeric mismatch: both the original expression and `simplify` evaluate consistently for `a = S(2)` and `x = -S(10)/3`. The relevant behavior lives in `powsimp`, so I added a regression test beside the existing negated-base simplification tests to lock in consistency for both concrete positive integers and symbolic positive integer bases.\n\nVerified with:\n`/private/tmp/sympy-issue-venv/bin/python -m pytest sympy/simplify/tests/test_powsimp.",
+      "latency_s": 256.87070417404175,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

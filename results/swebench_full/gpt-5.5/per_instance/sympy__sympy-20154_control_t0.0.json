@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-20154",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3720,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1344,
+      "response_excerpt": "<reasoning>\n1. The bug is caused by `partitions()` mutating and yielding the same `ms` dictionary across iterations.\n2. The fix is to keep using `ms` internally for efficient generation, but yield `ms.copy()` so callers receive stable dictionaries.\n3. The `size=True` path needs the same treatment because it returns `(M, P)` and `P` was also reused.\n4. Tests should stop copying in the expected-output assertions and add regression checks that yielded dictionaries are distinct objects.\n5. I verifie",
+      "latency_s": 176.211021900177,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

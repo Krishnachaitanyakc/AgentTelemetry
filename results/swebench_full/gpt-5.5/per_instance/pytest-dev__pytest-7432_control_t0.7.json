@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-7432",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2168,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1571,
+      "response_excerpt": "<reasoning>\n`--runxfail` should only suppress xfail handling. In pytest 5.4.x, `pytest_runtest_makereport` used an `elif item.config.option.runxfail: pass` branch, which prevented the later skip-mark location rewrite from running. The fix is to put `not runxfail` on the xfail-specific branches instead, leaving skip reporting logic reachable. I added a regression test for both `skip` and `skipif`.\n\nVerification note: the 5.4.3 test suite could not run in this environment because it fails during i",
+      "latency_s": 135.17247605323792,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

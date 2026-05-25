@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13647",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2226,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1880,
+      "response_excerpt": "<reasoning>\nThe bug is in `_eval_col_insert`: for columns after the inserted block it uses `j - pos - other.cols`, which incorrectly restarts copying from column 0. It should only subtract the inserted width, `other.cols`, so the original right-hand columns keep their original offset.\n\nVerified with:\n`/private/tmp/sympy39-venv/bin/python -m pytest sympy/matrices/tests/test_matrices.py::test_col_insert sympy/matrices/tests/test_commonmatrix.py::test_col_insert`\n\nResult: 2 passed.\n</reasoning>\n\n<p",
+      "latency_s": 198.62366485595703,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-13551",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 5284,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "passwordresettokengenerator _make_hash_value": 1,
+    "get_email_field_name email_field": 1,
+    "password reset token email change invalidates": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1614,
+      "response": "<reasoning>The password reset token hash only included user id, password, last_login, and timestamp, so an unused token remained valid after the account email changed. Including the configured email field value in `_make_hash_value()` invalidates tokens when the email changes, while falling back to an empty string for users without an email value. Tests cover the default `User`, a custom `EMAIL_FIELD`, and a null email value.</reasoning>\n<patch>diff --git a/django/contrib/auth/tokens.py b/django/contrib/auth/tokens.py\nindex 93e2d71af2..c534f304f3 100644\n--- a/django/contrib/auth/tokens.py\n+++ b/django/contrib/auth/tokens.py\n@@ -78,9 +78,9 @@ class PasswordResetTokenGenerator:\n \n     def _make_hash_value(self, user, timestamp):\n         \"\"\"\n-        Hash the user's primary key and some user state that's sure to change\n-        after a password reset to produce a token that invalidated when it's\n-        used:\n+        Hash the user's primary key, email (if available), and some user state\n+        that's sure to change after a password reset to produce a token that is\n+        invalidated when it's used:\n         1. The password field will change upon a password reset (even if the\n            same password is chosen, due to password salting).\n         2. The last_login field will usually be updated very shortly after\n@@ -94,7 +94,9 @@ class PasswordResetTokenGenerator:\n         # Truncate microseconds so that tokens are consistent even if the\n         # database doesn't support",
+      "latency_s": 126.48546075820923,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 7619,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"PasswordResetTokenGenerator _make_hash_value\"}}</tool_call>",
+      "latency_s": 15.469541072845459,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 8184,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"get_email_field_name EMAIL_FIELD\"}}</tool_call>",
+      "latency_s": 20.624001026153564,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 8689,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"password reset token email change invalidates\"}}</tool_call>",
+      "latency_s": 22.05969786643982,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 9259,
+      "response": "<reasoning>The token hash should include email state so an old password reset link cannot remain valid after the account email changes. Django already exposes `get_email_field_name()`, so the token generator can support both the default `email` field and custom `EMAIL_FIELD` users. The tests cover default users, custom email-field users, and empty/null email values.</reasoning>\n<patch>diff --git a/django/contrib/auth/tokens.py b/django/contrib/auth/tokens.py\nindex 93e2d71af2..c534f304f3 100644\n--- a/django/contrib/auth/tokens.py\n+++ b/django/contrib/auth/tokens.py\n@@ -78,9 +78,9 @@ class PasswordResetTokenGenerator:\n \n     def _make_hash_value(self, user, timestamp):\n         \"\"\"\n-        Hash the user's primary key and some user state that's sure to change\n-        after a password reset to produce a token that invalidated when it's\n-        used:\n+        Hash the user's primary key, email (if available), and some user state\n+        that's sure to change after a password reset to produce a token that is\n+        invalidated when it's used:\n         1. The password field will change upon a password reset (even if the\n            same password is chosen, due to password salting).\n         2. The last_login field will usually be updated very shortly after\n@@ -94,7 +94,9 @@ class PasswordResetTokenGenerator:\n         # Truncate microseconds so that tokens are consistent even if the\n         # database doesn't support microseconds.\n         login_timestamp = '' if user.last_log",
+      "latency_s": 22.76007103919983,
+      "error": null
+    }
+  ]
+}

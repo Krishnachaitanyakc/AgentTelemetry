@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12708",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 719,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1753,
+      "response_excerpt": "Based on my analysis, this is a Django issue where deleting `index_together` fails when there's a `unique_together` on the same fields. The bug is that `_delete_composed_index` is called without filtering out unique constraints, so it finds both the `_uniq` and `_idx` constraints and raises a ValueError.\n\nThe fix is to pass `'unique': False` in the constraint_kwargs for `alter_index_together`, so that unique constraints are filtered out when looking for the index_together index to delete.\n\n<reas",
+      "latency_s": 400.84496808052063,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

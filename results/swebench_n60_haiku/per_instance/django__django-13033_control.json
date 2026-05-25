@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13033",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1093,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4557,
+      "response": "Now I understand the problem completely. The fix is to check if the last piece of the path (the actual field name being ordered) matches the attname. Let me propose the patch:\n\n<patch>\n--- a/django/db/models/sql/compiler.py\n+++ b/django/db/models/sql/compiler.py\n@@ -714,8 +714,12 @@ class SQLCompiler:\n         # If we get to this point and the field is a relation to another model,\n         # append the default ordering for that model unless the attribute name\n         # of the field is specified...[truncated]",
+      "latency_s": 175.14480900764465,
+      "error": null
+    }
+  ]
+}

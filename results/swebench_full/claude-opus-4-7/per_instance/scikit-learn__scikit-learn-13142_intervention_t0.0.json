@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13142",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1494,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3120,
+      "response_excerpt": "The fix is in place. Let me provide the final patch summary.\n\n<reasoning>\nThe issue is that `GaussianMixture.fit_predict(X)` and `GaussianMixture.predict(X)` can return different results when `n_init > 1`. \n\nIn the `fit` method, after the EM loop completes for all `n_init` initializations, the best parameters are restored via `_set_parameters(best_params)`. Then `self.labels_` is computed using `self._estimate_weighted_log_prob(X).argmax(axis=1)`.\n\nThe fix (mirroring scikit-learn 1.2.1's canonic",
+      "latency_s": 671.2178449630737,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

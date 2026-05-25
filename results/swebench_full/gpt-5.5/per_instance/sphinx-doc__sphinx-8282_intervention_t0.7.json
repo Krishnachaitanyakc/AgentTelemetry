@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-8282",
+  "repo": "sphinx-doc/sphinx",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4008,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1615,
+      "response_excerpt": "<reasoning>\nThe overload-specific autodoc paths were treating every `autodoc_typehints` value except `none` as permission to render overload annotations in signatures. That makes `description` behave like `signature`, and previously made overloaded objects ignore `none` in affected paths. The fix is to render overload signatures only for `autodoc_typehints in {'signature', 'both'}` and otherwise fall back to the implementation signature.\n\nVerified with:\n`uv run --group test python -m pytest test",
+      "latency_s": 92.6430172920227,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

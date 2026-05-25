@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13964",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2364,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2664,
+      "response_excerpt": "<reasoning>\nThe bug happens because assigning `order.product = Product()` copies the related object's current primary-key value into `order.product_id`. For a non-null `CharField(primary_key=True)`, that initial value is `\"\"`, not `None`. After `product.sku` is later set and saved, `order.product_id` remains stale unless save-time relation preparation refreshes it from the cached related object.\n\nThe fix belongs in `Model._prepare_related_fields_for_save()`, which already guards against unsaved ",
+      "latency_s": 133.4052219390869,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

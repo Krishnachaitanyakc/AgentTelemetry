@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-7373",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2661,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1830,
+      "response_excerpt": "<reasoning>\nThe bug is caused by `cached_eval` storing results by expression string only, while string marker evaluation also depends on the test item's module globals. Removing the result cache makes each `skipif`/`xfail` string expression compile/evaluate against the current item's globals.\n\nI verified the current pytest checkout already has the equivalent fix and regression (`TestFunctional::test_reevaluate_dynamic_expr`) passing. The downloaded pytest 5.4.3 source cannot run on this machine\u2019",
+      "latency_s": 413.9850890636444,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "astropy__astropy-7746",
+  "repo": "astropy/astropy",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1619,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2880,
+      "response": "Now I have a clear picture of the issue and the fix. Let me write the final reasoning and patch.\n\n<reasoning>\nThe issue is that WCS transformation methods like `wcs_pix2world`, `wcs_world2pix`, `all_pix2world`, and `all_world2pix` fail when passed empty lists or arrays instead of gracefully returning empty results.\n\nThe root cause is in the `_array_converter` method's inner functions:\n\n1. **`_return_list_of_arrays`**: When called with empty axes (e.g., `[], []`), it proceeds to construct `xy = n...[truncated]",
+      "latency_s": 157.66857481002808,
+      "error": null
+    }
+  ]
+}

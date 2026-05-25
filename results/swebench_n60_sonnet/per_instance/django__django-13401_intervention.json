@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13401",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1437,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2059,
+      "response": "The fix is clean and correct. Here's a summary of what changed and why:\n\n**`__eq__`** \u2014 added `and self.model == other.model`. Fields inherited from the same abstract model share a `creation_counter`, so the old check alone made them compare equal even when attached to different concrete models.\n\n**`__hash__`** \u2014 changed from `hash(self.creation_counter)` to `hash((self.creation_counter, self.model))`. The hash contract requires equal objects to have equal hashes, so this must stay consistent wi...[truncated]",
+      "latency_s": 80.08885717391968,
+      "error": null
+    }
+  ]
+}

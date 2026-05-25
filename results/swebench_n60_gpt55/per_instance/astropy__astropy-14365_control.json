@@ -1,0 +1,21 @@
+{
+  "instance_id": "astropy__astropy-14365",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1945,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2166,
+      "response": "<reasoning>\nThe QDP parser recognizes command lines using a single regular expression in `astropy/io/ascii/qdp.py`. In Astropy 5.1 that regex is compiled case-sensitively, so lowercase `read serr ...` is rejected before the later command parsing can lowercase the command type. The fix is to compile the line classifier regex with `re.IGNORECASE` and add regression coverage for lowercase QDP commands.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/astropy/io/ascii/qdp.py b/astropy/io/ascii/qdp.py\ninde...[truncated]",
+      "latency_s": 125.17929983139038,
+      "error": null
+    }
+  ]
+}

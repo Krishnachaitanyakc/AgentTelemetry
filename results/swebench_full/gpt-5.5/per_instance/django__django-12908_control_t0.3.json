@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12908",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 820,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1842,
+      "response_excerpt": "<reasoning>\nThe current `QuerySet.distinct()` implementation already calls `_not_support_combined_queries(\"distinct\")`, so `union().distinct()` raises `NotSupportedError`. The missing coverage was the reported form: applying `order_by()` after `union()` and then calling field-specific `distinct(\"field\")`. I added a regression test to ensure that path also raises instead of silently producing an ineffective distinct query.\n\nVerified with:\n`python3 ./tests/runtests.py queries.test_qs_combinators.Q",
+      "latency_s": 170.66677498817444,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

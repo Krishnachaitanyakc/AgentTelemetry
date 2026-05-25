@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12470",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1948,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1393,
+      "response_excerpt": "<reasoning>\nThe bug happens when `pk` on a multi-table inherited child resolves to the parent-link relation. The ordering resolver was treating that relation like an ordinary related field and expanding the parent model\u2019s default ordering. Since `-pk` is then interpreted relative to an already-descending default order, it flips back to ascending. The fix is to treat `pk` as the concrete primary-key shortcut and skip related-model default ordering expansion for it.\n\nVerification run:\n`PYTHONPATH=",
+      "latency_s": 473.26326298713684,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

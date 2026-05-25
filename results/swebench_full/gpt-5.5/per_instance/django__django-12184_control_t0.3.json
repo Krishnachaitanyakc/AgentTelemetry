@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12184",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1833,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1771,
+      "response_excerpt": "<reasoning>\n1. The crash happens when an optional named regex group is absent and Django treats unmatched capture groups as positional args.\n2. This checkout already has the resolver-side behavior that avoids that: it decides whether named groups exist before filtering out `None` kwargs.\n3. I added regression coverage for the exact URL shape from the issue, including the nested unnamed alternation inside the optional named group.\n4. Verified with `python3 tests/runtests.py urlpatterns --parallel",
+      "latency_s": 227.87798500061035,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

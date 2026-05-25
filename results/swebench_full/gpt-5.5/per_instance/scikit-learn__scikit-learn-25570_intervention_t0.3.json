@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-25570",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2323,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 6396,
+      "response_excerpt": "<reasoning>\n1. The pandas path in `ColumnTransformer._hstack` concatenates transformer outputs, then assigns prefixed feature names.\n2. Empty column selections are skipped by the fitted transformer iterator, but their zero-width pandas outputs were still included when collecting `feature_names_outs`.\n3. This makes the transformer-name list and feature-name list misalign, producing an incorrect column count.\n4. The fix filters zero-width pandas outputs before zipping names with feature names.\n5. ",
+      "latency_s": 158.30837512016296,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

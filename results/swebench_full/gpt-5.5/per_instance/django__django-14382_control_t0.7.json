@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14382",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1739,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1452,
+      "response_excerpt": "<reasoning>\nThe bug happens because `os.path.basename()` returns `''` when the target path ends in a separator. Normalizing the absolute target path before extracting the basename preserves existing behavior while accepting shell-completed paths like `apps/app1/`.\n\nI added a regression test that creates an existing target app directory, invokes `startapp` with a trailing slash, and verifies `apps.py` is generated without an error.\n\nVerification note: `python3 ./tests/runtests.py admin_scripts.te",
+      "latency_s": 117.95482301712036,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

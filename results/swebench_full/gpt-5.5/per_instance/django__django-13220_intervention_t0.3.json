@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13220",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4833,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1406,
+      "response_excerpt": "<reasoning>\n1. `ValidationError` normalizes simple, list, and dict inputs into `message`, `error_list`, and `error_dict`.\n2. Equality should compare that normalized structure, not object identity and not just rendered messages.\n3. Existing order-insensitive hashing sorted only by message, which can collapse distinct errors with the same message but different codes/params.\n4. The patch builds canonical error details from message/code/params and uses `Counter` for lists so order is ignored while d",
+      "latency_s": 74.89005422592163,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

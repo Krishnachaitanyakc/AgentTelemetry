@@ -1,0 +1,26 @@
+{
+  "instance_id": "pylint-dev__pylint-7114",
+  "repo": "pylint-dev/pylint",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1673,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2490,
+      "response_excerpt": "<reasoning>\nThe patch is in place. Let me summarize the fix:\n\n**Root cause:** When pylint is given a directory `a/` that contains `a.py` but no `__init__.py` (i.e., a namespace package), `discover_package_path()` returns the directory `a/` itself as the \"source root\". This gets added to `additional_search_path`, which causes `astroid.modutils.file_info_from_modpath([\"a\"])` to find `a/a.py` as the source for module `a` (because `a/` is on the path and `a.py` matches). The spec is then a regular `",
+      "latency_s": 584.3708069324493,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

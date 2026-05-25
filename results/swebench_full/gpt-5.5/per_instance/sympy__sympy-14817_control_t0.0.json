@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-14817",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1124,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2802,
+      "response_excerpt": "<reasoning>\nThe crash comes from `_print_MatAdd` using `item.args[0]` to decide whether a term is negative. For a plain `MatrixSymbol`, `args[0]` is its raw name string, so `S(item.args[0])` tries to parse names like `\"y*\"`. The sign decision should use the scalar coefficient of the matrix multiplication term instead. `as_coeff_mmul()` gives that coefficient without inspecting the symbol name. The omitted `+` is intentional for negative terms because the printed term already includes `-`.\n\nVerif",
+      "latency_s": 255.86086511611938,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

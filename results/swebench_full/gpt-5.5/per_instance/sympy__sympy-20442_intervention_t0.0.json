@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-20442",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1411,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1523,
+      "response_excerpt": "<reasoning>\n1. Located `convert_to` in `sympy/physics/units/util.py`.\n2. The conversion matrix can produce invalid exponent projections if a solver returns a non-exact least-squares style result.\n3. Added an exact reconstruction check: the solved target exponents must recreate the original dimension vector.\n4. Added regression coverage for the issue examples.\n5. Verified with:\n`/private/tmp/sympy-venv/bin/python -m pytest sympy/physics/units/tests/test_util.py -q`\nResult: `11 passed`.\n</reasonin",
+      "latency_s": 228.4749128818512,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

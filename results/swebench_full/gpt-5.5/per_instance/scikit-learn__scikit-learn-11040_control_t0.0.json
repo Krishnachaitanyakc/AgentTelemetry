@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-11040",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3407,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1553,
+      "response_excerpt": "<reasoning>\nAdded a shared `n_neighbors` validator so both estimator-level `n_neighbors=3.` during `fit` and method-level `kneighbors(..., n_neighbors=3.)` fail early with a clear `TypeError`, before KDTree/BallTree internals see the float. Preserved the existing `ValueError` for non-positive integer values. Added regression coverage for both paths.\n\nVerification: modified files parse with `ast`. Targeted pytest could not run because the checkout is not built (`sklearn.__check_build._check_build",
+      "latency_s": 199.98414707183838,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

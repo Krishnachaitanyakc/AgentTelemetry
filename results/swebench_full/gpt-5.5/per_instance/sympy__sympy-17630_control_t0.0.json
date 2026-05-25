@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-17630",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 959,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4222,
+      "response_excerpt": "<reasoning>\nThe failure happens because `_blockmul` wraps `self.blocks * other.blocks` directly as a `BlockMatrix`. Dense matrix multiplication can simplify zero-valued matrix-expression blocks to scalar `0`, so the next block multiplication tries to read `.rows`/`.cols` from `Zero`.\n\nThe fix converts scalar zero entries in the block product back into `ZeroMatrix` using the known output block dimensions: row size from `self`, column size from `other`.\n\nVerified with the reported case and direct ",
+      "latency_s": 269.061222076416,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

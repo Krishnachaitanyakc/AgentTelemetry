@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15902",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2736,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1235,
+      "response_excerpt": "<reasoning>\nThe warning happens because `ManagementForm` inherits `BaseForm.template_name`, which delegates to `renderer.form_template_name`. Even though management forms only render hidden fields, they still exercise the generic form template path. The fix is to give `ManagementForm` a dedicated minimal template that only emits errors and hidden fields, with both DjangoTemplates and Jinja2 built-in template copies. I added a regression test proving the management form renders even when the rend",
+      "latency_s": 153.20738697052002,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

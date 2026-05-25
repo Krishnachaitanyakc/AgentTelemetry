@@ -1,0 +1,26 @@
+{
+  "instance_id": "pylint-dev__pylint-7114",
+  "repo": "pylint-dev/pylint",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3498,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2490,
+      "response_excerpt": "<reasoning>\nThe failure comes from adding the namespace directory itself to the module search path. For `pylint a`, if `a/` has no `__init__.py` but contains `a/a.py`, astroid can resolve `a/a.py` as module `a`, so pylint then tries to lint the non-existent `a/__init__.py`.\n\nThe fix detects namespace package directories during package-path discovery and uses their parent directory as the search root. I added a regression test for `a/a.py` plus `a/b.py`.\n\nVerified with:\n`python -m pytest tests/li",
+      "latency_s": 142.04255080223083,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

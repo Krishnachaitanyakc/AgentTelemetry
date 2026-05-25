@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13315",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4855,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1110,
+      "response": "<reasoning>\n1. `complex_filter()` applies `limit_choices_to` joins directly to the form field queryset, so multi-value joins can duplicate model rows.\n2. A correlated `Exists()` filter checks whether each outer row satisfies `limit_choices_to` without joining the outer queryset, avoiding duplicate choices.\n3. The regression test creates duplicate join paths for both `Q` and dict `limit_choices_to`.\n4. Verified with `/usr/bin/python3 -Wall tests/runtests.py model_forms.tests.LimitChoicesToTests`:...[truncated]",
+      "latency_s": 259.27618408203125,
+      "error": null
+    }
+  ]
+}

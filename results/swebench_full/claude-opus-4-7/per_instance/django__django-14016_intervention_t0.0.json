@@ -1,0 +1,35 @@
+{
+  "instance_id": "django__django-14016",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 2,
+  "proposed_patch": true,
+  "answer_len": 836,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1432,
+      "response_excerpt": "The background `find` command completed; I already delivered the final patch above. No further action needed.",
+      "latency_s": 403.4210538864136,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 1577,
+      "response_excerpt": "<reasoning>\nThe issue is in `django/db/models/query_utils.py` in the `Q._combine` method. When one of the Q objects is empty, the method uses `copy.deepcopy()` to copy the other Q object. `deepcopy` requires the contents to be pickleable, which fails for objects like `dict_keys`.\n\nThe fix is to use `copy.copy()` instead of `copy.deepcopy()` in this code path. A shallow copy is sufficient here because we just need a new Q wrapper \u2014 we don't need to deep-copy the lookup values themselves (they're ",
+      "latency_s": 31.76117181777954,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

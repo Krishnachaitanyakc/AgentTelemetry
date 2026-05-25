@@ -1,0 +1,53 @@
+{
+  "instance_id": "django__django-12908",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 4,
+  "proposed_patch": true,
+  "patch_len": 953,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 0,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "queryset union distinct distinct_fields": 1,
+    "combined_queries distinct not supported": 1,
+    "def distinct self combined query": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2059,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"QuerySet union distinct distinct_fields\"}}</tool_call>",
+      "latency_s": 13.647652864456177,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 2599,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"combined_queries distinct not supported\"}}</tool_call>",
+      "latency_s": 14.388322114944458,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 3139,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"def distinct self combined query\"}} </tool_call>",
+      "latency_s": 14.721244096755981,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 3645,
+      "response": "<reasoning>A combined QuerySet already has a set operation (`union`, `intersection`, or `difference`) attached, and Django only supports a small set of follow-up operations on those queries. `distinct()` mutates the select semantics after the combinator and currently does not produce the wrapped `SELECT DISTINCT ... FROM (...)` SQL users might expect, so it should fail eagerly like `filter()`, `annotate()`, and other unsupported post-combinator operations. The fix is to route `QuerySet.distinct()` through the existing combined-query guard and add it to the combinator unsupported-operation regression test.</reasoning>\n<patch>diff --git a/django/db/models/query.py b/django/db/models/query.py\n--- a/django/db/models/query.py\n+++ b/django/db/models/query.py\n@@ -1895,6 +1895,7 @@ class QuerySet(AltersData):\n     def distinct(self, *field_names):\n         \"\"\"\n         Return a new QuerySet instance that will select only distinct results.\n         \"\"\"\n+        self._not_support_combined_queries(\"distinct\")\n         if self.query.is_sliced:\n             raise TypeError(\n                 \"Cannot create distinct fields once a slice has been taken.\"\ndiff --git a/tests/queries/test_qs_combinators.py b/tests/queries/test_qs_combinators.py\n--- a/tests/queries/test_qs_combinators.py\n+++ b/tests/queries/test_qs_combinators.py\n@@ -757,6 +757,7 @@ class QuerySetSetOperationTests(TestCase):\n                 \"annotate\",\n                 \"defer\",\n                 \"delete\",\n+                \"distin",
+      "latency_s": 54.56283617019653,
+      "error": null
+    }
+  ]
+}

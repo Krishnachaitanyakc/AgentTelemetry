@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12589",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3610,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3242,
+      "response": "<reasoning>\nThe ambiguous `GROUP BY \"status\"` is produced because Django groups by a selected annotation alias even when joined tables also have a column with that name. The fix is to detect column names from joined models in `Query.set_group_by()` and avoid alias-based grouping when an annotation alias collides, forcing the expression/source columns to be used instead. I also added a regression test with a `rating` alias colliding with a joined model field.\n\nVerification: `python3 -m py_compile...[truncated]",
+      "latency_s": 357.38289284706116,
+      "error": null
+    }
+  ]
+}

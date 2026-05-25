@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-18087",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1247,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1112,
+      "response_excerpt": "<reasoning>\n1. The risky simplification is in the Fu trig combiner: `trig_split()` treats square-root factors as amplitudes when rewriting `a*cos(x) + b*sin(x)` into a phase-shifted trig form.\n2. That rewrite is only valid when those amplitudes are numeric/trig-free. A factor like `sqrt(sin(x)**2)` must not be treated as the coefficient `sin(x)` for a general complex symbol.\n3. I added a guard so radical coefficients containing trigonometric functions are not used for those amplitude-ratio rewri",
+      "latency_s": 166.33946704864502,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12700",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 979,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2528,
+      "response": "<patch>\nDjango/django issue fix for insufficient settings cleansing.\n\nThe `cleanse_setting()` function in `django/views/debug.py` was not properly handling sensitive values nested inside lists and tuples. This is a security issue because sensitive data (passwords, tokens, API keys) could be exposed in error reports if they were stored in list or tuple data structures.\n\nFixed by adding recursive cleansing support for list and tuple values, similar to how dictionary values are already handled.\n\nFi...[truncated]",
+      "latency_s": 235.99891209602356,
+      "error": null
+    }
+  ]
+}

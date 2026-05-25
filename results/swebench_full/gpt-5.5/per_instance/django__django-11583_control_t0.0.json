@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11583",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1827,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5459,
+      "response_excerpt": "<reasoning>\nThe crash happens while collecting module file paths for autoreload, before StatReloader can snapshot mtimes. Since these paths come from import machinery and the filesystem, a single malformed or transiently unresolvable path should be skipped the same way deleted module files are skipped. The fix is to catch ValueError around pathlib existence/resolution and continue, with a debug log for diagnosis. A regression test covers embedded null bytes in watched module/error paths.\n\nVerifi",
+      "latency_s": 94.83745312690735,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

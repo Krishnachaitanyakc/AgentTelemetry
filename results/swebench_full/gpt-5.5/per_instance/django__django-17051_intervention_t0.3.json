@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-17051",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4093,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1964,
+      "response_excerpt": "<reasoning>\n`bulk_create()` currently drops `returning_fields` for all conflict modes. That is only necessary for `ignore_conflicts`; `update_conflicts` can still return rows on backends that support bulk `RETURNING`. The fix keeps `RETURNING` enabled for `OnConflict.UPDATE` and adds assertions that returned upserted objects get primary keys.\n\nVerified against the current checkout with:\n`python3 tests/runtests.py bulk_create.tests.BulkCreateTests.test_update_conflicts_unique_fields bulk_create.t",
+      "latency_s": 193.86292695999146,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

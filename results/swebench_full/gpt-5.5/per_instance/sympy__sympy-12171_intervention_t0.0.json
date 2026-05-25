@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-12171",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1936,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1407,
+      "response_excerpt": "<reasoning>\nThe Mathematica printer already has derivative support in this checkout, using `Hold[D[...]]` consistently with unevaluated `Integral` and `Sum`. The missing behavior was float exponent formatting: the printer inherited normal SymPy float output, so scientific notation used `e` instead of Mathematica\u2019s `*^`. I added a Mathematica-specific `_print_Float` that preserves existing compact float formatting via `super()` and only rewrites exponent markers. I also added regression tests for",
+      "latency_s": 236.8781452178955,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

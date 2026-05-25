@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-7746",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1694,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2849,
+      "response_excerpt": "<reasoning>\nThe failure comes from `_array_converter._return_list_of_arrays`: empty coordinate inputs can reach wcslib as an array with zero coordinates and inconsistent axis shape. The fix is to first normalize/broadcast the per-axis inputs with `np.broadcast_arrays`, then return immediately if any broadcasted axis is empty. That preserves empty output shapes and avoids calling wcslib with zero-length coordinate tables.\n\nI also added regression tests for `wcs_pix2world`, `wcs_world2pix`, single",
+      "latency_s": 190.64703512191772,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

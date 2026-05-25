@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11583",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1657,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5459,
+      "response_excerpt": "<reasoning>\nThe crash happens after `Path.exists()` succeeds, when `Path.resolve()` raises `ValueError: embedded null byte`. Django already treated this kind of `ValueError` as a filesystem/path anomaly and skipped the path, but the `try` block only covered `exists()`. The fix is to include `resolve().absolute()` in the same guarded block so a single bad module path does not stop the autoreloader.\n\nVerified with:\n`python3 tests/runtests.py utils_tests.test_autoreload.TestIterModulesAndFiles`\n</r",
+      "latency_s": 95.58239316940308,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

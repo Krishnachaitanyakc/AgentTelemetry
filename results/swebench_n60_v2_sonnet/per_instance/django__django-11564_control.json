@@ -1,0 +1,42 @@
+{
+  "instance_id": "django__django-11564",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 3,
+  "proposed_patch": false,
+  "patch_len": 0,
+  "total_searches": 0,
+  "unique_queries": 0,
+  "max_query_repeats": 0,
+  "patch_suppressions": 2,
+  "intervention_triggers": 0,
+  "query_counts": {},
+  "error": "claude exit 1: Claude Code at Meta (https://fburl.com/claude.code.users)\nUsing AI Gateway\n",
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1939,
+      "response": "I have all the information I need. Here's my analysis:\n\n**Root cause**: `_add_script_prefix` in `django/conf/__init__.py` skips both absolute URLs (`http://`, `https://`) AND root-relative paths (`/path/`). But when Django is served at a sub-path with `SCRIPT_NAME=/subpath`, a `STATIC_URL = '/static/'` should become `/subpath/static/`. The fix is to only skip true absolute URLs, and for root-relative paths, prepend the script prefix if it's non-trivial (not just `/`).\n\n<reasoning>\nThe `_add_script_prefix` method currently:\n1. Skips values starting with `http://`, `https://`, or `/`\n2. For relative paths, prepends `get_script_prefix()`\n\nThe problem: When `STATIC_URL = '/static/'` (a root-relative path), it's never prefixed. When Django runs at a sub-path (e.g., `SCRIPT_NAME=/app`), users expect `/static/` to become `/app/static/`.\n\nThe fix modifies `_add_script_prefix` to:\n- Only skip absolute URLs (`http://`, `https://`)  \n- For root-relative paths (`/path/`): prepend the script prefix if it's not the default `/`\n- For relative paths: prepend as before\n\nThe tests must be updated:\n- Remove `/path/` from `test_not_prefixed` (it IS now prefixed with non-trivial SCRIPT_NAME)\n- Add root-relative path cases to `test_add_script_name_prefix`\n</reasoning>\n\n<patch>\n--- a/django/conf/__init__.py\n+++ b/django/conf/__init__.py\n@@ -207,12 +207,15 @@ class LazySettings(LazyObject):\n     @staticmethod\n     def _add_script_prefix(value):\n         \"\"\"\n-        Add SCRIPT_NAME prefix to relativ",
+      "latency_s": 278.7389078140259,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 6515,
+      "response": "Now I have enough information. Let me write the patch.\n\n<reasoning>\nThe current `_add_script_prefix` in `django/conf/__init__.py` skips ALL paths starting with `/`, including root-relative ones like `/static/`. This means when Django is served at a sub-path (`SCRIPT_NAME=/myapp`), `STATIC_URL = '/static/'` is never prefixed \u2014 the correct URL should be `/myapp/static/`.\n\nThe fix:\n1. Only skip true absolute URLs (`http://`, `https://`).\n2. For root-relative paths (starting with `/`): prepend the script prefix if it's non-trivial (not just `/`).\n3. For relative paths: prepend as before.\n\nAlso update tests:\n- Remove `/path/` from `test_not_prefixed` (it is now prefixed when SCRIPT_NAME is non-trivial).\n- Add root-relative path cases to `test_add_script_name_prefix`.\n</reasoning>\n\n<patch>\n--- a/django/conf/__init__.py\n+++ b/django/conf/__init__.py\n@@ -207,12 +207,17 @@ class LazySettings(LazyObject):\n     @staticmethod\n     def _add_script_prefix(value):\n         \"\"\"\n-        Add SCRIPT_NAME prefix to relative paths.\n+        Add SCRIPT_NAME prefix to relative and root-relative paths.\n \n         Useful when the app is being served at a subpath and manually prefixing\n         subpath to STATIC_URL and MEDIA_URL in settings is inconvenient.\n         \"\"\"\n-        # Don't apply prefix to absolute paths and URLs.\n-        if value.startswith((\"http://\", \"https://\", \"/\")):\n+        # Don't apply prefix to absolute URLs.\n+        if value.startswith((\"http://\", \"https://\")):\n            ",
+      "latency_s": 320.05721974372864,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 9761,
+      "response": "",
+      "latency_s": 20.30768895149231,
+      "error": "claude exit 1: Claude Code at Meta (https://fburl.com/claude.code.users)\nUsing AI Gateway\n"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15061",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1474,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1161,
+      "response_excerpt": "<reasoning>\n`BoundField.label_tag()` adds `for=...` only when `widget.id_for_label()` returns a truthy value. For `MultiWidget`, there is no single control id that the field-level label should target, so `id_for_label()` must return an empty string. The checkout already had that behavior, so I added an explicit regression test for the label output and documented the override.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/django/forms/widgets.py b/django/forms/widgets.py\nindex 1bcfeba288..14f06ce86f",
+      "latency_s": 153.7817280292511,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

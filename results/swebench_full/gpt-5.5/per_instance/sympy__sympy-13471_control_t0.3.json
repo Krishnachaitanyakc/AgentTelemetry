@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13471",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2238,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1578,
+      "response_excerpt": "<reasoning>\nThe failing path is `Float.__new__` when reconstructing an mpf tuple from pickle. Python 2 long integers can serialize their repr with a trailing `L`, so Python 3 must strip that suffix before parsing the mantissa as hex. I also avoided `removeprefix/removesuffix` so the compatibility path works on Python 3.6-era loaders. Added a regression case for a mantissa string ending in `L`.\n\nVerified with:\n`/private/tmp/sympy-venv/bin/python -m pytest sympy/core/tests/test_numbers.py -k 'test",
+      "latency_s": 139.8780641555786,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-11133",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 1630,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "httpresponse make_bytes memoryview": 1,
+    "httpresponse content setter iterable bytes str": 1,
+    "httpresponsebase make_bytes bytes str response.py": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1906,
+      "response": "<reasoning>HttpResponse should treat memoryview as byte content, not as a generic iterable or object string. The fix is to convert memoryview with bytes() in make_bytes() and exclude it from the iterable-content branch so HttpResponse(memoryview(...)) is handled atomically.</reasoning>\n<patch>diff --git a/django/http/response.py b/django/http/response.py\n--- a/django/http/response.py\n+++ b/django/http/response.py\n@@ -232,7 +232,7 @@ class HttpResponseBase:\n         # Handle string types -- we can't rely on force_bytes here because:\n         # - Python attempts str conversion first\n         # - when self._charset != 'utf-8' it re-encodes the content\n-        if isinstance(value, bytes):\n+        if isinstance(value, (bytes, memoryview)):\n             return bytes(value)\n         if isinstance(value, str):\n             return bytes(value.encode(self.charset))\n@@ -304,7 +304,7 @@ class HttpResponse(HttpResponseBase):\n     @content.setter\n     def content(self, value):\n         # Consume iterators upon assignment to allow repeated iteration.\n-        if hasattr(value, '__iter__') and not isinstance(value, (bytes, str)):\n+        if hasattr(value, '__iter__') and not isinstance(value, (bytes, memoryview, str)):\n             content = b''.join(self.make_bytes(chunk) for chunk in value)\n             if hasattr(value, 'close'):\n                 try:\ndiff --git a/tests/httpwrappers/tests.py b/tests/httpwrappers/tests.py\n--- a/tests/httpwrappers/tests.py\n+++ b/tests/httpwrappers/tests.",
+      "latency_s": 109.94206309318542,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4102,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"HttpResponse make_bytes memoryview\"}}</tool_call>",
+      "latency_s": 14.838874101638794,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 4617,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"HttpResponse content setter iterable bytes str\"}}</tool_call>",
+      "latency_s": 31.352720260620117,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 5192,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"HttpResponseBase make_bytes bytes str response.py\"}}</tool_call>",
+      "latency_s": 13.77770709991455,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 5782,
+      "response": "<reasoning>HttpResponse currently treats memoryview as a generic object/iterable instead of byte-like content. Handling memoryview alongside bytes in make_bytes(), and excluding it from iterator consumption in the content setter, preserves expected byte semantics for BinaryField values returned by PostgreSQL.</reasoning>\n<patch>diff --git a/django/http/response.py b/django/http/response.py\n--- a/django/http/response.py\n+++ b/django/http/response.py\n@@ -232,7 +232,7 @@ class HttpResponseBase:\n         # Handle string types -- we can't rely on force_bytes here because:\n         # - Python attempts str conversion first\n         # - when self._charset != 'utf-8' it re-encodes the content\n-        if isinstance(value, bytes):\n+        if isinstance(value, (bytes, memoryview)):\n             return bytes(value)\n         if isinstance(value, str):\n             return bytes(value.encode(self.charset))\n@@ -304,7 +304,7 @@ class HttpResponse(HttpResponseBase):\n     @content.setter\n     def content(self, value):\n         # Consume iterators upon assignment to allow repeated iteration.\n-        if hasattr(value, '__iter__') and not isinstance(value, (bytes, str)):\n+        if hasattr(value, '__iter__') and not isinstance(value, (bytes, memoryview, str)):\n             content = b''.join(self.make_bytes(chunk) for chunk in value)\n             if hasattr(value, 'close'):\n                 try:\ndiff --git a/tests/httpwrappers/tests.py b/tests/httpwrappers/tests.py\n--- a/tests/httpwrappers/test",
+      "latency_s": 16.707088947296143,
+      "error": null
+    }
+  ]
+}

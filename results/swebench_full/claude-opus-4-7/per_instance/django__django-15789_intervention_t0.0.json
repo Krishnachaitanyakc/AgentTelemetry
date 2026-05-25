@@ -1,0 +1,44 @@
+{
+  "instance_id": "django__django-15789",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 3,
+  "proposed_patch": true,
+  "answer_len": 793,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1327,
+      "response_excerpt": "The patch has been proposed. The background find command completed; no further action needed since I already located and analyzed the relevant file at `/private/tmp/django-src/django/utils/html.py`.",
+      "latency_s": 808.8797698020935,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 1561,
+      "response_excerpt": "The background `find` command failed, but it was redundant \u2014 I already located and patched the file via the foreground command. The patch is complete.",
+      "latency_s": 330.5460858345032,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 1747,
+      "response_excerpt": "<reasoning>\nThe fix adds an optional `encoder` parameter to `json_script()`. When `None` (the default), it falls back to `DjangoJSONEncoder`, preserving backward compatibility. When a custom encoder class is provided, it's used instead.\n</reasoning>\n\n<patch>\n--- a/django/utils/html.py\n+++ b/django/utils/html.py\n@@ -75,14 +75,14 @@ _json_script_escapes = {\n }\n \n \n-def json_script(value, element_id):\n+def json_script(value, element_id, encoder=None):\n     \"\"\"\n     Escape all the HTML/XML special c",
+      "latency_s": 37.23777222633362,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

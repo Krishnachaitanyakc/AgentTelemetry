@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-15609",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1264,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1177,
+      "response_excerpt": "<reasoning>\nThe invalid LaTeX comes from printing a `MatrixElement` as `M_{...}` directly. If the matrix part already contains a subscript, e.g. the dummy index renders as `i_{1}` or the symbol is `X_{a}`, TeX sees chained subscripts. The fix is to brace the printed matrix part before appending the element indices: `{M}_{...}` or `{X_{a}}_{...}`. I also add regression coverage for indexed `MatMul` and matrix symbols whose names already render with subscripts.\n\nI could not run the local test beca",
+      "latency_s": 85.8152403831482,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-18189",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 489,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1470,
+      "response_excerpt": "<reasoning>\nThe bug is in the diophantine function. When `syms` is passed in a different order than the alphabetically sorted order of variables, the function makes a recursive call to itself but does NOT pass the `permute` parameter. This causes the recursive call to use the default `permute=False`, returning only the base solution. Then the outer call tries to reorder this single solution but cannot recover the missing permutations.\n\nIn the original buggy version (sympy 1.1.1), line 177 reads:",
+      "latency_s": 213.04602074623108,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

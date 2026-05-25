@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-14317",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3684,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1395,
+      "response_excerpt": "<reasoning>\nThe bug comes from `_print_Poly` calling `poly.as_expr()`. That converts the polynomial to a generic `Add`, so LaTeX output follows expression term ordering instead of the polynomial\u2019s monomial order.\n\nThe fix formats `Poly` directly from `poly.terms()`, which is what the string printer uses. I also updated the rational-coefficient expectation and added regression cases for the reported univariate example, additive coefficients, and multivariate monomial order.\n\nVerification: direct ",
+      "latency_s": 114.64726686477661,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

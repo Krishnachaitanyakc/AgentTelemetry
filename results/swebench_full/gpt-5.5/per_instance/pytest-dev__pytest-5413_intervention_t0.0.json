@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-5413",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1726,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3715,
+      "response_excerpt": "<reasoning>\nThe bug is that `ExceptionInfo.__str__` previously fell back to `__repr__`, which includes traceback location and truncates multiline exception messages. A normal `except ... as e` uses `str(e)`, so `pytest.raises(... ) as excinfo` should delegate `str(excinfo)` to `str(excinfo.value)` once the context manager has captured the exception.\n\nI verified the behavior with a focused script in the repo venv. The full pytest test run could not be used directly because this checkout reports v",
+      "latency_s": 87.82056999206543,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

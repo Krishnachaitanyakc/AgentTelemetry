@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-12907",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1525,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2042,
+      "response_excerpt": "<reasoning>\nThe bug comes from treating a nested `CompoundModel` as a simple model when constructing coordinate matrices. For nested `&` expressions, the inner model\u2019s already-computed separability matrix must be embedded into the parent matrix, preserving its diagonal structure.\n\nThe patch updates `_coord_matrix` to recurse into `CompoundModel` via `_separable(model)` and place that matrix in the correct left or right block. It also adds a regression case for `Pix2Sky_TAN() & (Linear1D & Linear",
+      "latency_s": 170.1878969669342,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

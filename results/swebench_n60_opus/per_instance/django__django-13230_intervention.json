@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13230",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 521,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1167,
+      "response": "Now I have all the information I need. The issue is clear:\n\n**In `/private/tmp/django_old/django/contrib/syndication/views.py`**, the `feed.add_item()` call (line 202-218) is missing the `comments` parameter. The feedgenerator's `add_item` method already accepts `comments=None` on line 86, and the `Rss201rev2Feed` already renders it, but the view never passes `item_comments` through.\n\nThe fix is to add `comments=self._get_dynamic_attr('item_comments', item),` to the `feed.add_item()` call.\n\n<rea...[truncated]",
+      "latency_s": 159.4847071170807,
+      "error": null
+    }
+  ]
+}

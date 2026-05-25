@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-15512",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4883,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2693,
+      "response_excerpt": "<reasoning>\nThe fix is now complete. Let me summarize the changes I made:\n\n1. In `/private/tmp/scikit-learn/sklearn/cluster/affinity_propagation_.py`:\n   - Added imports for `warnings` and `ConvergenceWarning`.\n   - Added a `never_converged = True` flag before the iteration loop.\n   - Set `never_converged = False` when the algorithm actually converges.\n   - Modified the post-loop logic to check `K > 0 and not never_converged` before accepting cluster centers.\n   - When not converged, return empt",
+      "latency_s": 712.4005720615387,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

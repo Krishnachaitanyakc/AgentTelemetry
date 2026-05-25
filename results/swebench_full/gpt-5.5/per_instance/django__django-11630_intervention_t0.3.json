@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11630",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3691,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1454,
+      "response_excerpt": "<reasoning>\nThe duplicate `db_table` check was treating table names as globally unique across all models. With database routers configured, that is too strict: the real conflict only exists if two managed, non-proxy models with the same `db_table` are allowed to migrate on the same database alias.\n\nThe patch keeps model objects instead of labels for duplicate-table tracking, then consults `router.allow_migrate_model()` per checked database alias. It only emits `models.W035` when a duplicate tabl",
+      "latency_s": 172.2317500114441,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-11179",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 1238,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "collector delete can_fast_delete instance pk none": 1,
+    "delete_batch setattr pk attname deletion.py": 1,
+    "fastdeletetests delete instance pk after delete": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1294,
+      "response": "<reasoning>The single-object fast-delete branch returns before the shared cleanup at the end of Collector.delete(), so fast-deleted model instances keep their primary key. The fix mirrors the normal delete path by clearing the instance PK before returning, with a regression test that asserts this path is fast-deletable and leaves pk as None.</reasoning>\n<patch>diff --git a/django/db/models/deletion.py b/django/db/models/deletion.py\n--- a/django/db/models/deletion.py\n+++ b/django/db/models/deletion.py\n@@ -277,6 +277,7 @@ class Collector:\n             if self.can_fast_delete(instance):\n                 with transaction.mark_for_rollback_on_error():\n                     count = sql.DeleteQuery(model).delete_batch([instance.pk], self.using)\n+                setattr(instance, model._meta.pk.attname, None)\n                 return count, {model._meta.label: count}\n \n         with transaction.atomic(using=self.using, savepoint=False):\ndiff --git a/tests/delete/tests.py b/tests/delete/tests.py\n--- a/tests/delete/tests.py\n+++ b/tests/delete/tests.py\n@@ -775,6 +775,14 @@ class FastDeleteTests(TestCase):\n         self.assertEqual(User.objects.count(), 1)\n         self.assertTrue(User.objects.filter(pk=u2.pk).exists())\n \n+    def test_fast_delete_instance_set_pk_none(self):\n+        u = User.objects.create()\n+        # User can be fast-deleted.\n+        collector = Collector(using='default')\n+        self.assertTrue(collector.can_fast_delete(u))\n+        u.delete()\n+        self.assertIsN",
+      "latency_s": 160.67052793502808,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 3204,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"Collector delete can_fast_delete instance pk None\"}}</tool_call>",
+      "latency_s": 15.2310049533844,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 3794,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"delete_batch setattr pk attname deletion.py\"}}</tool_call>",
+      "latency_s": 14.88876724243164,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 4354,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"FastDeleteTests delete instance pk after delete\"}}</tool_call>",
+      "latency_s": 11.168179988861084,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 4934,
+      "response": "<reasoning>The fast-delete path for a single model instance returns before Collector.delete() reaches the common cleanup that clears deleted instances' primary keys. Setting the instance PK to None before that early return makes fast-deleted instances match the normal delete path.</reasoning>\n<patch>diff --git a/django/db/models/deletion.py b/django/db/models/deletion.py\n--- a/django/db/models/deletion.py\n+++ b/django/db/models/deletion.py\n@@ -277,6 +277,7 @@ class Collector:\n             if self.can_fast_delete(instance):\n                 with transaction.mark_for_rollback_on_error():\n                     count = sql.DeleteQuery(model).delete_batch([instance.pk], self.using)\n+                setattr(instance, model._meta.pk.attname, None)\n                 return count, {model._meta.label: count}\n \n         with transaction.atomic(using=self.using, savepoint=False):\ndiff --git a/tests/delete/tests.py b/tests/delete/tests.py\n--- a/tests/delete/tests.py\n+++ b/tests/delete/tests.py\n@@ -775,6 +775,14 @@ class FastDeleteTests(TestCase):\n         self.assertEqual(User.objects.count(), 1)\n         self.assertTrue(User.objects.filter(pk=u2.pk).exists())\n \n+    def test_fast_delete_instance_set_pk_none(self):\n+        u = User.objects.create()\n+        collector = Collector(using=\"default\")\n+        self.assertTrue(collector.can_fast_delete(u))\n+        u.delete()\n+        self.assertIsNone(u.pk)\n+\n     def test_fast_delete_joined_qs(self):\n         a = Avatar.objects.create(desc='a')",
+      "latency_s": 14.907744884490967,
+      "error": null
+    }
+  ]
+}

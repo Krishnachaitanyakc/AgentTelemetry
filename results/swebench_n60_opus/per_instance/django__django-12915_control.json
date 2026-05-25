@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12915",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1199,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1711,
+      "response": "Good. The `django_old` and `django_src` versions have `get_response_async` in `base.py`, while `django_30` doesn't. The `django_old` already has the fix in the static files handler. The repository that matters for the issue (the one to patch) would be the one that has `get_response_async` in `base.py` but NOT in the static files handler.\n\nGiven the structure of this problem, I need to work against the main repo. Let me check the `django_src` version more carefully \u2014 I already confirmed it has th...[truncated]",
+      "latency_s": 176.1790051460266,
+      "error": null
+    }
+  ]
+}

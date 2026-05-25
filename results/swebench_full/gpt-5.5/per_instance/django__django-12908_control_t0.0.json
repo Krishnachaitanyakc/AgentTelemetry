@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12908",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1191,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1842,
+      "response_excerpt": "<reasoning>\n`union()`, `intersection()`, and `difference()` produce combined querysets. Django already rejects most mutating/refining queryset operations after a combinator via `_not_support_combined_queries()`. `distinct()` must use the same guard so calls like `qs1.union(qs2).distinct(\"name\")` fail immediately instead of silently setting flags that the combined-query SQL compiler ignores.\n\nI verified the focused combined-query unsupported-operations test with:\n`/private/tmp/django-test-venv/bi",
+      "latency_s": 88.74388194084167,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

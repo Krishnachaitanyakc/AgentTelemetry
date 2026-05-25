@@ -1,0 +1,29 @@
+{
+  "topology": "hierarchical",
+  "model": "codex_cli/gpt-5.5",
+  "question": "Summarize the trade-offs between OpenTelemetry GenAI semantic conventions and OpenInference for agent observability.",
+  "run_id": "hierarchical__codex_cli_gpt-5.5__q2",
+  "transcript": [
+    {
+      "agent": "facts_specialist",
+      "output": "- OpenTelemetry GenAI semantic conventions align with the broader OTel ecosystem: standard exporters, collectors, backends, and cross-service traces. Trade-off: GenAI/agent coverage can lag fast-changing use cases.\n\n- OpenInference is more agent/LLM-native, with richer conventions for prompts, messages, tools, retrieval, embeddings, evaluations, and Phoenix-style debugging. Trade-off: it is less universal than OTel.\n\n- OTel is better when observability must integrate with existing infra telemetry, SLOs, service maps, and production monitoring.\n\n- OpenInference is better when the main goal is detailed AI behavior analysis: agent steps, tool calls, RAG quality, prompt/version debugging, and eval workflows.\n\n- A practical pattern is to use OTel transport/instrumentation where possible, while mapping richer OpenInference attributes into traces for AI-specific analysis.",
+      "latency_s": 11.332429647445679
+    },
+    {
+      "agent": "analysis_specialist",
+      "output": "1. **Standardization vs specificity:** OpenTelemetry GenAI semantic conventions align with the broader OTel ecosystem, making them better for vendor-neutral tracing, metrics, and infra correlation. OpenInference is more narrowly tailored to LLM and agent workflows, often capturing prompts, tools, retrieval, chains, and evaluations more naturally.\n\n2. **Interoperability vs depth:** OTel fits existing observability pipelines and backends with less integration friction. OpenInference may provide richer agent-level semantics, but support depends more on AI observability tools that understand its schema.\n\n3. **Stability vs velocity:** OTel conventions benefit from formal standardization but can evolve slowly and may lag fast-moving agent patterns. OpenInference can adapt faster to LLM app needs, but that can mean more schema churn or less universal compatibility.",
+      "latency_s": 11.414216041564941
+    },
+    {
+      "agent": "manager_synthesis",
+      "output": "OpenTelemetry GenAI semantic conventions and OpenInference optimize for different parts of agent observability.\n\nOTel GenAI is strongest when AI traces need to live inside the broader production observability stack. It works well with standard exporters, collectors, tracing backends, service maps, SLOs, and cross-service correlation. That makes it a better fit for teams that already rely on OTel for infrastructure and application monitoring. Its trade-off is that GenAI and agent-specific coverage can lag behind fast-changing LLM patterns.\n\nOpenInference is stronger for deep AI behavior analysis. Its schema is more LLM-native, with richer support for prompts, messages, tool calls, retrieval, embeddings, evaluations, and debugging workflows such as Phoenix. That makes it useful for understanding agent steps, RAG quality, prompt/version behavior, and eval results. The trade-off is lower universality: fewer general observability tools understand its semantics directly.\n\nA practical approac",
+      "latency_s": 10.013490915298462
+    }
+  ],
+  "total_cost_usd": 0.0,
+  "total_input_tokens": 622,
+  "total_output_tokens": 726,
+  "n_agents": 3,
+  "wall_clock_s": 32.769927978515625,
+  "error": null
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-12419",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2250,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1933,
+      "response_excerpt": "<reasoning>\nThe incorrect result comes from summing identity-matrix entries represented as `KroneckerDelta(i, j)`. The summation code can only collapse the inner sum without a `Piecewise` when it knows the delta\u2019s valid index range. The fix is to attach the identity matrix range to its `KroneckerDelta` entries and teach `deltasummation` to suppress the `Piecewise` when that range is fully covered by the summation bounds.\n\nOn this checkout, that fix and regression test are already present; the fo",
+      "latency_s": 130.81824684143066,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

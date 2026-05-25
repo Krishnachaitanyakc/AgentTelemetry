@@ -1,0 +1,26 @@
+{
+  "instance_id": "pydata__xarray-4248",
+  "repo": "pydata/xarray",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4806,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1665,
+      "response_excerpt": "<reasoning>\nI located xarray\u2019s text repr formatter in `xarray/core/formatting.py` and the notebook HTML formatter in `xarray/core/formatting_html.py`.\n\nThe fix adds a shared helper that appends `, in {units}` when a variable has a non-empty `attrs[\"units\"]`. The column-width calculation now uses the displayed name, so existing alignment is preserved. I also updated the HTML repr to use the same displayed name and added focused tests for text and HTML output.\n\nVerified with:\n`uv run python -m pyt",
+      "latency_s": 377.70861983299255,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14787",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 625,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1539,
+      "response_excerpt": "<reasoning>\nThe issue is in Django's `method_decorator()` function located in `django/utils/decorators.py`. \n\nLooking at the implementation of `_multi_decorate()`, the inner `_wrapper` function creates a `functools.partial` object from the bound method:\n\n```python\nbound_method = partial(method.__get__(self, type(self)))\n```\n\nThis `partial` object is then passed to user-supplied decorators. However, `functools.partial` objects don't have function attributes like `__name__`, `__module__`, `__qualn",
+      "latency_s": 40.776768922805786,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

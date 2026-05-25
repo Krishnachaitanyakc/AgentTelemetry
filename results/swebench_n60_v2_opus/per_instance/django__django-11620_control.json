@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-11620",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 878,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "routepattern match to_python valueerror": 1,
+    "except valueerror return none routepattern": 1,
+    "class routepattern match def match": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1901,
+      "response": "Now I see the issue clearly. When `Http404` is raised in `to_python()`, it's NOT a `Resolver404`, so:\n\n1. In `URLResolver.resolve()`, `except Resolver404` doesn't catch it\n2. It propagates out to `convert_exception_to_response`\n3. `response_for_exception` catches it as `Http404`\n4. With `DEBUG=True`, it calls `technical_404_response(request, exc)`\n5. In `technical_404_response`, `exception.args[0][\"path\"]` fails because a plain `Http404` doesn't have the same args format as `Resolver404`\n6. It falls through to lines 624-626 (handled by except)\n7. Then `exception.args[0][\"tried\"]` also fails, so `resolved = True` and `tried` is set from `request.resolver_match`\n8. But `request.resolver_match` hasn't been set yet (the resolution failed!), so `tried` is `None`\n\nActually, wait. The issue says \"A server error occurred\" \u2014 this is a **500 error**, not a 404. So the `Http404` must be getting caught somewhere else or causing a 500. Let me check if maybe the problem is that `resolver_match` hasn't been set and some code blows up.\n\nLet me look more carefully. In `resolve_request` at line 315, if `Http404` is raised during `resolver.resolve()`, the `request.resolver_match` at line 316 is never set. Then in `response_for_exception`, the `Http404` is caught. With `DEBUG=True`, `technical_404_response` is called. Inside that function, the `exception.args[0]` lookups would gracefully handle missing keys. So it should work...\n\nUnless the problem is really about getting a 500 error. Let me loo",
+      "latency_s": 128.90227508544922,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 10025,
+      "response": "Let me investigate the codebase properly first.\n\n<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"RoutePattern match to_python ValueError\"}}</tool_call>",
+      "latency_s": 14.188745021820068,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 10614,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"except ValueError return None RoutePattern\"}}</tool_call>",
+      "latency_s": 15.796666860580444,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 11169,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"class RoutePattern match def match\"}}</tool_call>",
+      "latency_s": 16.52367115020752,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 11684,
+      "response": "Now I have all the information needed. The issue is clear:\n\n1. `RoutePattern.match()` at line 265 only catches `ValueError` from `to_python()`, not `Http404`\n2. `Resolver404` is a subclass of `Http404` (confirmed in `exceptions.py`)\n3. When `Http404` is raised in `to_python()`, it propagates uncaught through the resolver, causing a 500 error instead of a proper 404 response\n\nThe fix is to add `Http404` to the except clause in `RoutePattern.match()`.\n\n<reasoning>\nThe bug is in `RoutePattern.match()` in `django/urls/resolvers.py` at line 265. When a path converter's `to_python()` method raises `Http404`, only `ValueError` is caught. The uncaught `Http404` propagates up through the URL resolver stack and results in a \"A server error occurred\" message (500 error) instead of the technical 404 response that should appear when `DEBUG=True`.\n\nThe fix is to also catch `Http404` in the except clause so that raising `Http404` in `to_python()` is treated the same as raising `ValueError` \u2014 the pattern is considered as not matching, and the URL resolver continues trying other patterns. If no patterns match, the resolver properly raises `Resolver404`, which produces the correct technical 404 response with `DEBUG=True`.\n\nThe `Http404` class needs to be imported from `django.http`.\n</reasoning>\n\n<patch>\n--- a/django/urls/resolvers.py\n+++ b/django/urls/resolvers.py\n@@ -18,6 +18,7 @@ from django.conf import settings\n from django.core.checks import Error, Warning\n from django.core.checks.urls im",
+      "latency_s": 78.2707269191742,
+      "error": null
+    }
+  ]
+}

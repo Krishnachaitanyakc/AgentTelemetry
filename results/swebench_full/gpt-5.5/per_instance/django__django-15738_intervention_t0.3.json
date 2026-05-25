@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15738",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2434,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2816,
+      "response_excerpt": "<reasoning>\nThe migration must drop the old `unique_together` constraint while the field is still concrete. If the FK is removed and re-added as an M2M first, schema editing later looks for a unique constraint using the M2M field metadata and finds zero constraints. The existing autodetector ordering in this checkout emits `AlterUniqueTogether`, `RemoveField`, `AddField`, so I added a focused regression test to lock that behavior down.\n</reasoning>\n\n<patch>\ndiff --git a/tests/migrations/test_aut",
+      "latency_s": 381.68923687934875,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

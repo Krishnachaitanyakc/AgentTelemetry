@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-22714",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1530,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2452,
+      "response_excerpt": "<reasoning>\nThe crash comes from `Point.__new__` checking numeric coordinates with `im(a).is_zero`. Under global `evaluate(False)`, `im(Integer(1))` can remain unevaluated, so the real coordinate check can misclassify valid integer coordinates.\n\nThe fix is to use the coordinate assumption directly: reject numeric coordinates only when `a.is_extended_real is False`. This still rejects known non-real numeric coordinates like `1 + I`, and avoids constructing `im(...)` under disabled evaluation.\n\nVe",
+      "latency_s": 248.93067598342896,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

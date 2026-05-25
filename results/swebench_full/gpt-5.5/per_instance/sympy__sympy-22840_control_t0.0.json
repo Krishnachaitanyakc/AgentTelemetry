@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-22840",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1391,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4443,
+      "response_excerpt": "<reasoning>\n1. The bad output comes from CSE descending into `MatrixElement.args`, seeing the parent `MatrixSymbol` repeatedly, and treating the whole matrix as a common subexpression.\n2. The current CSE guard correctly treats `MatrixSymbol`/`MatrixElement` as atomic leaves; I added an implementation comment documenting why.\n3. Added a regression test ensuring indexed matrix products do not emit replacements like `(x0, A)` or `(x1, B)`.\n4. Verified with: `/private/tmp/sympy-cse-venv/bin/python -",
+      "latency_s": 256.3781099319458,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

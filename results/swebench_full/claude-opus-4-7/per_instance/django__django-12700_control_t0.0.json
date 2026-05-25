@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12700",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1433,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2497,
+      "response_excerpt": "<reasoning>\nNow I understand the situation:\n- The HEAD state of `django/views/debug.py` only handles `dict`, `list`, and `tuple` for cleansing\n- The issue is that other Mapping/Sequence types (like `OrderedDict`, custom dict subclasses, etc.) are not handled\n- The working tree already contains a fix that:\n  1. Imports `Mapping` and `Sequence` from `collections.abc`\n  2. Changes `isinstance(value, dict)` \u2192 `isinstance(value, Mapping)` to catch all dict-like types\n  3. Adds handling for other Sequ",
+      "latency_s": 88.175283908844,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12125",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2886,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2414,
+      "response": "<reasoning>\n1. `Field.deconstruct()` already preserves nested class names with `__qualname__`, producing paths like `app.models.Outer.Inner`.\n2. `DeconstructibleSerializer._serialize_path()` still split that path at the last dot, causing imports like `import app.models.Outer`, which is invalid because `Outer` is a class, not a module.\n3. The fix lets `ModelFieldSerializer` pass the real class module when the deconstructed path matches the field class path, so the expression remains `app.models.O...[truncated]",
+      "latency_s": 250.60705995559692,
+      "error": null
+    }
+  ]
+}

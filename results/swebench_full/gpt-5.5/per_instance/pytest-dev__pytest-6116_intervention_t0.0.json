@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-6116",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 930,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1784,
+      "response_excerpt": "<reasoning>\nI found the collect-only option in `src/_pytest/main.py`. Pytest already exposes `--collectonly`, `--collect-only`, and `--co`, so the smallest change is to add an unused one-character alias to the same option registration. Existing lowercase `-c` is already used for config files, and `-C` is not registered elsewhere in `src/_pytest`, so `-C` is the least invasive mnemonic choice.\n\nI added a parser-level regression test that verifies `-C` sets `config.option.collectonly`.\n\nVerificati",
+      "latency_s": 164.98738503456116,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

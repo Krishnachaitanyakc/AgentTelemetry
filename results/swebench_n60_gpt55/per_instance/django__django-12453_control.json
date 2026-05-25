@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12453",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3657,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3731,
+      "response": "<reasoning>\n`deserialize_db_from_string()` saved each deserialized object one at a time, so serialized rollback could fail when a row with foreign keys appeared before the referenced rows. The fix mirrors `loaddata`: load inside `transaction.atomic()`, disable constraint checks where supported, then explicitly validate constraints for touched tables. I added a regression test that deserializes `PossessedCar` before its referenced `Car` and `Person`.\n\nVerified with:\n`uv run --python 3.11 --with p...[truncated]",
+      "latency_s": 220.04655480384827,
+      "error": null
+    }
+  ]
+}

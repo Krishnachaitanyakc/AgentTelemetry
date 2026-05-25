@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13448",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 6999,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5974,
+      "response_excerpt": "<reasoning>\nThe crash happens because `TEST[\"MIGRATE\"] = False` skipped migration execution but didn\u2019t make migrated apps participate in the `run_syncdb` path. As a result, models from migrated apps such as `django_admin_log` could be serialized even though their tables hadn\u2019t been created.\n\nThe fix is to temporarily set every installed app\u2019s migration module to `None` while creating the test database when `TEST[\"MIGRATE\"]` is false. Then `migrate --run-syncdb` syncs all app models without runni",
+      "latency_s": 236.0820460319519,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

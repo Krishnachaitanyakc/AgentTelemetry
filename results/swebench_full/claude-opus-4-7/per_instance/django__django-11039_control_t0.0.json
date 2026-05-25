@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11039",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 671,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1673,
+      "response_excerpt": "The fix is already present in the current code (lines 73-75). The code correctly uses both `migration.atomic` and `connection.features.can_rollback_ddl`. Since the task asks me to propose a patch that fixes the issue described, I'll provide the canonical patch that represents the fix as described in the issue.\n\n<reasoning>\nThe issue states that `sqlmigrate` was only checking `migration.atomic` when deciding whether to wrap output in BEGIN/COMMIT, but it should also check `connection.features.can",
+      "latency_s": 196.59873628616333,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

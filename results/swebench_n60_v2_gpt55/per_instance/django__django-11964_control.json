@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-11964",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 1252,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "textchoices": 1,
+    "class choices": 1,
+    "models.choices __str__ value enum": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3364,
+      "response": "<reasoning>The enum choice member remains on freshly created model instances until reloaded, so casting it to string should behave like the underlying database value. Adding `Choices.__str__()` centralizes that behavior for both `TextChoices` and `IntegerChoices`, and the regression test verifies fresh enum members stringify to their `.value`.</reasoning>\n<patch>diff --git a/django/db/models/enums.py b/django/db/models/enums.py\nindex bbe362a6ab..ae20ef6d93 100644\n--- a/django/db/models/enums.py\n+++ b/django/db/models/enums.py\n@@ -60,7 +60,13 @@ class ChoicesMeta(enum.EnumMeta):\n \n class Choices(enum.Enum, metaclass=ChoicesMeta):\n     \"\"\"Class for creating enumerated choices.\"\"\"\n-    pass\n+\n+    def __str__(self):\n+        \"\"\"\n+        Use value when cast to str, so that Choices set as model instance\n+        attributes are rendered as expected in templates and similar contexts.\n+        \"\"\"\n+        return str(self.value)\n \n \n class IntegerChoices(int, Choices):\ndiff --git a/tests/model_enums/tests.py b/tests/model_enums/tests.py\nindex 6b4bd6e7fd..e1810e673a 100644\n--- a/tests/model_enums/tests.py\n+++ b/tests/model_enums/tests.py\n@@ -143,6 +143,12 @@ class ChoicesTests(SimpleTestCase):\n                 APPLE = 1, 'Apple'\n                 PINEAPPLE = 1, 'Pineapple'\n \n+    def test_str(self):\n+        for test in [Gender, Suit, YearInSchool, Vehicle]:\n+            for member in test:\n+                with self.subTest(member=member):\n+                    self.assertEqual(str(te",
+      "latency_s": 126.874990940094,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 5253,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"TextChoices\"}}</tool_call>",
+      "latency_s": 14.706360101699829,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 5653,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"class Choices\"}}</tool_call>",
+      "latency_s": 14.806949138641357,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 6063,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"models.Choices __str__ value enum\"}}</tool_call>",
+      "latency_s": 14.878746747970581,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 6573,
+      "response": "<reasoning>The enum member can remain assigned on a freshly created model instance, so `str(instance.field)` uses Enum\u2019s default member name instead of the stored value. Implementing `Choices.__str__()` makes `TextChoices` and `IntegerChoices` stringify like their database values, matching reloaded instances.</reasoning>\n<patch>diff --git a/django/db/models/enums.py b/django/db/models/enums.py\nindex bbe362a6ab..ae20ef6d93 100644\n--- a/django/db/models/enums.py\n+++ b/django/db/models/enums.py\n@@ -60,7 +60,13 @@ class ChoicesMeta(enum.EnumMeta):\n \n class Choices(enum.Enum, metaclass=ChoicesMeta):\n     \"\"\"Class for creating enumerated choices.\"\"\"\n-    pass\n+\n+    def __str__(self):\n+        \"\"\"\n+        Use value when cast to str, so that Choices set as model instance\n+        attributes are rendered as expected in templates and similar contexts.\n+        \"\"\"\n+        return str(self.value)\n \n \n class IntegerChoices(int, Choices):\ndiff --git a/tests/model_enums/tests.py b/tests/model_enums/tests.py\nindex 6b4bd6e7fd..e1810e673a 100644\n--- a/tests/model_enums/tests.py\n+++ b/tests/model_enums/tests.py\n@@ -143,6 +143,12 @@ class ChoicesTests(SimpleTestCase):\n                 APPLE = 1, 'Apple'\n                 PINEAPPLE = 1, 'Pineapple'\n \n+    def test_str(self):\n+        for test in [Gender, Suit, YearInSchool, Vehicle]:\n+            for member in test:\n+                with self.subTest(member=member):\n+                    self.assertEqual(str(test[member.name]), str(member.value)",
+      "latency_s": 95.31025576591492,
+      "error": null
+    }
+  ]
+}

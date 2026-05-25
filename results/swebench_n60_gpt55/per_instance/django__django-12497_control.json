@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12497",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3654,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1612,
+      "response": "<reasoning>\nThe incorrect hint is emitted from `ManyToManyField` validation for ambiguous intermediary models. Both ambiguous directions, `fields.E334` and `fields.E335`, suggested `ForeignKey(..., symmetrical=False, through=...)`, even though `through` and `symmetrical` are `ManyToManyField` arguments. The patch changes both hints to `ManyToManyField(\"self\", through=\"...\")` and updates/adds tests for both branches.\n\nVerification: `git diff --check` and `python3 -m py_compile` passed. The focuse...[truncated]",
+      "latency_s": 126.5341649055481,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13448",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1558,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5974,
+      "response_excerpt": "<reasoning>\nThe failure happens after `migrate --run-syncdb` finishes. With `TEST[\"MIGRATE\"] = False`, Django temporarily disables migrations while creating the test schema, but restores `settings.MIGRATION_MODULES` before serializing the database. Serialization then builds a fresh `MigrationLoader` that sees the normal migrated apps and may query tables that weren\u2019t created under the disabled-migrations setup.\n\nThe fix keeps serialization inside the same temporary migration configuration used f",
+      "latency_s": 133.93122577667236,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

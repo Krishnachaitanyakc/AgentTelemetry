@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13471",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1322,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1578,
+      "response_excerpt": "<reasoning>\nThe failure occurs while reconstructing a pickled `Float`: Python 2 can serialize the mantissa as a hex string with a long suffix, e.g. `\"1L\"`. On Python 3, `long` is an `int` shim, and `int(\"1L\", 16)` raises `ValueError`. The fix is to strip the Python 2-only trailing `L` before base-16 conversion. I also add a direct regression test for the tuple form used during unpickling. I could not run the local SymPy test suite because this checkout is missing `mpmath`.\n</reasoning>\n\n<patch>\n",
+      "latency_s": 119.59421896934509,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

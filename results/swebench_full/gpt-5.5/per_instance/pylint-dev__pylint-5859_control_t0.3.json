@@ -1,0 +1,26 @@
+{
+  "instance_id": "pylint-dev__pylint-5859",
+  "repo": "pylint-dev/pylint",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1617,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1722,
+      "response_excerpt": "<reasoning>\n1. The `fixme` checker builds a regex ending in `\\b`.\n2. `\\b` only detects transitions between word and non-word characters, so it fails for a note like `???` followed by `:`.\n3. Replacing it with a delimiter lookahead for `:`, whitespace, or end-of-comment preserves normal `TODO`/`FIXME` behavior while allowing punctuation-only tags.\n4. Added a regression test for `--notes=YES,???`.\n5. Verified with `/private/tmp/pylint-notes-venv39/bin/python -m pytest tests/checkers/unittest_misc.",
+      "latency_s": 107.13896083831787,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

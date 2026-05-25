@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-19007",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2393,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1265,
+      "response_excerpt": "<reasoning>\nThe bug is in `BlockMatrix._entry`: symbolic comparisons like `i < 1` are neither true nor false. The old code treated \u201cnot false\u201d as enough to pick the current block, so `C[i, 0]` incorrectly became `A[i, 0]`.\n\nThe fix is to distinguish three cases explicitly:\ntrue: the index is definitely in this block.\nfalse: subtract this block size and continue.\nunknown: return an unevaluated `MatrixElement` unless earlier blocks have already been ruled out.\n\nI also added a regression test for t",
+      "latency_s": 101.1146309375763,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

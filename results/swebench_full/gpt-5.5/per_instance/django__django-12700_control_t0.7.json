@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12700",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3319,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2497,
+      "response_excerpt": "<reasoning>\n1. `cleanse_setting()` only recursed into plain dicts plus explicit list/tuple handling, so sensitive keys inside other mappings or iterable containers could remain visible.\n2. The fix broadens dict handling to `Mapping`, then adds a fallback for non-string `Iterable` values so nested mappings inside containers like `deque` or `set` are cleansed recursively.\n3. Strings and bytes are excluded from generic iterable handling to avoid splitting scalar values into characters.\n4. I verifie",
+      "latency_s": 64.27527713775635,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "topology": "hierarchical",
+  "model": "claude_cli/claude-opus-4-7",
+  "question": "What are three concrete ways autonomous AI agents fail in production deployments, and what observability primitives would catch each?",
+  "run_id": "hierarchical__claude_cli_claude-opus-4-7__q0",
+  "transcript": [
+    {
+      "agent": "facts_specialist",
+      "output": "- **Tool-call loops / runaway recursion**: Agent repeatedly calls the same tool (or cycles between tools) without progress, burning tokens and budget. *Catch with*: per-trace tool-call counters, cycle detection on tool+args hashes, and step-count/cost ceilings emitted as span attributes.\n\n- **Silent capability degradation (prompt/context drift)**: After context compaction, model swap, or upstream prompt edits, the agent stops calling a critical tool or misroutes intents \u2014 no error fires. *Catch with*: tool-invocation rate metrics per intent class, golden-trace replay in CI, and embedding-drift alerts on system-prompt and tool-schema hashes.\n\n- **Hallucinated tool arguments / schema violations**: Agent fabricates IDs, paths, or fields that pass JSON validation but reference nonexistent entities, causing downstream 404s or data corruption. *Catch with*: structured logging of tool inputs joined to downstream success/error codes, argument-provenance tracing (was this ID seen in prior conte",
+      "latency_s": 17.642858028411865
+    },
+    {
+      "agent": "analysis_specialist",
+      "output": "**Key trade-offs in this question:**\n\n1. **Detection latency vs. cost** \u2014 Catching silent failures (e.g., agent loops, hallucinated tool calls, goal drift) requires fine-grained tracing of every step, token, and tool invocation. Full per-step logging catches issues fast but balloons storage costs and signal-to-noise; sampled telemetry is cheap but misses rare-but-catastrophic failure modes.\n\n2. **Behavioral correctness vs. system health** \u2014 Traditional observability (latency, error rates, traces) catches infrastructure failures but misses *semantic* failures: an agent that completes successfully while doing the wrong thing. Adding LLM-as-judge evals or trajectory scoring catches these but introduces its own failure surface and judgment lag.\n\n3. **Reactive alerting vs. proactive guardrails** \u2014 Observability primitives (eval scores, tool-call audit logs, output classifiers) can either *alert* after harm or *block* inline. Inline guardrails prevent damage but add latency and false-positiv",
+      "latency_s": 16.34974694252014
+    },
+    {
+      "agent": "manager_synthesis",
+      "output": "**Three production failure modes for autonomous agents:**\n\n1. **Tool-call loops / runaway recursion** \u2014 Agents cycle through the same tool calls without progress, burning budget. Catch with per-trace tool-call counters, cycle detection on tool+args hashes, and step/cost ceilings as span attributes.\n\n2. **Silent capability degradation** \u2014 After context compaction, model swap, or prompt edits, the agent quietly stops invoking a critical tool. No error fires. Catch with tool-invocation rate metrics per intent class, golden-trace replay in CI, and embedding-drift alerts on system-prompt and tool-schema hashes.\n\n3. **Hallucinated tool arguments** \u2014 Agents fabricate IDs or paths that pass schema validation but reference nonexistent entities, causing 404s or corruption. Catch with structured logging joining tool inputs to downstream status codes, argument-provenance tracing (was this ID actually seen upstream?), and per-tool reject-rate dashboards.\n\n**Design tensions worth naming:** fine-grai",
+      "latency_s": 15.13876485824585
+    }
+  ],
+  "total_cost_usd": 0.076305,
+  "total_input_tokens": 732,
+  "total_output_tokens": 871,
+  "n_agents": 3,
+  "wall_clock_s": 49.150513887405396,
+  "error": null
+}

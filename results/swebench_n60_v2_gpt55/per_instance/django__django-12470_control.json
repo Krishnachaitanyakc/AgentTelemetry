@@ -1,0 +1,76 @@
+{
+  "instance_id": "django__django-12470",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 7,
+  "proposed_patch": true,
+  "patch_len": 2334,
+  "total_searches": 5,
+  "unique_queries": 5,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "get_order_by pk ordering inherited model": 1,
+    "find_ordering_name default ordering compiler relation pk": 1,
+    "parent meta ordering -pk child.objects query order by asc desc": 1,
+    "compiler.py find_ordering_name field.is_relation opts.ordering attname": 1,
+    "model_inheritance tests ordering meta inherited parent child pk": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1610,
+      "response": "<reasoning>The bug comes from resolving `-pk` on an inherited model as a relation and then recursively applying the parent model\u2019s default ordering. That second resolution flips the direction back to ASC. Treating `pk` as a terminal shortcut preserves the original DESC direction, and the regression test covers inherited `Meta.ordering = ['-pk']`.</reasoning>\n<patch>diff --git a/django/db/models/sql/compiler.py b/django/db/models/sql/compiler.py\nindex 92213a4e67..63ca817355 100644\n--- a/django/db/models/sql/compiler.py\n+++ b/django/db/models/sql/compiler.py\n@@ -709,9 +709,9 @@ class SQLCompiler:\n         field, targets, alias, joins, path, opts, transform_function = self._setup_joins(pieces, opts, alias)\n \n         # If we get to this point and the field is a relation to another model,\n-        # append the default ordering for that model unless the attribute name\n-        # of the field is specified.\n-        if field.is_relation and opts.ordering and getattr(field, 'attname', None) != name:\n+        # append the default ordering for that model unless it is the pk\n+        # shortcut or the attribute name of the field that is specified.\n+        if field.is_relation and opts.ordering and getattr(field, 'attname', None) != name and name != 'pk':\n             # Firstly, avoid infinite loops.\n             already_seen = already_seen or set()\n             join_tuple = tuple(getattr(self.query.alias_map[j], 'join_cols', None) for j in joins)\ndiff --git a/tests/model_inheritance/mo",
+      "latency_s": 153.70623779296875,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 5191,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"get_order_by pk ordering inherited model\"}}</tool_call>",
+      "latency_s": 14.769996166229248,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 5736,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"find_ordering_name default ordering compiler relation pk\"}}</tool_call>",
+      "latency_s": 15.64657998085022,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 6361,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"Parent Meta ordering -pk Child.objects query ORDER BY ASC DESC\"}}</tool_call>",
+      "latency_s": 14.34109115600586,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 7016,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"compiler.py find_ordering_name field.is_relation opts.ordering attname\"}}</tool_call>",
+      "latency_s": 15.411042928695679,
+      "error": null
+    },
+    {
+      "iteration": 6,
+      "prompt_len": 7711,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"model_inheritance tests ordering Meta inherited parent child pk\"}}</tool_call>",
+      "latency_s": 14.86342978477478,
+      "error": null
+    },
+    {
+      "iteration": 7,
+      "prompt_len": 8371,
+      "response": "<reasoning>`-pk` is resolved through the inherited parent link, so `find_ordering_name()` treats it like ordering by a related model and expands that related model\u2019s default ordering. For `Parent.Meta.ordering = [\"-pk\"]`, this recursion strips the intended direction and produces ascending SQL. The fix is to treat the `pk` shortcut like the concrete attname case: it is a terminal field reference and must not expand related-model default ordering. The test uses isolated models so it doesn\u2019t alter existing inheritance fixtures.</reasoning>\n<patch>diff --git a/django/db/models/sql/compiler.py b/django/db/models/sql/compiler.py\nindex 92213a4e67..63ca817355 100644\n--- a/django/db/models/sql/compiler.py\n+++ b/django/db/models/sql/compiler.py\n@@ -709,9 +709,14 @@ class SQLCompiler:\n         field, targets, alias, joins, path, opts, transform_function = self._setup_joins(pieces, opts, alias)\n \n         # If we get to this point and the field is a relation to another model,\n-        # append the default ordering for that model unless the attribute name\n-        # of the field is specified.\n-        if field.is_relation and opts.ordering and getattr(field, 'attname', None) != name:\n+        # append the default ordering for that model unless the attribute name\n+        # of the field or the pk shortcut is specified.\n+        if (\n+            field.is_relation and\n+            opts.ordering and\n+            getattr(field, 'attname', None) != name and\n+            name != 'pk'\n+        )",
+      "latency_s": 21.267262935638428,
+      "error": null
+    }
+  ]
+}

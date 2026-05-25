@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11039",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2211,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1673,
+      "response_excerpt": "<reasoning>\n`sqlmigrate` was only checking `migration.atomic` before enabling `output_transaction`, so `BaseCommand.execute()` wrapped SQL output in BEGIN/COMMIT even when the backend couldn\u2019t roll back DDL. The migration executor/schema editor behavior also requires `connection.features.can_rollback_ddl`, so the command should use the same condition.\n\nI added a regression test that keeps the normal atomic test migration but mocks `connection.features.can_rollback_ddl` to `False`, then asserts t",
+      "latency_s": 218.0700478553772,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-20212",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1527,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1258,
+      "response_excerpt": "<reasoning>\nThe zero singleton used `is_positive`/`is_negative`, which do not classify `-oo` as a negative exponent. That lets `0**-oo` fall through into later exponent rewriting and produce the documented-wrong result. Use `is_extended_positive`/`is_extended_negative` so infinities are handled in the same zero-power branch, and return `zoo` for negative extended exponents. The same fix applies to `Float(0)`. Focused `test_zero` passes in the available checkout.\n</reasoning>\n\n<patch>\ndiff --git ",
+      "latency_s": 147.95681595802307,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

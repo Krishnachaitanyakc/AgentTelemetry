@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13028",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1623,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3633,
+      "response_excerpt": "<reasoning>\nThe crash happens because `Query.check_filterable()` treats any RHS object with a `filterable=False` attribute as a non-filterable SQL expression. Model instances can also have a normal model field named `filterable`, so the guard must only apply to expression-like objects. Django expressions expose `resolve_expression()`, so checking that first preserves the intended protection while allowing ordinary model instances.\n\nFocused regression test passes with `python3 ./tests/runtests.py",
+      "latency_s": 86.25444674491882,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

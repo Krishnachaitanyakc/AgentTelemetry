@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13220",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1844,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1437,
+      "response": "Let me check the existing implementation more carefully. Looking at the code, I can see the implementation is already there. Let me now produce a summary and patch:\n\nBased on my analysis of the Django repository, I can see that the `ValidationError` class needs to support equality comparison. The implementation should:\n\n1. Compare two ValidationErrors for equality based on their content (message, code, params for simple errors, or error_dict/error_list for compound errors)\n2. Make the comparison...[truncated]",
+      "latency_s": 66.7772889137268,
+      "error": null
+    }
+  ]
+}

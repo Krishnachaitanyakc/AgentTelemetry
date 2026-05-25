@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-9359",
+  "repo": "pytest-dev/pytest",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1007,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4200,
+      "response_excerpt": "The fix has already been applied to the current pytest source. The bug is fixed by adding decorator linenos to the `values` list in `get_statement_startend2`. Let me document this fix as a patch.\n\n<reasoning>\n**Problem analysis:**\n\nThe bug stems from a behavior change in Python 3.8+ AST:\n- **Python 3.7**: `ast.FunctionDef.lineno` for a decorated function pointed to the first decorator's line.\n- **Python 3.8+**: `ast.FunctionDef.lineno` points to the `def` keyword (after the decorators).\n\nIn `src",
+      "latency_s": 467.26935291290283,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

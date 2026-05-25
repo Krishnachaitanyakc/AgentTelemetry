@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14608",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2479,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1399,
+      "response_excerpt": "<reasoning>\nThe fix mirrors Django Forms\u2019 existing `nonfield` behavior. FormSets store formset-wide errors in `_non_form_errors`, so both the initially empty `ErrorList` and the replacement `ErrorList` built from `ValidationError` need `error_class='nonform'`. A regression test checks rendered HTML, and the formset docs now document the CSS class.\n\nVerified with:\n`/usr/bin/python3 tests/runtests.py forms_tests.tests.test_formsets`\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/django/forms/formsets.",
+      "latency_s": 440.8260169029236,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

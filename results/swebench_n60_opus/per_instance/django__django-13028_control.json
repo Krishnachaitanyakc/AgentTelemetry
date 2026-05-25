@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13028",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 541,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3664,
+      "response": "<reasoning>\nThe fix changes `getattr(expression, \"filterable\", True)` to `getattr(type(expression), \"filterable\", True)`.\n\nWhy this works:\n1. For expression objects (like `Subquery`, `Window`, etc.): `filterable` is a class-level attribute (defined on `BaseExpression` as `True`, or overridden to `False` on specific subclasses). `type(expression).filterable` returns the class attribute value correctly.\n\n2. For model instances (like `ProductMetaDataType` instance): When the model has a `BooleanFie...[truncated]",
+      "latency_s": 145.41467690467834,
+      "error": null
+    }
+  ]
+}

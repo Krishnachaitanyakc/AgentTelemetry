@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-13448",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 4108,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "test migrate create_test_db": 1,
+    "serialize_db_to_string migrate false": 1,
+    "migration_modules run_syncdb migrate command": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 6191,
+      "response": "<reasoning>`TEST['MIGRATE'] = False` was skipping the `migrate` command entirely, so no test tables were created before serialization. The fix is to still run `migrate --run-syncdb`, but temporarily mark every app as unmigrated through `settings.MIGRATION_MODULES`; this creates tables directly without applying migrations, then restores the original setting.</reasoning>\n<patch>diff --git a/django/db/backends/base/creation.py b/django/db/backends/base/creation.py\nindex 230954ddfc..1f4819bfe1 100644\n--- a/django/db/backends/base/creation.py\n+++ b/django/db/backends/base/creation.py\n@@ -58,7 +58,13 @@ class BaseDatabaseCreation:\n         settings.DATABASES[self.connection.alias][\"NAME\"] = test_database_name\n         self.connection.settings_dict[\"NAME\"] = test_database_name\n \n-        if self.connection.settings_dict['TEST']['MIGRATE']:\n+        try:\n+            if self.connection.settings_dict['TEST']['MIGRATE'] is False:\n+                # Disable migrations for all apps.\n+                old_migration_modules = settings.MIGRATION_MODULES\n+                settings.MIGRATION_MODULES = {\n+                    app.label: None for app in apps.get_app_configs()\n+                }\n             # We report migrate messages at one level lower than that\n             # requested. This ensures we don't get flooded with messages during\n             # testing (unless you really ask to be flooded).\n@@ -69,6 +75,9 @@ class BaseDatabaseCreation:\n                 database=self.connection.alias,",
+      "latency_s": 194.22186422348022,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 9949,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"TEST MIGRATE create_test_db\"}}</tool_call>",
+      "latency_s": 19.68322992324829,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 10429,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"serialize_db_to_string MIGRATE False\"}}</tool_call>",
+      "latency_s": 13.167740106582642,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 10954,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"MIGRATION_MODULES run_syncdb migrate command\"}}</tool_call>",
+      "latency_s": 22.82652521133423,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 11519,
+      "response": "<reasoning>`TEST['MIGRATE'] = False` should skip applying migration files, not skip test database table creation entirely. The crash happens because `create_test_db()` skips `migrate`, then serialization queries tables that were never created. The fix is to always run `migrate --run-syncdb`, but when `MIGRATE` is false temporarily set every app's migration module to `None` so Django syncs models directly, then restore the original setting.</reasoning>\n<patch>diff --git a/django/db/backends/base/creation.py b/django/db/backends/base/creation.py\nindex 230954ddfc..1f4819bfe1 100644\n--- a/django/db/backends/base/creation.py\n+++ b/django/db/backends/base/creation.py\n@@ -1,6 +1,7 @@\n import os\n import sys\n from io import StringIO\n+from unittest import mock\n \n from django.apps import apps\n from django.conf import settings\n@@ -58,18 +59,22 @@ class BaseDatabaseCreation:\n         settings.DATABASES[self.connection.alias][\"NAME\"] = test_database_name\n         self.connection.settings_dict[\"NAME\"] = test_database_name\n \n-        if self.connection.settings_dict['TEST']['MIGRATE']:\n-            # We report migrate messages at one level lower than that\n-            # requested. This ensures we don't get flooded with messages during\n-            # testing (unless you really ask to be flooded).\n-            call_command(\n-                'migrate',\n-                verbosity=max(verbosity - 1, 0),\n-                interactive=False,\n-                database=self.connection.alias,\n-        ",
+      "latency_s": 22.542085886001587,
+      "error": null
+    }
+  ]
+}

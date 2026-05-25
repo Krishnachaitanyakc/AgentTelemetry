@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11905",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1535,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1203,
+      "response_excerpt": "<reasoning>\nFound the fix in Django\u2019s built-in `IsNull` lookup. The correct place to reject invalid RHS values is `IsNull.as_sql()`, before SQL generation and before join-dependent behavior can proceed. The regression test covers direct fields, foreign keys, reverse/many relations, and custom relation paths using `__isnull=1`.\n\nVerified with:\n\n`python3 tests/runtests.py lookup.tests.LookupTests.test_isnull_non_boolean_value`\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/django/db/models/lookups.py ",
+      "latency_s": 98.3801200389862,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

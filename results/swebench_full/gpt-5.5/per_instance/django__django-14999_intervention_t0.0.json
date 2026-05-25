@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14999",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2875,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1056,
+      "response_excerpt": "<reasoning>\nThe unwanted work happens because `RenameModel.database_forwards()` asks the schema editor to alter incoming foreign keys after the model rename. If the renamed model has an explicit `db_table`, the old and new foreign keys point at the same physical table, so the `to=` change is state-only and should not trigger SQL. The safest fix is in schema field comparison: ignore a foreign key\u2019s `to` difference when both targets have the same `db_table`, while still detecting real column or `t",
+      "latency_s": 295.65644001960754,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-15609",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1692,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1177,
+      "response_excerpt": "<reasoning>\nThe bug is in the LaTeX printer for `MatrixElement`: matrix indices were inserted with raw string formatting in older code, so a dummy index like `_i_1` could appear literally inside an existing subscript and produce invalid LaTeX. The fix is to print both indices through the LaTeX printer and wrap the matrix part before adding the element subscript. I verified the focused regression in this checkout with `python3 -m pytest sympy/printing/tests/test_latex.py -k MatrixElement_printing",
+      "latency_s": 105.55579090118408,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

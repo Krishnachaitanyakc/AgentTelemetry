@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12470",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 714,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1424,
+      "response": "<reasoning>\n## Root Cause\n\nIn `django/db/models/sql/compiler.py`, the `find_ordering_name()` method resolves ordering fields. When it encounters `-pk` on a child model (multi-table inheritance), it:\n\n1. Parses `-pk` into `name='pk'`, `order='DESC'`, `descending=True`\n2. Resolves `pk` via `_setup_joins` \u2014 on a child model, the pk is a `OneToOneField` (parent pointer), so `field.is_relation` is `True`\n3. Checks the condition at line 718: `field.is_relation and opts.ordering and getattr(field, 'att...[truncated]",
+      "latency_s": 311.9629919528961,
+      "error": null
+    }
+  ]
+}

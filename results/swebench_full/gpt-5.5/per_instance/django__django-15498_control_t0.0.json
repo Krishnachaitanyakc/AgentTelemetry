@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15498",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1655,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1144,
+      "response_excerpt": "<reasoning>\nThe regression comes from treating an empty `If-Modified-Since` value differently from other invalid date values. Static file serving should ignore it and serve the file, not raise. I changed `was_modified_since()` to reject any falsy header value before parsing, and added a regression test for an empty header.\n\nVerified with:\n`/private/tmp/django-test-venv/bin/python tests/runtests.py conditional_processing middleware view_tests.tests.test_static --verbosity 1 --parallel 1`\n</reason",
+      "latency_s": 224.08129477500916,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

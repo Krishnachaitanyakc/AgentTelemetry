@@ -1,0 +1,21 @@
+{
+  "instance_id": "astropy__astropy-14365",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1410,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2166,
+      "response": "<reasoning>\nThe failure happens before error-column parsing: `_line_type()` classifies QDP lines with a regex compiled case-sensitively, so `read serr 1 2` is rejected as unrecognized. The later parser already normalizes `serr`/`terr` with `.lower()`, so the minimal fix is to compile the line-type regex with `re.IGNORECASE`. I added a regression test for the exact lowercase command form from the issue.\n\nVerification: `py_compile` passed for the changed files. Running the focused pytest was block...[truncated]",
+      "latency_s": 165.05791306495667,
+      "error": null
+    }
+  ]
+}

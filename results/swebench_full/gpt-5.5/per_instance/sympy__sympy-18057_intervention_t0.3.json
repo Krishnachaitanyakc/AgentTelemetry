@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-18057",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 721,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2528,
+      "response_excerpt": "<reasoning>\nThe checkout already has the behavioral fix in `Basic.__eq__`: non-`Basic` objects are only converted through registered converters or `_sympy_`, so arbitrary object `repr()` strings are not parsed/evaled during equality. I added regression coverage for the two reported cases so this does not reappear.\nVerification: `python3 -m pytest sympy/core/tests/test_expr.py -k non_string_equality` passed.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/sympy/core/tests/test_expr.py b/sympy/core/tes",
+      "latency_s": 159.63654589653015,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

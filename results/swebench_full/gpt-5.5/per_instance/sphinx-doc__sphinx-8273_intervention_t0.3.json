@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-8273",
+  "repo": "sphinx-doc/sphinx",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4384,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1844,
+      "response_excerpt": "<reasoning>\nThe manpage builder already supports section directories through `man_make_section_directory`, but the registered default was `False`, so generated pages still went directly into the build output directory. I changed the default to `True`, updated tests to expect `man1/...` output by default, and kept an explicit regression test proving `man_make_section_directory=False` still writes the legacy flat layout.\n\nVerification:\n- `python3 -m compileall -q sphinx/builders/manpage.py` passed",
+      "latency_s": 234.52799797058105,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

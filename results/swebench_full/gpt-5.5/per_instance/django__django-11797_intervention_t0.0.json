@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11797",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1269,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1550,
+      "response_excerpt": "<reasoning>\n1. The RHS lookup preparation only preserves a subquery\u2019s selected columns when `query.has_select_fields` is true.\n2. Annotation-only `values()` queries can have an empty `select` tuple while still explicitly selecting an annotation via `annotation_select_mask`.\n3. If `has_select_fields` only checks `select`, the exact/in lookup path treats the subquery as unselected, clears its projection, adds `pk`, and the compiler expands `GROUP BY` around `id`.\n4. The fix is to treat annotation ",
+      "latency_s": 536.3550209999084,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

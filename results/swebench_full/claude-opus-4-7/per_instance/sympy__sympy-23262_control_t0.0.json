@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-23262",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 680,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1825,
+      "response_excerpt": "The fix works correctly:\n- `tuple([1])` \u2192 `(1,)` \u2713\n- `tuple([1, 2])` \u2192 `(1, 2)` \u2713 (no awkward trailing comma)\n- `tuple([])` \u2192 `()` \u2713\n- Lists continue to work\n\n<reasoning>\nThe issue is in `sympy/utilities/lambdify.py` in the `_recursive_to_string` helper function. This function converts arguments (including Python tuples and lists) to string representations for lambdify-generated code.\n\nThe original buggy SymPy 1.10 code likely used `right = \")\"` for tuples, dropping the trailing comma needed for",
+      "latency_s": 144.91739296913147,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

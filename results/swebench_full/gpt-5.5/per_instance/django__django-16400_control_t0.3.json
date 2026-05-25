@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16400",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1770,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3148,
+      "response_excerpt": "<reasoning>\nThe post-migrate permission creation path reads `ContentType` rows before creating missing `Permission` rows. That read must be bound to the `using` alias passed by `migrate --database`; otherwise Django asks the router via `db_for_read()` with empty hints. The fix is to call `db_manager(using)` for the content type lookup and add a regression test with a router that raises on unaliased reads.\n\nVerification run:\n`python3 tests/runtests.py auth_tests.test_management.CreatePermissionsM",
+      "latency_s": 461.24534606933594,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

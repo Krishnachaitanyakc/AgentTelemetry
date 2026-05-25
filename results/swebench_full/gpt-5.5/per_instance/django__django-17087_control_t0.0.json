@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-17087",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2587,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1929,
+      "response_excerpt": "<reasoning>\nThe migration serializer handles bound class methods in `FunctionTypeSerializer`. For nested classes, the serialized path must use the owning class `__qualname__`, not just the leaf class name, so paths like `Profile.Capability.default` survive migration import/eval. I made that path construction explicit and added a regression test that serializes a real model field whose `default` is a class method on a nested `TextChoices`.\n\nVerified with:\n`python3 tests/runtests.py migrations.tes",
+      "latency_s": 152.78251314163208,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

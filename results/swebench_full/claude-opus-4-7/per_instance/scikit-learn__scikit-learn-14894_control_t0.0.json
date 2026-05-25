@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-14894",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 903,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2522,
+      "response_excerpt": "<reasoning>\nThe issue is a ZeroDivisionError in `sklearn/svm/base.py` at line 302 in `_sparse_fit`. When the support vectors are empty (n_SV = 0), `dual_coef_indices.size` becomes 0, and using that as a step parameter in `np.arange(0, dual_coef_indices.size + 1, dual_coef_indices.size / n_class)` causes the error because the step becomes 0/n_class = 0, but more critically `np.arange` with step 0 fails.\n\nActually, looking at the traceback line `dual_coef_indices.size / n_class`, the division itse",
+      "latency_s": 31.042997121810913,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-7168",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1794,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 9241,
+      "response_excerpt": "<reasoning>\nThe crash happens while formatting the fallback representation after `__repr__` fails. The old fallback accessed `obj.__class__.__name__`, but a broken `__getattribute__` can raise there too, causing pytest\u2019s own reporting path to fail with an INTERNALERROR. The fix is to use `type(obj).__name__`, which bypasses instance attribute lookup, and to keep exception formatting defensive.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/src/_pytest/_io/saferepr.py b/src/_pytest/_io/saferepr.py\n--",
+      "latency_s": 129.68682718276978,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

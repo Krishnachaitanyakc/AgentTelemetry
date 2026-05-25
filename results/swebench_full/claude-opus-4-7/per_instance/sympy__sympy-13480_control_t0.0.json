@@ -1,0 +1,35 @@
+{
+  "instance_id": "sympy__sympy-13480",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 2,
+  "proposed_patch": true,
+  "answer_len": 470,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1222,
+      "response_excerpt": "The patch I provided fixes the typo bug. The variable `cothm` is assigned via `cothm = coth(m)` but then incorrectly referenced as `cotm` in the conditional check on line 590, causing the `NameError`. The one-character fix corrects `cotm` \u2192 `cothm`.",
+      "latency_s": 283.204097032547,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 1507,
+      "response_excerpt": "<reasoning>\nThe bug is a typo in `sympy/functions/elementary/hyperbolic.py` inside the `coth.eval` classmethod. After computing `cothm = coth(m)`, the next line incorrectly references `cotm` (missing the `h`), causing a `NameError` when `arg.is_Add` is true and `_peeloff_ipi` returns a non-zero `m` \u2014 which happens for the integer substitution values listed in the issue. The one-character fix is to rename `cotm` to `cothm` in the conditional check.\n</reasoning>\n\n<patch>\n--- a/sympy/functions/elem",
+      "latency_s": 389.85993003845215,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

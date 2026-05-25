@@ -1,0 +1,26 @@
+{
+  "instance_id": "pydata__xarray-4248",
+  "repo": "pydata/xarray",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3754,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1665,
+      "response_excerpt": "<reasoning>\nImplemented the feature in the shared variable repr path, so both coordinates and data variables render `attrs[\"units\"]` as `name, in units`. Column width calculation now includes units only for variable mappings, preserving unrelated attribute/index formatting. Added a regression test for `Dataset` repr.\n\nVerification:\n- `python3 -m compileall -q xarray/core/formatting.py xarray/tests/test_formatting.py` passed.\n- `pytest` could not be run because `pytest` is not installed in this e",
+      "latency_s": 150.9345679283142,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

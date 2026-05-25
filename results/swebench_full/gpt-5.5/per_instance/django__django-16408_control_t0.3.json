@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16408",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3698,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1894,
+      "response_excerpt": "<reasoning>\nThe bug occurs when `select_related()` follows a `FilteredRelation` that ends in a multilevel reverse FK path. Django builds the final related object, but it doesn\u2019t also populate the FK cache back to the intermediate object used to reach it. As a result, accessing `p[0].tournament_pool.tournament` can resolve to the wrong cached object.\n\nThe fix keeps the join path from `setup_joins()`. When the filtered relation ends through a non-unique reverse FK, the compiler adds a nested `Rela",
+      "latency_s": 143.1265799999237,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

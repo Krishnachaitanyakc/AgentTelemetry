@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11620",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1050,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1684,
+      "response_excerpt": "<reasoning>\nI inspected Django\u2019s request exception flow and URL resolver behavior. In this checkout, `Http404` raised from a converter already reaches `technical_404_response()`, and the debug helper catches `Http404` while trying to resolve the raising view. The existing regression test only checked a generic \u201cPage not found\u201d response, so I tightened it to verify the actual technical 404 page and that the converter\u2019s `Http404` message appears.\n\nVerified with:\n`python3 tests/runtests.py view_tes",
+      "latency_s": 206.15227890014648,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

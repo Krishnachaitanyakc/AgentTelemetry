@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11583",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1140,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5490,
+      "response": "Now I can see the issue clearly. On line 158-166, there's already a `try/except ValueError` around `path.exists()` to handle null bytes. But on line 167, `path.resolve().absolute()` is called **outside** that try block, so if `path.exists()` succeeds but `path.resolve()` encounters a null byte during symlink resolution, the `ValueError` propagates uncaught.\n\nThe fix is to extend the try/except to also cover the `path.resolve().absolute()` call.\n\n<reasoning>\nThe issue is in `iter_modules_and_file...[truncated]",
+      "latency_s": 85.97025418281555,
+      "error": null
+    }
+  ]
+}

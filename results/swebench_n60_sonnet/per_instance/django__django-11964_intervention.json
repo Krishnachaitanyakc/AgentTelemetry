@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11964",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 894,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3178,
+      "response": "Now I have a clear understanding of the bug. Let me read the key part of `DeferredAttribute` and `CharField.to_python` to craft the fix.\n\n<reasoning>\n**Root cause:**\n\n1. `DeferredAttribute` (in `query_utils.py`) has no `__set__` method \u2014 so when you assign `my_obj.my_str_value = MyChoice.FIRST_CHOICE`, the raw enum instance is stored directly in `instance.__dict__` with no conversion.\n\n2. `CharField.to_python` does `if isinstance(value, str): return value` \u2014 since `TextChoices` inherits from `st...[truncated]",
+      "latency_s": 365.39753007888794,
+      "error": null
+    }
+  ]
+}

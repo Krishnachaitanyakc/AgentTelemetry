@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11905",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2290,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1203,
+      "response_excerpt": "<reasoning>\n1. Located Django\u2019s `__isnull` implementation in `django/db/models/lookups.py`.\n2. The fix is to reject any RHS that isn\u2019t exactly a Python `bool` before SQL generation.\n3. Composite/tuple `isnull` lookups need the same validation path.\n4. Added regression coverage proving `__isnull=1` raises `ValueError` for normal fields and joined relations.\n5. Verified the focused lookup tests pass with `python3` and `PYTHONPATH` set.\n</reasoning>\n\n<patch>\ndiff --git a/django/db/models/lookups.py",
+      "latency_s": 113.85345602035522,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

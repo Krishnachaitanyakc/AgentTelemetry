@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-12589",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 3605,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "get_group_by_cols alias annotation_select group_by": 1,
+    "supports_subqueries_in_group_by values annotate count subquery": 1,
+    "group by annotation alias ambiguous column joined table": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3428,
+      "response": "<reasoning>The regression is caused by using the annotation alias in `GROUP BY`. When a joined table also has a `status`/`rating` column, PostgreSQL treats `GROUP BY \"status\"` as ambiguous. The fix keeps alias grouping where safe, but falls back to grouping by the full annotation expression when an annotation alias collides with a column name from joined models.</reasoning>\n<patch>diff --git a/django/db/models/sql/query.py b/django/db/models/sql/query.py\nindex 78c4f47b5b..9fe0c9a656 100644\n--- a/django/db/models/sql/query.py\n+++ b/django/db/models/sql/query.py\n@@ -1927,6 +1927,19 @@ class Query(BaseExpression):\n         primary key, and the query would be equivalent, the optimization\n         will be made automatically.\n         \"\"\"\n+        # Column names from JOINs to check collisions with aliases.\n+        if allow_aliases:\n+            column_names = set()\n+            seen_models = set()\n+            for join in list(self.alias_map.values())[1:]:  # Skip base table.\n+                model = join.join_field.related_model\n+                if model not in seen_models:\n+                    column_names.update({\n+                        field.column\n+                        for field in model._meta.local_concrete_fields\n+                    })\n+                    seen_models.add(model)\n+\n         group_by = list(self.select)\n         if self.annotation_select:\n             for alias, annotation in self.annotation_select.items():\n@@ -1940,7 +1953,7 @@ class Query(BaseExpressi",
+      "latency_s": 131.63689589500427,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 7694,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"get_group_by_cols alias annotation_select group_by\"}}</tool_call>",
+      "latency_s": 16.120343685150146,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 8289,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"supports_subqueries_in_group_by values annotate Count Subquery\"}}</tool_call>",
+      "latency_s": 12.048037052154541,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 8944,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"GROUP BY annotation alias ambiguous column joined table\"}}</tool_call>",
+      "latency_s": 16.48644518852234,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 9564,
+      "response": "<reasoning>The searches point to the `Query.set_group_by()` path that passes annotation aliases into `get_group_by_cols()`. The regression happens when Django emits `GROUP BY \"status\"` for an annotation alias while joined tables also expose a `status` column. PostgreSQL then resolves the grouped identifier as an input column name and raises an ambiguity error. The patch keeps alias grouping when safe, but detects aliases that collide with columns from joined model tables and groups by the full annotation expression instead.</reasoning>\n<patch>diff --git a/django/db/models/sql/query.py b/django/db/models/sql/query.py\nindex 78c4f47b5b..f90fdb7312 100644\n--- a/django/db/models/sql/query.py\n+++ b/django/db/models/sql/query.py\n@@ -1927,6 +1927,18 @@ class Query(BaseExpression):\n         primary key, and the query would be equivalent, the optimization\n         will be made automatically.\n         \"\"\"\n+        if allow_aliases:\n+            column_names = set()\n+            for join in self.alias_map.values():\n+                join_field = getattr(join, 'join_field', None)\n+                model = getattr(join_field, 'related_model', None)\n+                if model is None:\n+                    continue\n+                column_names.update(\n+                    field.column for field in model._meta.local_concrete_fields\n+                )\n+        else:\n+            column_names = ()\n+\n         group_by = list(self.select)\n         if self.annotation_select:\n             for alias, ",
+      "latency_s": 110.82155513763428,
+      "error": null
+    }
+  ]
+}

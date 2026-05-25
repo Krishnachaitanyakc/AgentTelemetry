@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12983",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 885,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1206,
+      "response": "Excellent! Now I understand the issue perfectly. Let me create the patch. The original code had:\n\n```python\nvalue = re.sub(r'[^\\w\\s-]', '', value.lower()).strip()\nreturn re.sub(r'[-\\s]+', '-', value)\n```\n\nAnd it needs to be changed to:\n\n```python\nvalue = re.sub(r'[^\\w\\s-]', '', value.lower())\nreturn re.sub(r'[-\\s]+', '-', value).strip('-_')\n```\n\nPlus the docstring update.\n\n<patch>\n--- a/django/utils/text.py\n+++ b/django/utils/text.py\n@@ -395,14 +395,14 @@ def camel_case_to_spaces(value):\n     \"\"...[truncated]",
+      "latency_s": 66.58925700187683,
+      "error": null
+    }
+  ]
+}

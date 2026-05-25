@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-14092",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2338,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3897,
+      "response_excerpt": "The fix works correctly because `numbers.Real` includes `int` and `numbers.Integral` includes `np.int64`. Let me prepare the final patch.\n\n<reasoning>\nThe issue is that NCA's `_validate_params` method uses strict type checks via `check_scalar`:\n- `check_scalar(self.n_components, 'n_components', int, 1)` \u2014 rejects `np.int64`\n- `check_scalar(self.tol, 'tol', float, 0.)` \u2014 rejects `int` like `1`\n- `check_scalar(self.max_iter, 'max_iter', int, 1)` \u2014 rejects `np.int64`\n- `check_scalar(self.verbose, '",
+      "latency_s": 211.11318588256836,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13146",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2621,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1082,
+      "response_excerpt": "<reasoning>\nThe failure comes from `evalf`: it turns `x**(5/2)` into `x**2.5`, but the resulting `Float(2.5)` can have different precision from the original Python-float exponent. `Add.flatten` collects terms by exact structural keys, so the two printed-identical powers are not combined.\n\nThe patch makes `Add` fall back to a structural comparison that treats `Float`s with the same numeric value as equivalent, but only when both corresponding nodes are floats. This avoids merging exact rational e",
+      "latency_s": 123.22331213951111,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

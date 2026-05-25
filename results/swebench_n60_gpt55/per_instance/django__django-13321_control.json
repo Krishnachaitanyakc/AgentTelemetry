@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13321",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1387,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5247,
+      "response": "<reasoning>\n1. The traceback matches the older session backend where `decode()` falls back to `_legacy_decode()` after `signing.loads()` fails.\n2. `_legacy_decode()` decoded base64 before entering its existing broad exception handler, so malformed session data could raise `binascii.Error: Incorrect padding`.\n3. Moving the base64 decode into the existing `try` makes malformed legacy payloads behave like other invalid session data: return `{}`.\n4. Added a regression test for malformed signed-looki...[truncated]",
+      "latency_s": 142.29724311828613,
+      "error": null
+    }
+  ]
+}

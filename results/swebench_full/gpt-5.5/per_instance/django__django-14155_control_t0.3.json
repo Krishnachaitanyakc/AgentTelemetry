@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14155",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3394,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1347,
+      "response_excerpt": "<reasoning>\n1. `ResolverMatch.__repr__()` currently special-cases `functools.partial` by printing `repr(partial)`, which hides the normalized view path and keeps bound args/kwargs out of `ResolverMatch.args` / `kwargs`.\n2. The fix belongs in `ResolverMatch.__init__()`: unwrap partials before storing `self.func`, prepend partial positional args, and merge partial keywords before URL kwargs so call-time URL kwargs still take precedence.\n3. With `self.func` normalized, `__repr__()` can always use `",
+      "latency_s": 145.7598738670349,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

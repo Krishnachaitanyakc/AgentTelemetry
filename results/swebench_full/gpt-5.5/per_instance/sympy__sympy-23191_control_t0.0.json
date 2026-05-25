@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-23191",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4102,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2391,
+      "response_excerpt": "<reasoning>\nThe bug is in vector pretty printing, not vector algebra. `_print_BasisDependent` first appends the basis vector string to the scalar pretty form, then tries to move it outside multiline parentheses. For nested multiline expressions, the old logic used broad `replace()` calls on parenthesis hook glyphs, so it could attach `i_C`/`k_C` to an inner function argument instead of the outer scalar.\n\nThe fix is to insert the basis vector only at the outer/rightmost relevant parenthesis locat",
+      "latency_s": 122.39043116569519,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-14365",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2235,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2135,
+      "response_excerpt": "<reasoning>\nThe QDP reader classifies lines with a regex that only matched uppercase `READ SERR` / `READ TERR`, so lowercase commands were rejected before the reader could parse error columns. QDP tokens are case-insensitive, so the line classifier should compile that regex with `re.IGNORECASE`.\n\nWhile checking the surrounding parser, `NO` masked values were also matched by the same line regex. Making the regex case-insensitive allows lowercase `no` lines through, so the value conversion must al",
+      "latency_s": 107.32855868339539,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

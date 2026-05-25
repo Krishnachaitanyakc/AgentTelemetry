@@ -1,0 +1,29 @@
+{
+  "topology": "parallel",
+  "model": "codex_cli/gpt-5.5",
+  "question": "What are the limitations of using mock LLM clients for benchmarking agent fault detection? Propose two ways to validate against real production traces.",
+  "run_id": "parallel__codex_cli_gpt-5.5__q3",
+  "transcript": [
+    {
+      "agent": "researcher_a",
+      "output": "Mock LLM clients are useful for repeatability, but they under-model the real failure surface. They usually encode expected errors explicitly, so detectors can overfit to canned strings, deterministic tool-call patterns, or simplified state transitions. They miss correlated failures from latency, streaming truncation, context-window pressure, model nondeterminism, partial JSON/tool schemas, policy refusals, degraded retrieval, and recovery behavior after earlier mistakes. They also distort base rates: synthetic faults often appear cleaner, more frequent, and better labeled than production faults.\n\nTwo validation paths:\n\n1. **Trace replay:** replay anonymized production agent traces through the detector, preserving prompts, tool outputs, timing, retries, token counts, and final outcomes. Compare detector alerts against human/adjudicated incident labels.\n\n2. **Shadow evaluation:** run the detector passively on live or sampled production traffic without affecting execution. Measure precisi",
+      "latency_s": 13.479846954345703
+    },
+    {
+      "agent": "researcher_b",
+      "output": "Mock LLM clients are useful for repeatability, but they miss the hard parts of production fault detection: stochastic outputs, partial compliance with tool schemas, latency spikes, rate-limit behavior, context-window truncation, safety refusals, malformed reasoning, and correlated failures across retries. They also tend to encode the benchmark designer\u2019s assumptions, so detectors can overfit to artificial error patterns like \u201calways return invalid JSON on step 3\u201d instead of catching messy real failures.\n\nTwo validation methods:\n\n1. **Replay production traces offline**: take sanitized agent runs with prompts, tool calls, model responses, timings, retries, and final outcomes. Re-run the detector on historical traces and measure whether it would have flagged real incidents, near misses, and known-good sessions.\n\n2. **Shadow-mode deployment**: run the detector passively beside live agents without affecting users. Compare alerts against human review, support tickets, rollback events, tool e",
+      "latency_s": 10.894191026687622
+    },
+    {
+      "agent": "writer",
+      "output": "Mock LLM clients are useful for repeatable benchmarks, but they under-model production failure modes. They often encode the benchmark designer\u2019s assumptions, so detectors can overfit to canned error strings, deterministic tool-call patterns, or simplified states like \u201cinvalid JSON on step 3.\u201d They miss messy real behavior: nondeterministic outputs, latency spikes, streaming truncation, rate limits, context-window pressure, partial schema compliance, policy refusals, degraded retrieval, retry cascades, and recovery after earlier mistakes. They also distort base rates because synthetic failures are usually cleaner, more frequent, and better labeled than production incidents.\n\nTwo validation paths:\n\n1. **Offline production trace replay**: Replay sanitized historical agent runs through the detector, preserving prompts, model responses, tool outputs, timings, retries, token counts, and final outcomes. Compare alerts against adjudicated incidents, near misses, known-good sessions, support ti",
+      "latency_s": 10.389441013336182
+    }
+  ],
+  "total_cost_usd": 0.0,
+  "total_input_tokens": 765,
+  "total_output_tokens": 906,
+  "n_agents": 3,
+  "wall_clock_s": 34.7789421081543,
+  "error": null
+}

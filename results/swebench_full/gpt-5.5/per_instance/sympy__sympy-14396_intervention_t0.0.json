@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-14396",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4078,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2858,
+      "response_excerpt": "<reasoning>\nThe domain parser duplicated ground-domain handling for polynomial-ring strings, which is the fragile path behind `RR[y,z]`. The patch makes polynomial-ring parsing reuse `Domain.preprocess()` for its ground domain, keeps `RR[y,z]` working, adds support for precision-qualified `RR_100[x,y]`/`CC_100[x,y]`, and improves invalid-domain errors by showing `repr(domain)`.\n\nVerified with:\n`python -m pytest sympy/polys/tests/test_polyoptions.py::test_Domain_preprocess sympy/polys/tests/test_",
+      "latency_s": 239.67026090621948,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

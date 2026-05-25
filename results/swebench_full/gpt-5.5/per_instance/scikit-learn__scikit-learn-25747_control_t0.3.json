@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-25747",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4449,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 6953,
+      "response_excerpt": "<reasoning>\nThe failure comes from `_wrap_in_pandas_container` always forcing the original input index onto pandas outputs. That is correct for one-to-one transforms, but not for transformers that aggregate/filter rows and return a pandas object with a different length and meaningful new index.\n\nThe patch keeps the old behavior when lengths match, preserves pandas output indexes when lengths differ, and handles `Series` explicitly so an aggregating transformer returning a `Series` is converted t",
+      "latency_s": 174.5123519897461,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

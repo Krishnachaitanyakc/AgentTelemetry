@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13925",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3832,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4880,
+      "response_excerpt": "<reasoning>\n`models.W042` is raised because multi-table inheritance makes the child primary key an auto-created `OneToOneField` parent link. That field is not a new default primary key choice; it represents the inherited parent primary key and should be checked on the parent model instead.\n\nThe fix skips `_check_default_pk()` when the model primary key is a parent-link `OneToOneField`. Tests cover explicit inherited primary keys, explicit parent links, and still preserve the warning for genuinel",
+      "latency_s": 203.9088840484619,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

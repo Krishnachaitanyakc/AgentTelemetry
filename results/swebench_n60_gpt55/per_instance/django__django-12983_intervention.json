@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12983",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3278,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1206,
+      "response": "<reasoning>\n`slugify()` preserved leading/trailing underscores and hyphens because those characters are allowed by the cleanup regex and the final normalization only collapsed spaces/dashes. The fix trims `-` and `_` after normalization, preserving internal underscores. I added focused tests for ASCII and Unicode behavior and updated the public docs/docstrings.\n\nVerified with:\n`uv run --python 3.11 --with . python tests/runtests.py utils_tests.test_text template_tests.filter_tests.test_slugify`\n...[truncated]",
+      "latency_s": 215.2647271156311,
+      "error": null
+    }
+  ]
+}

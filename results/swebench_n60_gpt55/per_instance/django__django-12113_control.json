@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12113",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1355,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5599,
+      "response": "<reasoning>\nSQLite was ignoring custom on-disk `TEST[\"NAME\"]` values in `test_db_signature()`. That made separate aliases like `default` and `other` look like the same test database when both original `NAME` values were empty, so the test runner mirrored them onto one SQLite file and `TestCase` transactions then hit `database is locked`. The fix is to include the resolved test database name in the signature for non-memory SQLite databases. I verified the focused regression test passes in the ava...[truncated]",
+      "latency_s": 236.73872900009155,
+      "error": null
+    }
+  ]
+}

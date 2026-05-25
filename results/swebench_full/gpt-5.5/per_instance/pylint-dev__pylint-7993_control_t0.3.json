@@ -1,0 +1,26 @@
+{
+  "instance_id": "pylint-dev__pylint-7993",
+  "repo": "pylint-dev/pylint",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4538,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2806,
+      "response_excerpt": "<reasoning>\n1. The bug comes from validating `--msg-template` with a regex over raw braces before `str.format()` handles escaped literal braces.\n2. Escaped braces like `{{ ... }}` should be treated as literal text, not as candidate message fields.\n3. Replacing the regex with `string.Formatter().parse()` delegates brace parsing to Python\u2019s format grammar.\n4. Unknown real fields are still warned about and removed, preserving existing compatibility behavior.\n5. Added tests to ensure JSON-style esca",
+      "latency_s": 152.87436199188232,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

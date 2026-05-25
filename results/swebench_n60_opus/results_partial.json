@@ -1,0 +1,2547 @@
+{
+  "elapsed_s": 28523.28651714325,
+  "n_done": 120,
+  "results": [
+    {
+      "instance_id": "astropy__astropy-12907",
+      "repo": "astropy/astropy",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": false,
+      "answer_len": 0,
+      "tool_pattern": {},
+      "error": "timeout after 480s",
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2073,
+          "response": "",
+          "latency_s": 480.01994228363037,
+          "error": "timeout after 480s"
+        }
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-14182",
+      "repo": "astropy/astropy",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3094,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2698,
+          "response": "Good. Now I have full confidence in the fix. Here's my patch:\n\n<patch>\n--- a/astropy/io/ascii/rst.py\n+++ b/astropy/io/ascii/rst.py\n@@ -34,6 +34,25 @@\n class RST(FixedWidth):\n     \"\"\"reStructuredText simple format table.\n \n+    See: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#simple-tables\n+\n+    Example::\n+\n+      >>> from astropy.table import QTable\n+      >>> import astropy.units as u\n+      >>> import sys\n+      >>> tbl = QTable({\"wave\": [350, 950] * u.nm, \"response\": [...[truncated]",
+          "latency_s": 283.2634508609772,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-14365",
+      "repo": "astropy/astropy",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1203,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2166,
+          "response": "All tests pass. Here's the summary of the fix:\n\n<reasoning>\nThe issue is that `astropy.io.ascii.qdp` assumes QDP commands are uppercase, but QDP itself is case-insensitive. There are two places in `qdp.py` that need fixing:\n\n1. **Line 69 (`_line_type` function)**: The regex that classifies lines is compiled without `re.IGNORECASE`, so `read serr 1 2` doesn't match the pattern `READ [TS]ERR(\\s+[0-9]+)+`. Fix: add `re.IGNORECASE` flag to `re.compile()`.\n\n2. **Line 313 (`_get_tables_from_qdp_file` ...[truncated]",
+          "latency_s": 145.28681683540344,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-14995",
+      "repo": "astropy/astropy",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": false,
+      "answer_len": 0,
+      "tool_pattern": {},
+      "error": "timeout after 480s",
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3282,
+          "response": "",
+          "latency_s": 480.0345449447632,
+          "error": "timeout after 480s"
+        }
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-6938",
+      "repo": "astropy/astropy",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 431,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1354,
+          "response": "The fix is already applied in the repository. The issue reported that the original code:\n\n```python\noutput_field.replace(encode_ascii('E'), encode_ascii('D'))\n```\n\ndiscards the return value of `replace`, making it a no-op. The correct fix assigns the result back:\n\n```python\noutput_field[:] = output_field.replace(b'E', b'D')\n```\n\n<reasoning>\nThe issue reports that in `fitsrec.py`, the line:\n```python\noutput_field.replace(encode_ascii('E'), encode_ascii('D'))\n```\nis a no-op because `chararray.repl...[truncated]",
+          "latency_s": 70.25324702262878,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-7746",
+      "repo": "astropy/astropy",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 819,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2880,
+          "response": "Let me take a different approach. Based on the issue and the traceback, I can determine exactly what the fix should be. The issue is in the original `_array_converter` method which is missing empty-array guards. Let me look at both the old code (from the traceback line numbers) and the current fixed code to produce the correct patch.\n\nFrom the traceback, the original code at line 1225 directly calls `func(xy, origin)` without any empty check. The fix should add:\n\n1. In `_return_list_of_arrays`: ...[truncated]",
+          "latency_s": 124.26294684410095,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-10914",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 484,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1846,
+          "response": "Now I have the full picture. The installed version (4.2.1) already has the fix applied. For the issue, the fix is to change `FILE_UPLOAD_PERMISSIONS` from `None` to `0o644` in `global_settings.py`. The storage code already handles the `os.chmod` call correctly at line 129-130.\n\nSince the issue asks us to produce a patch for the `django/django` repository at the point when the default was still `None`, here's the analysis and patch:\n\n<reasoning>\nThe issue reports that when `FILE_UPLOAD_PERMISSION...[truncated]",
+          "latency_s": 272.42710399627686,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-10924",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 437,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1647,
+          "response": "Now I can see the exact code that needs to change. The fix requires one change in the `formfield()` method: resolve `self.path` if it's callable before passing it to the form field. The `deconstruct()` method already works correctly \u2014 it stores whatever `self.path` is, and if it's a callable, the migration serializer will serialize it as a function reference.\n\nBut wait \u2014 `deconstruct()` has `if self.path != ''` on line 1691. For a callable, `my_func != ''` evaluates to `True`, so it gets include...[truncated]",
+          "latency_s": 353.6450250148773,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11001",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 490,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3045,
+          "response": "The test confirms:\n- **Old regex**: SQL 2 and SQL 3 both produce `'\\t\\t\\t\\t else null end'` \u2014 incorrectly treated as duplicates\n- **New regex**: All three produce unique, full-expression values \u2014 deduplication works correctly\n\n<patch>\n--- a/django/db/models/sql/compiler.py\n+++ b/django/db/models/sql/compiler.py\n@@ -35,7 +35,8 @@ class SQLCompiler:\n         self.select = None\n         self.annotation_col_map = None\n         self.klass_info = None\n-        self.ordering_parts = re.compile(r'(.*)\\s...[truncated]",
+          "latency_s": 256.4764280319214,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11019",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": false,
+      "answer_len": 0,
+      "tool_pattern": {},
+      "error": "timeout after 480s",
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2626,
+          "response": "",
+          "latency_s": 479.98911213874817,
+          "error": "timeout after 480s"
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11039",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 649,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1704,
+          "response": "The fix is applied. Here's the summary:\n\n<patch>\n--- a/django/core/management/commands/sqlmigrate.py\n+++ b/django/core/management/commands/sqlmigrate.py\n@@ -55,8 +55,9 @@\n                 migration_name, app_label))\n         targets = [(app_label, migration.name)]\n \n-        # Show begin/end around output only for atomic migrations\n-        self.output_transaction = migration.atomic\n+        # Show begin/end around output for atomic migrations, if the database\n+        # supports transactional D...[truncated]",
+          "latency_s": 220.10280084609985,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11049",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 412,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1531,
+          "response": "Good \u2014 the forms field doesn't have the format string, just \"Enter a valid duration.\"\n\nNow I have the full picture. The fix is in `django_22/django/db/models/fields/__init__.py` line 1587-1588, changing `[DD] [HH:[MM:]]ss[.uuuuuu]` to `[DD] [[HH:]MM:]ss[.uuuuuu]`.\n\n<reasoning>\nThe issue reports that the error message format string for DurationField is incorrect. The current format says `[DD] [HH:[MM:]]ss[.uuuuuu]` which implies hours are optional but if provided, minutes are optional within hour...[truncated]",
+          "latency_s": 135.61316204071045,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11099",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 669,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1589,
+          "response": "Fixed. Both `ASCIIUsernameValidator` and `UnicodeUsernameValidator` now use `\\A` and `\\Z` instead of `^` and `$`, which prevents usernames with trailing newlines from being accepted. The `$` anchor in Python regex matches just before a trailing newline, while `\\Z` matches only at the very end of the string.\n\n<reasoning>\nThe issue is that Python's `$` regex anchor matches both at the end of a string and just before a trailing newline character. This means `r'^[\\w.@+-]+$'` would match `\"username\\n...[truncated]",
+          "latency_s": 33.40254783630371,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11133",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1006,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1720,
+          "response": "Confirmed \u2014 the original code produces the bug described in the issue.\n\n<reasoning>\nThe issue is that `HttpResponse` doesn't handle `memoryview` objects properly. There are two places that need fixing in `django/http/response.py`:\n\n1. **`HttpResponseBase.make_bytes()`** (line 233): Only checks for `bytes` instances. A `memoryview` falls through to `str(value).encode(self.charset)`, which produces `b'<memory at 0x...>'` instead of the actual bytes content. Fix: change `isinstance(value, bytes)` t...[truncated]",
+          "latency_s": 82.5038149356842,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11179",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 504,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1108,
+          "response": "These are all installed packages, not git repos. The issue is about the `django/django` repository. Let me work with what we have and understand the fix needed.\n\n<reasoning>\nLooking at the issue and all the versions of the deletion.py file I've examined, the bug is clear:\n\nIn the `Collector.delete()` method, there's a fast-path optimization for a single object with no dependencies (around line 392 in django_old/3.1, line 296 in django_30, line 449 in django_src/4.2):\n\n```python\n# Optimize for th...[truncated]",
+          "latency_s": 277.2161021232605,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11283",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1204,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2018,
+          "response": "The fix looks correct. Let me now provide the formal patch.\n\n<reasoning>\n## Root Cause\n\nWhen a model is originally concrete and later changed to a proxy model, the following happens:\n\n1. When the model was concrete, Django's `create_permissions` created permissions like `(content_type_id=X, codename=add_modelname)` where X is the model's own ContentType.\n2. When the model becomes a proxy, its ContentType stays the same (id=X), but `ContentType.objects.get_for_model(Model, for_concrete_model=True...[truncated]",
+          "latency_s": 207.4270830154419,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11422",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 985,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1494,
+          "response": "The fix is complete. Here's a summary:\n\n<reasoning>\nThe bug is in `django/utils/autoreload.py` in the `iter_modules_and_files()` function. When `manage.py` is run via `python manage.py runserver`, Python loads it as the `__main__` module. Per Python's import system specification, `__main__.__spec__` is set to `None`.\n\nThe original code at line 114 had:\n```python\nif not isinstance(module, ModuleType) or getattr(module, '__spec__', None) is None:\n    continue\n```\n\nThis condition skips any module w...[truncated]",
+          "latency_s": 229.4805727005005,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11564",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1064,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1753,
+          "response": "The logic works correctly:\n\n- `None` \u2192 `None` (preserves default)\n- `''` \u2192 `''` (preserves empty)\n- `'static/'` \u2192 `'/myapp/static/'` (prepends SCRIPT_NAME \u2014 the fix!)\n- `'/static/'` \u2192 `'/static/'` (absolute paths unchanged)\n- `'http://...'` / `'https://...'` \u2192 unchanged (full URLs left alone)\n\n<patch>\n--- a/django/conf/__init__.py\n+++ b/django/conf/__init__.py\n@@ -115,6 +115,25 @@ class LazySettings(LazyObject):\n         return self._wrapped is not empty\n \n     @property\n+    def STATIC_URL(self...[truncated]",
+          "latency_s": 322.73206400871277,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11583",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1215,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 5490,
+          "response": "Now I can see the exact code. The issue is on line 141: `path.resolve().absolute()` can throw `ValueError: embedded null byte` from pathlib internals when resolving paths on certain filesystems. The `path.exists()` check on line 137 can also throw the same error. Both need to be wrapped in a try/except.\n\n<reasoning>\nThe issue is clear: in `iter_modules_and_files()`, both `path.exists()` (line 137) and `path.resolve().absolute()` (line 141) can raise `ValueError` with \"embedded null byte\" when pa...[truncated]",
+          "latency_s": 82.1923770904541,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11620",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": false,
+      "answer_len": 0,
+      "tool_pattern": {},
+      "error": "timeout after 480s",
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1715,
+          "response": "",
+          "latency_s": 480.05426025390625,
+          "error": "timeout after 480s"
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11630",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1493,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1485,
+          "response": "The fix looks correct. Here's the summary:\n\n<reasoning>\nThe issue is that Django 2.2 introduced check `models.E028` which raises a hard `Error` whenever two models (even in different apps) share the same `db_table` name. However, this is a valid configuration when models are routed to different databases via `DATABASE_ROUTERS`.\n\nThe fix (which was later implemented in Django 3.0+) is to:\n1. Check if `settings.DATABASE_ROUTERS` is configured\n2. If yes: downgrade the check from `Error` (id `models...[truncated]",
+          "latency_s": 122.41277384757996,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11742",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 2,
+      "proposed_patch": true,
+      "answer_len": 1966,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1153,
+          "response": "The patch is applied and verified. Here's a summary of the change:\n\n**Modified file:** `django/db/models/fields/__init__.py`\n\n**What changed in `_check_choices()`:**\n\n1. Added `choice_max_length = 0` tracker before the choices iteration loop\n2. For **grouped choices** (in the `try` block): after validating the group structure, computes `max(len(value))` across all string values in the group\n3. For **flat choices** (in the `except` block): tracks `len(value)` when the value is a string\n4. In the ...[truncated]",
+          "latency_s": 244.42528915405273,
+          "error": null
+        },
+        {
+          "iteration": 2,
+          "prompt_len": 2131,
+          "response": "The implementation is correct. Here's the summary:\n\n<reasoning>\nThe issue requests adding a system check to ensure `Field.max_length` is large enough to fit the longest value in `Field.choices`. \n\nThe fix modifies `_check_choices()` in `django/db/models/fields/__init__.py` with three changes:\n\n1. **Initialize tracker** (line 258): `choice_max_length = 0` before the choices iteration loop.\n\n2. **Track max length in grouped choices** (lines 272-279): After validating the group structure, compute `...[truncated]",
+          "latency_s": 255.5272741317749,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11797",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": false,
+      "answer_len": 0,
+      "tool_pattern": {},
+      "error": "timeout after 480s",
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1581,
+          "response": "",
+          "latency_s": 479.9865198135376,
+          "error": "timeout after 480s"
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11815",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 657,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2426,
+          "response": "Found it. The `django_22` directory has the buggy version. The issue is on line 119-121:\n\n```python\nv_string, v_imports = serializer_factory(self.value.value).serialize()\nimports = {'import %s' % module, *v_imports}\nreturn \"%s.%s(%s)\" % (module, enum_class.__name__, v_string), imports\n```\n\nThis serializes as `module.EnumClass(value)` (using the **value**). The fix changes it to use `module.EnumClass['name']` (using the **name**), which is stable regardless of translation.\n\n<reasoning>\nThe bug is...[truncated]",
+          "latency_s": 37.16699194908142,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11848",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 811,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1451,
+          "response": "The test files aren't in this directory copy. The fix is straightforward and correct.\n\n<reasoning>\nThe issue is that `parse_http_date` in `django/utils/http.py` uses hardcoded year ranges to interpret two-digit years from RFC 850 dates:\n- 0-69 \u2192 2000-2069\n- 70-99 \u2192 1970-1999\n\nPer RFC 7231, the correct behavior is: \"Recipients of a timestamp value in rfc850-date format, which uses a two-digit year, MUST interpret a timestamp that appears to be more than 50 years in the future as representing the ...[truncated]",
+          "latency_s": 67.95931911468506,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11905",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 500,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1234,
+          "response": "All these are installed packages. The `django_issue` one with version 2.2.1 already has the fix. Let me look more carefully - the fix in `django_issue` was likely applied as part of the issue resolution. Let me check both the unpatched versions.\n\nGiven this is a django/django issue, and the code I can see in the repo versions:\n\n- `django_22` (Django 2.2): No boolean validation in `IsNull.as_sql`\n- `django_30` (Django 3.0): No boolean validation in `IsNull.as_sql`  \n- `django_issue` (Django 2.2.1...[truncated]",
+          "latency_s": 132.47734117507935,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11910",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": false,
+      "answer_len": 0,
+      "tool_pattern": {},
+      "error": "timeout after 480s",
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1997,
+          "response": "",
+          "latency_s": 480.00991797447205,
+          "error": "timeout after 480s"
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11964",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 458,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3178,
+          "response": "The issue is about `django/django` repo. Since none of these are actual git clones of the repo, and the issue is clear, let me reason through the fix.\n\n<reasoning>\nThe bug is a Python MRO (Method Resolution Order) issue.\n\nFor `TextChoices(str, Choices)`, the MRO is:\n1. `TextChoices`\n2. `str`  \n3. `Choices`\n4. `enum.Enum`\n5. `object`\n\nWhen `str(my_text_choice_value)` is called, Python looks for `__str__` in the MRO order. It finds `str.__str__` before `Choices.__str__`. The `str.__str__` method, ...[truncated]",
+          "latency_s": 203.22731614112854,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11999",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 773,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1337,
+          "response": "The Django version is too old for this Python. The logic is sound though \u2014 the fix is the same approach used in the upstream fix. Let me summarize:\n\n<reasoning>\nThe issue is in `django/db/models/fields/__init__.py` in the `contribute_to_class` method of the `Field` class.\n\n**Root cause**: In Django 2.2, line 765-767 unconditionally sets `get_%s_display` via `setattr`, overwriting any user-defined method on the model class:\n\n```python\nif self.choices:\n    setattr(cls, 'get_%s_display' % self.name...[truncated]",
+          "latency_s": 79.10264587402344,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12113",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": false,
+      "answer_len": 0,
+      "tool_pattern": {},
+      "error": "timeout after 480s",
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 5599,
+          "response": "",
+          "latency_s": 480.0094439983368,
+          "error": "timeout after 480s"
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12125",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 477,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2414,
+          "response": "Found the bug. On line 268, `self.value.__name__` is used, which only gives the simple class name (e.g., `Inner`), not the qualified name (e.g., `Outer.Inner`). The fix is to use `self.value.__qualname__` instead.\n\n<reasoning>\nThe bug is in `TypeSerializer.serialize()` in `django/db/migrations/serializer.py`, line 268.\n\nWhen serializing a type reference for a migration file, the code uses `self.value.__name__` which returns only the simple class name. For inner classes like `Outer.Inner`, `__nam...[truncated]",
+          "latency_s": 173.49273085594177,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12184",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 614,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1802,
+          "response": "The fix works correctly:\n\n- **Test 1 (`/module/`)**: The buggy code produces `args=(None, None)` (causing the \"3 arguments\" error). The fix produces `args=(), kwargs={}`, so the view's default `format='html'` kicks in.\n- **Test 2 (`/module/html`)**: Works correctly with `kwargs={'format': 'html'}`.\n\n<reasoning>\nThe bug is an order-of-operations issue in `RegexPattern.match()` in Django 3.0's `django/urls/resolvers.py`.\n\nThe URL pattern `r'^module/(?P<format>(html|json|xml))?/?$'` has:\n- One name...[truncated]",
+          "latency_s": 233.69449305534363,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12284",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": false,
+      "answer_len": 0,
+      "tool_pattern": {},
+      "error": "timeout after 480s",
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1705,
+          "response": "",
+          "latency_s": 480.00743985176086,
+          "error": "timeout after 480s"
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12286",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 882,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1566,
+          "response": "The `django_30` directory appears to just contain the Django source, not the full repo with tests. Based on my analysis, the issue is clear. Let me now look at what the fix should be.\n\n<reasoning>\n## Analysis\n\nThe bug is in `django_30/django/core/checks/translation.py`, in the `check_language_settings_consistent` function (lines 55-61):\n\n```python\n@register(Tags.translation)\ndef check_language_settings_consistent(app_configs, **kwargs):\n    \"\"\"Error if language settings are not consistent with e...[truncated]",
+          "latency_s": 330.90263390541077,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12308",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 810,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1284,
+          "response": "Both files look good. Now let me provide the final answer.\n\n<reasoning>\nThe issue is that `JSONField` values in Django admin are displayed using Python's `str()` representation (e.g., `{'foo': 'bar'}` with single quotes) instead of valid JSON (e.g., `{\"foo\": \"bar\"}` with double quotes) when the field is readonly.\n\n**Root cause:** The `display_for_field` function in `django/contrib/admin/utils.py` has no special case for `JSONField`. When a JSONField value is rendered as readonly, it falls throug...[truncated]",
+          "latency_s": 399.93590092658997,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12453",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 901,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3731,
+          "response": "<patch>\n--- a/django/db/backends/base/creation.py\n+++ b/django/db/backends/base/creation.py\n@@ -6,7 +6,7 @@ from io import StringIO\n from django.apps import apps\n from django.conf import settings\n from django.core import serializers\n-from django.db import router\n+from django.db import router, transaction\n \n # The prefix to put on the default database name when creating\n # the test database.\n@@ -129,8 +129,9 @@ class BaseDatabaseCreation:\n         the serialize_db_to_string() method.\n         \"\"\"...[truncated]",
+          "latency_s": 105.4419059753418,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12470",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 714,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1424,
+          "response": "Both `django_22` (line 706) and `django_30` (line 718) have the same bug \u2014 missing the `and name != 'pk'` guard.\n\n<reasoning>\n## Root Cause\n\nIn `find_ordering_name()`, when ordering by `-pk` on a child model:\n\n1. `get_order_dir(\"-pk\", \"ASC\")` returns `(\"pk\", \"DESC\")` \u2014 correct so far\n2. `_setup_joins([\"pk\"], ...)` resolves `pk` to the `OneToOneField` parent_link (since child models use the parent_ptr as their pk)\n3. The guard condition `field.is_relation and opts.ordering and getattr(field, 'att...[truncated]",
+          "latency_s": 392.8664388656616,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12497",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1249,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1612,
+          "response": "<reasoning>\nThe issue is clear: in `django/db/models/fields/related.py`, the hint messages for errors `fields.E334` and `fields.E335` incorrectly suggest:\n\n```\nuse ForeignKey(\"self\", symmetrical=False, through=\"%s\").\n```\n\nThis has two problems:\n1. `symmetrical` and `through` are `ManyToManyField` keyword arguments, not `ForeignKey` arguments. The hint should say `ManyToManyField`.\n2. `symmetrical=False` is no longer required for recursive M2M relationships since Django 3.0, so it should be remov...[truncated]",
+          "latency_s": 92.41603398323059,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12589",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 277,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3242,
+          "response": "Good. Now let me verify the original `query.py` `set_group_by` for completeness \u2014 to understand what our `[self]` goes through:\n\nWhen `set_group_by` calls `annotation.get_group_by_cols(alias=alias)` (line 1928), it now gets `[self]` (the Subquery). This goes into `self.group_by`. In `compiler.get_group_by()`, at line 109, the Subquery is appended to `expressions`. At line 130, `self.compile(subquery)` produces the full `(SELECT U0.\"status\" FROM ...)` SQL. The dedup at lines 132-134 prevents dupl...[truncated]",
+          "latency_s": 474.7433819770813,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12700",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 470,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2528,
+          "response": "This is a site-packages installation, not a source checkout. The actual fix needs to be applied to `django_30/django/views/debug.py`.\n\nNow I have everything I need. The fix is straightforward: add `list` and `tuple` handling to the standalone `cleanse_setting()` function in Django 3.0's `debug.py`.\n\n<reasoning>\nThe issue is that `cleanse_setting()` in Django 3.0 (and below) only recursively cleanses `dict` values but passes through `list` and `tuple` values as-is. This means sensitive keys neste...[truncated]",
+          "latency_s": 179.09503817558289,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12708",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 634,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1784,
+          "response": "The fix is clean. Here's the summary:\n\n<reasoning>\nThe bug occurs when a model has both `unique_together` and `index_together` on the same fields. When a migration tries to delete `index_together`, the `alter_index_together` method calls `_delete_composed_index` with `{'index': True}` as constraint kwargs. This gets passed to `_constraint_names`, which filters database constraints by `index=True`.\n\nThe problem is that on databases like PostgreSQL, a unique constraint is also implemented as an in...[truncated]",
+          "latency_s": 158.55189871788025,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12747",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 495,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1752,
+          "response": "The fix is correct. Here's the summary:\n\n<reasoning>\nThe issue is in `django/db/models/deletion.py` in the `Collector.delete()` method.\n\nThere are two code paths that handle deletion:\n\n1. **Single-object fast-delete optimization** (line 449-457): When there's exactly one model with one instance and it qualifies for fast delete, it returns early with `return count, {model._meta.label: count}`. When `count` is 0 (object doesn't exist), this returns `(0, {'app.Model': 0})`.\n\n2. **Normal deletion pa...[truncated]",
+          "latency_s": 175.35023713111877,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12856",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1210,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1292,
+          "response": "The code looks correct. The fix:\n\n1. **Before the database loop** (lines 2289-2296): Iterates over all constraints, and for each `UniqueConstraint`, checks that both `fields` and `include` reference valid local fields via `_check_local_fields`. This runs regardless of whether any databases are configured.\n\n2. **Inside the database loop** (line 2400 onward): The `fields` set now starts empty and only accumulates field names from expression references (Q conditions, expressions in constraints, che...[truncated]",
+          "latency_s": 269.5101580619812,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12908",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 559,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1873,
+          "response": "`NotSupportedError` is already imported. Now I have everything I need. The fix is to add a check in the `distinct()` method that raises `NotSupportedError` when the queryset has a combinator (i.e., was produced by `union()`, `intersection()`, or `difference()`).\n\n<reasoning>\nThe issue is that in Django 2.2.1, calling `.distinct()` on a combined queryset (produced by `.union()`) silently does nothing. The SQL compiler has an if/else branching structure where the combinator branch and the distinct...[truncated]",
+          "latency_s": 355.2872669696808,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12915",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1199,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1711,
+          "response": "Good. The `django_old` and `django_src` versions have `get_response_async` in `base.py`, while `django_30` doesn't. The `django_old` already has the fix in the static files handler. The repository that matters for the issue (the one to patch) would be the one that has `get_response_async` in `base.py` but NOT in the static files handler.\n\nGiven the structure of this problem, I need to work against the main repo. Let me check the `django_src` version more carefully \u2014 I already confirmed it has th...[truncated]",
+          "latency_s": 176.1790051460266,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12983",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1019,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1206,
+          "response": "All test cases pass correctly:\n- `\"___This is a test ---\"` now produces `\"this-is-a-test\"` (the fix requested in the issue)\n- Leading/trailing dashes and underscores are stripped\n- Normal slugs are unaffected\n- Edge cases (all dashes, all underscores, empty string) work properly\n- Unicode mode also works correctly\n\n<reasoning>\nThe issue is that `slugify()` only calls `.strip()` (which removes whitespace) but doesn't strip dashes and underscores from the result. After the regex replaces spaces/da...[truncated]",
+          "latency_s": 73.16517519950867,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13028",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 541,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3664,
+          "response": "<reasoning>\nThe fix changes `getattr(expression, \"filterable\", True)` to `getattr(type(expression), \"filterable\", True)`.\n\nWhy this works:\n1. For expression objects (like `Subquery`, `Window`, etc.): `filterable` is a class-level attribute (defined on `BaseExpression` as `True`, or overridden to `False` on specific subclasses). `type(expression).filterable` returns the class attribute value correctly.\n\n2. For model instances (like `ProductMetaDataType` instance): When the model has a `BooleanFie...[truncated]",
+          "latency_s": 145.41467690467834,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13033",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 737,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 4557,
+          "response": "Now I can see the bug clearly. On line 709:\n\n```python\nif field.is_relation and opts.ordering and getattr(field, 'attname', None) != name and name != 'pk':\n```\n\nThe variable `name` contains the full path (e.g., `\"record__root_id\"`) while `field.attname` is just `\"root_id\"`. The comparison should be against `pieces[-1]` (the last segment) instead of `name` (the full path).\n\n<reasoning>\nThe bug is on line 709 of `django/db/models/sql/compiler.py` in the `find_ordering_name` method.\n\nWhen `order_by...[truncated]",
+          "latency_s": 292.5152471065521,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13158",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 374,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2001,
+          "response": "Now I have the full picture. The fix needs to be in `Query.set_empty()` to recursively call `set_empty()` on all sub-queries in `combined_queries`. This is exactly what the `django_issue` (v2.2.1) version did.\n\n<reasoning>\n## Root Cause\n\nIn `django/db/models/sql/query.py`, the `set_empty()` method only adds a `NothingNode` to the outer query's WHERE clause. For combined queries (union/intersection/difference), the sub-queries stored in `self.combined_queries` are NOT marked as empty.\n\nMeanwhile,...[truncated]",
+          "latency_s": 435.2736520767212,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13220",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1960,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1437,
+          "response": "<reasoning>\nNow let me think about this more carefully. Looking at the original codebase (django_22 version), there are NO `__eq__` or `__hash__` methods at all. The issue is asking us to ADD them. The `django_issue` version already has a partial implementation that was added as a starting point, and I've improved it.\n\nLet me verify my solution handles all the requirements from the issue:\n\n1. **Identical messages should be equal** - Yes, covered by the `message`/`code`/`params` comparison for si...[truncated]",
+          "latency_s": 167.04343605041504,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13230",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 521,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1167,
+          "response": "Now I have the full picture. Here's the analysis and fix:\n\n<reasoning>\nThe issue is clear: Django's syndication framework has a disconnect between the feedgenerator and the views layer.\n\n**In `django/utils/feedgenerator.py`:**\n- `SyndicationFeed.add_item()` already accepts a `comments` parameter (line 110)\n- It stores `comments` in the item dict (line 140)\n- `Rss201rev2Feed.add_item_elements()` already renders `<comments>` in RSS output (lines 307-308)\n\n**In `django/contrib/syndication/views.py`...[truncated]",
+          "latency_s": 176.31279802322388,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13265",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3028,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2717,
+          "response": "The fix works correctly. The `AddIndex` operation now has the `order_wrt_set` dependency, which ensures it comes after `AlterOrderWithRespectTo`.\n\nHere's a summary of the three changes made to `django/db/migrations/autodetector.py`:\n\n<reasoning>\nThe bug occurs because when Django's migration autodetector generates operations for a new model with `order_with_respect_to` and an index that includes the `_order` field, the `AddIndex` operation can be placed before `AlterOrderWithRespectTo` in the mi...[truncated]",
+          "latency_s": 391.57638597488403,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13315",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 574,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1110,
+          "response": "<reasoning>\nThe issue is in `django/forms/models.py` in the `apply_limit_choices_to_to_formfield` function.\n\nWhen `limit_choices_to` on a ForeignKey uses a Q object that involves a join (i.e., traversing a relationship like `Q(categories__name='cat1')`), the `complex_filter()` call creates a SQL JOIN which can produce duplicate rows. For example, if a related object matches multiple rows through the join, it appears multiple times in the form's dropdown choices.\n\nThe fix is simple: add `.distinc...[truncated]",
+          "latency_s": 205.98307299613953,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13321",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 599,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 5247,
+          "response": "The fix is clean. Here's the summary:\n\n<reasoning>\nThe bug is in `django/contrib/sessions/backends/base.py` in the `_legacy_decode` method. When Django 3.1 tries to decode session data, it first tries `signing.loads()` in `decode()`. If that fails (e.g., with `BadSignature` for old-format sessions), it falls back to `_legacy_decode()`.\n\nIn `_legacy_decode`, the line `base64.b64decode(session_data.encode('ascii'))` was **outside** the `try/except` block. When the session data has incorrect base64...[truncated]",
+          "latency_s": 91.02656888961792,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13401",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1725,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2059,
+          "response": "All three (`django_22`, `django_30`, `django_old`) have the same buggy code. The issue is clear: `__eq__`, `__lt__`, and `__hash__` only use `creation_counter`, ignoring the field's `model`. Fields inherited from an abstract base class share the same `creation_counter` but belong to different concrete models, so they incorrectly compare as equal.\n\nThe fix needs to:\n1. `__eq__`: Also compare `model` (via `getattr` since unbound fields don't have `model`)\n2. `__lt__`: Order by `creation_counter` f...[truncated]",
+          "latency_s": 57.2257239818573,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13447",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1599,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1215,
+          "response": "All changes look correct. Here's the summary:\n\n<patch>\n--- a/django/contrib/admin/sites.py\n+++ b/django/contrib/admin/sites.py\n@@ -409,7 +409,7 @@ class AdminSite:\n         request.current_app = self.name\n         return LoginView.as_view(**defaults)(request)\n \n-    def _build_app_dict(self, request, label=None):\n+    def build_app_dict(self, request, label=None):\n         \"\"\"\n         Build the app dictionary. The optional `label` parameter filters models\n         of a specific app.\n@@ -439,6 +...[truncated]",
+          "latency_s": 233.3683521747589,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13448",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1836,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 6005,
+          "response": "<patch>\n--- a/django/db/backends/base/creation.py\n+++ b/django/db/backends/base/creation.py\n@@ -58,14 +58,22 @@ class BaseDatabaseCreation:\n         settings.DATABASES[self.connection.alias][\"NAME\"] = test_database_name\n         self.connection.settings_dict[\"NAME\"] = test_database_name\n \n-        if self.connection.settings_dict['TEST']['MIGRATE']:\n-            # We report migrate messages at one level lower than that\n-            # requested. This ensures we don't get flooded with messages dur...[truncated]",
+          "latency_s": 85.69808292388916,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13551",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1203,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1428,
+          "response": "The fix is applied. Here's a summary of the change:\n\n**Problem:** `PasswordResetTokenGenerator._make_hash_value()` didn't include the user's email address in the hash. This meant that if a user requested a password reset, then changed their email, the old password reset token would still be valid \u2014 a security issue.\n\n**Fix:** Added the user's email to the hash value in `_make_hash_value()` (lines 83-85):\n- `user.get_email_field_name()` \u2014 gets the correct email field name via `AbstractBaseUser`, ...[truncated]",
+          "latency_s": 189.89363813400269,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13590",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 713,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1684,
+          "response": "No tests directory in this copy. The fix is complete.\n\n<reasoning>\nThe bug is in `django.db.models.sql.query.Query.resolve_lookup_value`. When a value is a list or tuple, the method resolves each sub-value and reconstructs the container. The original code does:\n\n```python\nreturn type(value)(\n    self.resolve_lookup_value(sub_value, can_reuse, allow_joins)\n    for sub_value in value\n)\n```\n\nThis passes a generator expression directly to `type(value)(...)`. For regular `tuple` and `list`, this work...[truncated]",
+          "latency_s": 160.18104195594788,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13658",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 709,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2062,
+          "response": "The fix adds `prog=self.prog_name` to the `CommandParser(...)` call on line 314 of `django/core/management/__init__.py`. This ensures the parser uses the already-computed `self.prog_name` (derived from the user-supplied `argv`) instead of defaulting to `sys.argv[0]`.\n\n<patch>\n--- a/django/core/management/__init__.py\n+++ b/django/core/management/__init__.py\n@@ -311,7 +311,7 @@ class ManagementUtility:\n         # Preprocess options to extract --settings and --pythonpath.\n         # These options c...[truncated]",
+          "latency_s": 34.20450019836426,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-12907",
+      "repo": "astropy/astropy",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": false,
+      "answer_len": 0,
+      "tool_pattern": {},
+      "error": "timeout after 480s",
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2073,
+          "response": "",
+          "latency_s": 480.0411767959595,
+          "error": "timeout after 480s"
+        }
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-14182",
+      "repo": "astropy/astropy",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2118,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2698,
+          "response": "Let me re-read the `astropy51_src` version very carefully. The `RST.__init__` at line 56 already accepts `header_rows`. The `write` method at line 59 already uses `len(self.header.header_rows)`. The `read` method at line 65 already uses `len(self.header.header_rows)`.\n\nWait \u2014 looking at `FixedWidth.__init__`, the `header_rows` parameter already exists there too. So the `astropy51_src` code already has the fix. But the issue says it doesn't work. Let me check: maybe `FixedWidth.__init__` in the o...[truncated]",
+          "latency_s": 216.46734523773193,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-14365",
+      "repo": "astropy/astropy",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 831,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2166,
+          "response": "Now I have the complete picture. The fix is:\n\n1. **Line 69**: Change `re.compile(_type_re)` to `re.compile(_type_re, re.IGNORECASE)` \n2. **Doctests**: Add lowercase command examples to verify the fix\n\n<reasoning>\nThe bug is in `astropy/io/ascii/qdp.py` in the `_line_type()` function. The regex that classifies QDP lines is compiled without `re.IGNORECASE`, so lowercase commands like `read serr 1 2` don't match the pattern `READ [TS]ERR(\\s+[0-9]+)+` and get rejected as \"Unrecognized QDP line\".\n\nTh...[truncated]",
+          "latency_s": 155.16959881782532,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-14995",
+      "repo": "astropy/astropy",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 519,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3282,
+          "response": "Now I have the complete picture. The bug is in `_arithmetic_mask` in v5.3.0. Here's the fix:\n\n**v5.3.0 (buggy) at line 523:**\n```python\nelif operand is None:\n    return deepcopy(self.mask)\n```\n\n**Should be:**\n```python\nelif operand is None or operand.mask is None:\n    return deepcopy(self.mask)\n```\n\nThe v5.1 code had `elif operand.mask is None:` which correctly handled the case where operand exists but has no mask. The v5.3 refactor changed it to `elif operand is None:` to handle collapse operat...[truncated]",
+          "latency_s": 370.8671772480011,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-6938",
+      "repo": "astropy/astropy",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 340,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1354,
+          "response": "<reasoning>\nNow I have the full picture. The issue describes a bug in `astropy/io/fits/fitsrec.py` where:\n\n1. In the `_scale_back_ascii` method, the line `output_field.replace(encode_ascii('E'), encode_ascii('D'))` doesn't assign the result back, so the replacement is silently discarded since `chararray.replace()` returns a copy.\n\n2. The fix is to assign the result back: `output_field[:] = output_field.replace(b'E', b'D')`\n\nLooking at the current state of the file at line 1282, it already shows:...[truncated]",
+          "latency_s": 156.0255241394043,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-7746",
+      "repo": "astropy/astropy",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 804,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2880,
+          "response": "Wait \u2014 astropy 5.0 already has the fix (`if any([x.size == 0 for x in axes]): return axes` and `if 0 in xy.shape: return xy`). The issue must be from an even older version. The traceback in the issue has lines 1223-1269, suggesting a version WITHOUT these guards.\n\nLet me check \u2014 the issue references the source code where `_return_list_of_arrays` does NOT have the empty check. The line numbers from the traceback:\n- Line 1223: `if ra_dec_order and sky == 'input':`\n- Line 1225: `output = func(xy, o...[truncated]",
+          "latency_s": 178.40212893486023,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-10914",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 520,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1846,
+          "response": "Now I have a complete picture of the issue and the fix. The issue is in Django 2.2 where `FILE_UPLOAD_PERMISSIONS` defaults to `None` in `global_settings.py`. When it's `None`, `os.chmod` is skipped in `FileSystemStorage._save()`, causing inconsistent file permissions depending on whether the upload used `TemporaryUploadedFile` (gets 0o600 from `tempfile`) or `MemoryUploadedFile` (gets umask-based permissions like 0o644).\n\n<reasoning>\nThe issue is clear:\n\n1. In `django/conf/global_settings.py` (...[truncated]",
+          "latency_s": 299.143758058548,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-10924",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 2,
+      "proposed_patch": true,
+      "answer_len": 1956,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1647,
+          "response": "The fix is complete. Here's a summary of the two changes:\n\n**`django/db/models/fields/__init__.py` line 1754** \u2014 In `FilePathField.formfield()`, resolve `self.path` if it's a callable before passing it to the form field:\n```python\n'path': self.path() if callable(self.path) else self.path,\n```\n\n**`django/forms/fields.py` line 1081** \u2014 In `FilePathField.__init__()`, resolve the `path` argument if it's a callable before storing and using it:\n```python\nself.path, self.match, self.recursive = path() ...[truncated]",
+          "latency_s": 285.6264729499817,
+          "error": null
+        },
+        {
+          "iteration": 2,
+          "prompt_len": 2603,
+          "response": "All three changes applied. Here's the complete patch:\n\n<reasoning>\nThe issue requests allowing `FilePathField`'s `path` parameter to accept a callable so that the path is resolved at runtime (e.g., when generating forms) rather than at import/migration time.\n\nThree changes are needed:\n\n1. **`django/db/models/fields/__init__.py`** \u2014 In `FilePathField.formfield()`, resolve `self.path` if it's a callable before passing to the form field:\n   - `'path': self.path` \u2192 `'path': self.path() if callable(s...[truncated]",
+          "latency_s": 218.93091416358948,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11001",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 505,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3045,
+          "response": "Now let me check the `django_issue` version more carefully. Maybe the issue is that even though `re.DOTALL` is present, the `re.MULTILINE` flag combined with `re.search` (not `re.match`) could cause unexpected behavior with `^`... but there's no `^` in the pattern. Actually wait \u2014 I should look at this from a different angle. \n\nThe `django_issue` directory may represent the state AFTER someone partially applied a fix but it's still broken. But my test showed it works correctly with `re.DOTALL`. ...[truncated]",
+          "latency_s": 181.8691668510437,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11019",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1637,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2626,
+          "response": "Now I have the complete picture. The fix from `django_src` is:\n\n1. Replace `return list(all_items)` with a second-pass algorithm that processes longer lists first and skips cycle-creating edges\n2. Add the `_depends_on` helper method\n\nThis is the patch that should be applied to `django/django/forms/widgets.py`. The target file is `django_30`'s version since that's the closest to what the issue was filed against. Let me create the patch.\n\n<reasoning>\nThe fix for this issue has two parts:\n\n1. **In ...[truncated]",
+          "latency_s": 421.0371961593628,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11039",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 677,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1704,
+          "response": "<patch>\n--- a/django/core/management/commands/sqlmigrate.py\n+++ b/django/core/management/commands/sqlmigrate.py\n@@ -55,8 +55,9 @@ class Command(BaseCommand):\n                 migration_name, app_label))\n         targets = [(app_label, migration.name)]\n \n-        # Show begin/end around output only for atomic migrations\n-        self.output_transaction = migration.atomic\n+        # Show begin/end around output for atomic migrations, if the database\n+        # supports transactional DDL.\n+        ...[truncated]",
+          "latency_s": 83.39394116401672,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11049",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 440,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1531,
+          "response": "I see \u2014 the forms DurationField says \"Enter a valid duration\" without the format specification. The issue mentions that the error should include the format. But looking at the issue description more carefully, it says \"Correct expected format in invalid DurationField error message\" \u2014 meaning the wrong format in the existing error message. Let me check if maybe the issue is for a version of Django before the fix, and I need to apply it now.\n\nLet me look at the issue from the perspective of what n...[truncated]",
+          "latency_s": 182.71891283988953,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11099",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 781,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1589,
+          "response": "The fix works correctly. Here's the summary:\n\n<patch>\n--- a/django/contrib/auth/validators.py\n+++ b/django/contrib/auth/validators.py\n@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _\n \n @deconstructible\n class ASCIIUsernameValidator(validators.RegexValidator):\n-    regex = r'^[\\w.@+-]+$'\n+    regex = r'\\A[\\w.@+-]+\\Z'\n     message = _(\n         'Enter a valid username. This value may contain only English letters, '\n         'numbers, and @/./+/-/_ characters.'\n@@ -17,7 +17,7...[truncated]",
+          "latency_s": 111.7788200378418,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11133",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 512,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1720,
+          "response": "<reasoning>\nThe issue is clear. In the original Django code, the `make_bytes` method in `HttpResponse` only checked for `isinstance(value, bytes)`, so when a `memoryview` object was passed, it fell through to the catch-all `str(value).encode(self.charset)` which produced `b'<memory at 0x...>'` instead of the actual bytes content.\n\nThe fix is to add `memoryview` to the `isinstance` check alongside `bytes`. When `bytes()` is called on a `memoryview` object, it correctly returns the underlying byte...[truncated]",
+          "latency_s": 47.094563007354736,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11179",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 504,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1108,
+          "response": "**There it is!** In `django_22` (the original Django 2.2, before 2.2.1), lines 276-281:\n\n```python\n276        if len(self.data) == 1 and len(instances) == 1:\n277            instance = list(instances)[0]\n278            if self.can_fast_delete(instance):\n279                with transaction.mark_for_rollback_on_error():\n280                    count = sql.DeleteQuery(model).delete_batch([instance.pk], self.using)\n281                return count, {model._meta.label: count}\n```\n\n**Line 281 just return...[truncated]",
+          "latency_s": 259.35289788246155,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11283",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": false,
+      "answer_len": 0,
+      "tool_pattern": {},
+      "error": "timeout after 480s",
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2018,
+          "response": "",
+          "latency_s": 480.0200231075287,
+          "error": "timeout after 480s"
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11422",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1076,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1494,
+          "response": "Now I have everything I need. Here's the analysis and fix:\n\n<reasoning>\nThe bug is in `django/utils/autoreload.py` in the `iter_modules_and_files` function at line 114.\n\nWhen you run `python manage.py runserver`, Python sets `sys.modules['__main__']` to the manage.py module. However, the `__main__` module typically has `__spec__` set to `None` when a script is run directly (this is documented Python behavior - see https://docs.python.org/reference/import.html#main-spec).\n\nThe problematic line is...[truncated]",
+          "latency_s": 171.23365187644958,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11564",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 667,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1753,
+          "response": "The fix is correct. Here's the summary:\n\n**Problem:** The `static()` and `media()` context processors in `django/template/context_processors.py` returned raw `settings.STATIC_URL` and `settings.MEDIA_URL` without prepending `SCRIPT_NAME`. This meant `{{ STATIC_URL }}` and `{{ MEDIA_URL }}` template variables produced incorrect URLs when running behind a sub-path with `SCRIPT_NAME`.\n\n**Fix:** Changed both context processors to use `PrefixNode.handle_simple()` instead of raw settings values. This ...[truncated]",
+          "latency_s": 250.3719937801361,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11583",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1013,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 5490,
+          "response": "Now I can see the issue. Looking at line 167:\n\n```python\nresolved_path = path.resolve().absolute()\n```\n\nThere's already a `try/except ValueError` block around `path.exists()` (lines 158-166), but the `path.resolve().absolute()` call on line 167 is **outside** that try/except block. The `ValueError: embedded null byte` can be raised by `path.resolve()` as well, not just by `path.exists()`.\n\nThe fix is to wrap `path.resolve().absolute()` in the same try/except block.\n\n<reasoning>\nThe issue is clea...[truncated]",
+          "latency_s": 43.05923581123352,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11620",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1285,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1715,
+          "response": "Good. `Resolver404` is a subclass of `Http404`. Now I need to import `Http404` in `resolvers.py` to catch it. I can either import it directly or use the already-imported `Resolver404`'s parent class. The cleanest approach is to add `Http404` to the import from `.exceptions` or import it separately.\n\nActually, I can import `Http404` from `django.http` like it's done in `exceptions.py`, or I can import it alongside `Resolver404` from the urls exceptions module. Let me just add the import from `dja...[truncated]",
+          "latency_s": 391.03237795829773,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11630",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2698,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1485,
+          "response": "The fix looks correct. Here's the summary:\n\n<patch>\n--- a/django/core/checks/model_checks.py\n+++ b/django/core/checks/model_checks.py\n@@ -38,21 +38,36 @@ def check_all_models(app_configs=None, **kwargs):\n             constraints[model_constraint.name].append(model._meta.label)\n-    if settings.DATABASE_ROUTERS:\n-        error_class, error_id = Warning, 'models.W035'\n-        error_hint = (\n-            'You have configured settings.DATABASE_ROUTERS. Verify that %s '\n-            'are correctly r...[truncated]",
+          "latency_s": 135.99779295921326,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11742",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2225,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1153,
+          "response": "Now I have a complete picture. The E009 check already exists in all installed versions (Django 2.2+). This issue was filed before it was implemented, and the fix was added. Since this is a code-patch exercise for the `django/django` repository, I need to produce the patch that adds this check.\n\nThe canonical target for this patch would be a pre-fix version of Django. Let me construct the patch based on the implementation pattern. The key change is in `django/db/models/fields/__init__.py` in the ...[truncated]",
+          "latency_s": 469.25937604904175,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11797",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": false,
+      "answer_len": 0,
+      "tool_pattern": {},
+      "error": "timeout after 480s",
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1581,
+          "response": "",
+          "latency_s": 480.0068030357361,
+          "error": "timeout after 480s"
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11815",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 677,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2426,
+          "response": "I have all the information needed. Here's the fix:\n\n<reasoning>\nThe issue is in `django_22/django/db/migrations/serializer.py`, in the `EnumSerializer.serialize()` method (lines 115-121).\n\n**Current buggy code:**\n```python\nclass EnumSerializer(BaseSerializer):\n    def serialize(self):\n        enum_class = self.value.__class__\n        module = enum_class.__module__\n        v_string, v_imports = serializer_factory(self.value.value).serialize()\n        imports = {'import %s' % module, *v_imports}\n ...[truncated]",
+          "latency_s": 46.89662003517151,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11848",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 2,
+      "proposed_patch": true,
+      "answer_len": 785,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1451,
+          "response": "The fix is clean and correct. Here's what changed:\n\n**Before (broken):** Compared just the two-digit year against the last two digits of the current year (`year - (current_year % 100) > 50`), which is an incorrect interpretation of the RFC 7231 rule and fails at century boundaries.\n\n**After (fixed):** First computes the full candidate year by adding the two-digit year to the current century, then checks if that candidate year is more than 50 years in the future (`year - current_year > 50`). If s...[truncated]",
+          "latency_s": 81.40750002861023,
+          "error": null
+        },
+        {
+          "iteration": 2,
+          "prompt_len": 2246,
+          "response": "Both files are fixed. Here's the patch:\n\n<patch>\n--- a/django/utils/http.py\n+++ b/django/utils/http.py\n@@ -176,12 +176,10 @@ def parse_http_date(date):\n         if year < 100:\n             current_year = datetime.datetime.utcnow().year\n             current_century = current_year - (current_year % 100)\n-            if year - (current_year % 100) > 50:\n-                # year that appears to be more than 50 years in the future are\n-                # interpreted as representing the past.\n-         ...[truncated]",
+          "latency_s": 112.83517527580261,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11905",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 500,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1234,
+          "response": "This is an installed package directory, not a full repo checkout. The fix is straightforward and complete \u2014 the `IsNull.as_sql` method now validates that `self.rhs` is a boolean before proceeding.\n\n<reasoning>\nThe issue asks to prevent using `__isnull` lookup with non-boolean values. The fix is to add a type check at the beginning of `IsNull.as_sql()` that raises a `ValueError` when `self.rhs` is not a `bool` instance. This ensures that only `True` or `False` are accepted, rejecting truthy/false...[truncated]",
+          "latency_s": 79.15721130371094,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11910",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1515,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1997,
+          "response": "These are different Django versions. Let me produce the final patch for the issue.\n\n<reasoning>\nThe bug is in `django/db/migrations/autodetector.py` in the `generate_altered_fields()` method. \n\nWhen a primary key field is renamed (e.g., `field_wrong` -> `field_fixed`), and another model has a ForeignKey pointing to that model, the autodetector:\n\n1. Temporarily sets `new_field.remote_field.model` to `old_field.remote_field.model` (line 952) and `new_field.remote_field.field_name` to the old name ...[truncated]",
+          "latency_s": 451.6774411201477,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11964",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": false,
+      "answer_len": 0,
+      "tool_pattern": {},
+      "error": "timeout after 480s",
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3178,
+          "response": "",
+          "latency_s": 480.0138256549835,
+          "error": "timeout after 480s"
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11999",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 535,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1337,
+          "response": "Both fixes look correct. Here's the summary:\n\n<reasoning>\nThe issue is in `django/db/models/fields/__init__.py` in the `Field.contribute_to_class()` method.\n\n**Root cause**: In Django 2.2, the guard that prevented overwriting user-defined `get_FOO_display()` methods was removed. The `setattr` call became unconditional, always replacing any user-defined override with the auto-generated `partialmethod` version.\n\nIn Django 3.0, a guard was re-added but using `hasattr(cls, ...)` instead of checking ...[truncated]",
+          "latency_s": 136.97822785377502,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12113",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": false,
+      "answer_len": 0,
+      "tool_pattern": {},
+      "error": "timeout after 480s",
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 5599,
+          "response": "",
+          "latency_s": 480.01283502578735,
+          "error": "timeout after 480s"
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12125",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 477,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2414,
+          "response": "The fix is clear. Line 268 needs to change `self.value.__name__` to `self.value.__qualname__`. For builtins on line 266, `__name__` is fine since builtins can't be inner classes.\n\n<reasoning>\nThe fix is straightforward:\n\nIn `django/db/migrations/serializer.py`, line 268, the `TypeSerializer.serialize()` method uses `self.value.__name__` to construct the dotted path for a type. For inner classes, `__name__` only returns the bare class name (e.g., `\"Inner\"` or `\"State\"`), losing the outer class co...[truncated]",
+          "latency_s": 160.54516291618347,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12184",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 393,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1802,
+          "response": "The fix: after extracting `kwargs` from `groupdict()`, filter out entries where the value is `None` before deciding whether to use args or kwargs, and before returning.\n\n<reasoning>\nThe issue is in `django/urls/resolvers.py` in the `RegexPattern.match()` method. \n\nWhen using optional named groups in URL patterns like `(?P<format>(html|json|xml))?`, Python's `re.groupdict()` returns `{'format': None}` when the group doesn't participate in the match. \n\nThe problem is twofold:\n1. Since `kwargs` is ...[truncated]",
+          "latency_s": 140.70983505249023,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12284",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": false,
+      "answer_len": 0,
+      "tool_pattern": {},
+      "error": "timeout after 480s",
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1705,
+          "response": "",
+          "latency_s": 480.0179560184479,
+          "error": "timeout after 480s"
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12286",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1031,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1566,
+          "response": "The fix is correct. Here's the summary:\n\n**Problem:** `check_language_settings_consistent` only checked if the exact `LANGUAGE_CODE` value was present in `LANGUAGES`. When `LANGUAGE_CODE = \"de-at\"` and only `\"de\"` was in `LANGUAGES`, the check raised `translation.E004` even though Django's translation system would correctly fall back to the base language.\n\n**Fix:** In `django/core/checks/translation.py` line 60, the check now also tries the base language (the part before the first `-`). So `\"de-...[truncated]",
+          "latency_s": 70.57618498802185,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12308",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 636,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1284,
+          "response": "Given the issue says the fix is needed for `display_for_field` to handle JSONField, and looking at the different versions:\n\n- **Django 3.0** (`django_30`): Has postgres `JSONField` only, and handles it in the else block. But the issue is that `display_for_field` is in the else block and requires postgres to be installed.\n- **Django 3.1** (`django_old`): Already has the fix with `models.JSONField` check.\n\nThe issue must target a version between Django 3.0 and the fix. Since the issue mentions `mo...[truncated]",
+          "latency_s": 219.44193983078003,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12453",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 877,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3731,
+          "response": "Now I have the full picture. The fix needs to be applied to `django_22/django/db/backends/base/creation.py`:\n\n1. Add `transaction` to the import from `django.db`\n2. Wrap the deserialization loop in `transaction.atomic()`\n\n<reasoning>\nThe issue is clear: `deserialize_db_from_string` saves deserialized objects one by one without a transaction. If a model with a foreign key is saved before the referenced model, an integrity error occurs. The fix is to wrap the save loop in `transaction.atomic()`, w...[truncated]",
+          "latency_s": 112.16259694099426,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12470",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 714,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1424,
+          "response": "<reasoning>\n## Root Cause\n\nIn `django/db/models/sql/compiler.py`, the `find_ordering_name()` method resolves ordering fields. When it encounters `-pk` on a child model (multi-table inheritance), it:\n\n1. Parses `-pk` into `name='pk'`, `order='DESC'`, `descending=True`\n2. Resolves `pk` via `_setup_joins` \u2014 on a child model, the pk is a `OneToOneField` (parent pointer), so `field.is_relation` is `True`\n3. Checks the condition at line 718: `field.is_relation and opts.ordering and getattr(field, 'att...[truncated]",
+          "latency_s": 311.9629919528961,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12497",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1706,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1612,
+          "response": "Now I have the full picture. The fix requires two changes:\n\n1. **`django/db/models/fields/related.py`** (lines 1279 and 1296): Change `ForeignKey(\"self\", symmetrical=False, through=\"%s\")` to `ManyToManyField(\"self\", through=\"%s\")` \u2014 fixing the class name and removing the outdated `symmetrical=False` parameter.\n\n2. **`tests/invalid_models_tests/test_relative_fields.py`** (line 156): Same change to match the corrected hint.\n\n<reasoning>\nThe issue is clear: the hint message in Django's model valida...[truncated]",
+          "latency_s": 82.03336715698242,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12589",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1806,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3242,
+          "response": "Both changes look correct. Let me verify the fix works correctly by tracing the logic:\n\n1. `.values(\"status\")` calls `set_group_by()` which iterates annotations\n2. For the `status` annotation (a `Subquery`), it calls `annotation.get_group_by_cols(alias='status')`\n3. **With the fix**, `Subquery.get_group_by_cols(alias='status')` returns `[Ref('status', self)]` instead of `[self]`\n4. This `Ref` gets added to `query.group_by`\n5. In `get_group_by()`, when iterating `query.group_by`, the `Ref` is det...[truncated]",
+          "latency_s": 403.7382230758667,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12700",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 594,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2528,
+          "response": "<reasoning>\nNow I have a clear picture of the issue. Looking at the different versions:\n\n1. **`django_22`** (Django 2.2) and **`django_dl/Django-3.0`** (Django 3.0): The `cleanse_setting()` function only handles `dict` types. Lists and tuples containing dicts with sensitive keys are returned as-is, leaking sensitive values.\n\n2. The fix needs to add handling for `list` and `tuple` types in `cleanse_setting()`, recursively cleansing their contents.\n\nThe target file is the standalone `cleanse_setti...[truncated]",
+          "latency_s": 172.128164768219,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12708",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1066,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1784,
+          "response": "The test files aren't in these directories. That's fine \u2014 we have the fix. Let me now provide the final patch.\n\n<patch>\n--- a/django/db/backends/base/schema.py\n+++ b/django/db/backends/base/schema.py\n@@ -377,7 +377,7 @@ class BaseDatabaseSchemaEditor:\n         # Deleted uniques\n         for fields in olds.difference(news):\n-            self._delete_composed_index(model, fields, {'unique': True}, self.sql_delete_unique)\n+            self._delete_composed_index(model, fields, {'unique': True, 'pri...[truncated]",
+          "latency_s": 313.3621048927307,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12747",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 649,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1752,
+          "response": "Interesting \u2014 line 457 in `django_src` already has a fix with the ternary:\n```python\nreturn (count, {model._meta.label: count}) if count else (0, {})\n```\n\nBut the `django_issue` version at line 282 has the buggy code:\n```python\nreturn count, {model._meta.label: count}\n```\n\nThis confirms the fix. The `django_issue` directory is the one where the patch needs to be applied. The fix is on line 282 of `/private/tmp/django_issue/django/db/models/deletion.py`.\n\n<reasoning>\nThe issue is in `django/db/mo...[truncated]",
+          "latency_s": 44.277873277664185,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12856",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1598,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1292,
+          "response": "The fix looks correct. Let me also note that I slightly refactored the W027 check logic \u2014 the original had an early `continue` if the feature was supported, which meant the loop body only ran the warning. I restructured it to use `if not ... and any(...)` in a single condition, which is cleaner and matches the style used in later Django versions. The behavior is identical.\n\n<patch>\n--- a/django/db/models/base.py\n+++ b/django/db/models/base.py\n@@ -1830,20 +1830,24 @@ class Model(metaclass=ModelBa...[truncated]",
+          "latency_s": 289.8727970123291,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12908",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 824,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1873,
+          "response": "The fix is clear and complete. Here's the summary:\n\n<reasoning>\nThe issue is that calling `.distinct()` on a union queryset silently does nothing in Django 2.2.1. The SQL compiler for combined queries (union/intersection/difference) uses a separate code path (`get_combinator_sql`) that doesn't handle the `DISTINCT` flag, so calling `.distinct()` on a union queryset sets the flag but it's ignored during SQL generation \u2014 producing silently incorrect results.\n\nThe fix adds:\n1. A `_not_support_combi...[truncated]",
+          "latency_s": 392.20443892478943,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12915",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 803,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1711,
+          "response": "Now I have everything I need. The fix is straightforward. Here's my analysis:\n\n<reasoning>\nThe issue is clear from the traceback and code analysis:\n\n1. `ASGIHandler.__call__` calls `self.get_response_async(request)` (in the version of Django where this bug exists)\n2. `BaseHandler.get_response_async` calls `await self._middleware_chain(request)` \n3. `StaticFilesHandlerMixin.load_middleware()` is a no-op that doesn't set `_middleware_chain`\n4. So `_middleware_chain` stays as the class default `Non...[truncated]",
+          "latency_s": 182.98584508895874,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12983",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1002,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1206,
+          "response": "Now I have a clear picture of the issue. The fix needs two changes:\n\n1. **`django/utils/text.py`**: Add `.strip('-_')` to the return value of `slugify()` to strip leading/trailing dashes and underscores.\n2. **`django/utils/text.py`**: Update the docstring to reflect the new behavior.\n\n<reasoning>\nThe issue is straightforward:\n\n**Current behavior** (Django 2.2):\n```python\n>>> text.slugify(\"___This is a test ---\")\n'___this-is-a-test-'\n```\n\n**Expected behavior**:\n```python\n>>> text.slugify(\"___This...[truncated]",
+          "latency_s": 90.32276105880737,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13028",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 524,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3664,
+          "response": "Now I can see the full picture. At line 1257, `check_filterable(value)` is called where `value` is the RHS of a filter (e.g., a model instance). The check at line 1123-1126 does:\n\n```python\nif (\n    hasattr(expression, 'resolve_expression') and\n    not getattr(expression, 'filterable', True)\n):\n```\n\nThe problem: `getattr(expression, 'filterable', True)` checks the **instance** attribute. When the RHS is a `ProductMetaDataType` instance that has a `filterable` BooleanField set to `False`, `getatt...[truncated]",
+          "latency_s": 72.45177817344666,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13033",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 737,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 4557,
+          "response": "The 3.0 branch also has the same bug. The fix is the same: compare against `pieces[-1]` instead of `name`.\n\n<reasoning>\nThe bug is in `django/db/models/sql/compiler.py` in the `find_ordering_name` method.\n\nWhen processing `order_by(\"record__root_id\")`:\n1. `name` is set to `\"record__root_id\"` (the full dotted path, after stripping any `-` prefix)\n2. `pieces` is `[\"record\", \"root_id\"]`\n3. `_setup_joins` resolves through the relations. When it encounters `\"root_id\"`, `get_field(\"root_id\")` returns ...[truncated]",
+          "latency_s": 339.6235291957855,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13158",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": false,
+      "answer_len": 0,
+      "tool_pattern": {},
+      "error": "timeout after 480s",
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2001,
+          "response": "",
+          "latency_s": 479.99651288986206,
+          "error": "timeout after 480s"
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13220",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1846,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1437,
+          "response": "All tests pass. Here's the final patch:\n\n<patch>\n--- a/django/core/exceptions.py\n+++ b/django/core/exceptions.py\n@@ -1,6 +1,9 @@\n \"\"\"\n Global Django exception and warning classes.\n \"\"\"\n+from collections import Counter\n+\n+from django.utils.hashable import make_hashable\n \n \n class FieldDoesNotExist(Exception):\n@@ -182,6 +185,40 @@ class ValidationError(Exception):\n     def __repr__(self):\n         return 'ValidationError(%s)' % self\n \n+    def __eq__(self, other):\n+        if not isinstance(other,...[truncated]",
+          "latency_s": 179.0680329799652,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13230",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 521,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1167,
+          "response": "Now I have all the information I need. The issue is clear:\n\n**In `/private/tmp/django_old/django/contrib/syndication/views.py`**, the `feed.add_item()` call (line 202-218) is missing the `comments` parameter. The feedgenerator's `add_item` method already accepts `comments=None` on line 86, and the `Rss201rev2Feed` already renders it, but the view never passes `item_comments` through.\n\nThe fix is to add `comments=self._get_dynamic_attr('item_comments', item),` to the `feed.add_item()` call.\n\n<rea...[truncated]",
+          "latency_s": 159.4847071170807,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13265",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2680,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2717,
+          "response": "Good - `fields_orders` is a list of 2-tuples `(field_name, order)`, so `f, *_ in index.fields_orders` correctly unpacks the field name.\n\n<reasoning>\nThe bug is clear: when a new model is created with `order_with_respect_to` and an index that includes the `_order` field, the generated migration places `AddIndex` before `AlterOrderWithRespectTo`. Since `AlterOrderWithRespectTo` is what creates the `_order` column, the `AddIndex` fails because the column doesn't exist yet.\n\nThe fix requires three c...[truncated]",
+          "latency_s": 366.4874849319458,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13315",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 574,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1110,
+          "response": "<reasoning>\nThe issue is clear: In `apply_limit_choices_to_to_formfield()` in `django/forms/models.py`, when `limit_choices_to` involves a Q object that causes a JOIN (e.g., filtering through a related model), the resulting queryset can contain duplicate rows. The fix is to add `.distinct()` to the queryset after applying `complex_filter()`.\n\nFor example, if you have:\n```python\nclass MyModel(models.Model):\n    fk = models.ForeignKey(OtherModel, limit_choices_to=Q(related_things__name='foo'))\n```...[truncated]",
+          "latency_s": 257.3523290157318,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13321",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 597,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 5247,
+          "response": "That's different - the messages cookie one doesn't use base64. \n\nOK, I think I understand now. The issue says \"Repository: django/django\" and the fix needs to be applied to the `decode` and `_legacy_decode` methods. Since `django_old` is the Django 3.1 transitional version, and the code there already has the try/except fix, this means one of two things:\n\n1. The `django_old` represents the already-fixed code, or  \n2. The fix needs to go elsewhere\n\nLet me look at the `decode` method in `django_old...[truncated]",
+          "latency_s": 232.65145802497864,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13401",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1620,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2059,
+          "response": "None are git repos. The issue is about the `django/django` repository. Based on my analysis, the fix should be applied to `django/db/models/fields/__init__.py`. The unfixed code (from `django_old` and `django_22`) is at lines 515-528.\n\n<reasoning>\nThe issue is that `Field.__eq__`, `__lt__`, and `__hash__` only use `self.creation_counter` for comparison. When an abstract model defines a field and two concrete models inherit from it, both concrete models get a copy of the field with the same `crea...[truncated]",
+          "latency_s": 129.21281695365906,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13447",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1706,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1215,
+          "response": "Now I can clearly see the differences. The **original Django 3.0** code has:\n\n1. Only `_build_app_dict` (private method) \u2014 no public `build_app_dict`\n2. No `'model': model` key in the `model_dict`\n3. `get_app_list` and `app_index` call `self._build_app_dict()`\n\nThe **django_issue** copy already has the fix partially applied. Now I need to produce the correct patch against the original Django 3.0 source. The changes needed are:\n\n1. **Add `'model': model` to the model_dict** in `_build_app_dict` s...[truncated]",
+          "latency_s": 78.60123682022095,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13448",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 571,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 6005,
+          "response": "<reasoning>\nNow I understand the full picture:\n\n1. In `setup_databases` (line 174), `serialize` is set based on `TEST.SERIALIZE` (defaults to `True`).\n2. In `create_test_db` (line 89), when `serialize=True`, it calls `self.serialize_db_to_string()`.\n3. In `serialize_db_to_string` (lines 113-134), a fresh `MigrationLoader` is instantiated. At this point, `MIGRATION_MODULES` has been restored to its original value (the `finally` block on line 82-83 runs before line 89). So the loader sees all the ...[truncated]",
+          "latency_s": 141.72667288780212,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13551",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1449,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1428,
+          "response": "The fix looks correct. Here's a summary:\n\n<patch>\n--- a/django/contrib/auth/tokens.py\n+++ b/django/contrib/auth/tokens.py\n@@ -78,7 +78,7 @@ class PasswordResetTokenGenerator:\n     def _make_hash_value(self, user, timestamp):\n         \"\"\"\n-        Hash the user's primary key and some user state that's sure to change\n-        after a password reset to produce a token that invalidated when it's\n-        used:\n+        Hash the user's primary key, email (if available), and some user state\n+        t...[truncated]",
+          "latency_s": 179.2678940296173,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13590",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 489,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1684,
+          "response": "No git repos. The issue is clear from my analysis. The fix needs to be applied to `django/db/models/sql/query.py` in the `resolve_lookup_value` method. The buggy code passes `values` (a generator) directly to `type_(values)` which fails for named tuples. The fix is to check for `_make` (which indicates a namedtuple) and use `type_._make(values)` instead.\n\n<reasoning>\nThe issue is in `django/db/models/sql/query.py` in the `resolve_lookup_value` method.\n\nIn Django 3.0, this method was changed to r...[truncated]",
+          "latency_s": 124.09947681427002,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13658",
+      "repo": "django/django",
+      "model": "claude-opus-4-6",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 684,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2062,
+          "response": "The fix adds `prog=self.prog_name` to the `CommandParser` constructor call in `ManagementUtility.execute()`. This ensures the parser uses the already-computed `self.prog_name` (which is derived from the `argv` passed to `ManagementUtility`) instead of defaulting to `sys.argv[0]`. This matches the intent of the existing code that carefully computes `self.prog_name` in `__init__`.\n\n<patch>\n--- a/django/core/management/__init__.py\n+++ b/django/core/management/__init__.py\n@@ -311,7 +311,7 @@\n       ...[truncated]",
+          "latency_s": 43.27811598777771,
+          "error": null
+        }
+      ]
+    }
+  ]
+}

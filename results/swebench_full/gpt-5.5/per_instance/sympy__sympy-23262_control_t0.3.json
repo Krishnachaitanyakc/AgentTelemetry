@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-23262",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1316,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1825,
+      "response_excerpt": "<reasoning>\n1. `lambdify` uses `LambdaPrinter`, which inherits Python sequence formatting through `CodePrinter`/`StrPrinter`.\n2. The regression is caused by printing any Python tuple as `(%s)` with comma-joined contents. For a one-element tuple, `(1)` is just parenthesized integer syntax, not tuple syntax.\n3. The fix belongs in `_print_tuple`: special-case length 1 and emit the required trailing comma.\n4. I added a regression test that checks both runtime return value and generated source for on",
+      "latency_s": 148.65427422523499,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

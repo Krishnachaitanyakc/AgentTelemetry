@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14238",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1526,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3384,
+      "response_excerpt": "Now I'll write the patch. The bug is that `__subclasscheck__` previously used `subclass in self._subclasses` which only matched exact classes. The fix uses `issubclass(subclass, self._subclasses)` to also match subclasses of `BigAutoField` and `SmallAutoField`.\n\n<reasoning>\nThe bug occurs because `AutoFieldMeta.__subclasscheck__` was originally implemented as:\n```python\ndef __subclasscheck__(self, subclass):\n    return subclass in self._subclasses or super().__subclasscheck__(subclass)\n```\n\nThe ",
+      "latency_s": 713.5039670467377,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

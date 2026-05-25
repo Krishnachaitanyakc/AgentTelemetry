@@ -1,0 +1,29 @@
+{
+  "topology": "sequential",
+  "model": "claude_cli/claude-sonnet-4-6",
+  "question": "Summarize the trade-offs between OpenTelemetry GenAI semantic conventions and OpenInference for agent observability.",
+  "run_id": "sequential__claude_cli_claude-sonnet-4-6__q2",
+  "transcript": [
+    {
+      "agent": "planner",
+      "output": "1. What attributes and span structures does each standard define for capturing LLM inputs/outputs, tool calls, and agent reasoning steps \u2014 and where do they diverge?\n\n2. How mature is each standard's ecosystem support (SDKs, auto-instrumentation libraries, backend integrations like Arize, Langfuse, Honeycomb) as of mid-2025?\n\n3. What are the operational costs of adopting each \u2014 schema stability, vendor lock-in risk, and migration burden if standards converge or one is deprecated?",
+      "latency_s": 11.61035966873169
+    },
+    {
+      "agent": "researcher",
+      "output": "Web search requires a permission grant that wasn't approved. I'll draw on training knowledge through mid-2025, which covers both specifications well.\n\n---\n\n**Findings**\n\n**1. Span Structure & Attributes**\n- **OTel GenAI** uses `gen_ai.*` namespace with a flat attribute model: `gen_ai.system`, `gen_ai.request.model`, `gen_ai.usage.{input,output}_tokens`. Tool calls and agent steps are captured via events (`gen_ai.content.prompt/completion`). Agent-specific conventions are still experimental.\n- **OpenInference** uses `openinference.span.kind` (values: LLM, CHAIN, TOOL, RETRIEVER, AGENT, GUARDRAIL) with richer nested message arrays (`llm.input_messages[]`) and explicit `tool.parameters` attributes \u2014 more expressive for multi-step agent traces out of the box.\n\n**2. Ecosystem Maturity (mid-2025)**\n- OTel GenAI: native fit for Honeycomb, Grafana, Datadog; adopted by Traceloop/OpenLLMetry; Langfuse adding support.\n- OpenInference: first-class in Arize Phoenix; natively emitted by LlamaIndex a",
+      "latency_s": 37.76543593406677
+    },
+    {
+      "agent": "writer",
+      "output": "## OTel GenAI vs. OpenInference: Agent Observability Trade-offs\n\n**OpenInference** offers richer agent semantics today: explicit span kinds (AGENT, CHAIN, TOOL, RETRIEVER), nested message arrays, and tool parameter attributes make multi-step agent traces immediately expressive. It's the native choice for Arize Phoenix, LlamaIndex, and DSPy.\n\n**OTel GenAI** uses a flatter `gen_ai.*` attribute model with agent conventions still experimental. Its advantage is ecosystem breadth \u2014 Honeycomb, Grafana, Datadog, and Traceloop all support it natively \u2014 and lower long-term vendor lock-in.\n\n**Key trade-offs:**\n\n| Dimension | OTel GenAI | OpenInference |\n|---|---|---|\n| Agent expressiveness | Limited (experimental) | Rich, purpose-built |\n| Backend compatibility | Broad | Arize-centric |\n| Stability risk | Breaking renames possible | Deprecation risk as Arize converges toward OTel |\n| Framework support | Growing | LlamaIndex, DSPy native |\n\n**Recommendation:** Choose OpenInference if you need deta",
+      "latency_s": 14.91115689277649
+    }
+  ],
+  "total_cost_usd": 0.014508,
+  "total_input_tokens": 711,
+  "total_output_tokens": 825,
+  "n_agents": 3,
+  "wall_clock_s": 64.32915806770325,
+  "error": null
+}

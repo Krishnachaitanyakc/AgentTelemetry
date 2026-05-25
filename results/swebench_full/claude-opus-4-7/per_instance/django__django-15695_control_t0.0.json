@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15695",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 977,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2053,
+      "response_excerpt": "Based on my analysis, the bug has the following root cause:\n\n1. When `RenameIndex()` is applied with `old_fields` (unnamed index), forward renames the auto-generated index to `new_name`.\n2. When backward is called on an unnamed index, the original code tries to swap names and call forward, but there's no auto-generated name to restore to.\n3. When forward is re-applied, the index already has `new_name` but the code tries to rename it again, causing `relation \"new_pony_test_idx\" already exists`.\n\n",
+      "latency_s": 300.5243570804596,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

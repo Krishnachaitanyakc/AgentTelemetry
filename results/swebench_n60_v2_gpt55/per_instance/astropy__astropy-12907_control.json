@@ -1,0 +1,60 @@
+{
+  "instance_id": "astropy__astropy-12907",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 1797,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "separability_matrix": 1,
+    "_cstack compoundmodel": 1,
+    "_separable _coord_matrix": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2259,
+      "response": "<reasoning>`CompoundModel` is a subclass of `Model`, so `_cstack` was treating nested compound operands as simple models and rebuilding their coordinate matrix with `_coord_matrix`. That loses the internal separability structure and turns the nested `Linear1D & Linear1D` block into a fully coupled block. The fix is to detect `CompoundModel` first and preserve its recursively computed separability matrix, padding it into the stacked result. Added regression coverage for the reported nested case.</reasoning>\n<patch>diff --git a/astropy/modeling/separable.py b/astropy/modeling/separable.py\nindex e180603..6cdaa6e 100644\n--- a/astropy/modeling/separable.py\n+++ b/astropy/modeling/separable.py\n@@ -231,12 +231,18 @@ def _cstack(left, right):\n     \"\"\"\n     noutp = _compute_n_outputs(left, right)\n \n-    if isinstance(left, Model):\n+    if isinstance(left, CompoundModel):\n+        cleft = _separable(left)\n+        cleft = np.pad(cleft, ((0, noutp - cleft.shape[0]), (0, 0)), mode=\"constant\")\n+    elif isinstance(left, Model):\n         cleft = _coord_matrix(left, \"left\", noutp)\n     else:\n         cleft = np.zeros((noutp, left.shape[1]))\n         cleft[: left.shape[0], : left.shape[1]] = left\n-    if isinstance(right, Model):\n+    if isinstance(right, CompoundModel):\n+        cright = _separable(right)\n+        cright = np.pad(cright, ((noutp - cright.shape[0], 0), (0, 0)), mode=\"constant\")\n+    elif isinstance(right, Model):\n         cright = _coord_matrix(right, \"right\", noutp)\n     els",
+      "latency_s": 80.90757298469543,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4847,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"separability_matrix\"}}</tool_call>",
+      "latency_s": 14.501183032989502,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 5289,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"_cstack CompoundModel\"}}</tool_call>",
+      "latency_s": 19.054619073867798,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 5741,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"_separable _coord_matrix\"}}</tool_call>",
+      "latency_s": 15.612495183944702,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 6208,
+      "response": "<reasoning>Nested compound operands must be handled before the generic Model branch because CompoundModel subclasses Model. Preserving the recursive separability matrix for nested left/right operands keeps the internal diagonal structure of Linear1D & Linear1D instead of rebuilding it as a fully coupled coordinate block.</reasoning>\n<patch>diff --git a/astropy/modeling/separable.py b/astropy/modeling/separable.py\nindex e180603..6cdaa6e 100644\n--- a/astropy/modeling/separable.py\n+++ b/astropy/modeling/separable.py\n@@ -231,12 +231,18 @@ def _cstack(left, right):\n     \"\"\"\n     noutp = _compute_n_outputs(left, right)\n \n-    if isinstance(left, Model):\n+    if isinstance(left, CompoundModel):\n+        cleft = _separable(left)\n+        cleft = np.pad(cleft, ((0, noutp - cleft.shape[0]), (0, 0)), mode=\"constant\")\n+    elif isinstance(left, Model):\n         cleft = _coord_matrix(left, \"left\", noutp)\n     else:\n         cleft = np.zeros((noutp, left.shape[1]))\n         cleft[: left.shape[0], : left.shape[1]] = left\n-    if isinstance(right, Model):\n+    if isinstance(right, CompoundModel):\n+        cright = _separable(right)\n+        cright = np.pad(cright, ((noutp - cright.shape[0], 0), (0, 0)), mode=\"constant\")\n+    elif isinstance(right, Model):\n         cright = _coord_matrix(right, \"right\", noutp)\n     else:\n         cright = np.zeros((noutp, right.shape[1]))\ndiff --git a/astropy/modeling/tests/test_separable.py b/astropy/modeling/tests/test_separable.py\nindex 62bf9ca..7afaedf 10",
+      "latency_s": 19.718552112579346,
+      "error": null
+    }
+  ]
+}

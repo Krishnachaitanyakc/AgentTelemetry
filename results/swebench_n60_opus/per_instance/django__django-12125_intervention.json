@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12125",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 477,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2414,
+      "response": "The fix is clear. Line 268 needs to change `self.value.__name__` to `self.value.__qualname__`. For builtins on line 266, `__name__` is fine since builtins can't be inner classes.\n\n<reasoning>\nThe fix is straightforward:\n\nIn `django/db/migrations/serializer.py`, line 268, the `TypeSerializer.serialize()` method uses `self.value.__name__` to construct the dotted path for a type. For inner classes, `__name__` only returns the bare class name (e.g., `\"Inner\"` or `\"State\"`), losing the outer class co...[truncated]",
+      "latency_s": 160.54516291618347,
+      "error": null
+    }
+  ]
+}

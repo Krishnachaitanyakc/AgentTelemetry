@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-13230",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 2220,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "item_extra_kwargs comments syndication": 1,
+    "item_comments syndication views feed get_feed": 1,
+    "feed.add_item comments feedgenerator rss comments": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1353,
+      "response": "<reasoning>The feed generator already accepts and emits `comments`, but `Feed.get_feed()` didn\u2019t pass through `item_comments`. This adds the dynamic attribute and extends the RSS2 syndication test fixture/assertions to verify the `<comments>` item element. Focused tests could not run here because this checkout imports Python\u2019s removed `cgi` module under the available Python 3 runtime.</reasoning>\n<patch>diff --git a/django/contrib/syndication/views.py b/django/contrib/syndication/views.py\nindex 68ffb0bfe0..df97103318 100644\n--- a/django/contrib/syndication/views.py\n+++ b/django/contrib/syndication/views.py\n@@ -212,6 +212,7 @@ class Feed:\n                 author_name=author_name,\n                 author_email=author_email,\n                 author_link=author_link,\n+                comments=self._get_dynamic_attr('item_comments', item),\n                 categories=self._get_dynamic_attr('item_categories', item),\n                 item_copyright=self._get_dynamic_attr('item_copyright', item),\n                 **self.item_extra_kwargs(item)\ndiff --git a/tests/syndication_tests/feeds.py b/tests/syndication_tests/feeds.py\nindex 4e9b1170b1..adc3b2e56c 100644\n--- a/tests/syndication_tests/feeds.py\n+++ b/tests/syndication_tests/feeds.py\n@@ -29,6 +29,9 @@ class TestRss2Feed(views.Feed):\n     def item_updateddate(self, item):\n         return item.updated\n \n+    def item_comments(self, item):\n+        return \"%scomments\" % item.get_absolute_url()\n+\n     item_author_name = 'Sally Smith'\n  ",
+      "latency_s": 141.92695689201355,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4252,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"item_extra_kwargs comments syndication\"}}</tool_call>",
+      "latency_s": 13.994251012802124,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 4787,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"item_comments syndication views Feed get_feed\"}}</tool_call>",
+      "latency_s": 19.766512870788574,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 5357,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"feed.add_item comments feedgenerator rss comments\"}}</tool_call>",
+      "latency_s": 12.020634889602661,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 5947,
+      "response": "<reasoning>The syndication `Feed` view already maps item-specific methods like `item_author_name`, `item_categories`, and `item_copyright` into `feed.add_item()`. Since the underlying feed generator already supports the `comments` keyword, `Feed.get_feed()` only needs to resolve `item_comments` and pass it through. The tests add `item_comments()` to the RSS2 fixture and assert the generated `<comments>` element appears on each item.</reasoning>\n<patch>diff --git a/django/contrib/syndication/views.py b/django/contrib/syndication/views.py\nindex 68ffb0bfe0..df97103318 100644\n--- a/django/contrib/syndication/views.py\n+++ b/django/contrib/syndication/views.py\n@@ -212,6 +212,7 @@ class Feed:\n                 author_name=author_name,\n                 author_email=author_email,\n                 author_link=author_link,\n+                comments=self._get_dynamic_attr('item_comments', item),\n                 categories=self._get_dynamic_attr('item_categories', item),\n                 item_copyright=self._get_dynamic_attr('item_copyright', item),\n                 **self.item_extra_kwargs(item)\ndiff --git a/tests/syndication_tests/feeds.py b/tests/syndication_tests/feeds.py\nindex 4e9b1170b1..adc3b2e56c 100644\n--- a/tests/syndication_tests/feeds.py\n+++ b/tests/syndication_tests/feeds.py\n@@ -29,6 +29,9 @@ class TestRss2Feed(views.Feed):\n     def item_updateddate(self, item):\n         return item.updated\n \n+    def item_comments(self, item):\n+        return \"%scomments\" % item.get_absolute",
+      "latency_s": 18.115873098373413,
+      "error": null
+    }
+  ]
+}

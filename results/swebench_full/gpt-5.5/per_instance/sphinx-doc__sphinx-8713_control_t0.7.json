@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-8713",
+  "repo": "sphinx-doc/sphinx",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2031,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2666,
+      "response_excerpt": "<reasoning>\n1. The bug is in napoleon\u2019s NumpyDocstring parser: `Other Parameters` must use the same `napoleon_use_param` branch as `Parameters`.\n2. The fix is to make `_parse_other_parameters_section()` call `_format_docutils_params()` when `napoleon_use_param=True`, using `multiple=True` for parity with `Parameters`.\n3. I added a regression test covering both `napoleon_use_param=False` and `True`.\n4. Verification: `uv run python -m pytest tests/test_ext_napoleon/test_ext_napoleon_docstring.py -",
+      "latency_s": 101.41611170768738,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

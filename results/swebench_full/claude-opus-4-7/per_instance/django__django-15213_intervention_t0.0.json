@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15213",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3954,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1533,
+      "response_excerpt": "Based on my analysis, the bug occurs because when `~Q(pk__in=[])` is compiled, the older `WhereNode.as_sql()` returns an empty SQL string `(\"\", [])`, which `ExpressionWrapper.as_sql()` propagates verbatim into the `SELECT` clause, producing invalid SQL like `SELECT  AS \"foo\"`.\n\nThe actual Django fix introduces a `FullResultSet` exception machinery (in `where.py`, `compiler.py`, and `exceptions.py`) so that \"always-true\" predicates raise `FullResultSet` instead of returning empty SQL, and `get_se",
+      "latency_s": 812.7345299720764,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

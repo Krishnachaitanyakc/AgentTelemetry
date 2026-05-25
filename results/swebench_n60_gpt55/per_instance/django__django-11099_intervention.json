@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11099",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1951,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1589,
+      "response": "<reasoning>\nThe username validators used `$`, which can match before a trailing newline. Replacing both regex anchors with `\\A` and `\\Z` makes the match cover the whole string strictly. I also added regression cases for trailing newlines to both validator tests. The full Django test runner is blocked here because Python 3.14 no longer provides `cgi`, but a focused file-level smoke test confirmed both validators now reject `trailingnewline\\n`.\n</reasoning>\n\n<patch>\ndiff --git a/django/contrib/aut...[truncated]",
+      "latency_s": 145.97671103477478,
+      "error": null
+    }
+  ]
+}

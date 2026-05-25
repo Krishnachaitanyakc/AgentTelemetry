@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-22714",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2351,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2452,
+      "response_excerpt": "<reasoning>\nThe crash comes from `Point.__new__` checking imaginary coordinates with `im(a)` and then using the truthiness of that expression. Under `evaluate(False)`, `im(Integer(1))` can remain unevaluated enough to be truthy, so real numeric coordinates are rejected.\n\nThe fix is to use SymPy assumptions directly: reject numeric coordinates only when they are known not to be real. I also added a regression test for sympifying `Point2D(Integer(1),Integer(2))` inside `evaluate(False)`.\n\nVerifica",
+      "latency_s": 173.80005979537964,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

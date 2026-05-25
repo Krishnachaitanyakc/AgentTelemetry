@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-14182",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3297,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2667,
+      "response_excerpt": "<reasoning>\nThe failure happens before writing because `RST.__init__` does not accept `header_rows`, unlike `FixedWidth`. RST also needs to place its separator/footer based on the number of header rows instead of assuming exactly one name row, and reading needs to skip the top separator, all header rows, and the second separator. I found the appropriate implementation pattern in `FixedWidth`/`FixedWidthTwoLine` and added an RST regression test covering `name`, `unit`, and `dtype` header rows.\n\nV",
+      "latency_s": 172.0708088874817,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15695",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2769,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2053,
+      "response_excerpt": "<reasoning>\nThe crash is caused by `RenameIndex.database_backwards()` treating `old_fields` as a no-op. That leaves the renamed index in the database, so a later forward application can attempt to create/rename to a name that already exists.\n\nThe fix makes the reverse path reconstruct the original auto-generated `index_together` name using the schema editor\u2019s `_create_index_name(..., suffix=\"_idx\")`, then renames the current index back to that name. The regression test now verifies that reversin",
+      "latency_s": 271.99914598464966,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

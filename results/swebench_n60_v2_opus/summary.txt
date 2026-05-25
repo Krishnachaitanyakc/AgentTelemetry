@@ -1,0 +1,11 @@
+========================================================================
+B1v2: SWE-bench n=60 forced-tool-use via claude-opus-4-6
+========================================================================
+Elapsed: 31274s
+Forced min_searches=3, intervention threshold=3
+
+  control      : 53/60 (88.3%)  avg_iter=4.0  avg_searches=3.2  intv_trigs=0.00  patch_suppr=1.02  max_repeats=1
+  intervention : 54/60 (90.0%)  avg_iter=4.0  avg_searches=3.4  intv_trigs=0.00  patch_suppr=0.95  max_repeats=1
+
+Fisher's exact two-sided p = 1.0000
+Significant at alpha=0.05:  False

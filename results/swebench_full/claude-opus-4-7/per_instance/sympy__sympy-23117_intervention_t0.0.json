@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-23117",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 434,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2167,
+      "response_excerpt": "<reasoning>\nThe issue reports that `sympy.Array([])` fails with `ValueError: not enough values to unpack (expected 2, got 0)` in `_scan_iterable_shape` at `ndim_array.py`.\n\nLooking at the original buggy code (from SymPy 1.4), the function `f(pointer)` would call `zip(*[f(i) for i in pointer])` even when `pointer` is empty. When `pointer` is `[]`, the list comprehension is empty, `zip()` returns nothing, and unpacking into `elems, shapes` fails.\n\nThe fix is to add an early-return branch for empty",
+      "latency_s": 203.6503131389618,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

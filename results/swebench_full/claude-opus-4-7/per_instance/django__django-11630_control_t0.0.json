@@ -1,0 +1,35 @@
+{
+  "instance_id": "django__django-11630",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 2,
+  "proposed_patch": true,
+  "answer_len": 1177,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1454,
+      "response_excerpt": "The patch I provided is based on the well-documented Django fix for this issue. The change converts the hard error `models.E028` into a warning `models.W035`, which is the appropriate resolution since database routers (which run at runtime) can legitimately route models with the same `db_table` to different databases \u2014 something static checks cannot determine.",
+      "latency_s": 728.6762199401855,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 1852,
+      "response_excerpt": "<reasoning>\nThe issue is that Django 2.2 introduced check `models.E028` in `django/core/checks/model_checks.py` that errors when two models share the same `db_table`. This breaks legitimate setups where database routers send models with the same table name to different databases (multi-tenant patterns, central + per-app DB setups, etc.).\n\nStatic model checks cannot evaluate database routers (which execute at runtime against query/instance context), so converting this hard error into a `Warning` ",
+      "latency_s": 47.183233976364136,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-14817",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1134,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2802,
+      "response_excerpt": "<reasoning>\nThe bug is in `_print_MatAdd`: it checks `S(item.args[0]).is_negative`, which assumes the first arg can be safely sympified. For `MatrixSymbol('y*', n, n)`, that first arg is the raw string name `\"y*\"`, so `S(...)` tries to parse it as SymPy syntax and crashes.\n\nThe sign check should inspect the additive term\u2019s multiplicative coefficient instead. `item.as_coeff_mmul()[0]` gives the matrix multiplication coefficient, so negative terms can still omit `\" + \"` and print using their own l",
+      "latency_s": 96.93588089942932,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

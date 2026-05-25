@@ -1,0 +1,24 @@
+{
+  "issue": {
+    "title": "[BUG] CrewAgentExecutor does not reset messages and iterations between task executions",
+    "body": "### Description\n\nWhen a CrewAI agent executes multiple sequential tasks within a Crew, the same CrewAgentExecutor instance is reused across tasks. \nThe problem is that CrewAgentExecutor.invoke() and CrewAgentExecutor.ainvoke() do not reset self.messages and self.iterations before starting a new execution. \n\nThe experimental AgentExecutor (crewai/experimental/agent_executor.py) does not have this bug, it correctly resets all execution state at the beginning of invoke() and invoke_async().\n\n### Steps to Reproduce\n\n1. Create a Crew with one agent assigned to two sequential tasks\n2. Execute the crew \n3. Inspect the message history\n\n### Expected behavior\n\nEach task execution should start with a clean message history and iterations reset to 0. Task 2 should not see any messages from task 1's execution. The LLM context should contain only the system/user prompts relevant to the current task.\n\n### Screenshots/Code snippets\n\n<img width=\"1299\" height=\"601\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d2ffa875-1baa-4e64-9e0f-2201b20a746c\" />\n\n### Operating System\n\nUbuntu 20.04\n\n### Python Version\n\n3.11\n\n### crewAI Version\n\n1.9.3\n\n### crewAI Tools Version\n\n1.9.3\n\n### Virtual Environment\n\nVenv\n\n### Evidence\n\nNone\n\n### Possible Solution\n\nI implement it in a PR.\n\n### Additional context\n\nNone",
+    "state": "open",
+    "comments": [
+      "I've identified and fixed this issue. PR incoming!\n\n**Root Cause:**\nThe `CrewAgentExecutor.invoke()` and `ainvoke()` methods were not resetting the internal state (`self.messages` and `self.iterations`) at the beginning of each execution. When the same executor instance is reused across multiple sequential tasks, this causes:\n1. Task 2 sees messages from Task 1's execution in its LLM context\n2. The iterations counter doesn't reset, potentially triggering max iterations limit earlier than expected\n\n**Fix:**\nAdded state reset at the beginning of both `invoke()` and `ainvoke()` methods:\n```python\n# Reset execution state for fresh execution\nself.messages = []\nself.iterations = 0\n```\n\nThis matches the behavior of the experimental `AgentExecutor` (in `crewai/experimental/agent_executor.py`) which already correctly resets all execution state at the beginning of each invocation.\n\n**Testing:**\nAdded new test file `test_crew_agent_executor_state_reset.py` with tests verifying that both `invoke()` and `ainvoke()` properly reset messages and iterations between invocations.",
+      "Wow 5 PR for the same little bug \ud83d\ude02",
+      "This issue is stale because it has been open for 30 days with no activity. Remove stale label or comment or this will be closed in 5 days.",
+      "The execution-state bleed between sequential Crew tasks is exactly the kind of context-boundary failure I'm collecting.\n\nI'm researching where production agent workflows break because prior task state or hidden execution context leaks into the next step. If you're open to it, I'd value one short postmortem from your team. No pitch.\n\n5-minute form: https://www.agentsneedcontext.com/agent-failure-postmortem",
+      "This is a state isolation problem \u2014 we solve it in Network-AI with `JourneyFSM`, a finite state machine that governs agent lifecycle. Each task has explicit state transitions (idle \u2192 running \u2192 completed), and the FSM blocks execution if the agent isn't in the right state. No leftover state bleeds between tasks.\n\nThe `LockedBlackboard` also helps here \u2014 shared state uses atomic `propose \u2192 validate \u2192 commit` with a file-system mutex, so parallel agents can't corrupt each other's state mid-task.\n\nWorks with CrewAI via `CrewAIAdapter`: https://github.com/Jovancoding/Network-AI"
+    ],
+    "labels": [
+      "bug"
+    ],
+    "url": "https://github.com/crewAIInc/crewAI/issues/4389"
+  },
+  "evidence": {
+    "has_evidence": true,
+    "evidence_type": "log_excerpt",
+    "reconstructible_signal": false,
+    "notes": "memory_keywords"
+  }
+}

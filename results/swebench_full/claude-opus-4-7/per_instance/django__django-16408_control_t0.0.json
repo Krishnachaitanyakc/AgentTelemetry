@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16408",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2761,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1894,
+      "response_excerpt": "<reasoning>\nThe bug is in `django/db/models/sql/compiler.py` in the `get_related_selections` method. When using `FilteredRelation` with a multi-level path like `pool__tournament__pool` and `select_related('tournament_pool')`, the SQL query already JOINs through Tournament (the parent of the FilteredRelation Pool), but the compiler doesn't cache the Tournament onto the joined Pool. This causes:\n1. A redundant query (4 instead of 3) when accessing `tournament_pool.tournament`\n2. In some Django ver",
+      "latency_s": 557.6667890548706,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

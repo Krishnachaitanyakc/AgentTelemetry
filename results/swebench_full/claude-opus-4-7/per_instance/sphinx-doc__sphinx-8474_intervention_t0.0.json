@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-8474",
+  "repo": "sphinx-doc/sphinx",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 909,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1353,
+      "response_excerpt": "<reasoning>\nThe bug analysis:\n\n1. In Sphinx 3.3, `sphinx/environment/collectors/toctree.py` was modified in `assign_figure_numbers()` to skip uncaptioned nodes when assigning `toc_fignumbers`:\n   ```python\n   if domain.name == 'std' and not domain.get_numfig_title(node):\n       continue  # Skip uncaptioned node\n   ```\n\n2. As a side effect, uncaptioned tables/figures with explicit labels (e.g., `.. _target-table:` placed above an uncaptioned table) no longer get a fignumber registered.\n\n3. Howeve",
+      "latency_s": 379.63295102119446,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

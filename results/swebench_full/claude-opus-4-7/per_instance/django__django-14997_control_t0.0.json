@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14997",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 493,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 6805,
+      "response_excerpt": "<reasoning>\nI've confirmed the root cause of the bug:\n\n1. In Django's `UniqueConstraint._get_index_expressions()`, the F() expressions are resolved against a `Query` object.\n2. When `alias_cols=True` (default), the resolved `Col` expressions include the table alias.\n3. When the resolved expression is compiled to SQL for `CREATE UNIQUE INDEX`, it produces `(\"table_name\".\"column_name\")` syntax.\n4. SQLite prohibits the `.` operator in index expressions, causing the crash.\n\nI verified by setting `al",
+      "latency_s": 710.517548084259,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

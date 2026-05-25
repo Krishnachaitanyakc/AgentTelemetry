@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13497",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2660,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1112,
+      "response_excerpt": "<reasoning>\nThe bug is caused by comparing `discrete_features` directly to `'auto'`. When `discrete_features` is a NumPy array, that comparison produces an elementwise boolean array and can warn or error in newer NumPy versions. The fix is to only compare to `'auto'` after confirming the value is string-like.\n\nI also added a regression test that passes both an integer-index array and a boolean mask array, asserting that they match the list behavior and emit no warnings.\n\nFocused test command cou",
+      "latency_s": 60.26626181602478,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13915",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 608,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1472,
+      "response_excerpt": "<reasoning>\nThe checked-out SymPy version already returns `nan` for the reported substitution, while `limit(b, a)` remains `-1`. The missing piece is a regression test to prevent future simplification/substitution changes from collapsing the undefined intermediate expression to the limiting value.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/sympy/core/tests/test_subs.py b/sympy/core/tests/test_subs.py\n--- a/sympy/core/tests/test_subs.py\n+++ b/sympy/core/tests/test_subs.py\n@@\n def test_issue_5910(",
+      "latency_s": 118.1530909538269,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

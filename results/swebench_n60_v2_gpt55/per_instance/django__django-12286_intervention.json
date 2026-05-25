@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-12286",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 3111,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "check_language_settings_consistent": 1,
+    "get_supported_language_variant": 1,
+    "translation.e004 languages language_code": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1752,
+      "response": "<reasoning>The consistency check should use Django's existing language-variant resolution instead of requiring an exact `LANGUAGE_CODE` entry in `LANGUAGES`. That helper accepts configured base languages for sublanguage codes, while still raising `LookupError` when no supported variant exists. The tests cover invalid variants and valid fallback cases such as `de-at` with only `de` configured.</reasoning>\n<patch>diff --git a/django/core/checks/translation.py b/django/core/checks/translation.py\nindex 138ed07ff8..8457a6b89d 100644\n--- a/django/core/checks/translation.py\n+++ b/django/core/checks/translation.py\n@@ -1,4 +1,5 @@\n from django.conf import settings\n+from django.utils.translation import get_supported_language_variant\n from django.utils.translation.trans_real import language_code_re\n \n from . import Error, Tags, register\n@@ -55,7 +56,9 @@ def check_setting_languages_bidi(app_configs, **kwargs):\n @register(Tags.translation)\n def check_language_settings_consistent(app_configs, **kwargs):\n     \"\"\"Error if language settings are not consistent with each other.\"\"\"\n-    available_tags = {i for i, _ in settings.LANGUAGES} | {'en-us'}\n-    if settings.LANGUAGE_CODE not in available_tags:\n+    try:\n+        get_supported_language_variant(settings.LANGUAGE_CODE)\n+    except LookupError:\n         return [E004]\n-    return []\n+    else:\n+        return []\ndiff --git a/tests/check_framework/test_translation.py b/tests/check_framework/test_translation.py\nindex 4cd79d803f..8747a52cda 10",
+      "latency_s": 127.81626892089844,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 5550,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"check_language_settings_consistent\"}}</tool_call>",
+      "latency_s": 14.367801904678345,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 6065,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"get_supported_language_variant\"}}</tool_call>",
+      "latency_s": 14.081532955169678,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 6560,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"translation.E004 LANGUAGES LANGUAGE_CODE\"}}</tool_call>",
+      "latency_s": 14.497100830078125,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 7105,
+      "response": "<reasoning>Use Django's existing language variant resolver for the consistency check. It already accepts a configured base language when `LANGUAGE_CODE` is a sublanguage like `de-at`, while still rejecting unsupported language codes.</reasoning>\n<patch>diff --git a/django/core/checks/translation.py b/django/core/checks/translation.py\nindex 138ed07ff8..8457a6b89d 100644\n--- a/django/core/checks/translation.py\n+++ b/django/core/checks/translation.py\n@@ -1,4 +1,5 @@\n from django.conf import settings\n+from django.utils.translation import get_supported_language_variant\n from django.utils.translation.trans_real import language_code_re\n \n from . import Error, Tags, register\n@@ -55,7 +56,9 @@ def check_setting_languages_bidi(app_configs, **kwargs):\n @register(Tags.translation)\n def check_language_settings_consistent(app_configs, **kwargs):\n     \"\"\"Error if language settings are not consistent with each other.\"\"\"\n-    available_tags = {i for i, _ in settings.LANGUAGES} | {'en-us'}\n-    if settings.LANGUAGE_CODE not in available_tags:\n+    try:\n+        get_supported_language_variant(settings.LANGUAGE_CODE)\n+    except LookupError:\n         return [E004]\n-    return []\n+    else:\n+        return []\ndiff --git a/tests/check_framework/test_translation.py b/tests/check_framework/test_translation.py\nindex 4cd79d803f..8747a52cda 100644\n--- a/tests/check_framework/test_translation.py\n+++ b/tests/check_framework/test_translation.py\n@@ -3,7 +3,7 @@ from django.core.checks.translation import (\n",
+      "latency_s": 16.510914087295532,
+      "error": null
+    }
+  ]
+}

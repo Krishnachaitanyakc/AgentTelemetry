@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-14182",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 9526,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2667,
+      "response_excerpt": "<reasoning>\nThe failure happens because `ascii.rst` uses the fixed-width writer machinery but `RST.__init__` does not accept `header_rows`, so the keyword is rejected before writing starts. The patch threads `header_rows` through fixed-width writers, includes header-row values when computing column widths, places the RST separator after all header rows, and adds a regression test for `name` plus `unit`.\n\nI could not run the test suite in this environment: `pytest` is not installed, and direct im",
+      "latency_s": 141.49772095680237,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

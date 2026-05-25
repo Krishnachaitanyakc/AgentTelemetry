@@ -1,0 +1,21 @@
+{
+  "instance_id": "astropy__astropy-14365",
+  "repo": "astropy/astropy",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 353,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2166,
+      "response": "The files are very similar. Given that I need to provide a fix for this issue, and the issue clearly states it's a problem, let me look at what the actual proposed solution should be. The issue is that case-sensitivity should not be required for QDP commands.\n\nActually, wait. Let me re-examine the error message more carefully. The error says \"Unrecognized QDP line: read serr 1 2\" - but I verified that the regex with `re.IGNORECASE` DOES match this. \n\nLet me check if maybe the problem is in a dif...[truncated]",
+      "latency_s": 79.30341792106628,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "pylint-dev__pylint-6506",
+  "repo": "pylint-dev/pylint",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2542,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2496,
+      "response_excerpt": "<reasoning>\nThe traceback happens because command-line unknown options are treated as Pylint lint messages and then an internal `_UnrecognizedOptionError` is raised. That exception is not a user-facing CLI error, so it bubbles out and Python prints a traceback.\n\nThe fix is to route command-line unknown options through argparse\u2019s normal `error()` path, which prints usage plus a clear error message, then convert argparse\u2019s `SystemExit(2)` to Pylint\u2019s documented invalid-arguments exit code `32`. Co",
+      "latency_s": 197.79866290092468,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

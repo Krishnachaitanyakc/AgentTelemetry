@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-18199",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1182,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1092,
+      "response_excerpt": "<reasoning>\n`_nthroot_mod1` assumes it is operating in the nonzero multiplicative group modulo `p`, so `s == 0` falls through into primitive-root/discrete-log logic even though the only root of `x**q = 0 mod p` is `0`. The fix returns that root immediately, preserving the documented return shape for `all_roots`.\n\nI also added regression coverage for the reported public call in both scalar and `all_roots=True` modes.\n\nVerified with:\n`/private/tmp/sympy-verify-venv/bin/python -m pytest sympy/ntheo",
+      "latency_s": 211.53273129463196,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

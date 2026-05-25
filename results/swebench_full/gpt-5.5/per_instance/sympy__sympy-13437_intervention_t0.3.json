@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13437",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1447,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1406,
+      "response_excerpt": "<reasoning>\nThe current checkout already contains the fix: `bell.eval()` maps `S.Infinity` to `S.Infinity`, and the Bell tests include the limit regression. I verified directly that `bell(n).limit(n, oo)` returns `oo`, and the focused Bell test passes with `python3 -m pytest sympy/functions/combinatorial/tests/test_comb_numbers.py -k bell`.\n\nFor the buggy version described in the issue, the minimal patch is to evaluate `bell(oo)` as `oo` for Bell numbers while still rejecting Bell polynomials at",
+      "latency_s": 98.38441109657288,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

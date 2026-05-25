@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13158",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 374,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1970,
+      "response_excerpt": "Based on my investigation, I have all the information needed to formulate the fix.\n\n<reasoning>\n**Investigation summary:**\n\n1. **The bug**: When `QuerySet.none()` is called on a combined queryset (created via `.union()`, `.intersection()`, or `.difference()`), it returns all results instead of an empty queryset. This breaks `ModelMultipleChoiceField` when an empty form is submitted, because `clean()` returns `self.queryset.none()` which is supposed to be empty.\n\n2. **Root cause**: In `django/db/",
+      "latency_s": 347.8904957771301,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

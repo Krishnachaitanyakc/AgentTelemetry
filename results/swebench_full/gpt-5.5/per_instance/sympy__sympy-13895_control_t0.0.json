@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13895",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2863,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1337,
+      "response_excerpt": "<reasoning>\nThe inequivalence comes from `simplify()` using `normal()`/`cancel()` to rationalize `((-3*x - 1)/12)**x` into `(-3*x - 1)**x/12**x`. That split is unsafe when the exponent is not known to be an integer and the numerator can be negative, because later substitution can choose a different branch.\n\nThe patch detects those branch-sensitive powers and skips the rational-function cancellation paths that introduce the split. A regression test verifies that the original expression is preserv",
+      "latency_s": 266.43399596214294,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

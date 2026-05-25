@@ -1,0 +1,21 @@
+{
+  "instance_id": "astropy__astropy-6938",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1325,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1354,
+      "response": "<reasoning>\nThe FITS ASCII write path must assign the result of the exponent replacement because string replacement returns a new array. In this checkout the assignment is already present, so I added a targeted regression check that inspects the raw FITS bytes and verifies `D` exponent output is actually written, not just readable on round-trip.\n\nVerified with:\n`/private/tmp/astropy_fits_venv/bin/python -m pytest astropy/io/fits/tests/test_table.py::TestTableFunctions::test_ascii_floattypes -q`\n...[truncated]",
+      "latency_s": 377.678181886673,
+      "error": null
+    }
+  ]
+}

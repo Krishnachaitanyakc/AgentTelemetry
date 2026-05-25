@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16041",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 949,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2046,
+      "response_excerpt": "<reasoning>\n`BaseFormSet.empty_form` already constructs `form_kwargs` so formset-controlled values, including `empty_permitted=True`, override values supplied through `form_kwargs`. That means `empty_permitted` is ignored for `empty_form` as expected. The existing regression test covered only `False`; I extended it to cover both reported inputs, `False` and `True`.\n\nVerified with:\n`python3 tests/runtests.py forms_tests.tests.test_formsets.FormsFormsetTestCase.test_form_kwargs_empty_form forms_te",
+      "latency_s": 141.90971112251282,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

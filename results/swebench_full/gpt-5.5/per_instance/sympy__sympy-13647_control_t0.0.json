@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13647",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1304,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1880,
+      "response_excerpt": "<reasoning>\nI found the bug in `MatrixShaping._eval_col_insert`: for columns after the inserted block, it maps the output column back to `self` with `j - pos - other.cols`. That subtracts the insertion position twice. The source column should be `j - other.cols`, since only the inserted columns shift the original right-hand columns.\n\nI added regression coverage for the reported `eye(6).col_insert(3, 2*ones(6, 2))` case. In the local checkout, the focused repro returns `True` and `pytest sympy/ma",
+      "latency_s": 173.9289870262146,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

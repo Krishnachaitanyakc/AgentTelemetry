@@ -1,0 +1,26 @@
+{
+  "instance_id": "matplotlib__matplotlib-23476",
+  "repo": "matplotlib/matplotlib",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2472,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4053,
+      "response_excerpt": "<reasoning>\nThe DPI doubling comes from serializing a figure while its canvas has a high-DPI device pixel ratio applied. On unpickle, pyplot recreates a backend manager; on macOS Retina that manager applies the device pixel ratio again, so a serialized physical DPI can be scaled repeatedly.\n\nThe fix stores the unscaled logical DPI in the pickle state by dividing by the canvas device pixel ratio, and resets `_original_dpi` to that same logical value. The regression test simulates a pyplot-managed",
+      "latency_s": 214.371511220932,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

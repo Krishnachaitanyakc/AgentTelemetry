@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13590",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 767,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1684,
+      "response": "Perfect! I found the bug! The issue is on line 1062-1065: when creating the `values` generator, and then on line 1068 trying to unpack it with `type_(*values)`. The generator will be consumed in the first unpacking, so if there are any issues, it will fail.\n\nBut actually, looking more carefully at the code:\n- Line 1067 checks if it's a namedtuple  \n- Line 1068 uses `*values` to unpack the generator\n- Line 1069 passes the generator directly\n\nThe real issue is that regular tuples can be initialize...[truncated]",
+      "latency_s": 82.76284289360046,
+      "error": null
+    }
+  ]
+}

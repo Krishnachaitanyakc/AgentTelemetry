@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14730",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2796,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1319,
+      "response_excerpt": "<reasoning>\nFound the existing Django system check for this exact case in `ManyToManyField._check_ignored_options()`. It currently reports `fields.W345` as a warning when `remote_field.symmetrical` and `related_name` are set. Since the issue asks to prevent this configuration, the patch promotes that check to `checks.Error` with an error id, updates the existing regression test, and updates the checks reference docs. Verified with:\n\n`python3 tests/runtests.py invalid_models_tests.test_relative_f",
+      "latency_s": 134.75978875160217,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11905",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1523,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1203,
+      "response_excerpt": "<reasoning>\n1. `__isnull` currently accepts any RHS until SQL generation, so truthy/falsey values can silently create confusing query behavior.\n2. The right validation point is `IsNull.as_sql()`, where the lookup is compiled and can reject anything except actual `bool` instances.\n3. The regression test should cover plain fields and relation joins, since the issue specifically mentions join behavior.\n4. I attempted to run the targeted test with `python3 tests/runtests.py lookup.tests.LookupTests.",
+      "latency_s": 150.7181739807129,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

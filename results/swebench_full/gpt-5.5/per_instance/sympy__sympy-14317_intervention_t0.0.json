@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-14317",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2697,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1395,
+      "response_excerpt": "<reasoning>\nThe bug comes from `LatexPrinter._print_Poly` rendering `poly.as_expr()`. That converts the polynomial into a generic `Add`, whose term sorting can differ from the polynomial\u2019s own monomial order. The fix is to render directly from `poly.terms()`, which is the same descending logical order used by `str(Poly(...))`.\n\nI verified the old behavior reproduced the reported output, then verified the patched printer emits `a*x**5 + x**4 + b*x**3 + ...`. The focused regression test was also r",
+      "latency_s": 663.7390630245209,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

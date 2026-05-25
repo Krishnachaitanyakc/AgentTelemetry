@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15996",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2705,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1384,
+      "response_excerpt": "<reasoning>\nThe bug is in `EnumSerializer`: it serializes enum values through a single `self.value.name` lookup. Combined `enum.Flag`/`enum.IntFlag` values are not guaranteed to have a real member name, so migrations can emit invalid code such as `re.RegexFlag[None]`. For flag enums, serialize the value as an OR expression of the concrete members instead. I verified the focused migration writer test with `python3 tests/runtests.py migrations.test_writer.WriterTests.test_serialize_enum_flags`.\n</",
+      "latency_s": 188.71811413764954,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

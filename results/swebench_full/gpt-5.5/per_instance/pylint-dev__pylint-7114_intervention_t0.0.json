@@ -1,0 +1,26 @@
+{
+  "instance_id": "pylint-dev__pylint-7114",
+  "repo": "pylint-dev/pylint",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2900,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2490,
+      "response_excerpt": "<reasoning>\nThe failure comes from `discover_package_path(\"a\", [])` returning the namespace directory itself (`.../a`). That puts `a` on the import search path, so Astroid resolves top-level module `a` as `a/a.py` instead of the implicit namespace package. Pylint then tries to lint synthetic `a/__init__.py` and import resolution for `from a import b` is polluted.\n\nThe fix detects implicit namespace directory arguments and uses their parent directory as the package path unless an explicit `source",
+      "latency_s": 387.6987428665161,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

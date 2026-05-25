@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16408",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3686,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1894,
+      "response_excerpt": "<reasoning>\nThe failure comes from multi-hop `FilteredRelation` joins where `select_related(\"tournament_pool\")` selects the filtered `Pool`, but not the intermediate `Tournament` object needed for `tournament_pool.tournament`. The compiler already avoids writing the root object into the wrong related cache for multi-hop filtered relations, but that leaves the correct intermediate relation uncached and causes an extra query.\n\nThe patch reuses the already-created penultimate join alias for multile",
+      "latency_s": 310.6896951198578,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

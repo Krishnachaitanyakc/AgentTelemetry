@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11999",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 894,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1337,
+      "response": "Now I think I finally understand the issue! The `_prepare` method doesn't have code to create the `get_foo_bar_display` methods for fields with choices. This code is likely missing in version 2.2+. Let me look at what should be added. Based on the pattern I see with other methods like `get_*_order`, I need to:\n\n1. Iterate over fields that have choices\n2. Create a method for each field\n3. Add it to the class using `setattr` and `partialmethod`\n\nBut the critical part is - we need to check if the m...[truncated]",
+      "latency_s": 162.59365320205688,
+      "error": null
+    }
+  ]
+}

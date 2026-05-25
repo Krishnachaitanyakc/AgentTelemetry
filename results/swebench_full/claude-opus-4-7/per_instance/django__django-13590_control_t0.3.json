@@ -1,0 +1,35 @@
+{
+  "instance_id": "django__django-13590",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 2,
+  "proposed_patch": true,
+  "answer_len": 715,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1653,
+      "response_excerpt": "The patch has already been proposed above. The background `find` command completed and I read its output before the task notification arrived, so no further action is needed.",
+      "latency_s": 652.8510868549347,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 1863,
+      "response_excerpt": "<reasoning>\nThe issue is in `django/db/models/sql/query.py` in the `resolve_lookup_value` method. When the method encounters a tuple, it tries to reconstruct the tuple using a generator expression. For regular tuples this works because `tuple(iterator)` consumes the iterator. However, namedtuples are constructed via `__new__` which expects positional arguments (one per field), not an iterator.\n\nThe fix is to detect namedtuples (by checking for the `_make` attribute that all namedtuples have) and",
+      "latency_s": 43.819303035736084,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

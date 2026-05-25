@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-23117",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1307,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2167,
+      "response_excerpt": "<reasoning>\nThe failure happens because `_scan_iterable_shape` calls `zip(*...)` on an empty list when constructing `Array([])`. Treating an empty iterable as a rank-1 array with shape `(0,)` matches the existing array shape inference model and allows nested empty dimensions like `[[], []]` to infer `(2, 0)`. I also add a regression test for `Array([])`.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/sympy/tensor/array/ndim_array.py b/sympy/tensor/array/ndim_array.py\n--- a/sympy/tensor/array/ndim_ar",
+      "latency_s": 101.60731911659241,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

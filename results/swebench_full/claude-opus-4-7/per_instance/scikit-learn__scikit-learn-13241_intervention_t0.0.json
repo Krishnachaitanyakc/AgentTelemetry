@@ -1,0 +1,35 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13241",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 2,
+  "proposed_patch": true,
+  "answer_len": 1059,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1612,
+      "response_excerpt": "The patch has been finalized in my previous response. No further action needed.",
+      "latency_s": 550.4653840065002,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 1727,
+      "response_excerpt": "The patch is already applied to the working tree. Outputting the final answer.\n\n<reasoning>\nThe issue is that `KernelPCA` produces eigenvectors with non-deterministic signs across runs because eigendecomposition (both `linalg.eigh` and `eigsh`) doesn't fix sign convention \u2014 `v` and `-v` are both valid eigenvectors. The standard scikit-learn fix is to apply `svd_flip` to enforce a deterministic sign convention (largest absolute value in each column is positive). The patch imports `svd_flip` and a",
+      "latency_s": 108.52249717712402,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

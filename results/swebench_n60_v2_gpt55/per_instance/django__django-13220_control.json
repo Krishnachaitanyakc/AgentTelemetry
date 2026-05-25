@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-13220",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 5219,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "class validationerror": 1,
+    "validationerror error_list error_dict messages": 1,
+    "validationerror __repr__ unittest": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1623,
+      "response": "<reasoning>ValidationError normalizes messages into either a single message, an error_list, or an error_dict. Equality should compare that normalized structure, not object identity, and list/dict containers should be compared without depending on insertion order. The patch adds a hashable identity representation for each shape and uses it for both __eq__ and __hash__, with tests covering simple errors, params, field order, non-field error order, duplicates, and nested errors.</reasoning>\n<patch>diff --git a/django/core/exceptions.py b/django/core/exceptions.py\n--- a/django/core/exceptions.py\n+++ b/django/core/exceptions.py\n@@ -1,6 +1,10 @@\n \"\"\"\n Global Django exception and warning classes.\n \"\"\"\n+from collections import Counter\n+\n+from django.utils.hashable import make_hashable\n+\n \n class FieldDoesNotExist(Exception):\n     \"\"\"The requested model field does not exist\"\"\"\n@@ -185,6 +189,29 @@ class ValidationError(Exception):\n     def __repr__(self):\n         return 'ValidationError(%s)' % self\n \n+    @staticmethod\n+    def _normalize_error_list(error_list):\n+        return frozenset(\n+            Counter(error._normalize_for_comparison() for error in error_list).items()\n+        )\n+\n+    def _normalize_for_comparison(self):\n+        if hasattr(self, 'message'):\n+            return (\n+                'message',\n+                make_hashable(self.message),\n+                make_hashable(self.code),\n+                make_hashable(self.params),\n+            )\n+        if hasattr(se",
+      "latency_s": 135.93561601638794,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 7460,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"class ValidationError\"}}</tool_call>",
+      "latency_s": 15.224870920181274,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 7910,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"ValidationError error_list error_dict messages\"}}</tool_call>",
+      "latency_s": 13.345527172088623,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 8485,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"ValidationError __repr__ unittest\"}}</tool_call>",
+      "latency_s": 14.320712089538574,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 8995,
+      "response": "<reasoning>ValidationError already normalizes input into either a single message, an error_list, or an error_dict. Equality should compare those normalized shapes, include message/code/params for leaf errors, and treat lists of errors as multisets so field and non-field error ordering does not affect equality while duplicate errors still count.</reasoning>\n<patch>diff --git a/django/core/exceptions.py b/django/core/exceptions.py\n--- a/django/core/exceptions.py\n+++ b/django/core/exceptions.py\n@@ -1,6 +1,10 @@\n \"\"\"\n Global Django exception and warning classes.\n \"\"\"\n+from collections import Counter\n+\n+from django.utils.hashable import make_hashable\n+\n \n class FieldDoesNotExist(Exception):\n     \"\"\"The requested model field does not exist\"\"\"\n@@ -185,6 +189,29 @@ class ValidationError(Exception):\n     def __repr__(self):\n         return 'ValidationError(%s)' % self\n \n+    @staticmethod\n+    def _normalize_error_list(error_list):\n+        return frozenset(\n+            Counter(error._normalize_for_comparison() for error in error_list).items()\n+        )\n+\n+    def _normalize_for_comparison(self):\n+        if hasattr(self, 'message'):\n+            return (\n+                'message',\n+                make_hashable(self.message),\n+                make_hashable(self.code),\n+                make_hashable(self.params),\n+            )\n+        if hasattr(self, 'error_dict'):\n+            return (\n+                'error_dict',\n+                make_hashable({\n+                    field: s",
+      "latency_s": 82.51200199127197,
+      "error": null
+    }
+  ]
+}

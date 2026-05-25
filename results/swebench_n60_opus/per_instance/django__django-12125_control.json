@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12125",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 477,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2414,
+      "response": "Found the bug. On line 268, `self.value.__name__` is used, which only gives the simple class name (e.g., `Inner`), not the qualified name (e.g., `Outer.Inner`). The fix is to use `self.value.__qualname__` instead.\n\n<reasoning>\nThe bug is in `TypeSerializer.serialize()` in `django/db/migrations/serializer.py`, line 268.\n\nWhen serializing a type reference for a migration file, the code uses `self.value.__name__` which returns only the simple class name. For inner classes like `Outer.Inner`, `__nam...[truncated]",
+      "latency_s": 173.49273085594177,
+      "error": null
+    }
+  ]
+}

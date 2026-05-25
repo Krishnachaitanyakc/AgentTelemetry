@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15781",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4172,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2055,
+      "response_excerpt": "<reasoning>\nThe hardcoded formatter in `BaseCommand.create_parser()` prevents command authors from using argparse formatters such as `RawDescriptionHelpFormatter`, which is needed to preserve intentional line breaks in command help text. The patch adds `BaseCommand.formatter_class`, defaults it to Django\u2019s existing formatter, and keeps explicit `create_parser(..., formatter_class=...)` overrides working. I added tests for the new attribute and for preserving multiline help text with `RawDescript",
+      "latency_s": 152.57588362693787,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

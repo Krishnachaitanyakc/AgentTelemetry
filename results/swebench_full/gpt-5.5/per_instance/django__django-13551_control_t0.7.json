@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13551",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4891,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1397,
+      "response_excerpt": "<reasoning>\nThe reset token currently hashes user pk, password, last_login, and timestamp. If an unused token was issued before an email change, none of those values necessarily change, so the token remains valid. The fix is to add the configured email field value to the hash input using `get_email_field_name()` and `getattr(..., '')`, so users without an email attribute still work. Tests cover the built-in `User`, a custom email field, and a missing/null email value.\n</reasoning>\n\n<patch>\n```di",
+      "latency_s": 120.16664409637451,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

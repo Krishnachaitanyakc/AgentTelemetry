@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-5413",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1663,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3715,
+      "response_excerpt": "<reasoning>\nThe issue is that `ExceptionInfo` only defined `__repr__`, so `str(excinfo)` fell back to the traceback-oriented wrapper representation. A normal caught exception\u2019s `str()` returns `str(exception)`, so the least invasive fix is to add `ExceptionInfo.__str__` and delegate to `self.value` once the context manager has captured the exception. For an unfilled `ExceptionInfo`, it keeps the existing placeholder representation.\n\nI also updated the existing repr/str test expectations and adde",
+      "latency_s": 80.20110201835632,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

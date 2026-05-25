@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-20049",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4683,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3378,
+      "response_excerpt": "<reasoning>\nThe current `Point.vel()` can infer velocity through a position path only when it finds another point with velocity defined in the requested frame. The issue case has a complete relative position but no point velocity, so the method raises.\n\nI changed `vel()` to keep the existing behavior first. If no usable point velocity is found, it now falls back to differentiating the position relative to the nearest connected point, but only when no point in that reachable position graph has an",
+      "latency_s": 141.7611119747162,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

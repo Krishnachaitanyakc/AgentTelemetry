@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13142",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1449,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3120,
+      "response_excerpt": "<reasoning>\nThe bug is in `BaseMixture.fit_predict`: with `n_init > 1`, the loop may finish on an initialization that is not the best one. The estimator then restores `best_params`, but the returned labels can still come from the last initialization\u2019s `log_resp`. Recomputing the E-step after restoring `best_params` makes `fit_predict(X)` return labels from the fitted model, matching `predict(X)`. A regression test with `n_init > 1` catches this.\n</reasoning>\n\n<patch>\ndiff --git a/sklearn/mixture",
+      "latency_s": 79.10484790802002,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

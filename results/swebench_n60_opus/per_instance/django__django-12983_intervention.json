@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12983",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1002,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1206,
+      "response": "Now I have a clear picture of the issue. The fix needs two changes:\n\n1. **`django/utils/text.py`**: Add `.strip('-_')` to the return value of `slugify()` to strip leading/trailing dashes and underscores.\n2. **`django/utils/text.py`**: Update the docstring to reflect the new behavior.\n\n<reasoning>\nThe issue is straightforward:\n\n**Current behavior** (Django 2.2):\n```python\n>>> text.slugify(\"___This is a test ---\")\n'___this-is-a-test-'\n```\n\n**Expected behavior**:\n```python\n>>> text.slugify(\"___This...[truncated]",
+      "latency_s": 90.32276105880737,
+      "error": null
+    }
+  ]
+}

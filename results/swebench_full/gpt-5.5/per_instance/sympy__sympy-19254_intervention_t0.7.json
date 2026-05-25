@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-19254",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2481,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1418,
+      "response_excerpt": "<reasoning>\n1. `dup_zz_mignotte_bound` already uses the Knuth-Cohen variant in this checkout.\n2. `dmp_zz_mignotte_bound` still used the older multivariate Mignotte bound.\n3. The fix mirrors the univariate formula using total multivariate degree, squared L2 norm, leading coefficient, and max norm.\n4. Updated tests cover the reduced bound and the downstream Wang factorization prime.\n5. Verified with `python3 -m pytest sympy/polys/tests/test_factortools.py -q`: 24 passed, 1 xfailed.\n</reasoning>\n\n<",
+      "latency_s": 81.58624005317688,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

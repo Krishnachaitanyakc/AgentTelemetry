@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13768",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1803,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1418,
+      "response_excerpt": "<reasoning>\nLocated `Signal.send_robust()` in `django/dispatch/dispatcher.py`. The checkout already had robust exception logging, but it used `logger.error(..., exc_info=err)` and assumed every receiver has `__qualname__`. I aligned it with Django\u2019s nearby robust logging style by using `logger.exception()` and falling back safely for callable receiver objects. Added a regression test for callable objects. Verified with `python3 -Wall tests/runtests.py dispatch --parallel 1`.\n</reasoning>\n\n<patch",
+      "latency_s": 117.71474981307983,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

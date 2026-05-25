@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15400",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 977,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1554,
+      "response_excerpt": "<reasoning>\nI found `SimpleLazyObject` in `django/utils/functional.py`. Since `operator.radd` doesn\u2019t exist, the clean fix is to define `__radd__` as a `new_method_proxy`-wrapped method; `new_method_proxy` forces setup and passes the wrapped object as `self`, so `return other + self` becomes `other + wrapped`.\n\nI also added a focused regression test for `1 + SimpleLazyObject(lambda: 1)`. The focused tests pass with `python3 tests/runtests.py utils_tests.test_lazyobject.SimpleLazyObjectTestCase.t",
+      "latency_s": 88.88775897026062,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "matplotlib__matplotlib-18869",
+  "repo": "matplotlib/matplotlib",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3265,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2519,
+      "response_excerpt": "<reasoning>\nMatplotlib already exposes `__version__`, so the smallest useful API addition is a top-level `version_info` tuple-like value. I used a `namedtuple` with `major`, `minor`, and `micro` fields so it compares naturally with tuples such as `(3, 1)` while remaining readable. The parser intentionally keeps only numeric release components and ignores suffixes like `rc1`, `.dev`, `.post`, or local version metadata.\n\nVerification: `python3 -m py_compile lib/matplotlib/__init__.py lib/matplotli",
+      "latency_s": 126.04581189155579,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

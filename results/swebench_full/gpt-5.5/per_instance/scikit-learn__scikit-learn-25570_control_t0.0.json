@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-25570",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2319,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 6396,
+      "response_excerpt": "<reasoning>\n1. The failure happens only in pandas output mode while assigning generated column names after `pd.concat`.\n2. Empty column selections can still contribute an empty pandas object to `Xs`, while `_iter(fitted=True, replace_strings=True)` skips those empty selections.\n3. That makes `transformer_names` shorter/differently aligned than `feature_names_outs`; the first zipped pair can become a real transformer name with an empty `Index`, yielding zero output names for a non-empty concatena",
+      "latency_s": 162.98330783843994,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

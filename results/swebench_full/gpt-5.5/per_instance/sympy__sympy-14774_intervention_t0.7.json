@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-14774",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1753,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1342,
+      "response_excerpt": "<reasoning>\nThe LaTeX printer decides whether to rewrite inverse trig names through `inv_trig_table`. `acsc` and `asec` need to be in that table so `inv_trig_style=\"full\"` converts them to `arccsc` and `arcsec`. I also added regression coverage for `asec`; this checkout already had `acsc` coverage.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/sympy/printing/latex.py b/sympy/printing/latex.py\n--- a/sympy/printing/latex.py\n+++ b/sympy/printing/latex.py\n@@ -740,7 +740,7 @@ class LatexPrinter(Printer)",
+      "latency_s": 85.56768679618835,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

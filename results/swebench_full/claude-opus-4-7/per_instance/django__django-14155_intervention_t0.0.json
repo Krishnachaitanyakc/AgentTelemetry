@@ -1,0 +1,35 @@
+{
+  "instance_id": "django__django-14155",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 2,
+  "proposed_patch": true,
+  "answer_len": 562,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1347,
+      "response_excerpt": "The patch has been provided in my previous response. The fix modifies `django/urls/resolvers.py` to:\n\n1. **In `__init__`**: Detect `functools.partial` instances and set `_func_path` to point at the underlying wrapped function's module and name, instead of falling into the class-based view branch which would yield `functools.partial`.\n\n2. **In `__repr__`**: When `self.func` is a `functools.partial`, use `repr(self.func)` so the output reveals the underlying function plus the bound positional/keyw",
+      "latency_s": 218.61931896209717,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 1985,
+      "response_excerpt": "The fix unwraps `functools.partial` in `__init__` so `_func_path` (and `view_name`) reflects the underlying view's module/name, while `__repr__` (already in place) renders the full partial with its bound arguments.\n\n<reasoning>\nTwo-part bug:\n1. `__init__` had no `functools.partial` handling. Partials lack `__name__`, so they fell into the class-based-view branch and `_func_path` came out as `\"functools.partial\"` \u2014 leaking into `view_name` too.\n2. `__repr__` already handled partials via `repr(sel",
+      "latency_s": 153.80058002471924,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

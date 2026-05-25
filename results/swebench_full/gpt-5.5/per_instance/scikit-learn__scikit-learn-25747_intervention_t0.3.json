@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-25747",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3835,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 6953,
+      "response_excerpt": "<reasoning>\nThe failure happens in `_wrap_in_pandas_container`: when the wrapped output is already a pandas `DataFrame`, scikit-learn overwrites its index with the original input index. In the issue repro, `FeatureUnion` first concatenates the transformer\u2019s grouped `Series` into a 4-row `DataFrame`, then the set_output wrapper tries to assign the original 96-row index, causing the length mismatch.\n\nThe fix is to preserve the index of pandas `DataFrame` outputs and only rename columns. Array-like",
+      "latency_s": 355.701092004776,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

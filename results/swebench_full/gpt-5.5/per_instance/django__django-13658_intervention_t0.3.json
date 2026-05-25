@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13658",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2590,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2031,
+      "response_excerpt": "<reasoning>\n1. `ManagementUtility.__init__()` already computes `self.prog_name` from the provided `argv`.\n2. The early parser for `--settings`/`--pythonpath` was not using that value, so argparse could fall back to `sys.argv[0]`.\n3. Passing `prog=self.prog_name` makes the early parser consistent with the rest of management command parsing.\n4. Added a regression test where `sys.argv[0]` is `None` but `execute_from_command_line()` receives `['django-admin', ...]`.\n5. Verified with: `/private/tmp/d",
+      "latency_s": 223.26628494262695,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

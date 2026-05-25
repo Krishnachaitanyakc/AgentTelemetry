@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13028",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 583,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3664,
+      "response": "Now I understand the bug. The `check_filterable` at line 1127 does `getattr(expression, 'filterable', True)` \u2014 checking the **instance** attribute. When the `value` is a `ProductMetaDataType` instance whose `filterable` field is `False`, `expression.filterable` returns `False` and the error fires incorrectly.\n\nThe fix (already applied in a newer version) is to:\n1. Guard with `hasattr(expression, 'resolve_expression')` so only expression objects are checked\n2. Use `getattr(type(expression), 'filt...[truncated]",
+      "latency_s": 220.5790250301361,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-20154",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3069,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1344,
+      "response_excerpt": "<reasoning>\n`partitions()` mutates an internal `ms` dictionary while generating results, so yielding `ms` exposes later mutations to earlier outputs. The fix is to yield shallow copies at both normal yield sites, including `size=True`. Tests should no longer copy outputs themselves; they should assert that `list(partitions(...))` works and that yielded dict objects are distinct.\n\nVerification: the old extracted checkout cannot run under the available Python 3.14 environment due old SymPy compati",
+      "latency_s": 132.40164184570312,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

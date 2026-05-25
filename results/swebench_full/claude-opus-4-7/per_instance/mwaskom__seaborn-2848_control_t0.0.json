@@ -1,0 +1,26 @@
+{
+  "instance_id": "mwaskom__seaborn-2848",
+  "repo": "mwaskom/seaborn",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1626,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1761,
+      "response_excerpt": "<reasoning>\nThe issue is that `pairplot` (and the underlying `PairGrid`) fails when `hue_order` is passed with a subset of the actual hue values in the data. The original code in `PairGrid` keeps all data (including rows where `hue` is not in `hue_order`), then passes them downstream to plotting functions that try to map them through the palette/lookup_table, which fails because the lookup_table only has entries for the values in `hue_order`. This eventually triggers a `np.isnan(key)` check in `",
+      "latency_s": 491.79456305503845,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

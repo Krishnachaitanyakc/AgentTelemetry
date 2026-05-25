@@ -1,0 +1,26 @@
+{
+  "instance_id": "mwaskom__seaborn-3010",
+  "repo": "mwaskom/seaborn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1255,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4747,
+      "response_excerpt": "<reasoning>\n`PolyFit` should not pass rows with missing `x` or `y` values into `np.polyfit`, because NumPy can fail during the least-squares solve. The fix is to drop missing coordinate rows before grouped fitting, and add explicit regression coverage for the issue case using `None`.\n\nVerification: `python3 -m py_compile seaborn/_stats/regression.py tests/_stats/test_regression.py` passes. I could not run pytest because this environment does not have pytest/pandas/matplotlib installed.\n</reasoni",
+      "latency_s": 82.45697712898254,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

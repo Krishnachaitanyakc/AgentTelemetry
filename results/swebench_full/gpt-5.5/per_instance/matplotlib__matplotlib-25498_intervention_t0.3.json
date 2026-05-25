@@ -1,0 +1,26 @@
+{
+  "instance_id": "matplotlib__matplotlib-25498",
+  "repo": "matplotlib/matplotlib",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2649,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2276,
+      "response_excerpt": "<reasoning>\nThe failure has two causes. `Colorbar.update_normal()` only redraws the existing colorbar state, so replacing `mappable.norm` with a new `LogNorm` never updates `cb.norm`. Separately, `update_bruteforce()` copies the new unscaled `LogNorm`, but `_process_values()` falls back to `(0, 1)` before calling `LogNorm.inverse()`, which causes the division by zero.\n\nThe patch copies the mappable state in `update_normal()` and autoscale-fills an unscaled norm from the attached mappable data be",
+      "latency_s": 341.81844305992126,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

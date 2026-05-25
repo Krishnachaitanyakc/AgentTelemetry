@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12308",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1794,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1284,
+      "response": "<reasoning>\n`display_for_field()` is used for readonly admin field rendering. Its JSON branch was calling `json.dumps()` directly, which incorrectly serializes `InvalidJSONInput` instead of preserving the raw invalid input. `forms.JSONField.prepare_value()` already handles both valid JSON serialization and `InvalidJSONInput`, so the admin should delegate to the model field\u2019s form field. The existing `TypeError` fallback is kept for unencodable Python values.\n\nVerified with `python3 tests/runtest...[truncated]",
+      "latency_s": 136.08037900924683,
+      "error": null
+    }
+  ]
+}

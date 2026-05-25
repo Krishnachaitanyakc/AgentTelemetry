@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14238",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1090,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3384,
+      "response_excerpt": "<reasoning>\nI inspected `AutoFieldMeta.__subclasscheck__` and found this checkout already contains the implementation fix: it uses `issubclass(subclass, self._subclasses)`, so subclasses of `BigAutoField` and `SmallAutoField` pass the `DEFAULT_AUTO_FIELD` validation path.\n\nThe remaining gap was regression coverage for `DEFAULT_AUTO_FIELD` with a `SmallAutoField` subclass. I added that symmetric test next to the existing `MyBigAutoField` case.\n\nVerified with:\n`python3 ./tests/runtests.py model_op",
+      "latency_s": 125.39532208442688,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12125",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1772,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2383,
+      "response_excerpt": "<reasoning>\nThe field deconstruction path can include nested class names via `__qualname__`, e.g. `app.models.Outer.Inner`. The migration serializer was splitting that path at the final dot and treating `app.models.Outer` as the module to import, which is wrong because `Outer` is a class, not a module. The fix keeps the serialized reference unchanged but backs the import path up to the nearest already-loaded module, so migrations import `app.models` and reference `app.models.Outer.Inner`.\n</reas",
+      "latency_s": 123.93803191184998,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

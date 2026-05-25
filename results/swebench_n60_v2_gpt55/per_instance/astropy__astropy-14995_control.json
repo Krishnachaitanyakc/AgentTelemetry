@@ -1,0 +1,60 @@
+{
+  "instance_id": "astropy__astropy-14995",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 2780,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "_arithmetic_mask": 1,
+    "handle_mask operand mask none": 1,
+    "nddataref multiply handle_mask bitwise_or": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3468,
+      "response": "<reasoning>The regression is in `_arithmetic_mask`: v5.3 only copies `self.mask` when `operand is None`, but arithmetic with a scalar or an `NDDataRef` without a mask still passes an operand object whose `.mask` is `None`. That falls through to `handle_mask(self.mask, None)`, which breaks for `np.bitwise_or`. The fix is to treat a present operand with `mask is None` the same as the existing one-sided-mask case, while preserving collapse operations where `operand is None`. I also added regression coverage for bitmask arithmetic with scalar, unmasked, masked, and two-masked operands.</reasoning>\n<patch>diff --git a/astropy/nddata/mixins/ndarithmetic.py b/astropy/nddata/mixins/ndarithmetic.py\n--- a/astropy/nddata/mixins/ndarithmetic.py\n+++ b/astropy/nddata/mixins/ndarithmetic.py\n@@ -520,10 +520,13 @@ class NDArithmeticMixin:\n         elif self.mask is None and operand is not None:\n             # Make a copy so there is no reference in the result.\n             return deepcopy(operand.mask)\n-        elif operand is None:\n+        elif operand is None or getattr(operand, \"mask\", None) is None:\n+            # first condition lets through masks within collapse operations,\n+            # second lets through masks when doing arithmetic on an\n+            # operand without a mask:\n             return deepcopy(self.mask)\n         else:\n-            # Now lets calculate the resulting mask (operation enforces copy)\n+            # Now let's calculate the resulting mask (operation enforces c",
+      "latency_s": 113.30387878417969,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 7284,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"_arithmetic_mask\"}}</tool_call>",
+      "latency_s": 17.46863102912903,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 7711,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"handle_mask operand mask None\"}}</tool_call>",
+      "latency_s": 11.19055700302124,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 8203,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"NDDataRef multiply handle_mask bitwise_or\"}}</tool_call>",
+      "latency_s": 16.286378145217896,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 8755,
+      "response": "<reasoning>The mask combiner should not call `handle_mask(self.mask, operand.mask)` when `operand.mask` is `None`. For scalar arithmetic and arithmetic against an unmasked `NDDataRef`, the correct one-sided-mask behavior is to copy the existing mask into the result. This preserves the no-mask/no-mask case and keeps normal two-mask propagation through `handle_mask`, including `np.bitwise_or`.</reasoning>\n<patch>diff --git a/astropy/nddata/mixins/ndarithmetic.py b/astropy/nddata/mixins/ndarithmetic.py\n--- a/astropy/nddata/mixins/ndarithmetic.py\n+++ b/astropy/nddata/mixins/ndarithmetic.py\n@@ -520,10 +520,12 @@ class NDArithmeticMixin:\n         elif self.mask is None and operand is not None:\n             # Make a copy so there is no reference in the result.\n             return deepcopy(operand.mask)\n-        elif operand is None:\n+        elif operand is None or getattr(operand, \"mask\", None) is None:\n+            # If only self has a mask, copy it to the result. This also covers\n+            # arithmetic with scalars and NDData operands without masks.\n             return deepcopy(self.mask)\n         else:\n-            # Now lets calculate the resulting mask (operation enforces copy)\n+            # Now let's calculate the resulting mask (operation enforces copy)\n             return handle_mask(self.mask, operand.mask, **kwds)\n \n     def _arithmetic_wcs(self, operation, operand, compare_wcs, **kwds):\ndiff --git a/astropy/nddata/mixins/tests/test_ndarithmetic.py b/astropy/nddata/mi",
+      "latency_s": 21.024430751800537,
+      "error": null
+    }
+  ]
+}

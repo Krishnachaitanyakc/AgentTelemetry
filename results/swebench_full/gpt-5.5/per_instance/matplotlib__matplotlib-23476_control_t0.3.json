@@ -1,0 +1,26 @@
+{
+  "instance_id": "matplotlib__matplotlib-23476",
+  "repo": "matplotlib/matplotlib",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2964,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4053,
+      "response_excerpt": "<reasoning>\nThe macOS backend scales `figure.dpi` by the display device scale. After pickling, the canvas is dropped but the scaled DPI remains on the figure, so creating a new macOS canvas and applying the device scale again doubles the DPI.\n\nThe fix stores the unscaled logical DPI on the figure before device scaling, then always derives scaled DPI from that original value. The regression test simulates an unpickled Retina figure with `dpi=200` and `_original_dpi=100`, then verifies applying sc",
+      "latency_s": 200.013436794281,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

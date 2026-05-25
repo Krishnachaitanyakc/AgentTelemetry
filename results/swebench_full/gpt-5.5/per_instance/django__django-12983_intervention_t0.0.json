@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12983",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1891,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1175,
+      "response_excerpt": "<reasoning>\nInspected `django.utils.text.slugify()` and its focused tests. The fix is to strip leading/trailing `-` and `_` after whitespace/dash normalization, because underscores survive the allowed-character regex and trailing dash runs are introduced by the final substitution. Regression tests should cover leading underscores, trailing underscores, leading/trailing dashes, and mixed separators. In this local checkout the change was already present in `HEAD`; I verified behavior with `python3",
+      "latency_s": 163.5010712146759,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

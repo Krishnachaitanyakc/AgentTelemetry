@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15400",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 905,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1554,
+      "response_excerpt": "<reasoning>\n`SimpleLazyObject` already proxies `__add__`, but reflected addition is looked up on the right-hand operand\u2019s type, so `1 + SimpleLazyObject(lambda: 1)` needs `SimpleLazyObject.__radd__`. Since `operator.radd` doesn\u2019t exist, the clean local pattern is to use `new_method_proxy` as a decorator: it unwraps the lazy object before calling the method body, so `return other + self` operates on the wrapped value. I also added a regression test for reflected addition.\n\nFocused smoke verificat",
+      "latency_s": 102.24501395225525,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

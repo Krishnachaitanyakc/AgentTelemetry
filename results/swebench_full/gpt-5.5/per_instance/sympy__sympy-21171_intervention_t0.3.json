@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-21171",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1255,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 9183,
+      "response_excerpt": "<reasoning>\nThe traceback shows `LatexPrinter._print_Pow()` calling `self._print(expr.base, exp=...)` when the base is a function. `SingularityFunction` is a function, but its latex printer did not accept the optional `exp` keyword, so powered singularity functions crashed during notebook latex rendering. The fix is to make `_print_SingularityFunction` accept `exp` and format the outer power, matching other function printers such as `DiracDelta` and `Heaviside`.\n\nI also added a regression assert",
+      "latency_s": 166.7789387702942,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

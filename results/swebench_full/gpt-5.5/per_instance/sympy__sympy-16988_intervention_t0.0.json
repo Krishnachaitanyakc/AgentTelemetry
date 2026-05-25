@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-16988",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 830,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1224,
+      "response_excerpt": "<reasoning>\nThe bug happens because `Intersection.__new__` simplifies arguments left-to-right after sympification. With duplicate inputs, one `{1}` can be processed against `{1}` first and collapse the working intersection to `{1}`, which then incorrectly intersects with `{x}` as `EmptySet`. Since intersection is idempotent, duplicate operands should be removed before simplification. The local checkout already contains this fix and the focused test passes: `6 passed, 2 xfailed`.\n</reasoning>\n\n<p",
+      "latency_s": 98.28722500801086,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

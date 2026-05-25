@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13710",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3031,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1714,
+      "response_excerpt": "<reasoning>\nI found the relevant behavior in `django/contrib/admin/options.py` under `InlineModelAdmin.__init__()`. The fix is to decide the default `verbose_name_plural` before replacing `verbose_name` with the model metadata default, so Django can distinguish an explicitly configured inline `verbose_name` from the model default. I also verified the targeted test class with `python3 tests/runtests.py admin_inlines.tests.TestVerboseNameInlineForms`, which passed.\n</reasoning>\n\n<patch>\ndiff --git",
+      "latency_s": 167.16137433052063,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

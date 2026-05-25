@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14608",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1601,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1399,
+      "response_excerpt": "Now I have a complete understanding. The issue is that Django FormSets create `_non_form_errors` as plain `ErrorList()` instances without the `nonform` CSS class, while regular Forms add `nonfield` class. The fix is to add `error_class='nonform'` to those `ErrorList` constructor calls.\n\n<reasoning>\nLooking at django/forms/formsets.py, the `full_clean` method creates `_non_form_errors` as `ErrorList` instances in two places:\n\n1. Line 336 (initial creation): `self._non_form_errors = self.error_cla",
+      "latency_s": 328.0135898590088,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

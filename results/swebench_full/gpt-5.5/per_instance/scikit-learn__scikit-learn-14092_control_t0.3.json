@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-14092",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3465,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3897,
+      "response_excerpt": "<reasoning>\nThe failure is caused by NCA validating numeric parameters against concrete Python types: `float` for `tol` and `int` for `n_components`. Grid search commonly supplies `1` for a real-valued parameter and `np.int64` values from `np.arange`.\n\nThe narrow fix is to keep using the existing scalar validation helper, but pass abstract numeric types from `numbers`: `numbers.Real` for `tol` and `numbers.Integral` for integer parameters. This preserves bounds checks while accepting NumPy scala",
+      "latency_s": 165.93804597854614,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

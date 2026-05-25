@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14752",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3201,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3641,
+      "response_excerpt": "<reasoning>\nThe fix is to extract the per-object JSON serialization from `AutocompleteJsonView.get()` into a new `serialize_result()` method. The default output stays unchanged, and subclasses can add fields without copying the whole `get()` method.\n\nI added a focused regression test that subclasses the view, calls `super().serialize_result()`, adds a `posted` field, and verifies the autocomplete JSON includes it. The equivalent targeted test passes in the prepatched Django checkout; the older u",
+      "latency_s": 235.7829930782318,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

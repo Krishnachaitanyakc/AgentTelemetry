@@ -1,0 +1,11 @@
+========================================================================
+B1v2: SWE-bench n=60 forced-tool-use via claude-haiku-4-5
+========================================================================
+Elapsed: 72400s
+Forced min_searches=3, intervention threshold=3
+
+  control      : 8/60 (13.3%)  avg_iter=6.5  avg_searches=1.1  intv_trigs=0.00  patch_suppr=5.12  max_repeats=1
+  intervention : 7/60 (11.7%)  avg_iter=7.1  avg_searches=1.0  intv_trigs=0.00  patch_suppr=5.75  max_repeats=1
+
+Fisher's exact two-sided p = 1.0000
+Significant at alpha=0.05:  False

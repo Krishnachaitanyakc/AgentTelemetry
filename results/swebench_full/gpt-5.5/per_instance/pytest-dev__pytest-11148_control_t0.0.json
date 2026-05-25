@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-11148",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2451,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3986,
+      "response_excerpt": "<reasoning>\nThe duplicate import happens because `_import_module_using_spec()` imports the parent package before importing the target module. If the parent package imports the target submodule as a side effect, pytest then continued and created a second module object for the same `sys.modules` key.\n\nThe fix is to re-check `sys.modules` after importing the parent and return the already-imported module if its spec matches the requested path. A regression test covers a package `__init__.py` that im",
+      "latency_s": 184.78987503051758,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

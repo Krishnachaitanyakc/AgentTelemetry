@@ -1,0 +1,26 @@
+{
+  "instance_id": "psf__requests-2317",
+  "repo": "psf/requests",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1589,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1634,
+      "response_excerpt": "<reasoning>\nThe bug is caused by `builtin_str(method)` in `Session.request()`. On Python 3, `str(b\"GET\")` produces `\"b'GET'\"`, so Requests sends the wrong HTTP verb. The existing `to_native_string()` helper already handles this correctly by decoding bytes to native text. I replaced the conversion and added a regression test for `method=b\"POST\"` through `Session.request()`.\n\nVerified with:\n`PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 /usr/bin/python3 -m pytest test_requests.py::RequestsTestCase::test_bytes_",
+      "latency_s": 251.4176902770996,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

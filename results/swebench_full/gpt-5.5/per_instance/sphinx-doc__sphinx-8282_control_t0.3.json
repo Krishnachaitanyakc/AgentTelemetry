@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-8282",
+  "repo": "sphinx-doc/sphinx",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3996,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1615,
+      "response_excerpt": "<reasoning>\nThe overload-specific signature path was gated by `autodoc_typehints != 'none'`. That still renders overload annotations when `autodoc_typehints = 'description'`, even though type hints should not appear in signatures for that mode. The fix is to use overload signatures only when signature annotations are enabled: `signature` or `both`.\n\nVerified with:\n`uv run --group test pytest tests/test_ext_autodoc/test_ext_autodoc_typehints.py::test_autodoc_typehints_none_for_overload tests/test",
+      "latency_s": 115.55667495727539,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

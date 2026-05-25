@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13658",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 684,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2062,
+      "response": "The fix adds `prog=self.prog_name` to the `CommandParser` constructor call in `ManagementUtility.execute()`. This ensures the parser uses the already-computed `self.prog_name` (which is derived from the `argv` passed to `ManagementUtility`) instead of defaulting to `sys.argv[0]`. This matches the intent of the existing code that carefully computes `self.prog_name` in `__init__`.\n\n<patch>\n--- a/django/core/management/__init__.py\n+++ b/django/core/management/__init__.py\n@@ -311,7 +311,7 @@\n       ...[truncated]",
+      "latency_s": 43.27811598777771,
+      "error": null
+    }
+  ]
+}

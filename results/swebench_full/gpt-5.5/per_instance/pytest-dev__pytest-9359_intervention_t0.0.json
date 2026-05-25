@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-9359",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2285,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4200,
+      "response_excerpt": "<reasoning>\nThe failing traceback source range comes from `_pytest._code.source.get_statement_startend2()`, which flattens AST statement start lines and uses the next start line as the current statement\u2019s end. Decorated functions/classes should be treated as one statement starting at the first decorator. Recording every decorator plus the `def` line can make statement boundaries unstable and can let a preceding assert include decorator lines in formatted output.\n\nThe patch records only the first",
+      "latency_s": 269.5014479160309,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

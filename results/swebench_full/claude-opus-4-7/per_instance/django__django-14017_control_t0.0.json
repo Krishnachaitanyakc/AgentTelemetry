@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14017",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1284,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2063,
+      "response_excerpt": "<reasoning>\nThe fix is already applied in the current Django main branch. The current code:\n1. `Q._combine` uses `if getattr(other, \"conditional\", False) is False: raise TypeError(other)` instead of the buggy `if not isinstance(other, Q):` check\n2. `Exists` inherits `conditional = True` from `Expression.conditional` property (since it has BooleanField output_field)\n3. There's also `if not other and isinstance(other, Q):` to handle empty Q correctly\n\nI verified all combinations of `Q & Exists`, `",
+      "latency_s": 159.35551691055298,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

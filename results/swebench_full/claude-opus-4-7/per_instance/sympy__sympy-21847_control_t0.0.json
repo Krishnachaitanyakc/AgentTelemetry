@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-21847",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 938,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1853,
+      "response_excerpt": "I've confirmed the current code at `/tmp/sympy/sympy/polys/monomials.py` already produces the correct output (10 monomials of degree 3 for the test case). The bug from the issue was that the original code used `max(powers.values()) >= min_degree` instead of `sum(powers.values()) >= min_degree`, which incorrectly checked the max single-variable exponent rather than total degree.\n\n<reasoning>\nThe bug in `itermonomials` was in `sympy/polys/monomials.py`. The original code generated all candidate mo",
+      "latency_s": 337.31282091140747,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

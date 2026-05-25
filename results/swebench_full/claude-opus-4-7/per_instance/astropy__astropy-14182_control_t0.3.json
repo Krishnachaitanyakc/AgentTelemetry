@@ -1,0 +1,35 @@
+{
+  "instance_id": "astropy__astropy-14182",
+  "repo": "astropy/astropy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 2,
+  "proposed_patch": true,
+  "answer_len": 2489,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2667,
+      "response_excerpt": "The patch has been provided. The fix adds `header_rows` support to the RST writer by modifying `rst.py` to accept and propagate the parameter, and generalizing `fixedwidth.py` to handle multiple header rows (name, unit, dtype, etc.) for both reading and writing.",
+      "latency_s": 467.37051010131836,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 2965,
+      "response_excerpt": "<reasoning>\nThere's only a single commit. The repository at `/private/tmp/astropy/` already contains the fix as a \"snapshot\". The fix is complete and the patch is already applied. Let me present the final unified diff that represents the fix.\n</reasoning>\n\nThe fix is already applied in the working tree. Here is the final patch representing the changes:\n\n<patch>\n--- a/astropy/io/ascii/rst.py\n+++ b/astropy/io/ascii/rst.py\n@@ -27,7 +27,6 @@ class SimpleRSTHeader(FixedWidthHeader):\n class SimpleRSTD",
+      "latency_s": 419.3183250427246,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

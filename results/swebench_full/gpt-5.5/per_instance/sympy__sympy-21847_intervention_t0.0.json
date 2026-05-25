@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-21847",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2540,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1853,
+      "response_excerpt": "<reasoning>\nThe scalar `min_degrees` path now directly generates monomials for each total degree from `min_degree` through `max_degree`. This makes the documented total-degree behavior explicit and avoids relying on padding combinations/products with `S.One` and filtering by the number of padding factors.\n\nI also added regression coverage for three commutative variables with `min_degrees=3`, including the exact-degree case and the `max_degrees > min_degrees` case.\n\nVerified with:\n`/private/tmp/s",
+      "latency_s": 195.10728192329407,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

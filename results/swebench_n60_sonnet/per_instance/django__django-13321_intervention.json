@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13321",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 599,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5247,
+      "response": "Now I have a complete picture. The bug is clear from the traceback: `_legacy_decode` calls `base64.b64decode` at line 126 **without** a try/except around it, so `binascii.Error: Incorrect padding` propagates out and crashes the app. The current `django_old` file already shows the fixed version (with `try:` at line 126), but the traceback tells us the unfixed code had `encoded_data = base64.b64decode(...)` directly at line 126 without protection.\n\nThe fix is straightforward: wrap the `base64.b64d...[truncated]",
+      "latency_s": 223.3547887802124,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-9359",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2918,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4200,
+      "response_excerpt": "<reasoning>\nThe traceback excerpt uses `Source.getstatement()` to decide how many source lines belong to the failing statement. That logic currently chooses the next AST statement start as the end of the range. On Python versions with `end_lineno`, the failing `assert` has an exact end line, but the next statement start can be the decorator of an inner function, so the displayed range incorrectly includes `@t`.\n\nThe fix caps the computed range end with the smallest `end_lineno` of AST statements",
+      "latency_s": 205.32325196266174,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

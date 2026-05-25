@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-13158",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 414,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "def set_empty": 1,
+    "set_empty nothingnode combined_queries": 1,
+    "def get_combinator_sql is_empty": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2187,
+      "response": "<reasoning>\nThe bug is in `django/db/models/sql/query.py` in the `set_empty()` method. When `none()` is called on a combined queryset (one using `union()`, `intersection()`, or `difference()`), `set_empty()` only adds a `NothingNode` to the outer query's `WHERE` clause. However, when the SQL compiler encounters a combinator, it jumps directly to `get_combinator_sql()` which compiles the sub-queries \u2014 the outer `WHERE` with its `NothingNode` is never checked.\n\nIn `get_combinator_sql()`, line 428 filters out empty sub-queries with `if not query.is_empty()`, but since `set_empty()` didn't mark the sub-queries as empty, they pass through and return results.\n\nThe fix is to make `set_empty()` recursively call `set_empty()` on each combined query, which is exactly what was done in the newer Django 6.x codebase (lines 2181-2184 in the latest version).\n</reasoning>\n\n<patch>\n--- a/django/db/models/sql/query.py\n+++ b/django/db/models/sql/query.py\n@@ -1771,6 +1771,8 @@ class Query(BaseExpression):\n \n     def set_empty(self):\n         self.where.add(NothingNode(), AND)\n+        for query in self.combined_queries:\n+            query.set_empty()\n \n     def is_empty(self):\n         return any(isinstance(c, NothingNode) for c in self.where.children)\n</patch>\n\nThe fix adds two lines to `set_empty()` so it recursively marks all combined sub-queries as empty too. Without this, calling `none()` on a union/intersection/difference queryset only marks the outer query as empty, but the SQL compiler b",
+      "latency_s": 187.4271559715271,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4236,
+      "response": "I need to investigate the codebase first. Let me search for the relevant methods.\n\n<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"def set_empty\"}}</tool_call>",
+      "latency_s": 17.42123293876648,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 4729,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"set_empty NothingNode combined_queries\"}}</tool_call>",
+      "latency_s": 11.553840160369873,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 5264,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"def get_combinator_sql is_empty\"}}</tool_call>",
+      "latency_s": 13.00878620147705,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 5764,
+      "response": "Confirmed. The `set_empty` method is at line 1776 in `django/db/models/sql/query.py` and it only adds a `NothingNode` to the current query's `WHERE` clause without propagating to `combined_queries`.\n\n<reasoning>\nThe issue: `QuerySet.none()` on combined queries (union/intersection/difference) returns all results instead of none.\n\nRoot cause: In `django/db/models/sql/query.py`, the `set_empty()` method (line 1776) only adds a `NothingNode` to the outer query's `WHERE` clause. However, when SQL is compiled for combined queries, the compiler uses `get_combinator_sql()` which compiles each sub-query independently. The sub-queries are not marked as empty, so they still return results. The `is_empty()` check in `get_combinator_sql()` filters out empty sub-queries, but since the sub-queries weren't marked empty, they pass through.\n\nFix: Propagate the `set_empty()` call to all `combined_queries`, so each sub-query also gets a `NothingNode` in its `WHERE` clause. This ensures `is_empty()` returns `True` for all sub-queries, causing them to be filtered out (or raise `EmptyResultSet`), producing the expected empty result set.\n</reasoning>\n\n<patch>\n--- a/django/db/models/sql/query.py\n+++ b/django/db/models/sql/query.py\n@@ -1774,6 +1774,8 @@ class Query(BaseExpression):\n         return condition, needed_inner\n \n     def set_empty(self):\n         self.where.add(NothingNode(), AND)\n+        for query in self.combined_queries:\n+            query.set_empty()\n \n     def is_empty(self):\n        ",
+      "latency_s": 46.00043487548828,
+      "error": null
+    }
+  ]
+}

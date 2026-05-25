@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12708",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2152,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1784,
+      "response": "<reasoning>\nThe bug is in `django/db/backends/base/schema.py` in the `_delete_composed_index()` method. When a model has both `index_together` and `unique_together` on the same fields, some database backends (like MySQL and SQLite) report both constraints when querying via `_constraint_names()` with `{'index': True, 'unique': False}`.\n\nThe root cause is that in certain databases, the unique constraint created by `unique_together` may also appear in constraint introspection results that match the...[truncated]",
+      "latency_s": 279.28517603874207,
+      "error": null
+    }
+  ]
+}

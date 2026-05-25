@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-7686",
+  "repo": "sphinx-doc/sphinx",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 6538,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2125,
+      "response_excerpt": "<reasoning>\n`members` for module autosummary templates is built in `ModuleScanner.scan()`. The old logic used `dir(module)` and only filtered values that looked imported by object metadata, so implicit module attributes such as `__builtins__`, `__name__`, and imported modules like `os` could leak into `members`.\n\nThis patch uses `ModuleAnalyzer` source text to classify names bound by module source and names bound by import statements. When `autosummary_imported_members` is false, import-bound na",
+      "latency_s": 128.10930395126343,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

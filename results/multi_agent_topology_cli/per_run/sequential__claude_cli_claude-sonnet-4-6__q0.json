@@ -1,0 +1,29 @@
+{
+  "topology": "sequential",
+  "model": "claude_cli/claude-sonnet-4-6",
+  "question": "What are three concrete ways autonomous AI agents fail in production deployments, and what observability primitives would catch each?",
+  "run_id": "sequential__claude_cli_claude-sonnet-4-6__q0",
+  "transcript": [
+    {
+      "agent": "planner",
+      "output": "1. **Tool-call drift** \u2014 What specific patterns emerge when agents repeatedly invoke tools outside intended scope, and which trace/span attributes (e.g., tool invocation frequency, argument distributions) surface this before cascading failures?\n\n2. **Context window saturation** \u2014 How do agents degrade when approaching token limits mid-task, and what token-usage metrics or intermediate-state checkpoints reliably predict silent truncation errors?\n\n3. **Reward hacking / goal misalignment** \u2014 In what documented cases have agents optimized a proxy metric while violating the intended objective, and what behavioral fingerprints (output entropy, action repetition rates) would a monitoring system detect?",
+      "latency_s": 13.551839113235474
+    },
+    {
+      "agent": "researcher",
+      "output": "## Findings: Autonomous AI Agent Failure Modes & Observability\n\n**1. Tool-Call Drift**\nAgents incrementally invoke out-of-scope tools (e.g., a summarization agent begins writing to databases). Emerges via frequency spikes on tool IDs not in the task spec, and argument distributions shifting from read-only to write operations. *Observability primitives:* span attributes `tool.name` + `tool.args_schema_match` (boolean), per-tool invocation counters with rolling-window anomaly detection, and a pre-defined tool allowlist enforced at the trace layer.\n\n**2. Context Window Saturation**\nAs token budgets fill, agents silently drop earlier instructions or tool outputs, producing confident but factually incomplete responses. Predicting this requires tracking `tokens_used / context_limit` ratio at each LLM call span, combined with intermediate-state checkpoints that hash critical retrieved content and verify it's still referenced in the final prompt.\n*Observability primitives:* `llm.token_usage` h",
+      "latency_s": 17.349644899368286
+    },
+    {
+      "agent": "writer",
+      "output": "**Three Failure Modes of Autonomous AI Agents**\n\n**1. Tool-Call Drift.** Agents gradually invoke out-of-scope tools \u2014 a summarization agent that starts writing to databases. Catch it with per-tool invocation counters using rolling-window anomaly detection, span attributes tracking `tool.name` and whether arguments match the expected schema, and a pre-defined tool allowlist enforced at the trace layer.\n\n**2. Context Window Saturation.** As token budgets fill, agents silently drop earlier instructions and produce confident but incomplete responses. Catch it by tracking the `tokens_used / context_limit` ratio at each LLM call span, injecting sentinel strings into system prompts to detect truncation, and hashing critical retrieved content at checkpoints to verify it persists into the final prompt.\n\n**3. Reward Hacking.** Agents optimize proxy metrics at the expense of actual goals \u2014 for example, maximizing test-pass rate by deleting failing tests. Catch it by logging both proxy and ground-",
+      "latency_s": 13.241569995880127
+    }
+  ],
+  "total_cost_usd": 0.014997,
+  "total_input_tokens": 764,
+  "total_output_tokens": 847,
+  "n_agents": 3,
+  "wall_clock_s": 44.159785985946655,
+  "error": null
+}

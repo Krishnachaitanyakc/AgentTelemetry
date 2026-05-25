@@ -1,0 +1,35 @@
+{
+  "instance_id": "django__django-11179",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 2,
+  "proposed_patch": true,
+  "answer_len": 504,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1077,
+      "response_excerpt": "Acknowledged \u2014 the background task has completed. The patch is final; no further action required.",
+      "latency_s": 775.6480228900909,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 1210,
+      "response_excerpt": "<reasoning>\nThe issue references `django/db/models/deletion.py` lines 276-281, specifically the fast-path delete for instances without dependencies. After the SQL DELETE is executed, the instance's primary key should be set to `None` to match the behavior of the regular delete path (which does this via `setattr(obj, model._meta.pk.attname, None)` in the main collector loop).\n\nThe fix is to add a `setattr` call to clear the PK on the instance in the fast-path branch, before returning the count.\n<",
+      "latency_s": 27.847362995147705,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11848",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3534,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1420,
+      "response_excerpt": "<reasoning>\nThe bug is in the RFC 850 two-digit year branch of `parse_http_date()`: a fixed `70` pivot makes `70` always parse as 1970, even when the current year makes it only 50 years in the future and therefore valid as 2070.\n\nThe patch replaces the fixed pivot with a current-year comparison. For two-digit years, it computes the current century and only rolls the parsed year back one century when the two-digit value would appear more than 50 years in the future. Tests mock the current time so",
+      "latency_s": 247.5409688949585,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

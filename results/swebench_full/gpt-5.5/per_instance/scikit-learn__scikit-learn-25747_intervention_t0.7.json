@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-25747",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4800,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 6953,
+      "response_excerpt": "<reasoning>\nThe bug happens after `FeatureUnion` concatenates pandas outputs: the set_output wrapper blindly replaces the result index with the original input index. For aggregating transformers, the transformed pandas object can have fewer rows and its own meaningful index, so assigning the original index raises a pandas length mismatch.\n\nThe patch keeps the existing behavior when the transformed pandas output has the same length as the input, but preserves the transformer-produced index when l",
+      "latency_s": 113.92557382583618,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11001",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1901,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3014,
+      "response_excerpt": "<reasoning>\nThe duplicate ORDER BY suppression strips ASC/DESC before comparing clauses. Its regex used `.` without `re.DOTALL`, so multiline SQL only matched the last physical line. Two different multiline `RawSQL` expressions with the same final line were therefore treated as duplicates. Compiling the regex with `re.DOTALL` makes the stripped expression include the full SQL fragment.\n\nI added a regression test with two multiline `RawSQL` orderings whose last line is identical but whose first l",
+      "latency_s": 140.60355615615845,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

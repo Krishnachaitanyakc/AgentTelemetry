@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13401",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1620,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2059,
+      "response": "None are git repos. The issue is about the `django/django` repository. Based on my analysis, the fix should be applied to `django/db/models/fields/__init__.py`. The unfixed code (from `django_old` and `django_22`) is at lines 515-528.\n\n<reasoning>\nThe issue is that `Field.__eq__`, `__lt__`, and `__hash__` only use `self.creation_counter` for comparison. When an abstract model defines a field and two concrete models inherit from it, both concrete models get a copy of the field with the same `crea...[truncated]",
+      "latency_s": 129.21281695365906,
+      "error": null
+    }
+  ]
+}

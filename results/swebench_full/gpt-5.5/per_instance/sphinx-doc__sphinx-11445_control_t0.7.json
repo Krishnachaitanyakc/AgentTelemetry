@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-11445",
+  "repo": "sphinx-doc/sphinx",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 5201,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2589,
+      "response_excerpt": "<reasoning>\nThe prolog insertion logic scans leading field-marker-looking lines so it can place `rst_prolog` after docinfo. A top-level heading can also start with text that matches that pattern, and if the prolog is inserted between the title text and its underline, docutils no longer recognizes the section title. The fix checks whether the next line is a valid reST section underline before treating a leading field-marker match as docinfo.\n\nVerified with:\n`.venv/bin/python -m pytest tests/test_",
+      "latency_s": 259.2717010974884,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

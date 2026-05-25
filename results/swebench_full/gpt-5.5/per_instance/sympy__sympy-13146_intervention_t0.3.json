@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13146",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 502,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1082,
+      "response_excerpt": "<reasoning>\nI reproduced the issue\u2019s expression in the current checkout. The behavior is already fixed here: `res.evalf(5)` returns `0` because `Pow._eval_evalf` evaluates non-integer exponents, making `x**(5/2)` comparable with `x**2.5`.\n\nI added a focused regression test so this behavior stays covered.\nVerification: `python3 -m pytest sympy/core/tests/test_evalf.py -k evalf_powers` passed.\n</reasoning>\n\n<patch>\ndiff --git a/sympy/core/tests/test_evalf.py b/sympy/core/tests/test_evalf.py\nindex ",
+      "latency_s": 137.76142692565918,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

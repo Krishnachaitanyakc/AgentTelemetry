@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-18087",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 650,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1112,
+      "response_excerpt": "<reasoning>\nI checked the current `trigsimp`, `simplify`, `futrig`, and `fu` behavior. This checkout already preserves `sqrt(sin(x)**2)` for an unconstrained symbol, but `test_trigsimp.py` did not cover the public `trigsimp`/`simplify` regression. I added a focused test to prevent the invalid complex-domain rewrite to `sin(x)` from returning.\n</reasoning>\n\n<patch>\ndiff --git a/sympy/simplify/tests/test_trigsimp.py b/sympy/simplify/tests/test_trigsimp.py\n--- a/sympy/simplify/tests/test_trigsimp.p",
+      "latency_s": 236.13197112083435,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

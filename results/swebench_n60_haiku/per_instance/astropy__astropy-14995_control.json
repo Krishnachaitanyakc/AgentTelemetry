@@ -1,0 +1,21 @@
+{
+  "instance_id": "astropy__astropy-14995",
+  "repo": "astropy/astropy",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1153,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3282,
+      "response": "Excellent! The fix has been applied correctly. Now let me create the final patch output showing the changes:\n\n<patch>\nThe bug is in the `_arithmetic_mask` method in `/astropy/nddata/mixins/ndarithmetic.py`. The issue occurs when performing arithmetic operations with `handle_mask` set to a callable (like `np.bitwise_or`) and one of the operands doesn't have a mask.\n\nThe original v5.3 code had convoluted logic that didn't properly handle the case where one operand has no mask. It would try to call...[truncated]",
+      "latency_s": 200.964928150177,
+      "error": null
+    }
+  ]
+}

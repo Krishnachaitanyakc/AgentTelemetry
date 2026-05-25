@@ -1,0 +1,35 @@
+{
+  "instance_id": "django__django-13447",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 2,
+  "proposed_patch": false,
+  "patch_len": 0,
+  "total_searches": 0,
+  "unique_queries": 0,
+  "max_query_repeats": 0,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {},
+  "error": "timeout after 600s",
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1401,
+      "response": "Now I have all the information I need. Let me produce the patch.\n\n<reasoning>\nThe issue asks for two changes to `django/contrib/admin/sites.py`:\n\n1. **Add model class to app_list context** \u2014 add `\"model\": model` to the `model_dict` in `_build_app_dict`. Looking at `django-repo`, the `\"model\": model` entry is already present in `model_dict` (line 501). So the model class is already being included.\n\n2. **Make `_build_app_dict` public** \u2014 rename `_build_app_dict` to `build_app_dict` (public API), rename its parameter from `label` to `app_label` for consistency, and keep a backward-compatible `_build_app_dict` wrapper. Also update `get_app_list` to call `build_app_dict` instead of `_build_app_dict`.\n\nThe `django-repo` directory has the original code:\n- `def _build_app_dict(self, request, label=None):` (private, line 469)\n- `get_app_list` calls `self._build_app_dict(request, app_label)` (line 546)\n\nThe `django/` directory has the patched code:\n- `def build_app_dict(self, request, app_label=None):` (public, with renamed param)\n- `def _build_app_dict(self, request, label=None):` backward-compat wrapper\n- `get_app_list` calls `self.build_app_dict(request, app_label)`\n\nThe patch targets `django/contrib/admin/sites.py` from the baseline (`django-repo`).\n</reasoning>\n\n<patch>\n--- a/django/contrib/admin/sites.py\n+++ b/django/contrib/admin/sites.py\n@@ -466,9 +466,9 @@ class AdminSite:\n         raise Http404\n \n-    def _build_app_dict(self, request, label=None):\n+    def build_app_dict(sel",
+      "latency_s": 229.21519899368286,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4385,
+      "response": "",
+      "latency_s": 600.0103101730347,
+      "error": "timeout after 600s"
+    }
+  ]
+}

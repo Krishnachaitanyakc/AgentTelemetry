@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-10924",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 628,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1647,
+      "response": "<patch>\n--- a/django/db/models/fields/__init__.py\n+++ b/django/db/models/fields/__init__.py\n@@ -1631,8 +1631,11 @@ class FilePathField(Field):\n \n     def deconstruct(self):\n         name, path, args, kwargs = super().deconstruct()\n-        if self.path != '':\n+        # Include path if it's not an empty string or if it's callable.\n+        # Callables will be preserved as-is in the migration and the\n+        # migration serializer will handle them appropriately.\n+        if self.path != '' or ca...[truncated]",
+      "latency_s": 122.51560020446777,
+      "error": null
+    }
+  ]
+}

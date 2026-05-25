@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13658",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 709,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2062,
+      "response": "<reasoning>\nThe issue is clear: in `django/core/management/__init__.py`, the `ManagementUtility.execute()` method creates a `CommandParser` without passing `prog=self.prog_name`. This means `%(prog)s` in the usage string defaults to `sys.argv[0]` instead of the already-computed `self.prog_name`, which is derived from the custom `argv` passed to `ManagementUtility.__init__`.\n\nThe fix is to add `prog=self.prog_name` to the `CommandParser(...)` call on line 334.\n</reasoning>\n\n<patch>\n--- a/django/c...[truncated]",
+      "latency_s": 63.12059473991394,
+      "error": null
+    }
+  ]
+}

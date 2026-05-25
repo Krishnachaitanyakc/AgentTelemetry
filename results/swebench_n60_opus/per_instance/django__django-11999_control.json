@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11999",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 773,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1337,
+      "response": "The Django version is too old for this Python. The logic is sound though \u2014 the fix is the same approach used in the upstream fix. Let me summarize:\n\n<reasoning>\nThe issue is in `django/db/models/fields/__init__.py` in the `contribute_to_class` method of the `Field` class.\n\n**Root cause**: In Django 2.2, line 765-767 unconditionally sets `get_%s_display` via `setattr`, overwriting any user-defined method on the model class:\n\n```python\nif self.choices:\n    setattr(cls, 'get_%s_display' % self.name...[truncated]",
+      "latency_s": 79.10264587402344,
+      "error": null
+    }
+  ]
+}

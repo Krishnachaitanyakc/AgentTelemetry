@@ -1,0 +1,35 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13779",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 2,
+  "proposed_patch": true,
+  "answer_len": 553,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1395,
+      "response_excerpt": "The fix has been applied to `sklearn/ensemble/voting_classifier.py`. The patch adds a `None` check in the `sample_weight` validation loop, completing the fix since the downstream `Parallel(...)` call already filters out `None` estimators.",
+      "latency_s": 500.4177689552307,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 1669,
+      "response_excerpt": "<reasoning>\nI've verified the current state of `/private/tmp/scikit-learn/sklearn/ensemble/voting_classifier.py`. The fix is in place at lines 167-173:\n\n```python\nif sample_weight is not None:\n    for name, step in self.estimators:\n        if step is None:\n            continue\n        if not has_fit_parameter(step, 'sample_weight'):\n            raise ValueError('Underlying estimator \\'%s\\' does not'\n                             ' support sample weights.' % name)\n```\n\nThe added `if step is None: ",
+      "latency_s": 289.34697914123535,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

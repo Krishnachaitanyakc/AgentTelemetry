@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-8474",
+  "repo": "sphinx-doc/sphinx",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 542,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1353,
+      "response_excerpt": "I'll analyze this issue and propose a patch.\n\n<reasoning>\nThe user reports that Sphinx 3.3 generates \"WARNING: no number is assigned for table\" warnings when building `singlehtml` or `latex`.\n\nComparing the v3.2.1 vs v3.3.0 code in `sphinx/environment/collectors/toctree.py`, I found the regression-causing change:\n\n```python\n# Added in 3.3.0 (lines 227-230)\nif domain.name == 'std' and not domain.get_numfig_title(node):  # type: ignore\n    # Skip if uncaptioned node\n    continue\n```\n\nThis change *",
+      "latency_s": 265.25295305252075,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15252",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4206,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2475,
+      "response_excerpt": "<reasoning>\n1. `MigrationExecutor.migrate()` calls `MigrationRecorder.ensure_schema()` before applying migrations, so router enforcement must live inside `MigrationRecorder`.\n2. The recorder\u2019s synthetic `Migration` model has normal model metadata, so it can be checked with `router.allow_migrate_model(connection.alias, self.Migration)`.\n3. If the router denies that model on a connection, the recorder should not introspect, create, read, insert, delete, or flush `django_migrations` on that connect",
+      "latency_s": 164.97799491882324,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

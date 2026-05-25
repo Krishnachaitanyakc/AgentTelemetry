@@ -1,0 +1,67 @@
+{
+  "instance_id": "django__django-12125",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 6,
+  "proposed_patch": true,
+  "patch_len": 4941,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 2,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "field deconstruct __name__": 1,
+    "migrationwriter serialize typeserializer __name__": 1,
+    "enumserializer typeserializer nested class qualname migration": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2600,
+      "response": "<reasoning>Field.deconstruct() and migration serializers build import paths with __name__, which drops outer class qualifiers for nested classes. Use __qualname__ instead so generated migrations reference Outer.Inner / Model.State correctly, and add regression coverage for nested fields, enum members, and class objects.</reasoning>\n<patch>diff --git a/django/db/migrations/serializer.py b/django/db/migrations/serializer.py\n--- a/django/db/migrations/serializer.py\n+++ b/django/db/migrations/serializer.py\n@@ -121,7 +121,7 @@ class EnumSerializer(BaseSerializer):\n         enum_class = self.value.__class__\n         module = enum_class.__module__\n         return (\n-            '%s.%s[%r]' % (module, enum_class.__name__, self.value.name),\n+            '%s.%s[%r]' % (module, enum_class.__qualname__, self.value.name),\n             {'import %s' % module},\n         )\n@@ -269,7 +269,7 @@ class TypeSerializer(BaseSerializer):\n             if module == builtins.__name__:\n                 return self.value.__name__, set()\n             else:\n-                return \"%s.%s\" % (module, self.value.__name__), {\"import %s\" % module}\n+                return \"%s.%s\" % (module, self.value.__qualname__), {\"import %s\" % module}\n \n \n class UUIDSerializer(BaseSerializer):\ndiff --git a/django/db/models/fields/__init__.py b/django/db/models/fields/__init__.py\n--- a/django/db/models/fields/__init__.py\n+++ b/django/db/models/fields/__init__.py\n@@ -191,7 +191,7 @@ class Field(RegisterLookupMixin):\n \n     def",
+      "latency_s": 196.57541036605835,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 8451,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"Field deconstruct __name__\"}}</tool_call>",
+      "latency_s": 15.508057117462158,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 8926,
+      "response": "<reasoning>The migration code must preserve nested class qualifiers. Using `__name__` drops `Outer.`/`Thing.`, while `__qualname__` keeps the importable dotted path. The focused regression tests pass with the fixed behavior.</reasoning>\n<patch>diff --git a/django/db/migrations/serializer.py b/django/db/migrations/serializer.py\n--- a/django/db/migrations/serializer.py\n+++ b/django/db/migrations/serializer.py\n@@ -121,7 +121,7 @@ class EnumSerializer(BaseSerializer):\n         enum_class = self.value.__class__\n         module = enum_class.__module__\n         return (\n-            '%s.%s[%r]' % (module, enum_class.__name__, self.value.name),\n+            '%s.%s[%r]' % (module, enum_class.__qualname__, self.value.name),\n             {'import %s' % module},\n         )\n@@ -269,7 +269,7 @@ class TypeSerializer(BaseSerializer):\n             if module == builtins.__name__:\n                 return self.value.__name__, set()\n             else:\n-                return \"%s.%s\" % (module, self.value.__name__), {\"import %s\" % module}\n+                return \"%s.%s\" % (module, self.value.__qualname__), {\"import %s\" % module}\n \n \n class UUIDSerializer(BaseSerializer):\ndiff --git a/django/db/models/fields/__init__.py b/django/db/models/fields/__init__.py\n--- a/django/db/models/fields/__init__.py\n+++ b/django/db/models/fields/__init__.py\n@@ -191,7 +191,7 @@ class Field(RegisterLookupMixin):\n \n     def __repr__(self):\n         \"\"\"Display the module, class, and name of the field.\"\"\"\n-        path =",
+      "latency_s": 95.8314299583435,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 14680,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"MigrationWriter serialize TypeSerializer __name__\"}}</tool_call>",
+      "latency_s": 13.549362897872925,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 15270,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"EnumSerializer TypeSerializer nested class qualname migration\"}}</tool_call>",
+      "latency_s": 14.41923213005066,
+      "error": null
+    },
+    {
+      "iteration": 6,
+      "prompt_len": 15920,
+      "response": "<reasoning>Nested classes are importable through their qualified class path, but `__name__` only contains the innermost class name. Migration serialization and field deconstruction should use `__qualname__` when constructing dotted paths so generated migrations reference `Outer.Inner` or `Thing.State` instead of treating the nested class as module-level.</reasoning>\n<patch>diff --git a/django/db/migrations/serializer.py b/django/db/migrations/serializer.py\n--- a/django/db/migrations/serializer.py\n+++ b/django/db/migrations/serializer.py\n@@ -121,7 +121,7 @@ class EnumSerializer(BaseSerializer):\n         enum_class = self.value.__class__\n         module = enum_class.__module__\n         return (\n-            '%s.%s[%r]' % (module, enum_class.__name__, self.value.name),\n+            '%s.%s[%r]' % (module, enum_class.__qualname__, self.value.name),\n             {'import %s' % module},\n         )\n@@ -269,7 +269,7 @@ class TypeSerializer(BaseSerializer):\n             if module == builtins.__name__:\n                 return self.value.__name__, set()\n             else:\n-                return \"%s.%s\" % (module, self.value.__name__), {\"import %s\" % module}\n+                return \"%s.%s\" % (module, self.value.__qualname__), {\"import %s\" % module}\n \n \n class UUIDSerializer(BaseSerializer):\ndiff --git a/django/db/models/fields/__init__.py b/django/db/models/fields/__init__.py\n--- a/django/db/models/fields/__init__.py\n+++ b/django/db/models/fields/__init__.py\n@@ -191,7 +191,7 @@ class Fie",
+      "latency_s": 21.378172159194946,
+      "error": null
+    }
+  ]
+}

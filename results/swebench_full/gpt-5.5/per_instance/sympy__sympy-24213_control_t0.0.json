@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-24213",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2193,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1815,
+      "response_excerpt": "<reasoning>\nThe `Add` branch must compare dimensions by dimensional dependencies, not by structural equality, because `velocity` and `acceleration*time` are equivalent in SI. The patch keeps that equivalence check on the active dimension system and strengthens the regression test to assert the reported expression evaluates to the expected factor with a velocity-equivalent dimension.\n\nVerified with:\n`/private/tmp/sympy-venv/bin/python -m pytest sympy/physics/units/tests/test_quantities.py -k 'fac",
+      "latency_s": 165.86880803108215,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

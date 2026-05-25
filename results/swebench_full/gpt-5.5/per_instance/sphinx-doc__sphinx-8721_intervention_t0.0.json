@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-8721",
+  "repo": "sphinx-doc/sphinx",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2087,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1360,
+      "response_excerpt": "<reasoning>\n`viewcode` skips EPUB output by checking whether the active builder supports module pages. The bug happens after an HTML build because `collect_pages()` was checking `env._builder_cls`, which can reflect stale environment state, instead of the builder currently collecting pages. The fix checks `app.builder.__class__` there, and adds a regression test for HTML followed by EPUB in the same build directory.\n\nVerified with:\n`uv run pytest tests/test_extensions/test_ext_viewcode.py -q` \u2192 ",
+      "latency_s": 165.87972402572632,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

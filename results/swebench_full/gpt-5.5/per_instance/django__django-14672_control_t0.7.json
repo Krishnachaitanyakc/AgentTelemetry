@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14672",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2151,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 7554,
+      "response_excerpt": "<reasoning>\nThe crash occurs because `ManyToManyRel.__hash__()` hashes `self.identity`, and `ManyToManyRel.identity` included `self.through_fields` directly. `through_fields` can be passed as a list, making the identity tuple unhashable. `ForeignObjectRel.identity` already uses `make_hashable()` for `limit_choices_to`, so applying the same conversion to `through_fields` fixes the hash contract.\n\nI also added a regression test that mirrors the proxy-model repro and explicitly hashes the remote re",
+      "latency_s": 90.99450898170471,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

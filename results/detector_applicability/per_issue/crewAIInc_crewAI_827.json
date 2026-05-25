@@ -1,0 +1,24 @@
+{
+  "issue": {
+    "title": "Short Term Memory not working ",
+    "body": "This is the output of the Context appended by Long Term, Short Term and Entities Memory.\r\n\r\n[\"Historical Data:\\n- Ensure that the initial 'Thought' statement is removed from the final answer as it may confuse the reader.\\n- Maintain consistency in formatting; the final output should not have differing formatting styles in the same section.\\n- Add more real-.\",\r\n '', # Short Term Element is Empty\r\n 'Entities:\\n- Learning Rate(Hyperparameter): A crucial hyperparameter in the optimization process that determines the step size at each iteration while moving toward a minimum of the loss function.\\n- learning rate(concept): A crucial hyperparameter in AI and machine learning that determines the size of the steps taken towards minimizing the loss function during the training process.\\n- Natural Language Processing (NLP)(Field): Involves the interaction between computers and humans through natural language, enabling machines to understand, interpret, and respond to human language.'].\r\n\r\n\r\nLet me know, If I am doing anything wrong. \r\nIn my investigation, Long Term and Entity Memory is giving data to context but short term remain empty.\r\nI have set the memory=True while creating Agent and kicking off crewai object.",
+    "state": "closed",
+    "comments": [
+      "Hi, @himanshusoni21 is entity memory working fine for you? means is it consistent for you? For me its not consistent at all. Suppose i am feeding it some list of fruits then it will be able to recognize only one fruit and forgetting every other. Then I tried to do this exercise once again but now it is storing nothing new at all.",
+      "I also encountered a situation where the short-term memory consistently returned empty results, while both entities and long-term memory had values. Despite the task types being identical, the short-term memory could not be retrieved. I directly debugged self.app.search() to query the contents of the short-term memory, but it still returned empty",
+      "I have learned that Short Term is always empty because each time CreatShortTerm is created with reset=True, it only retains the current task's action. However, during the task execution process, there might be errors in reassigning agents or continuity issues with tasks, which would require using actions to correct errors or optimize the next action. Each creation, however, leads to data loss unless it's a complex task performed correctly, which then becomes meaningless. I believe actions should be created based on Crew rather than agent. (Based on my research and a month of usage, the utilization rate of Short Term is virtually zero, and I hope for some optimization.)",
+      "@beeapu ",
+      "This issue is stale because it has been open for 30 days with no activity. Remove stale label or comment or this will be closed in 5 days."
+    ],
+    "labels": [
+      "no-issue-activity"
+    ],
+    "url": "https://github.com/crewAIInc/crewAI/issues/827"
+  },
+  "evidence": {
+    "has_evidence": false,
+    "evidence_type": "narrative_only",
+    "reconstructible_signal": true,
+    "notes": "memory_keywords"
+  }
+}

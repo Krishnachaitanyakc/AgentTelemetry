@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-21847",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2601,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1853,
+      "response_excerpt": "<reasoning>\nThe bug is in the integer-degree branch of `itermonomials`. The old implementation generated only tuples of length `max_degree` after appending `S.One` as a padding variable, then filtered by the number of ones. That loses mixed commutative monomials because combinations involving `S.One` collapse duplicates before all total-degree cases are represented correctly.\n\nThe fix is to generate monomials degree-by-degree from `min_degree` through `max_degree`. For commutative variables this",
+      "latency_s": 131.97137904167175,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

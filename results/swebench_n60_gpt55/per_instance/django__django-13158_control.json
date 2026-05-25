@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13158",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1719,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2001,
+      "response": "<reasoning>\n`QuerySet.none()` marks the outer query empty, but combined query SQL is built from `query.combined_queries`. Those component queries must also be marked empty. Since `none()` clones the queryset first, `Query.clone()` must deep-clone `combined_queries` so calling `none()` doesn\u2019t mutate the original union queryset.\n</reasoning>\n\n<patch>\ndiff --git a/django/db/models/sql/query.py b/django/db/models/sql/query.py\n--- a/django/db/models/sql/query.py\n+++ b/django/db/models/sql/query.py\n@...[truncated]",
+      "latency_s": 122.91722393035889,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13265",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 5360,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2686,
+      "response_excerpt": "<reasoning>\nThe migration autodetector was missing an explicit dependency between indexes that reference the synthetic `_order` column and the `AlterOrderWithRespectTo` operation that creates that column. I added that dependency for both new-model indexes and newly added indexes, and taught dependency matching that `AlterOrderWithRespectTo(..., order_with_respect_to=...)` satisfies creation of `_order`.\n\nVerified with:\n`python3 tests/runtests.py migrations.test_autodetector.AutodetectorTests.tes",
+      "latency_s": 363.6698977947235,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

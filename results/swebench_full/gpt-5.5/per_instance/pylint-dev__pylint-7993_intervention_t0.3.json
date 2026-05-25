@@ -1,0 +1,26 @@
+{
+  "instance_id": "pylint-dev__pylint-7993",
+  "repo": "pylint-dev/pylint",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4550,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2806,
+      "response_excerpt": "<reasoning>\nThe bug is caused by validating `--msg-template` placeholders with a regex. That regex sees escaped braces like `{{ \"Category\": ... }}` as a real field named `{ \"Category\"`, warns, and strips it. Python\u2019s `string.Formatter().parse()` already understands escaped braces, so the fix uses it to validate actual replacement fields only, then rebuilds the template while preserving literal braces.\n\nVerified with:\n` .venv/bin/python -m pytest tests/reporters/unittest_reporting.py -q `\nResult:",
+      "latency_s": 146.0233941078186,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

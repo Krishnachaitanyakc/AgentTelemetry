@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-6938",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1419,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1323,
+      "response_excerpt": "<reasoning>\nThe bug report is correct: `chararray.replace` returns a new array and does not mutate `output_field`. The formatter should assign the returned array back into the existing output buffer so the serialized ASCII table keeps the FITS `D` exponent separator. I also add a focused regression test that writes an ASCII table `D` column and checks the raw FITS bytes contain `D+` rather than `E+`.\n\nI could not run the test locally because this environment has no `pytest` installed for `python",
+      "latency_s": 151.05938386917114,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

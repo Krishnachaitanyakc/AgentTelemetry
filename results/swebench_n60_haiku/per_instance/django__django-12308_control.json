@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12308",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1188,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1284,
+      "response": "<reasoning>\nLet me analyze the code directly without running it. Looking at the current implementation in `display_for_field`, the issue is:\n\n1. When a JSONField is readonly in the admin, the `display_for_field` function is called to format its value\n2. The current code tries `json.dumps(value, ensure_ascii=False, cls=field.encoder)` but this only works for JSON-serializable objects\n3. If the value is already a complex object or if `json.dumps` raises a `TypeError`, it falls back to `display_for...[truncated]",
+      "latency_s": 61.433507204055786,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-16988",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 831,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1224,
+      "response_excerpt": "<reasoning>\n1. `Intersection` is idempotent, so duplicate set arguments should be removed before simplification.\n2. The bug happens because duplicate finite-set arguments can alter the later finite-set simplification path.\n3. Canonicalizing constructor inputs with `set(...)` and then `ordered(...)` makes `Intersection({1}, {1}, {x})` follow the same path as `Intersection({1}, {x})`.\n4. A regression test checks that duplicate operands do not change the result.\n</reasoning>\n\n<patch>\ndiff --git a/s",
+      "latency_s": 111.92736840248108,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

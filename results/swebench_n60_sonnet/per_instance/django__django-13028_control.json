@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13028",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 569,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3664,
+      "response": "Now I understand the bug clearly. In `django_old`'s `check_filterable`, it uses `getattr(expression, 'filterable', True)` which reads the **instance** attribute. When a model instance has a database field named `filterable` with value `False`, this incorrectly triggers the error. The fix is to check the **class** attribute via `type(expression)`.\n\n<reasoning>\nThe bug is in `check_filterable` in `django/db/models/sql/query.py`. The method is supposed to check whether an expression *class* has bee...[truncated]",
+      "latency_s": 423.5449380874634,
+      "error": null
+    }
+  ]
+}

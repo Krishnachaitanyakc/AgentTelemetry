@@ -1,0 +1,26 @@
+{
+  "instance_id": "pylint-dev__pylint-7114",
+  "repo": "pylint-dev/pylint",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4925,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2490,
+      "response_excerpt": "<reasoning>\nFixed in `/private/tmp/pylint-main-fix`.\n\nRoot cause: for a namespace directory `a/` containing `a/a.py`, pylint added `a/` itself to the import search path. Astroid then resolved top-level module `a` to `a/a.py`, so pylint tried to lint nonexistent `a/__init__.py` and polluted import resolution for `from a import b`.\n\nThe patch:\n- Detects no-`__init__.py` directories containing a same-name module.\n- Uses the parent directory as the package path for that layout.\n- Treats explicit no-",
+      "latency_s": 239.3032808303833,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

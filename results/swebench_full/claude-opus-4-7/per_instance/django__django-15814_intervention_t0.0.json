@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15814",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 774,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3440,
+      "response_excerpt": "Based on my exploration of the Django source code, I've identified the bug. Let me analyze and propose the fix.\n\n<reasoning>\nThe bug is in `django/db/models/sql/query.py` in the `deferred_to_data` method. When processing `only()` after `select_related()` on a foreign key pointing to a proxy model, the code retrieves the proxy model's `_meta` instead of the concrete model's `_meta`.\n\nIn Django 4.0.5, around line 745:\n```python\ncur_model = self.model._meta.concrete_model\nopts = orig_opts\nfor name ",
+      "latency_s": 652.0470912456512,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

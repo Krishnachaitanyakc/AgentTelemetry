@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-10949",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3718,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2284,
+      "response_excerpt": "<reasoning>\nRoot cause: pandas `DataFrame` does not expose a single useful `dtype`, so `dtype_orig` becomes `None`. The existing `warn_on_dtype` check only compares the final array dtype against `dtype_orig`, so it misses conversions from DataFrame column dtypes.\n\nFix: store `array.dtypes` before conversion, then after validation compare the final array dtype against the set of original DataFrame dtypes. Add regression coverage for homogeneous object DataFrames and mixed dtype DataFrames.\n\nVerif",
+      "latency_s": 149.01094913482666,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

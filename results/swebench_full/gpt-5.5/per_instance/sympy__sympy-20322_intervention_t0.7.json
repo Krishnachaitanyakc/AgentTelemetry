@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-20322",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1033,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1459,
+      "response_excerpt": "<reasoning>\nThe current SymPy checkout already keeps the fractional offset inside `ceiling` for this case. The missing piece was regression coverage for the exact `sympify(..., evaluate=False).simplify()` path, so I added a focused test that asserts both `evaluate=False` and `evaluate=True` simplify to the same expression.\n\nVerified with:\n`python3 -m pytest sympy/core/tests/test_sympify.py -k evaluate_false_ceiling_simplify`\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/sympy/core/tests/test_sympif",
+      "latency_s": 291.4407060146332,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

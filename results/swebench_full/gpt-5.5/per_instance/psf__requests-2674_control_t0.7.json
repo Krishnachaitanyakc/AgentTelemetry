@@ -1,0 +1,26 @@
+{
+  "instance_id": "psf__requests-2674",
+  "repo": "psf/requests",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2087,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1303,
+      "response_excerpt": "<reasoning>\n`Response.iter_content()` in the current Requests source already wraps `urllib3.exceptions.DecodeError` as `requests.exceptions.ContentDecodingError`. The remaining leak is `urllib3.exceptions.TimeoutError`, which is a base urllib3 HTTP error and can bypass the existing `ReadTimeoutError`-only mapping in `HTTPAdapter.send()`.\n\nThe patch imports urllib3's timeout base class under an internal alias and maps it to Requests' base `Timeout` exception, preserving the existing more-specific",
+      "latency_s": 159.88112807273865,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

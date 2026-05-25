@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13033",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2652,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4526,
+      "response_excerpt": "<reasoning>\n1. The ordering compiler resolves `record__root_id` as a path whose final field is the `root` ForeignKey.\n2. The affected code checks `field.attname != name`, but `name` is the full lookup path (`record__root_id`), so the check is always true for nested FK attnames.\n3. That incorrectly expands ordering through the related model\u2019s `Meta.ordering`, causing the extra self-join and reversed direction.\n4. The fix is to compare the FK attname with only the final lookup component (`root_id`",
+      "latency_s": 177.83917212486267,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

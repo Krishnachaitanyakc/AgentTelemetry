@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13401",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 718,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2059,
+      "response": "<reasoning>\nThe current checkout already has the implementation fix: `Field.__eq__` compares both `creation_counter` and `model`, and `Field.__lt__` keeps creation-counter ordering while breaking ties by model. `__hash__` should remain based on `creation_counter` only because model assignment happens after field construction, and including model would make the hash mutable. I added a direct regression assertion for the reported set de-duplication behavior.\n</reasoning>\n\n<patch>\ndiff --git a/test...[truncated]",
+      "latency_s": 309.44831585884094,
+      "error": null
+    }
+  ]
+}

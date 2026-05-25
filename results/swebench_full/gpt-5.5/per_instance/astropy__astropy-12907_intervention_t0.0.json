@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-12907",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1541,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2042,
+      "response_excerpt": "<reasoning>\n`_coord_matrix()` treated nested `CompoundModel` instances like ordinary models. For a nested right-hand compound such as `Pix2Sky_TAN() & (Linear1D & Linear1D)`, that replaced the child\u2019s diagonal separability with a dense block. The fix is to recursively compute the nested compound\u2019s separability matrix and embed it into the larger coordinate matrix.\n\nI also added a regression case matching the issue. I verified the reported reproducer by loading the patched `separable.py`; full so",
+      "latency_s": 186.60560011863708,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

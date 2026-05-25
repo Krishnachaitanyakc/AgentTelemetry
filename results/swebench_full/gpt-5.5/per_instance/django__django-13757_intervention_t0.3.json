@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13757",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1342,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1732,
+      "response_excerpt": "<reasoning>\n`KeyTransformIsNull` should treat `key__isnull=False` as \u201chas key\u201d and `key__isnull=True` as \u201cdoes not have key,\u201d while still matching SQL NULL for the JSON field itself. The SQLite branch now derives both cases from the same has-key predicate, so JSON null remains a present key. The Oracle branch already used `JSON_EXISTS()`; the patch makes the negation explicit and keeps the SQL NULL field check separate from extracted JSON null values.\n\nVerified with:\n`python3 tests/runtests.py m",
+      "latency_s": 169.862450838089,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12286",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 835,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1535,
+      "response_excerpt": "Based on my investigation, I found the relevant file at `/private/tmp/django/django/core/checks/translation.py`. The system check `check_language_settings_consistent` originally did a simple set membership check against `LANGUAGES`, which doesn't account for sublanguage\u2192base-language fallback. The fix is to use `get_supported_language_variant`, which already implements the documented fallback behavior (it tries the exact tag first, then strips the region/script subtag and tries the generic langu",
+      "latency_s": 348.07325887680054,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

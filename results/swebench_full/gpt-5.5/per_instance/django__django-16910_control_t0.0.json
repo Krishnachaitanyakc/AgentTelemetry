@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16910",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2131,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2416,
+      "response_excerpt": "<reasoning>\n1. In Django 4.2.1, `only()` builds the select mask for a reverse `OneToOneField` under the reverse relation object.\n2. The reverse `select_related()` compiler path looked the mask up using the forward `OneToOneField`, so it missed the restriction and selected all related model columns.\n3. The fix keeps both objects available and prefers the reverse relation mask, while retaining the forward-field fallback needed by existing `defer()` behavior.\n4. Added a regression assertion that th",
+      "latency_s": 268.04772090911865,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15388",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2486,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1593,
+      "response_excerpt": "<reasoning>\n1. The template autoreloader treats non-`.py` changes inside template directories as template changes and suppresses a full dev-server restart.\n2. When `TEMPLATES[0][\"DIRS\"]` contains `BASE_DIR`, editor safe-save temp files like `settings.py.tmp`, `settings.py~`, or `settings.py___jb_tmp___` are inside a template directory but don\u2019t have suffix `.py`.\n3. Those events can be consumed as template changes, so the autoreloader doesn\u2019t restart.\n4. The fix is to recognize Python source fil",
+      "latency_s": 293.00214290618896,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

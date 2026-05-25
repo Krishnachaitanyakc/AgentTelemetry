@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-5692",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2417,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2078,
+      "response_excerpt": "<reasoning>\nThe JUnit XML report is built in `LogXML.pytest_sessionfinish`, where the root `testsuite` attributes are assembled. The fix is to add `hostname` from `platform.node()` and a session-start `timestamp` formatted as ISO 8601. Tests should cover both `xunit1` and `xunit2`.\n\nVerification note: the focused test command could not complete in this checkout because the generated local pytest version is `0.1.dev1...`, which fails the project `minversion = \"2.0\"` check before collection.\n</rea",
+      "latency_s": 105.27040314674377,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

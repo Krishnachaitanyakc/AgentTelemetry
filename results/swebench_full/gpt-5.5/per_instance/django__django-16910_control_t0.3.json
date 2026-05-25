@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16910",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2083,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2416,
+      "response_excerpt": "<reasoning>\nThe regression is in reverse one-to-one `select_related()` handling. `Query._get_only_select_mask()` stores the `only()` mask for `secondary__field` under the reverse relation object (`OneToOneRel`), but the reverse `select_related()` compiler path looked up the mask using the concrete related field (`OneToOneField`). That lookup missed, so `get_default_columns()` received an empty mask and selected every column from the related model.\n\nThe patch checks the reverse relation object fi",
+      "latency_s": 189.18819189071655,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

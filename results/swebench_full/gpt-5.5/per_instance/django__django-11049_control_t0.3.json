@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11049",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1298,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1500,
+      "response_excerpt": "<reasoning>\nI found that `models.DurationField` already uses the corrected `[DD] [[HH:]MM:]ss[.uuuuuu]` format in this checkout. The remaining form-side invalid message was generic, so I updated `forms.DurationField` to show the same corrected duration format and adjusted the focused form field test.\n\nVerified with:\n`python3 tests/runtests.py --parallel 1 forms_tests.field_tests.test_durationfield model_fields.test_durationfield`\n</reasoning>\n\n<patch>\ndiff --git a/django/forms/fields.py b/django",
+      "latency_s": 216.46723294258118,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

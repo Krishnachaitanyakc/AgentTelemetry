@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11001",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2180,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3014,
+      "response_excerpt": "<reasoning>\nThe duplicate-elision logic strips `ASC`/`DESC` before comparing `ORDER BY` expressions. Its regex used multiline anchors but not dot-all matching, so for multiline `RawSQL` it compared only the last line. Making the regex dot-all lets the captured expression span newlines, so distinct multiline orderings don\u2019t collapse when their final line is the same. I also added a regression test that compiles three multiline `RawSQL` orderings and asserts all three survive.\n\nVerification: `pyth",
+      "latency_s": 271.84776401519775,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

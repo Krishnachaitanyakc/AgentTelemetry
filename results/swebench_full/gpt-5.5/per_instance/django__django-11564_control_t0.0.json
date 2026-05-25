@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11564",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 6685,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1722,
+      "response_excerpt": "<reasoning>\nDjango already records the active WSGI `SCRIPT_NAME` in the thread-local script prefix via `set_script_prefix()`. The fix should reuse that mechanism so URL generation works both inside templates and in storage-backed URL generation.\n\nThe patch prefixes only root-relative `STATIC_URL`/`MEDIA_URL` values such as `/static/` and `/media/`. It leaves absolute URLs like `https://cdn.example/...` and protocol-relative URLs like `//cdn.example/...` unchanged. Imports of `get_script_prefix()",
+      "latency_s": 267.3425579071045,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

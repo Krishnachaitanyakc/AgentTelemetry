@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13590",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1576,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1653,
+      "response_excerpt": "<reasoning>\n`Query.resolve_lookup_value()` recursively resolves iterable lookup RHS values, then reconstructs the original iterable type. For `namedtuple` subclasses, calling `type_(values)` passes the generator as a single positional argument, which fails because namedtuple constructors expect one argument per field. The fix is to detect namedtuple types and unpack the resolved values with `type_(*values)`. I also added a regression test for `__range` using a named 2-tuple.\n\nVerification: `pyth",
+      "latency_s": 136.4374361038208,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

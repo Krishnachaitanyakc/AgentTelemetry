@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14672",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2137,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 7554,
+      "response_excerpt": "<reasoning>\n`ManyToManyRel.identity` is used by `__hash__()`, so every element in the identity tuple must be hashable. `through_fields` can be supplied as a list, and the base relation already uses `make_hashable()` for similar identity inputs. The fix is to wrap `self.through_fields` with `make_hashable()` and add a regression test using list-valued `through_fields` plus the proxy-model check path from the report.\n\nVerification note: the focused test could not run in this environment because th",
+      "latency_s": 267.7610809803009,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

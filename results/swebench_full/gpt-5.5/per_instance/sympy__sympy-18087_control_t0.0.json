@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-18087",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2116,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1112,
+      "response_excerpt": "<reasoning>\nThe bad rewrite comes from `Factors.as_expr()`: while rebuilding factors it turns `(sin(x)**2)**(1/2)` into `sin(x)`, which is only valid under stronger assumptions. `trigsimp` reaches this through Fu trig splitting, so the complex case is incorrectly combined into `sqrt(2)*sin(x + pi/4)`. The fix preserves non-integer powers as `factor**exp` and only merges exponents when the outer exponent is an integer.\n</reasoning>\n\n<patch>\ndiff --git a/sympy/core/exprtools.py b/sympy/core/exprto",
+      "latency_s": 596.5206298828125,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

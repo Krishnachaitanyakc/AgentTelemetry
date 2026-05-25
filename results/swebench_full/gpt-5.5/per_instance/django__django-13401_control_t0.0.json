@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13401",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2091,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2028,
+      "response_excerpt": "<reasoning>\nThe field comparison logic in this checkout already makes `__eq__` and `__lt__` model-aware. The remaining gap was `__hash__`, which still used only `creation_counter`, so fields copied from an abstract base could have identical hashes despite model-aware identity. I updated `__hash__` to include the attached model and extended the regression test to cover set behavior and distinct hashes.\n</reasoning>\n\n<patch>\ndiff --git a/django/db/models/fields/__init__.py b/django/db/models/field",
+      "latency_s": 189.5024139881134,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

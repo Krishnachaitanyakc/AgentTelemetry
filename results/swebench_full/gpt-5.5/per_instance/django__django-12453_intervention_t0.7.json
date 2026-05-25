@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12453",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3905,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3700,
+      "response_excerpt": "<reasoning>\nThe failing path is `BaseDatabaseCreation.deserialize_db_from_string()`: it saves deserialized objects one by one in autocommit mode, so a serialized object with a foreign key to a later object can violate constraints before the referenced row is restored.\n\nThe fix mirrors fixture loading semantics: load all serialized rows inside `transaction.atomic()`, temporarily disable constraint checks for backends that don\u2019t defer them, then explicitly check constraints for the tables that wer",
+      "latency_s": 272.57974672317505,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

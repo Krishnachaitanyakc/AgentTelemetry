@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13647",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1422,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1880,
+      "response_excerpt": "<reasoning>\nThe bug is in `_eval_col_insert`: after the inserted columns, the source column should be shifted left only by `other.cols`. The old code subtracts both `pos` and `other.cols`, so the right-hand block is copied from the wrong original columns.\n\nI verified the current checkout already contains this fix and the regression test; the relevant tests pass:\n`python3 -m pytest sympy/matrices/tests/test_matrixbase.py::test_col_insert sympy/matrices/tests/test_commonmatrix.py::test_col_insert ",
+      "latency_s": 255.77976202964783,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

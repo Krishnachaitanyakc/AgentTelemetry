@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15202",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2463,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1311,
+      "response_excerpt": "<reasoning>\nThe escaping exception comes from URL validation doing extra `urlsplit()` work after the initial validation path. `urllib.parse.urlsplit()` can raise `ValueError` for malformed IPv6-like netlocs, so Django\u2019s validator must translate that into `ValidationError`.\n\nThe focused fix is to parse the URL once inside `URLValidator.__call__()`, catch `ValueError`, and reuse the parsed result for IPv6 and hostname checks. I also add the fuzzer input to `URLField` invalid-clean cases.\n\nI verifi",
+      "latency_s": 161.6701009273529,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

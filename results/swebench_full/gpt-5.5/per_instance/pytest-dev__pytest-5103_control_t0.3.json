@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-5103",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 9553,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3018,
+      "response_excerpt": "<reasoning>\nImplemented a narrow assertion-rewrite special case for builtin `all(...)` and `any(...)` when called with a single simple generator expression. The rewrite evaluates the generator with the same short-circuit behavior, but visits the generator element through the normal assertion rewriter, so reports show the predicate call such as `is_even(1)` instead of only `all(<generator object ...>)`.\n\nTo avoid changing generator-expression scoping, the generated loop uses an internal pytest te",
+      "latency_s": 541.1696801185608,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

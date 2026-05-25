@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14999",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1237,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1056,
+      "response_excerpt": "<reasoning>\n1. `RenameModel.state_forwards()` preserves `Meta.db_table`, so a model rename with an explicit table name renders the same `old_model._meta.db_table` and `new_model._meta.db_table`.\n2. `BaseDatabaseSchemaEditor.alter_db_table()` already no-ops for equal table names, but `RenameModel.database_forwards()` continued into relation and M2M alteration afterward.\n3. That extra relation work is what causes PostgreSQL foreign key constraints to be dropped/recreated and SQLite table rebuilds.",
+      "latency_s": 117.40292525291443,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

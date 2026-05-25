@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13647",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2136,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1880,
+      "response_excerpt": "<reasoning>\nThe bad result comes from `_eval_col_insert`: for columns to the right of the inserted block, it indexes `self[i, j - pos - other.cols]`. Subtracting `pos` is wrong because `j` is already an absolute column index in the new matrix. The original source column should be `j - other.cols`.\n\nI patched that lookup and added the reported 6x6 identity regression to both matrix test files present in the tree. A direct reproduction passes with compatibility shims for old SymPy 1.1.1 on the ava",
+      "latency_s": 218.89688301086426,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

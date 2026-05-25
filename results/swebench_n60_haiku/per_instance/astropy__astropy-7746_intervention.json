@@ -1,0 +1,21 @@
+{
+  "instance_id": "astropy__astropy-7746",
+  "repo": "astropy/astropy",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1116,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2880,
+      "response": "Now I understand the full issue. The fix needs to:\n\n1. Broadcast the empty arrays to a common shape\n2. Create empty output arrays with proper shape\n3. If ra_dec_order and sky == 'output', return a tuple; otherwise return a list\n4. The dtype should be float (matching output from normal transformation)\n\n<reasoning>\nThe issue is in the old version of astropy (astropy_old) where the empty array handling in `_return_list_of_arrays` at line 1496-1497 simply returns the input axes:\n\n```python\nif any(x....[truncated]",
+      "latency_s": 96.65589475631714,
+      "error": null
+    }
+  ]
+}

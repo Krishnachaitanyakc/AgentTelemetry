@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13497",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2660,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1112,
+      "response_excerpt": "<reasoning>\nThe bug is caused by checking `discrete_features == 'auto'` before handling array-like values. For NumPy arrays with more than one element, that comparison produces an array of booleans and then fails in the `if` truth-value check.\n\nThe fix is to only compare to `'auto'` when `discrete_features` is string-like, using the repo\u2019s existing `six.string_types` helper. I added a regression test covering both ndarray index arrays and ndarray boolean masks.\n\nVerification: `python3 -m py_comp",
+      "latency_s": 98.2428708076477,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

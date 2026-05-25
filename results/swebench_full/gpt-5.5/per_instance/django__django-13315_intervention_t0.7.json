@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13315",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2827,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1079,
+      "response_excerpt": "<reasoning>\nThe duplicate options come from applying `limit_choices_to` directly to the choice queryset with `complex_filter()`. When the condition traverses a reverse relation, SQL joins can return the same target row once per matching related row. The fix applies the condition through a correlated `Exists()` subquery keyed by the outer row primary key, preserving filtering semantics without multiplying rows.\n\nVerified with:\n`/usr/bin/python3 tests/runtests.py model_forms.tests.LimitChoicesToTe",
+      "latency_s": 367.2792661190033,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

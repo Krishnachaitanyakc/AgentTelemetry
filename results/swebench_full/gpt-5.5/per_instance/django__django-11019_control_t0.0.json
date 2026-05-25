@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11019",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2035,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2595,
+      "response_excerpt": "<reasoning>\nThe checkout already has the core fix: `Media.__add__()` preserves each media list and defers merging until `_js`/`_css` is evaluated, so independent singleton media additions don\u2019t create false ordering constraints. I added a regression test for the exact form scenario from the issue and asserted that resolving `MyForm().media._js` emits no `MediaOrderConflictWarning`.\n\nVerification: `python3 -m py_compile tests/forms_tests/tests/test_media.py` passes. The full Django test runner co",
+      "latency_s": 174.1397500038147,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

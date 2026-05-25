@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-21627",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1118,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1083,
+      "response_excerpt": "<reasoning>\n`cosh(z)` is zero only at `(n + 1/2)*I*pi`. The zero assumption handler already peels off rational `I*pi` multiples, but it should not ask whether the remaining argument is zero unless such a multiple was found. Making that short-circuit explicit avoids recursive assumption queries on expressions like `acos(-i + acosh(-g + i))`. I also added a regression test for the reported expression.\n\nVerified with:\n`python3 -m pytest sympy/functions/elementary/tests/test_hyperbolic.py -k test_co",
+      "latency_s": 192.26080107688904,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

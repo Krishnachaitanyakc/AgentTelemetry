@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12915",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 5377,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1711,
+      "response": "<reasoning>\nThe staticfiles ASGI wrapper inherits from `ASGIHandler`, but it does not initialize the normal async middleware chain. Static file requests therefore must be handled by the staticfiles mixin directly. Adding `get_response_async()` to `StaticFilesHandlerMixin` lets `ASGIStaticFilesHandler` serve files asynchronously by wrapping the existing synchronous static file serving path, including the `Http404` fallback.\n\nI verified the existing targeted coverage in the checkout with:\n`PYTHONP...[truncated]",
+      "latency_s": 94.74862384796143,
+      "error": null
+    }
+  ]
+}

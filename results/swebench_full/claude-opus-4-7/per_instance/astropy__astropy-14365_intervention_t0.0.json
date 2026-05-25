@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-14365",
+  "repo": "astropy/astropy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1741,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2135,
+      "response_excerpt": "<reasoning>\nThe diff captures the fix for the issue. The current HEAD already includes the core code fixes (re.IGNORECASE, command[1].lower() \u2192 casefold, v.upper() == \"NO\"). My patch:\n\n1. Adds a doctest demonstrating that lowercase commands work\n2. Changes `.lower()` to `.casefold()` for stronger Unicode case-insensitive matching\n3. Adds a regression test `test_lowercase_read_serr` that validates the bug from the issue\n\nThis is the proper patch to solve the issue - it ensures the case-insensitiv",
+      "latency_s": 439.63865184783936,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

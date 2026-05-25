@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-8801",
+  "repo": "sphinx-doc/sphinx",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3197,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1695,
+      "response_excerpt": "<reasoning>\nThe inherited annotation-only member already carries its parsed inline doc comment on the discovered `ObjectMember`, but autodoc\u2019s member filter only treated source-level `attr_docs` in the current class namespace as \u201cattribute documentation\u201d. For `Bar.attr1`, the docs belong to `Foo.attr1`, so the member was filtered like an undocumented member unless `:undoc-members:` was set. The fix treats an `INSTANCEATTR` member with an injected docstring as documented in both the dynamic and l",
+      "latency_s": 545.1063702106476,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

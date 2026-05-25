@@ -1,0 +1,26 @@
+{
+  "instance_id": "pydata__xarray-3364",
+  "repo": "pydata/xarray",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 7846,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1435,
+      "response_excerpt": "<reasoning>\nThe concat failure comes from `_dataset_concat` assuming concatenated variables exist in every dataset: it iterates only over `datasets[0].variables` and raises on missing names. The fix is to build the union of variables in encounter order, concatenate only the datasets where each variable exists, then reindex along the concat dimension so missing spans are filled with `fill_value` (default NA/NaN). Coordinates still raise if missing, preserving the existing stricter coordinate beha",
+      "latency_s": 195.2451560497284,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

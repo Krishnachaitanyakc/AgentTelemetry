@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12453",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1486,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3700,
+      "response_excerpt": "<reasoning>\nThe failure is caused by replaying serialized test DB rows one `save()` at a time. Since serialization order cannot generally satisfy all FK dependencies, especially with forward references or cycles, constraint checks can fire before the referenced row is restored. The fix should mirror fixture loading: load the whole serialized stream inside one transaction, temporarily disable constraint checks, then validate constraints after all rows have been inserted.\n</reasoning>\n\n<patch>\n```",
+      "latency_s": 176.66867184638977,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

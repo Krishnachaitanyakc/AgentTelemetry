@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12286",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 882,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1566,
+      "response": "The `django_30` directory appears to just contain the Django source, not the full repo with tests. Based on my analysis, the issue is clear. Let me now look at what the fix should be.\n\n<reasoning>\n## Analysis\n\nThe bug is in `django_30/django/core/checks/translation.py`, in the `check_language_settings_consistent` function (lines 55-61):\n\n```python\n@register(Tags.translation)\ndef check_language_settings_consistent(app_configs, **kwargs):\n    \"\"\"Error if language settings are not consistent with e...[truncated]",
+      "latency_s": 330.90263390541077,
+      "error": null
+    }
+  ]
+}

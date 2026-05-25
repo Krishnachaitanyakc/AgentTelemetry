@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-10924",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 961,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1647,
+      "response": "Based on my analysis of the codebase, I can see exactly what needs to change. The issue is that `FilePathField`'s `path` parameter should accept a callable, evaluated lazily (not at class-definition time). This prevents migrations from hardcoding machine-specific paths.\n\n<reasoning>\nThe fix requires two changes:\n\n1. **`django/db/models/fields/__init__.py`** \u2014 `FilePathField.formfield()`: When passing `path` to the form field, evaluate it if it's callable.\n\n2. **`django/forms/fields.py`** \u2014 `File...[truncated]",
+      "latency_s": 297.85281586647034,
+      "error": null
+    }
+  ]
+}

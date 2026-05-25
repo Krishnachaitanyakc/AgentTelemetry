@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13779",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 553,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1395,
+      "response_excerpt": "I have enough information to propose a fix. The bug is in `sklearn/ensemble/voting_classifier.py` at lines 167-173. When `sample_weight is not None`, the code calls `has_fit_parameter(step, 'sample_weight')` for each estimator, but `has_fit_parameter` accesses `estimator.fit`, which raises `AttributeError: 'NoneType' object has no attribute 'fit'` when an estimator has been set to `None` via `set_params`. The fix is to skip `None` estimators in this check, matching the pattern used elsewhere in ",
+      "latency_s": 180.0456998348236,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

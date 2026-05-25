@@ -1,0 +1,26 @@
+{
+  "instance_id": "pydata__xarray-4493",
+  "repo": "pydata/xarray",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1373,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3169,
+      "response_excerpt": "Now let me show my final patch reasoning and the patch:\n\n<reasoning>\nThe issue is that when a user passes a tuple of `(dims, DataArray)` to `Dataset.update()` or the `Dataset` constructor, the chunked dask DataArray loses its chunking and gets eagerly evaluated to a numpy array.\n\nLooking at `xarray/core/variable.py`, the `as_variable` function handles tuples of `(dims, data)`. The current code raised a `TypeError` when `data` is a `DataArray`, which is overly strict and breaks user workflows.\n\nT",
+      "latency_s": 454.2267270088196,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

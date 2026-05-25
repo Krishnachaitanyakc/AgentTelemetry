@@ -1,0 +1,26 @@
+{
+  "instance_id": "pydata__xarray-4094",
+  "repo": "pydata/xarray",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1339,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2398,
+      "response_excerpt": "<reasoning>\n1. `to_stacked_array()` can create a stacked dimension whose only meaningful level is the variable name when all variables only have sample dimensions.\n2. `to_unstacked_dataset()` selected each variable from that stacked axis, but left behind a length-1 stacked dimension/coordinate.\n3. Building `Dataset(data_dict)` then tried to merge conflicting leftover `y` coordinates for variables `a` and `b`.\n4. Dropping singleton dimensions after selection restores the original per-variable sha",
+      "latency_s": 279.11896300315857,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

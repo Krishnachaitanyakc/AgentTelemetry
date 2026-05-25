@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16820",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3368,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1182,
+      "response_excerpt": "<reasoning>\nThe squashed migration optimizer already keeps `RenameIndex(old_name=...)` separate from `CreateModel`, which is correct. The missing case is `RenameIndex(old_fields=...)`, used for the `index_together` to named `Index` transition. When squashing, that operation can be folded into the preceding `CreateModel` by removing the matching `index_together` entry and adding an equivalent `models.Index`, eliminating the deprecated option from the squashed migration.\n\nVerification: `python3 te",
+      "latency_s": 212.466796875,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

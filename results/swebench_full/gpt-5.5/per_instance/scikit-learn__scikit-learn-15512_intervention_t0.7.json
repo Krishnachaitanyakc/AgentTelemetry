@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-15512",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 5913,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2693,
+      "response_excerpt": "<reasoning>\nThe implementation was still deriving exemplars from the final message state even when the main loop never converged, which could produce apparently valid cluster centers and labels. The fix makes non-convergence return the documented sentinel result immediately: empty center indices and `-1` labels. The existing no-center path keeps the same behavior, now with typed empty arrays and labels.\n\nVerification:\n- `python3 -m py_compile sklearn/cluster/_affinity_propagation.py sklearn/clus",
+      "latency_s": 74.50816583633423,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

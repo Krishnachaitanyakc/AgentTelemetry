@@ -1,0 +1,26 @@
+{
+  "instance_id": "pylint-dev__pylint-7993",
+  "repo": "pylint-dev/pylint",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2295,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2806,
+      "response_excerpt": "<reasoning>\nThe bug comes from parsing `--msg-template` fields with a regex. Escaped literal braces such as `{{ ... }}` are valid Python format syntax, but a regex can treat content inside those literal braces as a real placeholder and warn/remove it incorrectly. The fix is to use `string.Formatter().parse()`, which already understands escaped braces, then keep the existing behavior of warning and stripping unsupported real fields. I also tightened the existing regression test to assert no warni",
+      "latency_s": 138.7209987640381,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

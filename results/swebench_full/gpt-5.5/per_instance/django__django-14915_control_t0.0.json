@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14915",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1276,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1801,
+      "response_excerpt": "<reasoning>\n`ModelChoiceIteratorValue` defines `__eq__`, so Python marks it unhashable unless `__hash__` is explicitly provided. Since equality compares the wrapped `value`, hashing should do the same. This preserves behavior for dictionary/set membership such as `value in {1: ...}` while keeping equal iterator values hash-compatible. A regression test covers same-value and different-value hashing.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/django/forms/models.py b/django/forms/models.py\n--- a/d",
+      "latency_s": 76.04694604873657,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

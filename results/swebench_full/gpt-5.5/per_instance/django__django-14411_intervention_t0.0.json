@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14411",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1351,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1196,
+      "response_excerpt": "<reasoning>\nThe widget template renders a `<div>` containing password hash text and an action link, not a form control. Django\u2019s `BoundField.label_tag()` asks the widget for `id_for_label()` and only emits `for=\"...\"` when that returns a truthy value. Overriding `ReadOnlyPasswordHashWidget.id_for_label()` to return `None` suppresses the invalid `for` attribute without changing the rendered widget markup.\n\nVerified with:\n`python3 ./tests/runtests.py auth_tests.test_forms.ReadOnlyPasswordHashTest`",
+      "latency_s": 120.69785022735596,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

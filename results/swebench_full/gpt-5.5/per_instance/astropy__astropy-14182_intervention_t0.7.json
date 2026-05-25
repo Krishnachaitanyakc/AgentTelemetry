@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-14182",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 7459,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2667,
+      "response_excerpt": "<reasoning>\n1. `ascii.rst` failed because `RST.__init__` did not accept `header_rows`.\n2. RST output is built on fixed-width writers, so the fix adds shared fixed-width support for reading/writing multiple header metadata rows.\n3. `RST` now passes `header_rows` through, computes the separator row index from the number of header rows, and adjusts read `data.start_line`.\n4. Added regression tests for fixed-width header rows and an RST round-trip with `name`, `unit`, and `dtype`.\n5. Verification: `",
+      "latency_s": 233.52755308151245,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

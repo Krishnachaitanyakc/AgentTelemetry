@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11099",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 949,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1558,
+      "response_excerpt": "<reasoning>\nFound the username validators in `django/contrib/auth/validators.py`. The branch already used `\\Z` and already had regression coverage for trailing newlines in `tests/auth_tests/test_validators.py`, so the remaining fix is to replace the leading `^` anchor with `\\A` for both validators. Verified with `python3 tests/runtests.py auth_tests.test_validators.UsernameValidatorsTests`.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/django/contrib/auth/validators.py b/django/contrib/auth/validat",
+      "latency_s": 197.13612604141235,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

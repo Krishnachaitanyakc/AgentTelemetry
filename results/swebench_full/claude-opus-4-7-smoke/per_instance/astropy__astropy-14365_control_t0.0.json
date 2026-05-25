@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-14365",
+  "repo": "astropy/astropy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1017,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2135,
+      "response_excerpt": "<reasoning>\nThe issue is in `astropy/io/ascii/qdp.py`. The `_line_type` function compiles the regex without `re.IGNORECASE`, so QDP commands like \"READ SERR 1 2\" only match in uppercase. Lowercase versions like \"read serr 1 2\" fail with `ValueError: Unrecognized QDP line`.\n\nA naive fix of calling `.upper()` on the whole line would break parsing of values like `nan` (would become `NAN`, no longer matching the regex `[-+]?nan`). The proper fix is to:\n\n1. Compile the regex with `re.IGNORECASE` so c",
+      "latency_s": 308.14335680007935,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

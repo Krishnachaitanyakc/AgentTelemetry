@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-13033",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 2313,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "get_order_by relation attname ordering compiler.py": 1,
+    "order_by related model default ordering attname pieces": 1,
+    "tests ordering self referential foreign key order_by _id": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4743,
+      "response": "<reasoning>The ordering resolver compares a relation field's attname against the full lookup path. For `author__editor_id`, `field.attname` is `editor_id`, so Django incorrectly applies the related model's default ordering and adds an unnecessary self join. Comparing against the final lookup component preserves explicit `_id` ordering across relations.</reasoning>\n<patch>diff --git a/django/db/models/sql/compiler.py b/django/db/models/sql/compiler.py\n--- a/django/db/models/sql/compiler.py\n+++ b/django/db/models/sql/compiler.py\n@@ -723,7 +723,7 @@ class SQLCompiler:\n         # If we get to this point and the field is a relation to another model,\n         # append the default ordering for that model unless the attribute name\n         # of the field is specified.\n-        if field.is_relation and opts.ordering and getattr(field, 'attname', None) != name:\n+        if field.is_relation and opts.ordering and getattr(field, 'attname', None) != pieces[-1]:\n             # Firstly, avoid infinite loops.\n             already_seen = already_seen or set()\n             join_tuple = tuple(getattr(self.query.alias_map[j], 'join_cols', None) for j in joins)\ndiff --git a/tests/ordering/models.py b/tests/ordering/models.py\n--- a/tests/ordering/models.py\n+++ b/tests/ordering/models.py\n@@ -17,6 +17,7 @@ from django.db.models.expressions import OrderBy\n \n class Author(models.Model):\n     name = models.CharField(max_length=63, null=True, blank=True)\n+    editor = models.ForeignKey('self', models.CA",
+      "latency_s": 160.20007991790771,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 7698,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"get_order_by relation attname ordering compiler.py\"}}</tool_call>",
+      "latency_s": 17.591104984283447,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 8293,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"order_by related model default ordering attname pieces\"}} </tool_call>",
+      "latency_s": 15.82093596458435,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 8909,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"tests ordering self referential foreign key order_by _id\"}}</tool_call>",
+      "latency_s": 15.09011721611023,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 9534,
+      "response": "<reasoning>The resolver should only apply a related model\u2019s default ordering when the relation itself is ordered, not when the explicit foreign-key column is ordered. For a path like `record__root_id`, the current check compares `field.attname` to the full lookup string, so `root_id` is treated like `root` and Django follows the relation, applies `OneModel.Meta.ordering`, and adds the extra self join. Comparing against the final lookup component fixes explicit `_id` ordering through relations.</reasoning>\n<patch>diff --git a/django/db/models/sql/compiler.py b/django/db/models/sql/compiler.py\n--- a/django/db/models/sql/compiler.py\n+++ b/django/db/models/sql/compiler.py\n@@ -723,7 +723,7 @@ class SQLCompiler:\n         # If we get to this point and the field is a relation to another model,\n         # append the default ordering for that model unless the attribute name\n         # of the field is specified.\n-        if field.is_relation and opts.ordering and getattr(field, 'attname', None) != name:\n+        if field.is_relation and opts.ordering and getattr(field, 'attname', None) != pieces[-1]:\n             # Firstly, avoid infinite loops.\n             already_seen = already_seen or set()\n             join_tuple = tuple(getattr(self.query.alias_map[j], 'join_cols', None) for j in joins)\ndiff --git a/tests/ordering/models.py b/tests/ordering/models.py\n--- a/tests/ordering/models.py\n+++ b/tests/ordering/models.py\n@@ -17,6 +17,7 @@ from django.db.models.expressions import OrderBy\n \n ",
+      "latency_s": 19.562795877456665,
+      "error": null
+    }
+  ]
+}

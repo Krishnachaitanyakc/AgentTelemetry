@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13660",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 783,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3099,
+      "response_excerpt": "<reasoning>\nLooking at the issue, the bug is that `exec()` is called without a globals dictionary in `django/core/management/commands/shell.py`. When functions are defined inside the executed code, they don't have access to imports from the enclosing scope because Python's `exec()` (when called with no arguments) uses both the local and global namespace of the caller, but function definitions inside `exec` see them as locals which aren't accessible from the function's global lookup.\n\nThe fix as ",
+      "latency_s": 79.9801607131958,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

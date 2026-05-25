@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11133",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1219,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1720,
+      "response": "The fix works correctly. Here's the summary:\n\n<patch>\nThe fix adds `memoryview` to the isinstance exclusion check in `HttpResponse.content`'s setter.\n\n**Root cause:** `memoryview` objects have `__iter__`, so the content setter's check `hasattr(value, '__iter__') and not isinstance(value, (bytes, str))` treated them as generic iterables. This caused iteration over individual bytes (yielding integers), which `make_bytes` then converted via `str(int).encode()` \u2014 producing `b'77121 ...'` instead of ...[truncated]",
+      "latency_s": 79.14587998390198,
+      "error": null
+    }
+  ]
+}

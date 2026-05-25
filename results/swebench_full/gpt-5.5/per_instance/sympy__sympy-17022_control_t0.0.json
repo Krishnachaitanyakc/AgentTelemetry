@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-17022",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4753,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1757,
+      "response_excerpt": "<reasoning>\nThe bug comes from identity matrices falling through to a printer path that emits `I`, which lambdify can bind to complex `1j`. I fixed NumPy matrix addition so symbolic `Identity(n)` can use a matching matrix argument\u2019s runtime shape, producing `eye(A.shape[0]) + A`. I also made the generic lambda printer reject unsupported identity matrices instead of silently printing `I`.\n\nVerified with:\n`./.venv/bin/python -m pytest sympy/utilities/tests/test_lambdify.py -k \"MatrixSymbol_identit",
+      "latency_s": 344.5900490283966,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

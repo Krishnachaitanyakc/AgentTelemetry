@@ -1,0 +1,26 @@
+{
+  "instance_id": "matplotlib__matplotlib-26011",
+  "repo": "matplotlib/matplotlib",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 905,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2439,
+      "response_excerpt": "<reasoning>\nI've confirmed the issue. The original code at HEAD has `set_xlim` and `set_ylim` methods that, when emit=True, only fire callbacks on the current axis but don't fire them on shared sibling axes. The shared sibling axes are updated via `set_xlim(..., emit=False)` to prevent infinite recursion, but this also suppresses their `xlim_changed` callbacks.\n\nThe fix: After calling `other.set_xlim(..., emit=False)` for each shared sibling, explicitly invoke `other.callbacks.process('xlim_chan",
+      "latency_s": 184.11725902557373,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

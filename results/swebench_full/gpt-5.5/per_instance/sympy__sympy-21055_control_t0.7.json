@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-21055",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1970,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1821,
+      "response_excerpt": "<reasoning>\nThe failure is because `refine()` dispatches by expression class name, but older `refine.py` has no handler for `arg`. Adding a `refine_arg` handler lets assumptions prove the argument is positive or negative, so `arg(a)` becomes `0` or `pi`. Then existing recursive refinement simplifies `Abs(arg(a))` and the `Piecewise` condition in the reported integral.\n\nVerified on the current tree with:\n`python3 -m pytest sympy/assumptions/tests/test_refine.py -q`\n</reasoning>\n\n<patch>\ndiff --gi",
+      "latency_s": 136.2528018951416,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

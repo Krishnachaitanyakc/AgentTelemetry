@@ -1,0 +1,26 @@
+{
+  "instance_id": "pylint-dev__pylint-5859",
+  "repo": "pylint-dev/pylint",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2342,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1722,
+      "response_excerpt": "<reasoning>\nFound `fixme` detection in `pylint/checkers/misc.py`. The bug comes from appending `\\b` after every note tag; a word boundary does not exist between two punctuation characters, so `???` followed by `:` cannot match.\n\nThe patch keeps the existing `\\b` behavior for word-like tags such as `TODO`, preserving matches like `TODO.` and non-matches like `Todoist`. For tags ending in punctuation, it uses an explicit lookahead for `:`, whitespace, or end of comment. Added tests for both the re",
+      "latency_s": 152.89165997505188,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

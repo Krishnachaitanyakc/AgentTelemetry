@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-10924",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4347,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1616,
+      "response_excerpt": "<reasoning>\n`models.FilePathField` already preserves callable `path` values for deconstruction in this checkout, so migrations can serialize a top-level callable instead of freezing a machine-specific resolved path. The missing runtime support was in `forms.FilePathField`, whose choice-building code passed `self.path` directly to filesystem APIs.\n\nThe patch resolves callable paths inside `set_choices()`, so choices are built from the current callable result whenever choices are refreshed. It als",
+      "latency_s": 220.16890811920166,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

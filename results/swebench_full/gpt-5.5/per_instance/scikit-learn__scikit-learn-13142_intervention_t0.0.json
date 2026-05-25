@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13142",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1538,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3120,
+      "response_excerpt": "<reasoning>\nThe disagreement happens because `fit_predict` selects and stores the best parameters across `n_init`, but then returns labels from the last EM run\u2019s `log_resp`. When the best run is not the last run, `predict(X)` uses the stored best parameters while `fit_predict(X)` returns stale labels. The fix is to run one final E-step after restoring `best_params`, so returned labels are computed from the same parameters as `predict`.\n\nI could not run the test suite in this temp checkout becaus",
+      "latency_s": 191.86616206169128,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13033",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 825,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4526,
+      "response_excerpt": "<reasoning>\nBased on my analysis, the issue is in `django/db/models/sql/compiler.py` in the `find_ordering_name` method.\n\n**Root Cause:** When ordering by a foreign key's attname (e.g., `record__root_id`), the code was incorrectly applying the related model's `Meta.ordering` because it didn't check whether the user was explicitly asking for the FK's `_id` column (rather than the FK relation itself). For self-referencing FKs, this caused:\n1. An extra unnecessary JOIN to follow the FK relation\n2. ",
+      "latency_s": 320.05400919914246,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

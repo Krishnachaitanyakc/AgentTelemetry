@@ -1,0 +1,26 @@
+{
+  "instance_id": "psf__requests-2317",
+  "repo": "psf/requests",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1601,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1634,
+      "response_excerpt": "<reasoning>\nThe bug is in `Session.request`: `builtin_str(b'GET')` on Python 3 produces `\"b'GET'\"`, which sends the wrong HTTP method. Requests already has `to_native_string`, which preserves native strings and decodes byte strings using ASCII. I updated `sessions.py` to use that helper and added a focused regression test using a dummy `Session.send`.\n\nVerified with `/usr/bin/python3 -m unittest test_requests.RequestsTestCase.test_bytes_method_name`. Full pytest was blocked by a local pytest plu",
+      "latency_s": 86.34470987319946,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

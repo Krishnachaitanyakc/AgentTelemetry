@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-11848",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 3475,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "parse_http_date": 1,
+    "rfc850 http date tests": 1,
+    "two digit year rfc850 parse_http_date": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1637,
+      "response": "<reasoning>The parser handled RFC 850 two-digit years with a fixed 1970/2069 pivot. RFC 7231 requires interpreting the year relative to the current year: if the candidate appears more than 50 years in the future, use the most recent past year with the same last two digits. The patch computes the current century dynamically and extends the rfc850 tests by mocking the current year around boundary cases.</reasoning>\n<patch>diff --git a/django/utils/http.py b/django/utils/http.py\nindex 572cfb4347..ff2f08ac1e 100644\n--- a/django/utils/http.py\n+++ b/django/utils/http.py\n@@ -176,10 +176,14 @@ def parse_http_date(date):\n     try:\n         year = int(m.group('year'))\n         if year < 100:\n-            if year < 70:\n-                year += 2000\n+            current_year = datetime.datetime.utcnow().year\n+            current_century = current_year - (current_year % 100)\n+            if year - (current_year % 100) > 50:\n+                # year that appears to be more than 50 years in the future are\n+                # interpreted as representing the past.\n+                year += current_century - 100\n             else:\n-                year += 1900\n+                year += current_century\n         month = MONTHS.index(m.group('mon').lower()) + 1\n         day = int(m.group('day'))\n         hour = int(m.group('hour'))\ndiff --git a/tests/utils_tests/test_http.py b/tests/utils_tests/test_http.py\nindex f8017ae1cb..ed6824429d 100644\n--- a/tests/utils_tests/test_http.py\n+++ b/tests/utils_tes",
+      "latency_s": 178.7646930217743,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 5817,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"parse_http_date\"}}</tool_call>",
+      "latency_s": 14.626589059829712,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 6237,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"RFC850 http date tests\"}}</tool_call>",
+      "latency_s": 12.39259123802185,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 6692,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"two digit year rfc850 parse_http_date\"}}</tool_call>",
+      "latency_s": 11.972054243087769,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 7222,
+      "response": "<reasoning>The required searches have been completed. The bug is in RFC 850 two-digit year handling: Django currently uses a fixed 1970/2069 pivot, but RFC 7231 requires resolving the year relative to the current year and moving it to the previous century only if it appears more than 50 years in the future. The patch replaces the fixed pivot with current-year-relative logic and adds tests that freeze the current year around boundary cases.</reasoning>\n<patch>diff --git a/django/utils/http.py b/django/utils/http.py\nindex 572cfb4347..ff2f08ac1e 100644\n--- a/django/utils/http.py\n+++ b/django/utils/http.py\n@@ -176,10 +176,15 @@ def parse_http_date(date):\n     try:\n         year = int(m.group('year'))\n         if year < 100:\n-            if year < 70:\n-                year += 2000\n+            current_year = datetime.datetime.utcnow().year\n+            current_century = current_year - (current_year % 100)\n+            year += current_century\n+            if year - current_year > 50:\n+                # RFC 7231 requires years more than 50 years in the future to\n+                # be interpreted as the most recent past year with the same\n+                # last two digits.\n+                year -= 100\n             else:\n-                year += 1900\n+                pass\n         month = MONTHS.index(m.group('mon').lower()) + 1\n         day = int(m.group('day'))\n         hour = int(m.group('hour'))\ndiff --git a/tests/utils_tests/test_http.py b/tests/utils_tests/test_http.py\nindex f8",
+      "latency_s": 22.869084119796753,
+      "error": null
+    }
+  ]
+}

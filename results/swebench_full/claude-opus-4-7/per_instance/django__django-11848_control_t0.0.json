@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11848",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 811,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1420,
+      "response_excerpt": "<reasoning>\nThe issue is in `django/utils/http.py` in the `parse_http_date` function. The current logic hardcodes:\n- Years 0-69 \u2192 2000-2069\n- Years 70-99 \u2192 1970-1999\n\nPer RFC 7231, the correct behavior is to interpret a two-digit year that appears to be more than 50 years in the future as representing the most recent past year with the same last two digits. This means the comparison should be relative to the current year, not hardcoded.\n\nFor example, in 2026, two-digit year \"75\" should be interp",
+      "latency_s": 35.23292422294617,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

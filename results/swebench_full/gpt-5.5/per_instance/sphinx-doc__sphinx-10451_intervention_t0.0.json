@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-10451",
+  "repo": "sphinx-doc/sphinx",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 7625,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2460,
+      "response_excerpt": "<reasoning>\nThe duplicate rows happen because autodoc stores annotations for `*args` and `**kwargs` under the bare names `args` and `kwargs`, while parsed docstring fields can use the starred names. The fix normalizes both forms when checking whether a parameter already has a description/type, and also uses the rendered signature to recover the starred spelling when adding missing type fields.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/sphinx/ext/autodoc/typehints.py b/sphinx/ext/autodoc/typehin",
+      "latency_s": 180.1862030029297,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

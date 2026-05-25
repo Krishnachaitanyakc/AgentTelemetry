@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13265",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3283,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2717,
+      "response": "The patch is correct. Here is my full reasoning and the final patch:\n\n<reasoning>\nThe bug occurs when generating migrations for a new model that has both `order_with_respect_to` and an index containing `_order`. The `_order` field is a virtual field created only when `AlterOrderWithRespectTo` runs, so any `AddIndex` that references `_order` must come after `AlterOrderWithRespectTo`.\n\n**Root causes in `django/db/migrations/autodetector.py`:**\n\n1. **`check_dependency` is missing the `\"order_wrt_se...[truncated]",
+      "latency_s": 344.32288694381714,
+      "error": null
+    }
+  ]
+}

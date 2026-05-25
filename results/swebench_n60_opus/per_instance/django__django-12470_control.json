@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12470",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 714,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1424,
+      "response": "Both `django_22` (line 706) and `django_30` (line 718) have the same bug \u2014 missing the `and name != 'pk'` guard.\n\n<reasoning>\n## Root Cause\n\nIn `find_ordering_name()`, when ordering by `-pk` on a child model:\n\n1. `get_order_dir(\"-pk\", \"ASC\")` returns `(\"pk\", \"DESC\")` \u2014 correct so far\n2. `_setup_joins([\"pk\"], ...)` resolves `pk` to the `OneToOneField` parent_link (since child models use the parent_ptr as their pk)\n3. The guard condition `field.is_relation and opts.ordering and getattr(field, 'att...[truncated]",
+      "latency_s": 392.8664388656616,
+      "error": null
+    }
+  ]
+}

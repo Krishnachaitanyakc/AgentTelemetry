@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-10924",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 2554,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "filepathfield": 1,
+    "filepathfield deconstruct": 1,
+    "filepathfield formfield path": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1833,
+      "response": "<reasoning>`FilePathField.deconstruct()` already preserves the original `path` object, so a module-level callable can be serialized into migrations. The missing behavior is evaluating that callable only when creating the form field choices. This keeps migrations machine-independent while still giving `forms.FilePathField` a concrete filesystem path at runtime.</reasoning>\n<patch>diff --git a/django/db/models/fields/__init__.py b/django/db/models/fields/__init__.py\n--- a/django/db/models/fields/__init__.py\n+++ b/django/db/models/fields/__init__.py\n@@ -1709,7 +1709,7 @@ class FilePathField(Field):\n \n     def formfield(self, **kwargs):\n         return super().formfield(**{\n-            'path': self.path,\n+            'path': self.path() if callable(self.path) else self.path,\n             'match': self.match,\n             'recursive': self.recursive,\n             'form_class': forms.FilePathField,\ndiff --git a/tests/model_fields/test_filepathfield.py b/tests/model_fields/test_filepathfield.py\n--- a/tests/model_fields/test_filepathfield.py\n+++ b/tests/model_fields/test_filepathfield.py\n@@ -10,3 +10,13 @@ class FilePathFieldTests(SimpleTestCase):\n         field = FilePathField(path=path)\n         self.assertEqual(field.path, path)\n         self.assertEqual(field.formfield().path, path)\n+\n+    def test_callable_path(self):\n+        path = os.path.dirname(__file__)\n+\n+        def generate_path():\n+            return path\n+\n+        field = FilePathField(path=generate_path)\n+        s",
+      "latency_s": 129.09640288352966,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 5042,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"FilePathField\"}}</tool_call>",
+      "latency_s": 13.745422840118408,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 5452,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"FilePathField deconstruct\"}}</tool_call>",
+      "latency_s": 14.403900146484375,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 5922,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"FilePathField formfield path\"}}</tool_call>",
+      "latency_s": 12.616327285766602,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 6407,
+      "response": "<reasoning>`FilePathField` should retain a callable `path` for migration serialization, but evaluate it when building the form field because `forms.FilePathField` needs a concrete filesystem path. The focused fix is to resolve `self.path` in `formfield()` only when it is callable, then document and test that behavior.</reasoning>\n<patch>diff --git a/django/db/models/fields/__init__.py b/django/db/models/fields/__init__.py\n--- a/django/db/models/fields/__init__.py\n+++ b/django/db/models/fields/__init__.py\n@@ -1709,7 +1709,7 @@ class FilePathField(Field):\n \n     def formfield(self, **kwargs):\n         return super().formfield(**{\n-            'path': self.path,\n+            'path': self.path() if callable(self.path) else self.path,\n             'match': self.match,\n             'recursive': self.recursive,\n             'form_class': forms.FilePathField,\ndiff --git a/tests/model_fields/test_filepathfield.py b/tests/model_fields/test_filepathfield.py\n--- a/tests/model_fields/test_filepathfield.py\n+++ b/tests/model_fields/test_filepathfield.py\n@@ -10,3 +10,13 @@ class FilePathFieldTests(SimpleTestCase):\n         field = FilePathField(path=path)\n         self.assertEqual(field.path, path)\n         self.assertEqual(field.formfield().path, path)\n+\n+    def test_callable_path(self):\n+        path = os.path.dirname(__file__)\n+\n+        def generate_path():\n+            return path\n+\n+        field = FilePathField(path=generate_path)\n+        self.assertEqual(field.path(), path)\n+      ",
+      "latency_s": 18.25762701034546,
+      "error": null
+    }
+  ]
+}

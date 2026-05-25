@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15320",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1390,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1733,
+      "response_excerpt": "<reasoning>\nThe bug is in `Subquery.as_sql()`: it assumes `query.as_sql()` returns SQL wrapped in parentheses and strips the first/last characters before applying its own template. Plain `Query` objects only do that wrapping when `query.subquery` is true.\n\nThe fix is to mark the wrapped query as a subquery in `Subquery.__init__()`, matching the behavior the issue reporter found manually. I also added a regression test that calls `Subquery.as_sql()` directly and verifies it returns the compiler S",
+      "latency_s": 138.11837792396545,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

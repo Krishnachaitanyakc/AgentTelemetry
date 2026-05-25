@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-22840",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1560,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4443,
+      "response_excerpt": "<reasoning>\nThe bad CSE output happens because `MatrixSymbol` is treated as a normal repeated compound expression when traversing `A[i, j]`, so CSE introduces temporaries like `x0 = A`. `MatrixSymbol` should behave like a scalar `Symbol` for this purpose: do not eliminate the symbol itself, but still allow repeated indexed elements such as `A[0, 0]` to be eliminated.\n\nI updated `tree_cse()` to stop repeated-subexpression traversal at `MatrixSymbol`, and added a regression test covering matrix-sy",
+      "latency_s": 162.88356113433838,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

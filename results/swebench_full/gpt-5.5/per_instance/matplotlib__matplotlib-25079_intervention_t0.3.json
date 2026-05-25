@@ -1,0 +1,26 @@
+{
+  "instance_id": "matplotlib__matplotlib-25079",
+  "repo": "matplotlib/matplotlib",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1499,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4565,
+      "response_excerpt": "<reasoning>\nThe failure is caused by `Normalize.autoscale()` emitting callbacks while it is in an intermediate invalid state. It first sets `vmin`/`vmax` to `None`; each setter emits `changed`, so an attached colorbar can redraw before `autoscale_None()` restores valid limits. For `LogNorm`, the colorbar fallback can temporarily set `vmin=0`, which later raises `ValueError(\"Invalid vmin or vmax\")`.\n\nThe fix is to block norm callbacks during the internal autoscale reset and emit a single `changed",
+      "latency_s": 212.51350903511047,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

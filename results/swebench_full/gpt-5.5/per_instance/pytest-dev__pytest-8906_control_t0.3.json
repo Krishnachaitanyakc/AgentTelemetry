@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-8906",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1454,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2768,
+      "response_excerpt": "<reasoning>\nThe module-level `pytest.skip()` error already lives in `src/_pytest/python.py` during test module import. The issue is guidance clarity: when `allow_module_level` is omitted, the error should point users directly to the correct imperative module-skip form instead of suggesting only decorators/marks. I updated the message to show `pytest.skip(reason, allow_module_level=True)` and tightened the regression test.\n\nVerified with:\n`/private/tmp/pytest-dev-pytest-venv/bin/python -m pytest ",
+      "latency_s": 254.33990788459778,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16139",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4111,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2207,
+      "response_excerpt": "<reasoning>\nThe broken link comes from using a relative `../password/` URL, which only works when the current change URL is addressed by primary key. I changed `UserChangeForm` to give the password widget an explicit relative URL that climbs back to the model admin object root and uses `self.instance.pk`, so it still resolves correctly when the current URL uses another `to_field`.\n\nVerified with:\n`python3 tests/runtests.py auth_tests.test_forms.UserChangeFormTest.test_link_to_password_reset_in_u",
+      "latency_s": 298.0799808502197,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

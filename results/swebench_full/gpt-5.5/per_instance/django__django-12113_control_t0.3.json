@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12113",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2191,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5568,
+      "response_excerpt": "<reasoning>\nThe lock happens when SQLite aliases with different persistent TEST[\"NAME\"] values are incorrectly treated as the same test database. Then Django opens separate TestCase transactions against the same physical SQLite file, and the second write can hit \"database is locked\". The fix is to make SQLite's test database signature include the resolved test database name, while still keeping in-memory aliases distinct.\n</reasoning>\n\n<patch>\ndiff --git a/django/db/backends/sqlite3/creation.py ",
+      "latency_s": 364.52339005470276,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

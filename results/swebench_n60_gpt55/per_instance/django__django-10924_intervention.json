@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-10924",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3810,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1647,
+      "response": "<reasoning>\n`forms.FilePathField` still treated a callable `path` as the path object itself, which breaks direct form usage and also covers older model-field behavior where the callable may be passed through to the form field. The patch resolves callable paths during initialization and uses the resolved path for recursive choice labels. I verified the focused form tests, model field callable tests, and migration function serialization test pass with a temporary `cgi` shim needed for this older D...[truncated]",
+      "latency_s": 303.5239911079407,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "instance_id": "django__django-12286",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 4,
+  "proposed_patch": true,
+  "patch_len": 807,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "translation.e004": 1,
+    "e004 language_code languages setting": 1,
+    "get_supported_language_variant lookuperror": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1752,
+      "response": "I'll investigate this issue about `translation.E004` being raised incorrectly for sublanguages when a base language is available.\n\n<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"translation.E004\"}}</tool_call>",
+      "latency_s": 13.41655707359314,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 2308,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"E004 LANGUAGE_CODE LANGUAGES setting\"}}</tool_call>",
+      "latency_s": 12.642491817474365,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 2833,
+      "response": "This is the repo to patch \u2014 it's the Django development repo at the point before this issue was fixed. The fix needs to change `check_language_settings_consistent` to use `get_supported_language_variant` (which properly handles sublanguage fallback) instead of the naive string-based check.\n\n<reasoning>\nThe bug is in `django/core/checks/translation.py` in the `check_language_settings_consistent` function. \n\nThe current (buggy) implementation:\n```python\ndef check_language_settings_consistent(app_configs, **kwargs):\n    available_tags = {i for i, _ in settings.LANGUAGES} | {'en-us'}\n    tag = settings.LANGUAGE_CODE\n    if tag not in available_tags and tag.split('-')[0] not in available_tags:\n        return [E004]\n    return []\n```\n\nThis does a simple string-based check: it builds a set of available language tags from `settings.LANGUAGES`, then checks if `LANGUAGE_CODE` or its base (first part before `-`) is in that set. But this doesn't use Django's actual language resolution logic from `get_supported_language_variant`, which handles:\n1. The language code itself\n2. Fallback languages defined in `LANG_INFO`\n3. The generic base language code\n4. Country-specific variants when not in strict mode\n\nFor example, with `LANGUAGE_CODE = \"de-at\"` and `LANGUAGES = [('de', 'German')]`:\n- The simple check correctly finds `\"de\"` in available_tags (this part works)\n- BUT Django's actual runtime behavior uses `get_supported_language_variant` which also verifies via `check_for_language()` that tr",
+      "latency_s": 118.34725904464722,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 8081,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"get_supported_language_variant LookupError\"}}</tool_call>\n\n<reasoning>\nThe issue is in `django/core/checks/translation.py` in `check_language_settings_consistent`. The current implementation does a naive string check against `settings.LANGUAGES` to see if `LANGUAGE_CODE` is valid. It checks both the full tag and the base language (first part before `-`), but this doesn't match Django's actual runtime language resolution behavior.\n\nDjango's `get_supported_language_variant` function (in `django/utils/translation/trans_real.py`) properly handles sublanguage fallback \u2014 it checks the full code, then fallback codes, then the base language, and raises `LookupError` if nothing matches. This is the same function Django uses at runtime.\n\nThe fix replaces the manual string check with a call to `get_supported_language_variant`, which will correctly allow `de-at` when `de` is available (since `de` has translation files), while still raising E004 for truly unsupported codes.\n</reasoning>\n\n<patch>\n--- a/django/core/checks/translation.py\n+++ b/django/core/checks/translation.py\n@@ -1,4 +1,5 @@\n from django.conf import settings\n+from django.utils.translation import get_supported_language_variant\n from django.utils.translation.trans_real import language_code_re\n \n from . import Error, Tags, register\n@@ -55,7 +56,7 @@\n @register(Tags.translation)\n def check_language_settings_consistent(app_configs, **kwargs):\n     \"\"\"Error if language se",
+      "latency_s": 19.814477920532227,
+      "error": null
+    }
+  ]
+}

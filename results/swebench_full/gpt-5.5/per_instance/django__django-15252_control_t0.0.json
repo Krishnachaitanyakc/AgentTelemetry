@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15252",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4270,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2475,
+      "response_excerpt": "<reasoning>\n1. `MigrationRecorder` creates and writes `django_migrations` directly, bypassing `DATABASE_ROUTERS`.\n2. The recorder\u2019s internal `Migration` model is still a normal model, so the existing `router.allow_migrate_model()` API can decide whether that table may exist on a connection.\n3. The fix gates schema creation, reads, and applied/unapplied writes behind that router decision.\n4. Added a recorder test proving a router returning `False` avoids table checks, schema creation, and migrati",
+      "latency_s": 245.3368420600891,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

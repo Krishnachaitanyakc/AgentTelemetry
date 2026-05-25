@@ -1,0 +1,29 @@
+{
+  "topology": "sequential",
+  "model": "claude_cli/claude-opus-4-7",
+  "question": "Describe how a closed-loop intervention based on telemetry signals can recover a stuck agent. Give a concrete example using the REASONING span kind.",
+  "run_id": "sequential__claude_cli_claude-opus-4-7__q4",
+  "transcript": [
+    {
+      "agent": "planner",
+      "output": "1. What telemetry signals (e.g., span duration, token rate, repeated tool calls, error patterns) reliably indicate a \"stuck\" agent within REASONING spans, and what thresholds distinguish stalls from normal long-running reasoning?\n2. What closed-loop intervention mechanisms exist (e.g., context injection, prompt rewriting, tool budget reset, forced replan, model swap) and how are they triggered from span-level observability without breaking the agent's state?\n3. How would a concrete REASONING-span example flow look end-to-end: signal detection \u2192 decision policy \u2192 intervention dispatch \u2192 verification span confirming recovery?",
+      "latency_s": 11.284290075302124
+    },
+    {
+      "agent": "researcher",
+      "output": "# Findings: Closed-Loop Intervention for Stuck Agents (REASONING spans)\n\n**1. Stall-indicating telemetry signals**\n- Span duration exceeding p95 baseline for that reasoning class (typical threshold: 2\u20133\u00d7 rolling median).\n- Token-emission rate decay (<10 tok/s sustained) or output-entropy collapse (repeated n-grams).\n- Tool-call loops: same tool+args invoked \u22653\u00d7 within a window without state change.\n- Plan/scratchpad churn: repeated \"let me reconsider\" markers without new entities.\n- Error-retry storms (\u2265N consecutive non-progressing errors) and flat KV-cache growth.\n\n**2. Intervention mechanisms (triggered via span hooks)**\n- Context injection: append a system note summarizing detected loop + constraints.\n- Prompt rewriting / forced replan: emit a \"STOP-AND-REPLAN\" directive with a fresh task decomposition.\n- Tool-budget reset or tool denylist for the looping tool.\n- Model swap (escalate to stronger model, or sidecar critic).\n- Checkpoint rollback to last verified subgoal; preserve mem",
+      "latency_s": 20.911784887313843
+    },
+    {
+      "agent": "writer",
+      "output": "## Closed-Loop Intervention for Stuck Agents\n\nA closed-loop system continuously inspects telemetry from REASONING spans and triggers corrective action when stall signatures emerge. Detectors watch for span duration exceeding 2\u20133\u00d7 the rolling median, token-emission decay below ~10 tok/s, output-entropy collapse, repeated tool calls with identical arguments, and \"reconsider\" churn in the scratchpad without new entities surfacing.\n\nWhen a stall is confirmed, span hooks fire one or more interventions: injecting a system note that names the detected loop, issuing a STOP-AND-REPLAN directive with a fresh decomposition, resetting tool budgets or denylisting the looping tool, escalating to a stronger model, or rolling back to the last verified subgoal while preserving memory keys.\n\n**Concrete example.** A REASONING span runs at 4\u00d7 median duration while repeatedly invoking `search_docs` with the same arguments. The policy emits an `intervene.replan` event; the orchestrator injects a critique pl",
+      "latency_s": 13.681324005126953
+    }
+  ],
+  "total_cost_usd": 0.07251,
+  "total_input_tokens": 734,
+  "total_output_tokens": 820,
+  "n_agents": 3,
+  "wall_clock_s": 45.89735722541809,
+  "error": null
+}

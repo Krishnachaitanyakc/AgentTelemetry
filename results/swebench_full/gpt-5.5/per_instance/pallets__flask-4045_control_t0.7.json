@@ -1,0 +1,26 @@
+{
+  "instance_id": "pallets__flask-4045",
+  "repo": "pallets/flask",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1471,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1024,
+      "response_excerpt": "<reasoning>\n1. Blueprint constructor names already reject dots.\n2. The remaining gap is `app.register_blueprint(bp, name=\"...\")` and nested blueprint registration names, which bypass constructor validation.\n3. Validate the local registration name before composing it with `name_prefix`, so internally generated nested names like `parent.child` still work.\n4. Added tests for direct and nested registration-name overrides.\n5. Verified with `.venv/bin/python -m pytest tests/test_blueprints.py -q`: 62 ",
+      "latency_s": 83.68459796905518,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "instance_id": "pytest-dev__pytest-5413",
+  "repo": "pytest-dev/pytest",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 2,
+  "proposed_patch": true,
+  "answer_len": 498,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3715,
+      "response_excerpt": "The task has already been completed. The patch I proposed adds a `__str__` method to `ExceptionInfo` in `src/_pytest/_code/code.py` that returns `self.exconly()`, fixing the gotcha where `str(e)` returned a cryptic repr instead of the actual exception message.",
+      "latency_s": 369.1901607513428,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4011,
+      "response_excerpt": "<reasoning>\nThe issue is that `str()` on a `pytest.raises` context variable (`ExceptionInfo`) returns a brief representation instead of the full exception message. To fix this, I need to add a `__str__` method to the `ExceptionInfo` class in `src/_pytest/_code/code.py` that returns the full exception message via `self.exconly()`, matching the behavior of `str()` on a directly-caught exception.\n\nThe current behavior calls `self.exconly()` with default parameters which only returns the first line.",
+      "latency_s": 37.61570906639099,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

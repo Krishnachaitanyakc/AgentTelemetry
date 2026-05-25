@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15789",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3358,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1327,
+      "response_excerpt": "<reasoning>\nThe fix is to make `django.utils.html.json_script()` accept an optional JSON encoder class while preserving the existing default behavior with `DjangoJSONEncoder`. I added a focused test proving a custom encoder is used, and documented the public utility since the issue noted it wasn\u2019t documented. The focused test suite passes with `python3 tests/runtests.py utils_tests.test_html -v 2`.\n</reasoning>\n\n<patch>\ndiff --git a/django/utils/html.py b/django/utils/html.py\n--- a/django/utils/",
+      "latency_s": 55.775720834732056,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

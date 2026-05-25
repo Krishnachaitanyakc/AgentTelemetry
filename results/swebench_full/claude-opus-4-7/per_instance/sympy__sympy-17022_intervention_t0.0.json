@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-17022",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1522,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1757,
+      "response_excerpt": "All 1048 tests pass.\n\n<reasoning>\n**Summary of the fix:**\n\nThe issue was that `lambdify` would silently misinterpret expressions containing `Identity` matrices. The root cause:\n\n1. The `PythonCodePrinter` (and its subclasses like `LambdaPrinter`) didn't have `_print_Identity`, `_print_ZeroMatrix`, or `_print_OneMatrix` methods.\n2. They inherited from `StrPrinter` whose `_print_Identity` returns the bare string `\"I\"` (and `\"0\"`, `\"1\"` for `ZeroMatrix`/`OneMatrix`).\n3. When `lambdify` generated co",
+      "latency_s": 597.1310451030731,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

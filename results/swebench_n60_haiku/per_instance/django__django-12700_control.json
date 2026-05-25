@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12700",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1327,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2528,
+      "response": "Perfect! I found the issue. Looking at the `cleanse_setting()` function on lines 48-71, I can see the problem:\n\nThe current implementation at line 60 handles lists and tuples, but when recursively calling `cleanse_setting('', v)` for items in the list, it passes an empty string as the key. This means when the item `v` is a dictionary with sensitive keys (like `secret` or `token`), the HIDDEN_SETTINGS regex check on line 54 will fail because the key being checked is an empty string, not the actua...[truncated]",
+      "latency_s": 143.1067590713501,
+      "error": null
+    }
+  ]
+}

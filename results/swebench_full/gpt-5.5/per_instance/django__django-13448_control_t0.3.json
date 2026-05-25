@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13448",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 7178,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5974,
+      "response_excerpt": "<reasoning>\nThe crash happens because Django 3.1 treats `TEST['MIGRATE'] = False` as \u201cdon\u2019t run migrate at all\u201d. That skips both migrations and `--run-syncdb`, leaving test database tables absent. Serialization then queries migrated app models such as `django_admin_log`, causing the missing-table error.\n\nThe fix is to always run `migrate --run-syncdb`, but when `TEST['MIGRATE']` is false, temporarily mark all installed apps as unmigrated via `settings.MIGRATION_MODULES = {app.label: None}`. This",
+      "latency_s": 332.5859680175781,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

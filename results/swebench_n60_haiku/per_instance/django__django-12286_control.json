@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12286",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 928,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1566,
+      "response": "Let me now write the patch. Based on my analysis, the fix should upgrade the `check_language_settings_consistent` function in `django_dl/Django-3.0/django/core/checks/translation.py` to handle sublanguage fallback properly:\n\n<patch>\n--- a/django/core/checks/translation.py\n+++ b/django/core/checks/translation.py\n@@ -55,8 +55,13 @@ def check_setting_languages_bidi(app_configs, **kwargs):\n \n @register(Tags.translation)\n def check_language_settings_consistent(app_configs, **kwargs):\n     \"\"\"Error if...[truncated]",
+      "latency_s": 95.87034916877747,
+      "error": null
+    }
+  ]
+}

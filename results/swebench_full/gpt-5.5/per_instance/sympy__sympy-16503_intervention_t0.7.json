@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-16503",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1829,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1045,
+      "response_excerpt": "<reasoning>\nThe bad output comes from `_print_Sum` using the sum-sign height adjustment when positioning the summand itself. That can place the summand one row above the `Sum` pretty form baseline, so later additive text like `+ 3` aligns with the baseline instead of with the printed `x`.\n\nThe fix is to center the summand on the sign without subtracting `adjustment`, then apply the special ASCII odd-height baseline correction only to the final `Sum` baseline. I also added a regression test for b",
+      "latency_s": 101.70988702774048,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

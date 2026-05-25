@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12856",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1210,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1292,
+      "response": "The code looks correct. The fix:\n\n1. **Before the database loop** (lines 2289-2296): Iterates over all constraints, and for each `UniqueConstraint`, checks that both `fields` and `include` reference valid local fields via `_check_local_fields`. This runs regardless of whether any databases are configured.\n\n2. **Inside the database loop** (line 2400 onward): The `fields` set now starts empty and only accumulates field names from expression references (Q conditions, expressions in constraints, che...[truncated]",
+      "latency_s": 269.5101580619812,
+      "error": null
+    }
+  ]
+}

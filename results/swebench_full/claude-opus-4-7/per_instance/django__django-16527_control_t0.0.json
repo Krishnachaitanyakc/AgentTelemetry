@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16527",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 386,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1287,
+      "response_excerpt": "The fix has been applied. The `show_save_as_new` condition now requires both `has_add_permission` (since \"save as new\" creates a new object) and `has_change_permission` (since the user is on the change form), matching the user's proposed fix in the issue.\n\n<patch>\n--- a/django/contrib/admin/templatetags/admin_modify.py\n+++ b/django/contrib/admin/templatetags/admin_modify.py\n@@ -102,6 +102,7 @@\n             ),\n             \"show_save_as_new\": not is_popup\n             and has_add_permission\n+    ",
+      "latency_s": 90.21982288360596,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

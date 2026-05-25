@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13448",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 5466,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 6005,
+      "response": "<reasoning>\n1. With `TEST[\"MIGRATE\"] = False`, the old code skipped the `migrate` command entirely.\n2. That meant no tables were created, but test database serialization still tried to read models from migrated apps such as `django_admin_log`.\n3. The fix is to still call `migrate --run-syncdb`, but temporarily disable migration modules for all apps so Django syncs model tables without applying migrations.\n4. Regression tests assert that migrations produce an empty plan and the app is synced when...[truncated]",
+      "latency_s": 201.20063376426697,
+      "error": null
+    }
+  ]
+}

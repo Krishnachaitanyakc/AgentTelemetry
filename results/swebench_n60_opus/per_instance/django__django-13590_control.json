@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13590",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 713,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1684,
+      "response": "No tests directory in this copy. The fix is complete.\n\n<reasoning>\nThe bug is in `django.db.models.sql.query.Query.resolve_lookup_value`. When a value is a list or tuple, the method resolves each sub-value and reconstructs the container. The original code does:\n\n```python\nreturn type(value)(\n    self.resolve_lookup_value(sub_value, can_reuse, allow_joins)\n    for sub_value in value\n)\n```\n\nThis passes a generator expression directly to `type(value)(...)`. For regular `tuple` and `list`, this work...[truncated]",
+      "latency_s": 160.18104195594788,
+      "error": null
+    }
+  ]
+}

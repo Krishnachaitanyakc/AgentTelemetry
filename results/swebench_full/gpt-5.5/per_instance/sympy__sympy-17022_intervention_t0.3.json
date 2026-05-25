@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-17022",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4918,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1757,
+      "response_excerpt": "<reasoning>\nThe bug is in the NumPy-family printer path used by `lambdify`. Fixed-size identities already print as `eye(n)`, but symbolic identities were rejected to avoid printing ambiguous `I`.\n\nFor matrix additions like `A + Identity(n)`, the runtime array argument carries the missing symbolic dimension. The patch teaches `NumPyPrinter._print_MatAdd` to record matrix-symbol shape sources while printing the addition, then lets `_print_Identity` emit `eye(A.shape[0])` when it can safely derive ",
+      "latency_s": 518.7855789661407,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

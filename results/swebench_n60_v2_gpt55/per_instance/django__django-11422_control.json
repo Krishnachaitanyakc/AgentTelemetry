@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-11422",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 2268,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "iter_modules_and_files autoreload": 1,
+    "iter_all_python_module_files": 1,
+    "__main__ __spec__ manage.py autoreload": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1680,
+      "response": "<reasoning>StatReloader watches files through iter_all_python_module_files(), but the old guard skipped modules without __spec__. When running python manage.py runserver, __main__ can lack __spec__, so manage.py was never tracked. The patch resolves __main__ from __file__ before applying the spec filter and adds regression tests for __main__ with and without __file__.</reasoning>\n<patch>\ndiff --git a/django/utils/autoreload.py b/django/utils/autoreload.py\nindex 736e88cfe9..9dfd2a6c1f 100644\n--- a/django/utils/autoreload.py\n+++ b/django/utils/autoreload.py\n@@ -111,7 +111,17 @@ def iter_modules_and_files(modules, extra_files):\n         # During debugging (with PyDev) the 'typing.io' and 'typing.re' objects\n         # are added to sys.modules, however they are types not modules and so\n         # cause issues here.\n-        if not isinstance(module, ModuleType) or module.__spec__ is None:\n+        if not isinstance(module, ModuleType):\n+            continue\n+        if module.__name__ == '__main__':\n+            # __main__ (usually manage.py) doesn't always have a __spec__ set.\n+            # Handle this by falling back to using __file__, resolved below.\n+            # See https://docs.python.org/reference/import.html#main-spec\n+            # __file__ may not exist, e.g. when running ipdb debugger.\n+            if hasattr(module, '__file__'):\n+                sys_file_paths.append(module.__file__)\n+            continue\n+        if getattr(module, '__spec__', None) is None:\n      ",
+      "latency_s": 199.89971613883972,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4600,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"iter_modules_and_files autoreload\"}}</tool_call>",
+      "latency_s": 14.937714099884033,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 5110,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"iter_all_python_module_files\"}}</tool_call>",
+      "latency_s": 13.922117948532104,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 5595,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"__main__ __spec__ manage.py autoreload\"}}</tool_call>",
+      "latency_s": 12.514907836914062,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 6130,
+      "response": "<reasoning>StatReloader discovers files from loaded Python modules, but `__main__` can have no `__spec__` when Django is started as `python manage.py runserver`. The existing filter skips those modules before considering `__file__`, so `manage.py` is absent from the watched file set. Handle `__main__` specially by falling back to its `__file__`, and add regression coverage for both the normal and no-`__file__` cases.</reasoning>\n<patch>\ndiff --git a/django/utils/autoreload.py b/django/utils/autoreload.py\nindex 736e88cfe9..9dfd2a6c1f 100644\n--- a/django/utils/autoreload.py\n+++ b/django/utils/autoreload.py\n@@ -111,7 +111,17 @@ def iter_modules_and_files(modules, extra_files):\n         # During debugging (with PyDev) the 'typing.io' and 'typing.re' objects\n         # are added to sys.modules, however they are types not modules and so\n         # cause issues here.\n-        if not isinstance(module, ModuleType) or module.__spec__ is None:\n+        if not isinstance(module, ModuleType):\n+            continue\n+        if module.__name__ == '__main__':\n+            # __main__ (usually manage.py) doesn't always have a __spec__ set.\n+            # Handle this by falling back to using __file__, resolved below.\n+            # See https://docs.python.org/reference/import.html#main-spec.\n+            # __file__ may not exist, e.g. when running in an interactive shell.\n+            if hasattr(module, '__file__'):\n+                sys_file_paths.append(module.__file__)\n+            continue\n",
+      "latency_s": 17.206445932388306,
+      "error": null
+    }
+  ]
+}

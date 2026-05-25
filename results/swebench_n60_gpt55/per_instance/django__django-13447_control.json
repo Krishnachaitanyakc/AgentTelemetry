@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13447",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3953,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1215,
+      "response": "<reasoning>\nThe current checkout already includes the `model` key in each admin app-list model dictionary and has tests/docs for it. The remaining issue is exposing the app dictionary builder as public API. The patch renames the implementation to `build_app_dict()`, keeps `_build_app_dict()` as a compatibility shim, documents the new method, adds release notes, and tests the public method plus app-label filtering.\n\nVerified with:\n`python3 ./tests/runtests.py admin_views.test_adminsite --parallel...[truncated]",
+      "latency_s": 204.63505101203918,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-10914",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 511,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1846,
+      "response": "Based on my analysis of the issue and codebase, I now have a clear understanding:\n\n**Root cause:** `FILE_UPLOAD_PERMISSIONS` defaults to `None` in `global_settings.py`. When `None`, the `_save` method in `FileSystemStorage` skips the `os.chmod` call (line 289: `if self.file_permissions_mode is not None`). This causes inconsistent permissions:\n- `MemoryUploadedFile` (small files) \u2192 permissions from `os.open(..., 0o666)` masked by umask\n- `TemporaryUploadedFile` (large files) \u2192 permissions from `t...[truncated]",
+      "latency_s": 243.25620913505554,
+      "error": null
+    }
+  ]
+}

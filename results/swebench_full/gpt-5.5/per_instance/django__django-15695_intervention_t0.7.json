@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15695",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2902,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2053,
+      "response_excerpt": "<reasoning>\n`RenameIndex(old_fields=...)` handled forwards by discovering the generated index name, but backwards was a no-op. That left the renamed index in place, so applying the operation forward again could collide with the still-existing `new_name`.\n\nThe fix makes the backward path rename `new_name` back to the deterministic auto-generated `index_together` name using the same schema-editor naming logic (`suffix=\"_idx\"`). The regression test now verifies backward removes `new_pony_test_idx` ",
+      "latency_s": 193.69001698493958,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

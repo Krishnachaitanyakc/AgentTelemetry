@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-14317",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1758,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1395,
+      "response_excerpt": "Now I have a complete understanding. Let me write up the reasoning and the patch.\n\n<reasoning>\nThe bug is in `sympy/printing/latex.py` in the `_print_Poly` method. The original buggy code was:\n\n```python\ndef _print_Poly(self, poly):\n    cls = poly.__class__.__name__\n    expr = self._print(poly.as_expr())  # <-- BUG: converts Poly to expression\n    gens = list(map(self._print, poly.gens))\n    ...\n```\n\nThe problem: `self._print(poly.as_expr())` converts the `Poly` to a generic `Expr` and then prin",
+      "latency_s": 487.578439950943,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

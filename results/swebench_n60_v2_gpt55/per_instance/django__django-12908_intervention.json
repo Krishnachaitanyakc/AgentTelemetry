@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-12908",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 951,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "def distinct queryset _not_support_combined_queries": 1,
+    "combined queries not supported operations union distinct tests": 1,
+    "test_qs_combinators unsupported operations distinct union": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2059,
+      "response": "<reasoning>`distinct()` was the only queryset-shaping operation in this area that didn\u2019t reject combined querysets. Adding the existing combined-query guard makes `qs1.union(qs2).distinct()` and `distinct(\"field\")` raise `NotSupportedError`, matching the behavior already enforced for `filter()`, `annotate()`, `extra()`, etc. The test extends the existing unsupported-operations coverage for `union()`, `intersection()`, and `difference()`.</reasoning>\n<patch>diff --git a/django/db/models/query.py b/django/db/models/query.py\n--- a/django/db/models/query.py\n+++ b/django/db/models/query.py\n@@ -1113,6 +1113,7 @@ class QuerySet:\n     def distinct(self, *field_names):\n         \"\"\"\n         Return a new QuerySet instance that will select only distinct results.\n         \"\"\"\n+        self._not_support_combined_queries('distinct')\n         assert not self.query.is_sliced, \\\n             \"Cannot create distinct fields once a slice has been taken.\"\n         obj = self._chain()\ndiff --git a/tests/queries/test_qs_combinators.py b/tests/queries/test_qs_combinators.py\n--- a/tests/queries/test_qs_combinators.py\n+++ b/tests/queries/test_qs_combinators.py\n@@ -272,6 +272,7 @@ class QuerySetSetOperationTests(TestCase):\n             for operation in (\n                 'annotate',\n                 'defer',\n+                'distinct',\n                 'exclude',\n                 'extra',\n                 'filter',\n</patch>",
+      "latency_s": 90.06256818771362,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 3743,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"def distinct QuerySet _not_support_combined_queries\"}}</tool_call>",
+      "latency_s": 15.343935012817383,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 4343,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"combined queries not supported operations union distinct tests\"}}</tool_call>",
+      "latency_s": 17.781787157058716,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 4998,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"test_qs_combinators unsupported operations distinct union\"}}</tool_call>",
+      "latency_s": 15.916201829910278,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 5628,
+      "response": "<reasoning>`distinct()` should follow the same contract as other queryset-mutating operations after `union()`, `intersection()`, or `difference()`: combined querysets are not supported there. Adding the existing `_not_support_combined_queries()` guard prevents silent no-op behavior and makes `distinct()` raise `NotSupportedError`. The test update adds `distinct` to the existing unsupported-operation coverage.</reasoning>\n<patch>diff --git a/django/db/models/query.py b/django/db/models/query.py\n--- a/django/db/models/query.py\n+++ b/django/db/models/query.py\n@@ -1113,6 +1113,7 @@ class QuerySet:\n     def distinct(self, *field_names):\n         \"\"\"\n         Return a new QuerySet instance that will select only distinct results.\n         \"\"\"\n+        self._not_support_combined_queries('distinct')\n         assert not self.query.is_sliced, \\\n             \"Cannot create distinct fields once a slice has been taken.\"\n         obj = self._chain()\ndiff --git a/tests/queries/test_qs_combinators.py b/tests/queries/test_qs_combinators.py\n--- a/tests/queries/test_qs_combinators.py\n+++ b/tests/queries/test_qs_combinators.py\n@@ -272,6 +272,7 @@ class QuerySetSetOperationTests(TestCase):\n             for operation in (\n                 'annotate',\n                 'defer',\n+                'distinct',\n                 'exclude',\n                 'extra',\n                 'filter',\n</patch>",
+      "latency_s": 16.410162925720215,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "topology": "sequential",
+  "model": "claude_cli/claude-opus-4-7",
+  "question": "Compare reasoning-loop failures versus circular delegation in multi-agent systems. Which is more common, and why?",
+  "run_id": "sequential__claude_cli_claude-opus-4-7__q1",
+  "transcript": [
+    {
+      "agent": "planner",
+      "output": "1. How are \"reasoning-loop failures\" (single-agent self-referential reasoning getting stuck) and \"circular delegation\" (Agent A \u2192 B \u2192 A handoff cycles) defined and detected in published multi-agent frameworks (AutoGen, LangGraph, CrewAI)?\n2. What empirical failure-rate data exists from benchmarks or production post-mortems quantifying each failure mode's frequency, and what mitigations (max-depth caps, visited-agent sets, reflection limits) are deployed?\n3. Which architectural factors \u2014 agent count, delegation topology, shared memory, termination conditions \u2014 correlate with each failure type, and why might one dominate over the other?",
+      "latency_s": 14.722181797027588
+    },
+    {
+      "agent": "researcher",
+      "output": "Web search permission denied; compiling findings from training-data knowledge of published multi-agent framework documentation and failure-mode literature.\n\n**Structured Findings**\n\n1. **Definitions & detection**\n   - *Reasoning-loop failures*: a single agent repeats near-identical thought\u2192action\u2192observation cycles (ReAct/Reflexion). Detected via state-hash comparison and capped by **AutoGen** `max_consecutive_auto_reply`, **LangGraph** `recursion_limit` (default 25, raises `GraphRecursionError`), **CrewAI** `max_iter` (default 25) and `max_rpm`.\n   - *Circular delegation*: handoff cycles (A\u2192B\u2192A or longer) across agents. Detected via visited-agent sets, handoff-graph cycle checks, or speaker-selection guards in **AutoGen GroupChat**, **LangGraph Swarm** (`handoff` tool tracking), and **CrewAI** hierarchical/manager arbitration.\n\n2. **Empirical evidence**\n   - Cemri et al. 2025 \"Why Do Multi-Agent LLM Systems Fail?\" (MAST taxonomy, ~14 modes) ranks **Step Repetition** and **Reasoning-Ac",
+      "latency_s": 39.096301794052124
+    },
+    {
+      "agent": "writer",
+      "output": "# Reasoning Loops vs. Circular Delegation in Multi-Agent Systems\n\n**Reasoning-loop failures are substantially more common.** They occur when a single agent repeats near-identical thought\u2192action\u2192observation cycles, and they surface across every ReAct/Reflexion-style step. Frameworks treat them as a default hazard: AutoGen exposes `max_consecutive_auto_reply`, LangGraph enforces a `recursion_limit` (default 25, raising `GraphRecursionError`), and CrewAI ships `max_iter` and `max_rpm` caps.\n\n**Circular delegation**\u2014handoff cycles like A\u2192B\u2192A across agents\u2014is rarer in practice. Mature frameworks guard it explicitly: AutoGen GroupChat speaker selection, LangGraph Swarm handoff tracking, and CrewAI hierarchical manager arbitration all detect or prevent cycles before they compound.\n\n**Why the asymmetry?** Cemri et al. (2025, MAST taxonomy) rank *Step Repetition* and *Reasoning-Action Mismatch* among the top failure modes, while pure delegation cycles trail behind. Loop failures scale with tool",
+      "latency_s": 14.772809982299805
+    }
+  ],
+  "total_cost_usd": 0.08016000000000001,
+  "total_input_tokens": 774,
+  "total_output_tokens": 914,
+  "n_agents": 3,
+  "wall_clock_s": 68.61734676361084,
+  "error": null
+}

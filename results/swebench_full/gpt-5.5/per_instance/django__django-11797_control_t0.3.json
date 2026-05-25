@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11797",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 780,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1550,
+      "response_excerpt": "<reasoning>\nThe reported SQL is already correct in this checkout: an exact lookup against a sliced grouped values/annotation subquery keeps the aggregate selected and preserves the original GROUP BY column. I added a focused regression test so this behavior cannot regress: it builds the issue shape with `values(\"name\").annotate(Max(\"id\")).values(\"max_id\")[:1]`, uses it in an exact lookup, and asserts the RHS query still groups by `name`.\n\nVerification: `python3 tests/runtests.py --parallel 1 que",
+      "latency_s": 244.04936695098877,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

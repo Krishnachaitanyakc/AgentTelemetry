@@ -1,0 +1,29 @@
+{
+  "topology": "hierarchical",
+  "model": "claude_cli/claude-opus-4-7",
+  "question": "What are the limitations of using mock LLM clients for benchmarking agent fault detection? Propose two ways to validate against real production traces.",
+  "run_id": "hierarchical__claude_cli_claude-opus-4-7__q3",
+  "transcript": [
+    {
+      "agent": "facts_specialist",
+      "output": "**Limitations of mock LLM clients:**\n- **Determinism gap**: Mocks return scripted responses, missing the stochastic variance (temperature, sampling) that produces real-world fault modes like hallucinated tool calls or malformed JSON.\n- **Distribution shift**: Hand-crafted mock traces over-represent obvious failures and under-represent subtle ones (silent context truncation, partial tool outputs, latency-induced retries).\n- **Missing emergent behavior**: Mocks can't reproduce multi-turn drift, context-window exhaustion, or model-specific quirks (e.g., refusal patterns, tool-calling format errors per model version).\n- **No infrastructure faults**: Real systems fail on rate limits, timeouts, partial streams, and provider-side 5xx \u2014 these are rarely modeled.\n- **Overfitting risk**: Detectors tuned on mocks learn the mock's signature, not the fault.\n\n**Validation against production traces:**\n1. **Shadow replay**: Re-run the detector against sampled, anonymized production traces (with ground",
+      "latency_s": 16.87385892868042
+    },
+    {
+      "agent": "analysis_specialist",
+      "output": "**Limitations of mock LLM clients:**\n\n1. **Distributional fidelity vs. reproducibility** \u2014 Mocks give deterministic, fast, cheap runs, but synthetic fault patterns (timeouts, malformed JSON, hallucinated tool calls) rarely match the long-tail, correlated failure modes seen in production. Detectors tuned on mocks overfit to scripted faults.\n\n2. **Behavioral coupling** \u2014 Real LLMs produce faults *contingent* on prompt state (context length, tool history, temperature drift). Mocks decouple fault injection from semantic state, so detectors miss faults that only emerge from genuine reasoning chains.\n\n3. **Coverage blind spots** \u2014 Mocks can't surface unknown-unknown failure classes (e.g., novel jailbreak echoes, model-version regressions).\n\n**Validation against production traces:**\n\n- **Shadow replay**: Re-run captured production traces through the detector offline, comparing flagged events to ground-truth incident labels (precision/recall on real faults).\n- **Canary mirroring**: Tee a small",
+      "latency_s": 15.294589757919312
+    },
+    {
+      "agent": "manager_synthesis",
+      "output": "**Limitations of mock LLM clients for fault-detection benchmarks:**\n\n1. **Distributional gap**: Mocks return scripted, deterministic outputs and miss the stochastic variance (sampling, temperature drift) that produces real fault modes \u2014 hallucinated tool calls, malformed JSON, refusal patterns. Hand-crafted traces over-represent obvious failures and under-represent the long-tail.\n2. **Decoupled from semantic state**: Real LLM faults are contingent on prompt history, context length, and tool chains. Mocks inject faults independently of reasoning state, so detectors miss emergent issues like multi-turn drift or context-window exhaustion.\n3. **No infrastructure faults**: Rate limits, partial streams, provider 5xx, and latency-induced retries are rarely modeled.\n4. **Overfitting**: Detectors learn the mock's signature rather than the underlying fault, and cannot surface unknown-unknown classes (novel jailbreaks, model-version regressions).\n\n**Two validation approaches against production tr",
+      "latency_s": 17.22923493385315
+    }
+  ],
+  "total_cost_usd": 0.08703,
+  "total_input_tokens": 837,
+  "total_output_tokens": 993,
+  "n_agents": 3,
+  "wall_clock_s": 49.425549030303955,
+  "error": null
+}

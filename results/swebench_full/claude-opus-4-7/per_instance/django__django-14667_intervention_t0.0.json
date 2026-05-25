@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14667",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1861,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1834,
+      "response_excerpt": "All three scenarios from the issue now produce the expected SQL. The fix works correctly.\n\n<reasoning>\nThe bug was in `Query.add_deferred_loading()` in `django/db/models/sql/query.py`. When chaining `only(\"X\").defer(\"X\")`:\n\n1. `only(\"X\")` set `deferred_loading = ({\"X\"}, False)` \u2014 immediate-load mode\n2. `defer(\"X\")` then took the `else` branch where `existing.difference(field_names)` becomes empty. The buggy code called `clear_deferred_loading()` (which sets state to `(frozenset(), True)` = \"load",
+      "latency_s": 646.631954908371,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

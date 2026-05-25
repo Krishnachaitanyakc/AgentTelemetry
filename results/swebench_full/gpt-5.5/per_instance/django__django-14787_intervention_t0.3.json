@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14787",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1836,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1539,
+      "response_excerpt": "<reasoning>\n`method_decorator()` builds a `functools.partial` around the bound method before passing it to user decorators. A raw `partial` lacks normal function metadata such as `__name__` and `__module__`, so decorators using `functools.wraps(func)` or directly reading `func.__name__` fail.\n\nThe fix is to apply `wraps(method)` to the partial before decorators receive it. This preserves wrapper assignments while keeping the existing callable behavior. I added a regression test covering a decora",
+      "latency_s": 116.807541847229,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

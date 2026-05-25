@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-19487",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1324,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1735,
+      "response_excerpt": "<reasoning>\nThe current checkout already contains the fix, so I verified the existing behavior instead of editing over unrelated local changes. The right implementation is a `_eval_rewrite_as_Abs` method on `sign` that returns a zero-aware `Piecewise`, preserving `sign(0) == 0` while rewriting nonzero values as `arg/Abs(arg)`. I verified with `/private/tmp/sympy-test-venv/bin/python -m pytest sympy/functions/elementary/tests/test_complexes.py -k sign`: 1 passed, 1 xfailed.\n</reasoning>\n\n<patch>\n",
+      "latency_s": 123.99698495864868,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

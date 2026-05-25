@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15902",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1739,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1235,
+      "response_excerpt": "<reasoning>\n1. The warning is emitted by `RenderableMixin.render()` when the selected template is `django/forms/default.html` or `django/forms/formsets/default.html`.\n2. `ManagementForm` only renders hidden management inputs, so the transitional table/default-vs-div output change is irrelevant for it.\n3. The narrow fix is to give `ManagementForm` its own `template_name = \"django/forms/div.html\"`, avoiding the deprecated renderer default without changing normal form/formset rendering behavior.\n4.",
+      "latency_s": 214.5257830619812,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

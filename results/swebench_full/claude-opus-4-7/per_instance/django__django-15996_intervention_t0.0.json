@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15996",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 775,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1384,
+      "response_excerpt": "<reasoning>\nThe issue is that Django's `EnumSerializer` in `django/db/migrations/serializer.py` doesn't handle combined enum flags correctly. When a value like `re.UNICODE | re.IGNORECASE` is used as a default value for a field, the serializer tries to use `self.value.name`, which is `None` for combined flag values (since the combination isn't a single named member). This results in the broken output `default=re.RegexFlag[None]`.\n\nThe fix:\n1. Check if the enum class is a subclass of `enum.IntFla",
+      "latency_s": 190.93926882743835,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

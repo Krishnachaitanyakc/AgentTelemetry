@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14672",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 360,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 7554,
+      "response_excerpt": "<reasoning>\nLooking at the file `/private/tmp/django/django/db/models/fields/reverse_related.py`, I can see the `ManyToManyRel.identity` property at lines 385-392. The issue states that `through_fields` can be a list, and `make_hashable` needs to be called on it (similar to how `make_hashable` is called on `limit_choices_to` in the parent `ForeignObjectRel.identity` at line 145).\n\nThe fix is to wrap `self.through_fields` with `make_hashable(...)` in the `identity` property of `ManyToManyRel`. Th",
+      "latency_s": 67.90177989006042,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

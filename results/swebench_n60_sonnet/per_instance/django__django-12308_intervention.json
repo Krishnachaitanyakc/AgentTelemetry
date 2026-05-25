@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12308",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 854,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1284,
+      "response": "The fix looks correct. Here's the complete reasoning and patch:\n\n<reasoning>\nThe issue is in `django/contrib/admin/utils.py`'s `display_for_field` function. When a `JSONField` is displayed as readonly in the admin, it calls `json.dumps(value, ...)` on whatever Python object was decoded from the database. That works for valid JSON values, but it misses the `InvalidJSONInput` case.\n\n`InvalidJSONInput` is a `str` subclass set by `forms.JSONField.bound_data` when submitted form data fails `json.load...[truncated]",
+      "latency_s": 113.82443594932556,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13028",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2164,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3633,
+      "response_excerpt": "<reasoning>\nThe failure happens because `Query.check_filterable()` treats any RHS object with `filterable=False` as a non-filterable ORM expression. A model instance can legitimately have a field named `filterable`, so the guard should only consult that attribute for objects participating in Django\u2019s expression API. The regression test uses a related model instance whose `filterable` field is `False` and verifies it still works as a FK filter RHS.\n\nVerified with:\n`python3 tests/runtests.py queri",
+      "latency_s": 111.4080560207367,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

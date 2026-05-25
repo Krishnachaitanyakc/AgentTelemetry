@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-8365",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2402,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2671,
+      "response_excerpt": "<reasoning>\nThe temp root uses `getpass.getuser()` inside `pytest-of-<user>`. On Windows, a domain username like `contoso\\john_doe` can be interpreted as multiple path components, and other characters such as `<`, `>`, `:`, `?`, `*` are invalid. The fix normalizes the username into a single safe path component before joining it into the temp directory path, while keeping the existing `pytest-of-unknown` fallback if directory creation still fails.\n\nVerified with:\n`/private/tmp/pytest-dev-pytest-v",
+      "latency_s": 309.19708704948425,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

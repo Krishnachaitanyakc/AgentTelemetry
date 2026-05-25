@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13220",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4600,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1437,
+      "response": "Now I have a complete picture of the issue. The current `__eq__` delegates to hash comparison (`hash(self) == hash(other)`), which has two problems:\n\n1. **Hash collisions** can cause false positives\n2. **The `__hash__` for `error_dict`** uses `make_hashable(self.error_dict)` which converts the inner lists to ordered tuples \u2014 so two dict-based ValidationErrors with the same errors in different order get different hashes (and thus compare unequal, even though they represent identical errors)\n\nThe ...[truncated]",
+      "latency_s": 244.22144484519958,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "instance_id": "django__django-13658",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "patch_len": 739,
+  "total_searches": 4,
+  "unique_queries": 4,
+  "max_query_repeats": 1,
+  "patch_suppressions": 0,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "managementutility commandparser": 1,
+    "class managementutility": 1,
+    "commandparser usage prog subcommand": 1,
+    "def execute managementutility self.prog_name": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2248,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"ManagementUtility CommandParser\"}}</tool_call>\n\n<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"class ManagementUtility\"}}</tool_call>\n\n<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"CommandParser usage prog subcommand\"}}</tool_call>\n\nBased on the issue and standard Django codebase knowledge, the fix is straightforward. Let me look at the specific file.\n\n<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"def execute ManagementUtility self.prog_name\"}}</tool_call>\n\n<reasoning>\nThe issue is clear: in `django/core/management/__init__.py`, the `ManagementUtility` class computes `self.prog_name` from `self.argv[0]` in `__init__`, but when it creates a `CommandParser` in the `execute` method, it doesn't pass `prog=self.prog_name`. This causes `CommandParser` (which inherits from `argparse.ArgumentParser`) to default to using `sys.argv[0]` for the program name, which defeats the purpose of computing `self.prog_name` from the custom `argv`.\n\nThe fix is to pass `prog=self.prog_name` to the `CommandParser` constructor in the `execute` method.\n</reasoning>\n\n<patch>\n--- a/django/core/management/__init__.py\n+++ b/django/core/management/__init__.py\n@@ -344,7 +344,11 @@ class ManagementUtility:\n         # Preprocess options to extract --settings and --pythonpath.\n         # These options could affect the commands that are available, so they\n         # must be processed early.\n-        parser = CommandP",
+      "latency_s": 19.919032096862793,
+      "error": null
+    }
+  ]
+}

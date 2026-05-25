@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13158",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2645,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1970,
+      "response_excerpt": "<reasoning>\n`QuerySet.none()` marks the outer query empty, but combined queries compile from their `combined_queries` branches. Those branches must also be marked empty. Cloning must deep-clone `combined_queries`; otherwise calling `.none()` on a clone mutates the original combined queryset. Added ORM and form regressions. Verified with the targeted tests on Python 3.9.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/django/db/models/sql/query.py b/django/db/models/sql/query.py\nindex 1e823cf..6aef6ad",
+      "latency_s": 646.9079661369324,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11999",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 535,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1337,
+      "response": "Both fixes look correct. Here's the summary:\n\n<reasoning>\nThe issue is in `django/db/models/fields/__init__.py` in the `Field.contribute_to_class()` method.\n\n**Root cause**: In Django 2.2, the guard that prevented overwriting user-defined `get_FOO_display()` methods was removed. The `setattr` call became unconditional, always replacing any user-defined override with the auto-generated `partialmethod` version.\n\nIn Django 3.0, a guard was re-added but using `hasattr(cls, ...)` instead of checking ...[truncated]",
+      "latency_s": 136.97822785377502,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13447",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3072,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1184,
+      "response_excerpt": "<reasoning>\nThe admin app list is built in `AdminSite._build_app_dict()` and exposed through `get_app_list()`. In this checkout, model dictionaries already include `\"model\": model`, so the missing part is making the builder public and ensuring callers use the public API.\n\nI added `AdminSite.build_app_dict()`, kept `_build_app_dict()` as a compatibility wrapper, updated `get_app_list()` to call the public method, documented the new method, and added tests that assert both direct public access and",
+      "latency_s": 112.36305594444275,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

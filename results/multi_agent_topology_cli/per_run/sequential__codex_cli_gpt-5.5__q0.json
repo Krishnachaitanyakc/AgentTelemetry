@@ -1,0 +1,29 @@
+{
+  "topology": "sequential",
+  "model": "codex_cli/gpt-5.5",
+  "question": "What are three concrete ways autonomous AI agents fail in production deployments, and what observability primitives would catch each?",
+  "run_id": "sequential__codex_cli_gpt-5.5__q0",
+  "transcript": [
+    {
+      "agent": "planner",
+      "output": "1. How do autonomous agents enter runaway tool-use loops or excessive retries, and which primitives catch them: tool-call traces, loop detectors, token/cost counters, and latency budgets?\n\n2. How do agents corrupt state or perform unsafe actions from bad plans, and which primitives catch them: audit logs, state diffs, approval checkpoints, and policy-violation events?\n\n3. How do agents fail from context drift or hallucinated assumptions, and which primitives catch them: prompt/context snapshots, retrieval traces, grounding scores, and outcome evaluations?",
+      "latency_s": 9.484828233718872
+    },
+    {
+      "agent": "researcher",
+      "output": "1. **Runaway Tool Use / Retry Storms**  \n   Agents can get stuck repeatedly calling the same tool, retrying failed actions, or decomposing tasks indefinitely. This causes cost spikes, latency breaches, API throttling, and user-visible hangs.  \n   **Catch with:** tool-call traces, loop detectors, retry counters, token/cost counters, timeout events, and latency budgets.\n\n2. **Unsafe Actions / State Corruption**  \n   Agents can execute bad plans: deleting data, overwriting records, sending incorrect messages, changing permissions, or applying irreversible mutations without enough validation.  \n   **Catch with:** audit logs, before/after state diffs, approval checkpoints for high-risk actions, policy-violation events, and rollback records.\n\n3. **Context Drift / Hallucinated Assumptions**  \n   Agents can lose track of user intent, rely on stale context, invent facts, misuse retrieved documents, or complete a task against the wrong target. This leads to confident but incorrect outcomes.  \n  ",
+      "latency_s": 10.927895069122314
+    },
+    {
+      "agent": "writer",
+      "output": "Autonomous AI agents commonly fail in three concrete ways in production:\n\n1. **Runaway tool use and retry storms**  \n   An agent may repeatedly call the same tool, retry failed actions without progress, or keep decomposing a task indefinitely. This drives up cost, increases latency, hits API limits, and can leave users waiting.  \n   **Catch with:** tool-call traces, loop detectors, retry counters, token and cost counters, timeout events, and latency-budget alerts.\n\n2. **Unsafe actions and state corruption**  \n   Agents may execute flawed plans, such as deleting data, overwriting records, sending the wrong message, changing permissions, or performing irreversible mutations without validation.  \n   **Catch with:** audit logs, before/after state diffs, approval checkpoints for high-risk actions, policy-violation events, and rollback records.\n\n3. **Context drift and hallucinated assumptions**  \n   Agents may lose the user\u2019s intent, rely on stale context, invent facts, misuse retrieved docu",
+      "latency_s": 9.130127668380737
+    }
+  ],
+  "total_cost_usd": 0.0,
+  "total_input_tokens": 645,
+  "total_output_tokens": 740,
+  "n_agents": 3,
+  "wall_clock_s": 29.5615451335907,
+  "error": null
+}

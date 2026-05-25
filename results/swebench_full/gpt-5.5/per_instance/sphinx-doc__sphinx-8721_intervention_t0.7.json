@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-8721",
+  "repo": "sphinx-doc/sphinx",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2087,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1360,
+      "response_excerpt": "<reasoning>\nThe EPUB build reuses the pickled environment from the HTML build when running `make html epub`. `env._builder_cls` can therefore still reflect the previous HTML builder during `html-collect-pages`, so `viewcode` incorrectly generates `_modules` pages for EPUB even when `viewcode_enable_epub=False`.\n\nThe fix is to check the active builder (`app.builder.__class__`) when collecting extension pages. I added a regression test that builds HTML first, then EPUB with the same build director",
+      "latency_s": 146.7034718990326,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

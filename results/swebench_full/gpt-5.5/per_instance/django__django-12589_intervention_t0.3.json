@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12589",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2563,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3211,
+      "response_excerpt": "<reasoning>\nThe ambiguous `GROUP BY \"status\"` happens because Django 3.0 groups by an annotation alias when aliases are allowed. If that alias matches a column from a joined table, PostgreSQL can\u2019t tell whether `\"status\"` means the select alias or the joined table column.\n\nThe fix checks joined table column names before using an annotation alias in `GROUP BY`. If the alias collides, Django asks the annotation for its underlying expression instead, producing `GROUP BY (SELECT ...)` like Django 2.",
+      "latency_s": 192.64138412475586,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

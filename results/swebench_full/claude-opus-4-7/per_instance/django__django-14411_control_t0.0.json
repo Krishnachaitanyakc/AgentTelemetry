@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14411",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 346,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1196,
+      "response_excerpt": "The fix adds an `id_for_label` method to `ReadOnlyPasswordHashWidget` that returns `None`. In `BoundField.label_tag()` (boundfield.py:155-157), the `for` attribute is only added when `widget.id_for_label(id_)` returns a truthy value, so returning `None` prevents the label's `for` attribute from being rendered.\n\n<patch>\n--- a/django/contrib/auth/forms.py\n+++ b/django/contrib/auth/forms.py\n@@ -50,6 +50,9 @@ class ReadOnlyPasswordHashWidget(forms.Widget):\n         context['summary'] = summary\n     ",
+      "latency_s": 102.27995610237122,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13584",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2456,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1192,
+      "response_excerpt": "<reasoning>\nThe crash happens in `_changed_params`: `v != init_params[k]` can return a NumPy boolean array, and using that array in an `if` raises the ambiguous truth-value `ValueError`. The fix adds a small parameter equality helper that preserves scalar behavior, keeps the existing scalar-NaN special case, and uses `np.array_equal` when equality produces an ndarray. I added a focused regression test with a local estimator whose default is scalar but whose configured value is a vector.\n\nVerific",
+      "latency_s": 166.5313699245453,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

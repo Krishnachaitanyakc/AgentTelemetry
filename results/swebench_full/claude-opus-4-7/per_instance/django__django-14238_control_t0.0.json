@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14238",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 682,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3384,
+      "response_excerpt": "Based on the issue, the fix needs to change `AutoFieldMeta.__subclasscheck__` to properly check for subclasses of `BigAutoField` and `SmallAutoField`, not just identity. The original buggy code uses `subclass in self._subclasses` (identity check via membership) which only matches the exact classes listed, not their subclasses.\n\n<reasoning>\nThe fix should change the `__subclasscheck__` method in `AutoFieldMeta` to use `issubclass()` instead of `in` membership testing, so that subclasses of `BigAu",
+      "latency_s": 421.8900899887085,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

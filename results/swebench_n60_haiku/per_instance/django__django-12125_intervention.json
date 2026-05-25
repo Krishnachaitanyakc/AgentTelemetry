@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12125",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1553,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2414,
+      "response": "Perfect! Now let me create a comprehensive patch:\n\n<patch>\nThe issue is that Django's migration serializer incorrectly handles inner class fields. When a Field subclass is defined as an inner class (e.g., `Outer.Inner`), the migration file incorrectly serializes it without the outer class name.\n\n**Root Cause**: The `DeconstructableSerializer._serialize_path()` method splits the full path on the last dot only, which doesn't work for paths containing inner classes like `test1.models.Outer.Inner`.\n...[truncated]",
+      "latency_s": 232.04697227478027,
+      "error": null
+    }
+  ]
+}

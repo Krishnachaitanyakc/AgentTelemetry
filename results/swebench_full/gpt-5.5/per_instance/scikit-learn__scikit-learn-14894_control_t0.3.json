@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-14894",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2041,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2522,
+      "response_excerpt": "<reasoning>\nThe crash happens in sparse SVM fitting when libsvm returns zero support vectors. In that case `n_SV == 0`, so `dual_coef_indices.size / n_class` evaluates to zero and `np.arange(..., step=0)` raises `ZeroDivisionError`. A sparse CSR matrix with shape `(n_class, 0)` is valid, but it needs an `indptr` array of zeros with length `n_class + 1`.\n\nI added that empty-support-vector branch and a regression test using the reproducer. I could not run pytest because this environment has no `py",
+      "latency_s": 107.37603282928467,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

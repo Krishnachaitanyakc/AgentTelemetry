@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12308",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 745,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1284,
+      "response": "Now I have a clear picture. The current `display_for_field` calls `json.dumps` directly for `JSONField`, but doesn't handle the `InvalidJSONInput` case. When `value` is an `InvalidJSONInput` (a `str` subclass representing invalid JSON from a previous form submission), `json.dumps` wraps it in quotes rather than passing it through as-is.\n\nThe fix is to delegate to the form field's `prepare_value` method, which already handles both cases correctly. Let me write the patch:\n\n<reasoning>\nThe issue: `...[truncated]",
+      "latency_s": 157.79141521453857,
+      "error": null
+    }
+  ]
+}

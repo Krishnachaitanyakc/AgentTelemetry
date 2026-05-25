@@ -1,0 +1,68 @@
+{
+  "instance_id": "django__django-11905",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 6,
+  "proposed_patch": true,
+  "patch_len": 2133,
+  "total_searches": 4,
+  "unique_queries": 4,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "class isnull": 1,
+    "test_isnull_non_boolean_value": 1,
+    "queryset value for an isnull lookup must be true or false": 1,
+    "get_prep_lookup rhs_is_direct_value prepare_rhs false": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1420,
+      "response": "<reasoning>`IsNull` validated non-boolean RHS values only during SQL compilation, which is too late for queryset construction and join handling. The patch validates direct RHS values in `get_prep_lookup()` so invalid `__isnull` usage fails immediately, while keeping the SQL-time check as a defensive guard. The test now asserts that constructing the filtered queryset raises `ValueError`.</reasoning>\n<patch>diff --git a/django/db/models/lookups.py b/django/db/models/lookups.py\nindex 4c08999fb6..40202d94b8 100644\n--- a/django/db/models/lookups.py\n+++ b/django/db/models/lookups.py\n@@ -659,11 +659,22 @@ class IsNull(BuiltinLookup):\n     lookup_name = \"isnull\"\n     prepare_rhs = False\n \n-    def as_sql(self, compiler, connection):\n+    def _check_rhs_is_bool(self):\n         if not isinstance(self.rhs, bool):\n             raise ValueError(\n                 \"The QuerySet value for an isnull lookup must be True or False.\"\n             )\n+\n+    def get_prep_lookup(self):\n+        if self.rhs is None and self.can_use_none_as_rhs:\n+            return None\n+        if not self.rhs_is_direct_value():\n+            return self.rhs\n+        self._check_rhs_is_bool()\n+        return self.rhs\n+\n+    def as_sql(self, compiler, connection):\n+        self._check_rhs_is_bool()\n         if isinstance(self.lhs, Value):\n             if self.lhs.value is None or (\n                 self.lhs.value == \"\"\ndiff --git a/tests/lookup/tests.py b/tests/lookup/tests.py\nindex b154541e78..1cffe26cb8 100644\n--- a/t",
+      "latency_s": 117.885258436203,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4233,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"class IsNull\"}}</tool_call>",
+      "latency_s": 14.045083999633789,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 4638,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"test_isnull_non_boolean_value\"}}</tool_call>",
+      "latency_s": 12.694672107696533,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 5128,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"QuerySet value for an isnull lookup must be True or False\"}}</tool_call>",
+      "latency_s": 14.317457914352417,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 5758,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"get_prep_lookup rhs_is_direct_value prepare_rhs False\"}}</tool_call>",
+      "latency_s": 14.276769161224365,
+      "error": null
+    },
+    {
+      "iteration": 6,
+      "prompt_len": 6368,
+      "response": "<reasoning>`IsNull` currently rejects non-boolean RHS values during SQL compilation, but that can happen after queryset construction and join decisions. The fix validates direct RHS values in `get_prep_lookup()` so invalid `__isnull` usage fails when the lookup is built, while keeping the existing SQL-time validation as a defensive guard. The regression test should assert that `filter()` itself raises.</reasoning>\n<patch>diff --git a/django/db/models/lookups.py b/django/db/models/lookups.py\nindex 4c08999fb6..40202d94b8 100644\n--- a/django/db/models/lookups.py\n+++ b/django/db/models/lookups.py\n@@ -659,11 +659,22 @@ class IsNull(BuiltinLookup):\n     lookup_name = \"isnull\"\n     prepare_rhs = False\n \n-    def as_sql(self, compiler, connection):\n+    def _check_rhs_is_bool(self):\n         if not isinstance(self.rhs, bool):\n             raise ValueError(\n                 \"The QuerySet value for an isnull lookup must be True or False.\"\n             )\n+\n+    def get_prep_lookup(self):\n+        if self.rhs is None and self.can_use_none_as_rhs:\n+            return None\n+        if not self.rhs_is_direct_value():\n+            return self.rhs\n+        self._check_rhs_is_bool()\n+        return self.rhs\n+\n+    def as_sql(self, compiler, connection):\n+        self._check_rhs_is_bool()\n         if isinstance(self.lhs, Value):\n             if self.lhs.value is None or (\n                 self.lhs.value == \"\"\ndiff --git a/tests/lookup/tests.py b/tests/lookup/tests.py\nindex b154541e78..1cffe26cb",
+      "latency_s": 18.175848960876465,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "pylint-dev__pylint-7114",
+  "repo": "pylint-dev/pylint",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 5752,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2490,
+      "response_excerpt": "<reasoning>\nThe failure comes from putting the implicit namespace directory itself, `a/`, on the import path. When `a/a.py` exists, astroid can resolve top-level module `a` to `a/a.py`, so Pylint later tries to lint the synthetic `a/__init__.py` path and import resolution for `from a import b` is polluted.\n\nThe patch detects only the ambiguous case: an implicit namespace directory containing a same-named child module/package. For that case, Pylint uses the parent directory as the package root an",
+      "latency_s": 250.8890860080719,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

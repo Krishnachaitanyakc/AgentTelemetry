@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14855",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3524,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1805,
+      "response_excerpt": "<reasoning>\nThe bug is in `AdminReadonlyField.get_admin_url()`: it reverses `admin:app_model_change` without passing the current admin-site namespace. In a custom `AdminSite`, that resolves against the default `/admin/` namespace.\n\nThe fix is to pass `current_app=self.model_admin.admin_site.name` to `reverse()`, matching other admin URL generation paths. I also extend the existing readonly ForeignKey link test to run against both the default admin and the namespaced custom admin site.\n\nVerificat",
+      "latency_s": 226.45193481445312,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

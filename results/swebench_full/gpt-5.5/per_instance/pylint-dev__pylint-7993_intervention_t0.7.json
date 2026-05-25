@@ -1,0 +1,26 @@
+{
+  "instance_id": "pylint-dev__pylint-7993",
+  "repo": "pylint-dev/pylint",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3396,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2806,
+      "response_excerpt": "<reasoning>\nThe bug comes from `TextReporter.on_set_current_module` using a regex to find `{field}` placeholders. That regex sees the escaped literal braces in `{{ \"Category\": \"{category}\" }}` as a placeholder named `{ \"Category\"`, removes it, and leaves only `\" }`.\n\nThe fix is to parse templates with Python\u2019s `string.Formatter.parse()`, which follows the same brace escaping rules as `str.format()`. Unknown message fields are still warned about and removed for backward compatibility. I also tigh",
+      "latency_s": 122.09976983070374,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

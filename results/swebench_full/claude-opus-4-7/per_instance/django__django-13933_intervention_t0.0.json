@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13933",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1243,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2001,
+      "response_excerpt": "<reasoning>\nLooking at the issue, `ModelChoiceField` raises a `ValidationError` with the `invalid_choice` code, but does not include the actual invalid value in the error message\u2014unlike `ChoiceField` and `ModelMultipleChoiceField` which both include `%(value)s` in their error messages.\n\nI examined `django/forms/models.py` and located:\n- `ModelChoiceField` at line 1468\n- Its `default_error_messages` at lines 1473-1477\n- Its `to_python` method at lines 1583-1603 where the `ValidationError` for `in",
+      "latency_s": 54.97689604759216,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

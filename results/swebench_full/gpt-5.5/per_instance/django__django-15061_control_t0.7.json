@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15061",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1744,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1161,
+      "response_excerpt": "<reasoning>\n`MultiWidget` currently maps the bound field label to the first subwidget by returning `id_ + '_0'`. For a composite widget, the top-level label shouldn\u2019t target an arbitrary first input. Returning an empty string makes `BoundField.label_tag()` omit the `for` attribute, matching existing Django behavior for widgets without a valid single label target.\n\nVerified with:\n`/usr/bin/python3 tests/runtests.py forms_tests.widget_tests.test_multiwidget`\n`/usr/local/bin/python3 tests/runtests.",
+      "latency_s": 194.2702178955078,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

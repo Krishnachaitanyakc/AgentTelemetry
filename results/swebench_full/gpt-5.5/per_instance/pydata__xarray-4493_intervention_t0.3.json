@@ -1,0 +1,26 @@
+{
+  "instance_id": "pydata__xarray-4493",
+  "repo": "pydata/xarray",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1731,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3169,
+      "response_excerpt": "<reasoning>\nThe eager computation happens because `Variable(..., data=DataArray)` routes through `as_compatible_data()`, where a nested `DataArray` falls through to `getattr(data, \"values\", data)`. Accessing `.values` materializes dask arrays as NumPy arrays.\n\nThe fix is to unwrap xarray containers to their underlying stored array before that `.values` fallback. For `DataArray`, this preserves the wrapped variable\u2019s dask array. I also changed the existing `Variable` branch to use `_data` directl",
+      "latency_s": 372.70296001434326,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

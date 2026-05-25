@@ -1,0 +1,29 @@
+{
+  "topology": "hierarchical",
+  "model": "claude_cli/claude-sonnet-4-6",
+  "question": "Summarize the trade-offs between OpenTelemetry GenAI semantic conventions and OpenInference for agent observability.",
+  "run_id": "hierarchical__claude_cli_claude-sonnet-4-6__q2",
+  "transcript": [
+    {
+      "agent": "facts_specialist",
+      "output": "- **Standardization**: OTel GenAI conventions are vendor-neutral, CNCF-backed, and integrate with the broader OTel ecosystem (traces, metrics, logs); OpenInference is Arize-led and more narrowly focused on LLM/agent telemetry.\n- **Maturity**: OTel GenAI semantic conventions are still stabilizing (many attributes experimental); OpenInference has more established, opinionated schemas for LLM spans (prompts, completions, embeddings, retrievals).\n- **Ecosystem fit**: OTel slots naturally into existing observability stacks (Jaeger, Prometheus, Grafana); OpenInference targets AI-specific platforms (Arize Phoenix, others) with richer out-of-box LLM UX.\n- **Agent support**: OpenInference has first-class support for agentic patterns (tool calls, chain steps, retrievals); OTel GenAI is catching up but agent-specific conventions lag behind.\n- **Portability**: OTel offers better long-term portability and avoids vendor lock-in; OpenInference trades that for faster iteration on AI-native features.",
+      "latency_s": 14.675371170043945
+    },
+    {
+      "agent": "analysis_specialist",
+      "output": "**OpenTelemetry GenAI Semantic Conventions vs. OpenInference**\n\n**1. Standardization vs. Specificity**\nOTel GenAI is a vendor-neutral, CNCF-backed standard integrating with the broader observability ecosystem (traces, metrics, logs unified). OpenInference is purpose-built for LLM/agent workflows, offering richer semantic attributes (token counts, prompt templates, retrieval spans) out of the box \u2014 at the cost of a narrower, less universal adoption base.\n\n**2. Ecosystem Fit vs. Maturity**\nOTel slots into existing infra (Jaeger, Grafana, Datadog) without friction. OpenInference requires compatible backends (Arize Phoenix, LangSmith-adjacent tools), limiting portability but providing deeper GenAI-native UX.\n\n**3. Stability vs. Expressiveness**\nOTel GenAI conventions are still evolving (experimental status as of 2025), so schemas may break. OpenInference has more stable, opinionated schemas for agentic patterns (tool calls, chain steps) but lacks the long-term governance weight of the OTel",
+      "latency_s": 14.697352170944214
+    },
+    {
+      "agent": "manager_synthesis",
+      "output": "**OTel GenAI vs. OpenInference for Agent Observability**\n\nOTel GenAI offers vendor neutrality, CNCF governance, and seamless integration with existing observability stacks (Jaeger, Grafana, Datadog) \u2014 making it the safer long-term bet for organizations with mature infra. The cost: its semantic conventions are still experimental and agent-specific attributes (tool calls, chain steps, retrievals) lag behind real-world needs.\n\nOpenInference inverts that trade-off. It provides richer, more opinionated schemas for agentic patterns today, with first-class support for the constructs that matter most in LLM pipelines. The penalty is narrower backend compatibility (primarily Arize Phoenix and adjacent tools) and dependence on a single vendor's roadmap rather than a foundation-backed standard.\n\n**The core tension:** portability and ecosystem breadth vs. semantic expressiveness and agent-native maturity. For teams already invested in OTel infrastructure, GenAI conventions are the natural path for",
+      "latency_s": 14.96955394744873
+    }
+  ],
+  "total_cost_usd": 0.014646,
+  "total_input_tokens": 722,
+  "total_output_tokens": 832,
+  "n_agents": 3,
+  "wall_clock_s": 44.36635899543762,
+  "error": null
+}

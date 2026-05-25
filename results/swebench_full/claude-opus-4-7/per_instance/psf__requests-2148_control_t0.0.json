@@ -1,0 +1,26 @@
+{
+  "instance_id": "psf__requests-2148",
+  "repo": "psf/requests",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 631,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3104,
+      "response_excerpt": "<reasoning>\nThe patch wraps `socket.error` exceptions raised during streaming into `requests.exceptions.ConnectionError`, which matches what users expect when using the requests library. This handles the case in the original traceback where a \"Connection reset by peer\" socket error propagated from urllib3 unwrapped.\n</reasoning>\n\n<patch>\n--- a/requests/models.py\n+++ b/requests/models.py\n@@ -8,6 +8,7 @@\n \n import collections\n import datetime\n+import socket\n \n from io import BytesIO, UnsupportedOp",
+      "latency_s": 202.2060101032257,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

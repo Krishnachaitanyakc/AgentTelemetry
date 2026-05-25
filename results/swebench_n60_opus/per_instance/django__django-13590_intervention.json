@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13590",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 489,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1684,
+      "response": "No git repos. The issue is clear from my analysis. The fix needs to be applied to `django/db/models/sql/query.py` in the `resolve_lookup_value` method. The buggy code passes `values` (a generator) directly to `type_(values)` which fails for named tuples. The fix is to check for `_make` (which indicates a namedtuple) and use `type_._make(values)` instead.\n\n<reasoning>\nThe issue is in `django/db/models/sql/query.py` in the `resolve_lookup_value` method.\n\nIn Django 3.0, this method was changed to r...[truncated]",
+      "latency_s": 124.09947681427002,
+      "error": null
+    }
+  ]
+}

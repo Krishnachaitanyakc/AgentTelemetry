@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12497",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1249,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1612,
+      "response": "<reasoning>\nThe issue is clear: in `django/db/models/fields/related.py`, the hint messages for errors `fields.E334` and `fields.E335` incorrectly suggest:\n\n```\nuse ForeignKey(\"self\", symmetrical=False, through=\"%s\").\n```\n\nThis has two problems:\n1. `symmetrical` and `through` are `ManyToManyField` keyword arguments, not `ForeignKey` arguments. The hint should say `ManyToManyField`.\n2. `symmetrical=False` is no longer required for recursive M2M relationships since Django 3.0, so it should be remov...[truncated]",
+      "latency_s": 92.41603398323059,
+      "error": null
+    }
+  ]
+}

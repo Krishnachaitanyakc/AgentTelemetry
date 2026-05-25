@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-10297",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 689,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2325,
+      "response_excerpt": "<reasoning>\n`RidgeClassifierCV` in this checkout already accepts `store_cv_values` and forwards it through `_BaseRidgeCV` to `_RidgeGCV`. I added focused regression coverage to ensure the classifier path also rejects `store_cv_values=True` when `cv` is not `None`, matching the documented constraint.\n\nVerification: `python3 -m py_compile sklearn/linear_model/tests/test_ridge.py` passed. Full pytest could not run because `pytest` is not installed in the available Python environment.\n</reasoning>\n\n",
+      "latency_s": 114.01515483856201,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

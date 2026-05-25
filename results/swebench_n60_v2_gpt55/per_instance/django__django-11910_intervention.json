@@ -1,0 +1,69 @@
+{
+  "instance_id": "django__django-11910",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 6,
+  "proposed_patch": true,
+  "patch_len": 3020,
+  "total_searches": 5,
+  "unique_queries": 5,
+  "max_query_repeats": 1,
+  "patch_suppressions": 0,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "renamefield to_field primary_key foreign key migrations autodetector": 1,
+    "migrationautodetector generate_renamed_fields to_field": 1,
+    "deep_deconstruct to_field old_name new_name renamed fields": 1,
+    "renamed_fields_rel foreign_key to_field autodetector tests": 1,
+    "test_rename_referenced_primary_key_foreignkey_to_field": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2183,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"RenameField to_field primary_key foreign key migrations autodetector\"}}</tool_call>",
+      "latency_s": 15.138734102249146,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 2868,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"MigrationAutodetector generate_renamed_fields to_field\"}}</tool_call>",
+      "latency_s": 14.564511060714722,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 3483,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"deep_deconstruct to_field old_name new_name renamed fields\"}}</tool_call>",
+      "latency_s": 15.988040208816528,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 4118,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"renamed_fields_rel foreign_key to_field autodetector tests\"}}</tool_call>",
+      "latency_s": 14.056705713272095,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 4753,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"test_rename_referenced_primary_key_foreignkey_to_field\"}}</tool_call>",
+      "latency_s": 15.221414804458618,
+      "error": null
+    },
+    {
+      "iteration": 6,
+      "prompt_len": 5368,
+      "response": "<reasoning>The migration autodetector compares relation fields after renames by normalizing references through `renamed_fields_rel`, but the generated `AlterField` still keeps an explicit `to_field` pointing at the old primary key name. When the target field is renamed, any generated related field should have its remote `field_name` rewritten to the new name before deconstruction, otherwise the migration serializes a stale `to_field`. The fix updates relation fields while generating renamed fields and adds a regression test for a primary key rename referenced by a `ForeignKey`.</reasoning>\n<patch>diff --git a/django/db/migrations/autodetector.py b/django/db/migrations/autodetector.py\n--- a/django/db/migrations/autodetector.py\n+++ b/django/db/migrations/autodetector.py\n@@ -1019,6 +1019,18 @@ class MigrationAutodetector:\n                         old_app_label, old_model_name, old_field_name\n                     )\n                     self.renamed_fields_rel[old_field_key] = rem_field_key\n+                    if (\n+                        rem_field.remote_field\n+                        and rem_field.remote_field.model\n+                        and \"%s.%s\" % (\n+                            rem_field.remote_field.model._meta.app_label,\n+                            rem_field.remote_field.model._meta.model_name,\n+                        )\n+                        == \"%s.%s\" % (old_app_label, old_model_name)\n+                        and rem_field.remote_field.field_name == old_field_na",
+      "latency_s": 21.393733263015747,
+      "error": null
+    }
+  ]
+}

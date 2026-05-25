@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-12236",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1274,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2662,
+      "response_excerpt": "<reasoning>\nThe bug is in `apart`\u2019s multivariate fallback. When a decomposition variable is supplied, `apart(f, t)` should simplify/cancel only with respect to `t`; using `f.cancel()` can perform a broader cancellation/canonicalization over all symbols before recursing, which can lose the intended rational structure for symbolic coefficients under assumptions.\n\nThe fix keeps existing behavior when no variable is supplied, but uses `cancel(f, x, **_options)` when `x` is explicit. I added a regres",
+      "latency_s": 86.70374584197998,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

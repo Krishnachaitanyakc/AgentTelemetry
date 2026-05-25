@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15202",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1810,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1311,
+      "response_excerpt": "The Django repo isn't checked out locally. I'll work from knowledge of Django's `URLValidator.__call__` structure to construct the patch.\n\n<reasoning>\nThe error trace shows:\n- `django/core/validators.py` line 130 in `__call__`\n- Calls `urlsplit` from `urllib/parse.py` which raises `ValueError: Invalid IPv6 URL`\n\nThe input `'////]@N.AN'` contains an unmatched `]` bracket. Python's `urlsplit` raises `ValueError(\"Invalid IPv6 URL\")` when it encounters this. Django's `URLValidator.__call__` should c",
+      "latency_s": 145.6374409198761,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

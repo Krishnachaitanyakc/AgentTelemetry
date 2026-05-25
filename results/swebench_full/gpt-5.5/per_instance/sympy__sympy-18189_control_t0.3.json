@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-18189",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2092,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1470,
+      "response_excerpt": "<reasoning>\nThe fix is to remap solutions from SymPy\u2019s canonical variable order into the requested `syms` order directly. The previous code did the inverse mapping implicitly, which made the `syms`/`permute=True` path fragile and hard to reason about. I also added the exact `m, n` regression from the issue.\n\nVerification run:\n`/private/tmp/sympy-venv/bin/python -m pytest sympy/solvers/diophantine/tests/test_diophantine.py -k \"test_diophantine\"`\n\nResult: `48 passed, 1 deselected, 2 xfailed`.\n</re",
+      "latency_s": 223.3281319141388,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

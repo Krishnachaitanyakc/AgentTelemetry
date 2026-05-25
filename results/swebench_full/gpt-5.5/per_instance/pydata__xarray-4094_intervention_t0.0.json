@@ -1,0 +1,26 @@
+{
+  "instance_id": "pydata__xarray-4094",
+  "repo": "pydata/xarray",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1347,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2398,
+      "response_excerpt": "<reasoning>\nThe failure comes from `DataArray.to_unstacked_dataset()`: when selecting each variable from the stacked coordinate, it kept the selected stacked label as a scalar coordinate. For single-dimension variables, those scalar `y` coordinates differ between variables (`a`, `b`), so constructing `Dataset(data_dict)` raises a merge conflict.\n\nPassing `drop=True` to `sel()` removes that temporary coordinate before the arrays are merged. I also added the issue MCVE as a regression test.\n\nVerif",
+      "latency_s": 348.7422411441803,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

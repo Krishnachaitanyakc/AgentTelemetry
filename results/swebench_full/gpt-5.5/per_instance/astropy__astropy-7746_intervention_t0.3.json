@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-7746",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2025,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2849,
+      "response_excerpt": "<reasoning>\nThe failure happens in WCS._array_converter: empty coordinate inputs are reshaped into a zero-row coordinate matrix and then passed into wcslib, which rejects ncoord=0. The fix is to short-circuit empty inputs before calling the transform function, preserving the expected empty output shape for both list-of-axis inputs and NxN array inputs. I also add regression coverage for the direct wcs_pix2world/wcs_world2pix APIs named in the issue, not just the all_* variants.\n</reasoning>\n\n<pa",
+      "latency_s": 310.6460168361664,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

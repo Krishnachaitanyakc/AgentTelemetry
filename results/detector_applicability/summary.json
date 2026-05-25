@@ -1,0 +1,283 @@
+{
+  "n_issues_attempted": 17,
+  "issues": [
+    {
+      "issue": "langchain-ai/langchain#26019",
+      "title": "Prevent Infinite Tool Call Loop in Customer Support Agent (LangGraph)",
+      "url": "https://github.com/langchain-ai/langchain/issues/26019",
+      "fault_type": "infinite_loop",
+      "labels": [
+        "bug"
+      ],
+      "evidence": {
+        "has_evidence": false,
+        "evidence_type": "narrative_only",
+        "reconstructible_signal": false,
+        "notes": "iter_count=False tool_call=False"
+      },
+      "verdict": "insufficient_evidence"
+    },
+    {
+      "issue": "langchain-ai/langgraph#6731",
+      "title": "LangGraph [1.0.6] Bug - Agent infinite looping until recursion limit error is hit",
+      "url": "https://github.com/langchain-ai/langgraph/issues/6731",
+      "fault_type": "infinite_loop",
+      "labels": [
+        "bug",
+        "pending"
+      ],
+      "evidence": {
+        "has_evidence": true,
+        "evidence_type": "log_excerpt",
+        "reconstructible_signal": true,
+        "notes": "iter_count=False tool_call=True"
+      },
+      "verdict": "reconstructible"
+    },
+    {
+      "issue": "langchain-ai/langchain#12264",
+      "title": "Token limitation due to model's maximum context length ",
+      "url": "https://github.com/langchain-ai/langchain/issues/12264",
+      "fault_type": "context_overflow",
+      "labels": [
+        "bug"
+      ],
+      "evidence": {
+        "has_evidence": true,
+        "evidence_type": "narrative_only",
+        "reconstructible_signal": true,
+        "notes": "token_count=True"
+      },
+      "verdict": "reconstructible"
+    },
+    {
+      "issue": "langchain-ai/langchain#11405",
+      "title": "Issue: prevent a agent from exceeding the token limit",
+      "url": "https://github.com/langchain-ai/langchain/issues/11405",
+      "fault_type": "context_overflow",
+      "labels": [],
+      "evidence": {
+        "has_evidence": true,
+        "evidence_type": "log_excerpt",
+        "reconstructible_signal": true,
+        "notes": "token_count=True"
+      },
+      "verdict": "reconstructible"
+    },
+    {
+      "issue": "crewAIInc/crewAI#330",
+      "title": "allow_delegation=True leading to infinite loop",
+      "url": "https://github.com/crewAIInc/crewAI/issues/330",
+      "fault_type": "circular_delegation",
+      "labels": [
+        "no-issue-activity"
+      ],
+      "evidence": {
+        "has_evidence": false,
+        "evidence_type": "narrative_only",
+        "reconstructible_signal": true,
+        "notes": "delegation_keywords"
+      },
+      "verdict": "reconstructible"
+    },
+    {
+      "issue": "langchain-ai/langchain-aws#277",
+      "title": "Error with LangGraph graph with tools",
+      "url": "https://github.com/langchain-ai/langchain-aws/issues/277",
+      "fault_type": "tool_failure",
+      "labels": [
+        "investigate"
+      ],
+      "evidence": {
+        "has_evidence": true,
+        "evidence_type": "log_excerpt",
+        "reconstructible_signal": true,
+        "notes": ""
+      },
+      "verdict": "reconstructible"
+    },
+    {
+      "issue": "crewAIInc/crewAI#2762",
+      "title": "[BUG] Latest data is not getting picked up from Agent specific Knowledge (CSV) source",
+      "url": "https://github.com/crewAIInc/crewAI/issues/2762",
+      "fault_type": "stale_retrieval",
+      "labels": [
+        "bug"
+      ],
+      "evidence": {
+        "has_evidence": true,
+        "evidence_type": "log_excerpt",
+        "reconstructible_signal": false,
+        "notes": "retrieval_keywords"
+      },
+      "verdict": "insufficient_evidence"
+    },
+    {
+      "issue": "crewAIInc/crewAI#3169",
+      "title": "[BUG] How on earth does the crew retain no longer existing knowledge",
+      "url": "https://github.com/crewAIInc/crewAI/issues/3169",
+      "fault_type": "stale_retrieval",
+      "labels": [
+        "bug",
+        "no-issue-activity"
+      ],
+      "evidence": {
+        "has_evidence": true,
+        "evidence_type": "log_excerpt",
+        "reconstructible_signal": false,
+        "notes": "retrieval_keywords"
+      },
+      "verdict": "insufficient_evidence"
+    },
+    {
+      "issue": "langchain-ai/langchain#3354",
+      "title": "Add update method on vectorstores",
+      "url": "https://github.com/langchain-ai/langchain/issues/3354",
+      "fault_type": "stale_retrieval",
+      "labels": [],
+      "evidence": {
+        "has_evidence": false,
+        "evidence_type": "narrative_only",
+        "reconstructible_signal": true,
+        "notes": "retrieval_keywords"
+      },
+      "verdict": "reconstructible"
+    },
+    {
+      "issue": "langchain-ai/langchain#21592",
+      "title": "RCE: Illegal Command Filter Bypass in `langchain_experimental`",
+      "url": "https://github.com/langchain-ai/langchain/issues/21592",
+      "fault_type": "guardrail_bypass",
+      "labels": [],
+      "evidence": {
+        "has_evidence": true,
+        "evidence_type": "log_excerpt",
+        "reconstructible_signal": true,
+        "notes": "guardrail_keywords"
+      },
+      "verdict": "reconstructible"
+    },
+    {
+      "issue": "langchain-ai/langchain#21951",
+      "title": "prompt injection in react agent",
+      "url": "https://github.com/langchain-ai/langchain/issues/21951",
+      "fault_type": "guardrail_bypass",
+      "labels": [],
+      "evidence": {
+        "has_evidence": true,
+        "evidence_type": "log_excerpt",
+        "reconstructible_signal": true,
+        "notes": "guardrail_keywords"
+      },
+      "verdict": "reconstructible"
+    },
+    {
+      "issue": "NVIDIA/NeMo-Guardrails#1413",
+      "title": "bug: Able to bypass Input rails with consecutive user turns",
+      "url": "https://github.com/NVIDIA-NeMo/Guardrails/issues/1413",
+      "fault_type": "guardrail_bypass",
+      "labels": [
+        "bug"
+      ],
+      "evidence": {
+        "has_evidence": true,
+        "evidence_type": "log_excerpt",
+        "reconstructible_signal": false,
+        "notes": "guardrail_keywords"
+      },
+      "verdict": "insufficient_evidence"
+    },
+    {
+      "issue": "NVIDIA/NeMo-Guardrails#1485",
+      "title": "bug: stream_async with custom generator silently bypasses guardrails and ignores logging options",
+      "url": "https://github.com/NVIDIA-NeMo/Guardrails/issues/1485",
+      "fault_type": "guardrail_bypass",
+      "labels": [
+        "bug",
+        "status: needs triage"
+      ],
+      "evidence": {
+        "has_evidence": true,
+        "evidence_type": "log_excerpt",
+        "reconstructible_signal": true,
+        "notes": "guardrail_keywords"
+      },
+      "verdict": "reconstructible"
+    },
+    {
+      "issue": "crewAIInc/crewAI#827",
+      "title": "Short Term Memory not working ",
+      "url": "https://github.com/crewAIInc/crewAI/issues/827",
+      "fault_type": "memory_corruption",
+      "labels": [
+        "no-issue-activity"
+      ],
+      "evidence": {
+        "has_evidence": false,
+        "evidence_type": "narrative_only",
+        "reconstructible_signal": true,
+        "notes": "memory_keywords"
+      },
+      "verdict": "reconstructible"
+    },
+    {
+      "issue": "crewAIInc/crewAI#4389",
+      "title": "[BUG] CrewAgentExecutor does not reset messages and iterations between task executions",
+      "url": "https://github.com/crewAIInc/crewAI/issues/4389",
+      "fault_type": "memory_corruption",
+      "labels": [
+        "bug"
+      ],
+      "evidence": {
+        "has_evidence": true,
+        "evidence_type": "log_excerpt",
+        "reconstructible_signal": false,
+        "notes": "memory_keywords"
+      },
+      "verdict": "insufficient_evidence"
+    },
+    {
+      "issue": "crewAIInc/crewAI#2753",
+      "title": "[BUG] memory=True causes embedding model token limit error with large input in CrewAI",
+      "url": "https://github.com/crewAIInc/crewAI/issues/2753",
+      "fault_type": "memory_corruption",
+      "labels": [
+        "bug"
+      ],
+      "evidence": {
+        "has_evidence": true,
+        "evidence_type": "narrative_only",
+        "reconstructible_signal": true,
+        "notes": "memory_keywords"
+      },
+      "verdict": "reconstructible"
+    },
+    {
+      "issue": "crewAIInc/crewAI#4822",
+      "title": "[BUG] async_execution=True loses ContextVar state \u2014 threading.Thread not using copy_context()",
+      "url": "https://github.com/crewAIInc/crewAI/issues/4822",
+      "fault_type": "memory_corruption",
+      "labels": [
+        "bug"
+      ],
+      "evidence": {
+        "has_evidence": true,
+        "evidence_type": "log_excerpt",
+        "reconstructible_signal": false,
+        "notes": "memory_keywords"
+      },
+      "verdict": "insufficient_evidence"
+    }
+  ],
+  "counts": {
+    "insufficient_evidence": 6,
+    "reconstructible": 11
+  },
+  "recall_estimate": {
+    "n_total": 17,
+    "n_reconstructible": 11,
+    "n_insufficient_evidence": 6,
+    "n_fetch_failed": 0,
+    "reconstructible_rate": 0.6470588235294118
+  }
+}

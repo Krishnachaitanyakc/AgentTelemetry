@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-10451",
+  "repo": "sphinx-doc/sphinx",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 6147,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2460,
+      "response_excerpt": "<reasoning>\nThe duplication happens because autodoc records annotations from `inspect.Signature` under raw names like `args` and `kwargs`, while documented fields from `:param *args:` and `:param **kwargs:` are parsed as `*args` and `**kwargs`. The merge code then fails to see the existing documented params and appends new empty `args`/`kwargs` fields.\n\nThe fix records varargs with their reST-visible names and normalizes leading `*` when matching existing field-list entries, while preserving the",
+      "latency_s": 584.5888628959656,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

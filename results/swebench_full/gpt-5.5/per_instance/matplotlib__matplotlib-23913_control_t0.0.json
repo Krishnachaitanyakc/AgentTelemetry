@@ -1,0 +1,26 @@
+{
+  "instance_id": "matplotlib__matplotlib-23913",
+  "repo": "matplotlib/matplotlib",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1951,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1436,
+      "response_excerpt": "<reasoning>\n1. `Axes.legend` and `Figure.legend` already forward `**kwargs` to `Legend`, so adding `draggable` to `Legend.__init__` is sufficient.\n2. The constructor initializes `_draggable = None`; after normal validation and setup, `draggable=True` can call the existing `set_draggable(True)`.\n3. Added shared legend kwarg documentation so `Axes.legend`, `Figure.legend`, and `Legend` docs pick it up.\n4. Updated the existing draggable test to verify creation-time `ax.legend(draggable=True)`.\n5. `",
+      "latency_s": 143.5861361026764,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

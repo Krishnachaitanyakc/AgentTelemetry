@@ -1,0 +1,26 @@
+{
+  "instance_id": "matplotlib__matplotlib-23314",
+  "repo": "matplotlib/matplotlib",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1185,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1745,
+      "response_excerpt": "<reasoning>\nThe 3D axes override `draw()` and did not preserve the base axes visibility guard. As a result, `Axes3D.set_visible(False)` updated the artist state but the custom draw path still rendered the pane, axes, and children. The fix is to return early from `Axes3D.draw()` when `get_visible()` is false, matching normal `Axes` behavior. I added a figure-comparison regression test that compares a two-subplot 3D figure with the hidden first axes against a reference figure containing only the v",
+      "latency_s": 86.00556898117065,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

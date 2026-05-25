@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13590",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 704,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1684,
+      "response": "Now, based on the issue description and my analysis, the fix is straightforward. The issue says: \"The fix is to * expand the contents of the iterator into the constructor.\"\n\nThe current code on line 1069 does `return type_(values)` where `values` is a generator. For regular tuples and lists this works, but for namedtuples it should consistently use unpacking. The safest fix is to convert the generator to a list first, which handles all cases properly:\n\n<patch>\n--- a/django/db/models/sql/query.py...[truncated]",
+      "latency_s": 76.93703007698059,
+      "error": null
+    }
+  ]
+}

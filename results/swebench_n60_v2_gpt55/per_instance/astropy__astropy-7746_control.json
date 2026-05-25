@@ -1,0 +1,60 @@
+{
+  "instance_id": "astropy__astropy-7746",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 1721,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "_array_converter": 1,
+    "wcs_pix2world": 1,
+    "empty coordinate arrays wcs tests": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3066,
+      "response": "<reasoning>Empty coordinate inputs reach wcslib as zero-row coordinate arrays, which wcslib rejects. The Python wrapper can safely short-circuit before calling wcslib because no coordinates need transformation, preserving the existing return conventions for list-of-arrays and single NxN-array inputs. The tests cover basic and all-pipeline WCS transforms for empty Python lists, empty numpy arrays, and `(0, 2)` coordinate arrays.</reasoning>\n<patch>diff --git a/astropy/wcs/wcs.py b/astropy/wcs/wcs.py\nindex 1234567..89abcde 100644\n--- a/astropy/wcs/wcs.py\n+++ b/astropy/wcs/wcs.py\n@@ -1593,6 +1593,9 @@ class WCS(WCSBase):\n         \"\"\"\n \n         def _return_list_of_arrays(axes, origin):\n+            if any(x.size == 0 for x in axes):\n+                return axes\n+\n             try:\n                 axes = np.broadcast_arrays(*axes)\n             except ValueError:\n@@ -1617,6 +1620,8 @@ class WCS(WCSBase):\n                     \"When providing two arguments, the array must be \"\n                     f\"of shape (N, {self.naxis})\"\n                 )\n+            if 0 in xy.shape:\n+                return xy\n             if ra_dec_order and sky == \"input\":\n                 xy = self._denormalize_sky(xy)\n             result = func(xy, origin)\ndiff --git a/astropy/wcs/tests/test_wcs.py b/astropy/wcs/tests/test_wcs.py\nindex 240c3cc..d063d68 100644\n--- a/astropy/wcs/tests/test_wcs.py\n+++ b/astropy/wcs/tests/test_wcs.py\n@@ -296,6 +296,29 @@ def test_3d_shapes():\n         assert len(result) ==",
+      "latency_s": 122.62437295913696,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 5485,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"_array_converter\"}}</tool_call>",
+      "latency_s": 18.367361068725586,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 5912,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"wcs_pix2world\"}}</tool_call>",
+      "latency_s": 13.497995615005493,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 6324,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"empty coordinate arrays WCS tests\"}}</tool_call>",
+      "latency_s": 14.470630884170532,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 6836,
+      "response": "<reasoning>Empty WCS coordinate inputs are valid no-op transformations, but the current wrapper forwards zero-row arrays to wcslib, which raises an axis consistency error. The fix is to short-circuit empty inputs in `_array_converter` while preserving the existing return shape conventions for both per-axis inputs and `(N, naxis)` array inputs. Tests cover empty lists, empty arrays, and empty 2-D coordinate arrays across basic and full WCS transforms.</reasoning>\n<patch>diff --git a/astropy/wcs/wcs.py b/astropy/wcs/wcs.py\n--- a/astropy/wcs/wcs.py\n+++ b/astropy/wcs/wcs.py\n@@ -1220,6 +1220,9 @@ class WCS(WCSBase):\n         \"\"\"\n \n         def _return_list_of_arrays(axes, origin):\n+            if any(axis.size == 0 for axis in axes):\n+                return axes\n+\n             try:\n                 axes = np.broadcast_arrays(*axes)\n             except ValueError:\n@@ -1244,6 +1247,8 @@ class WCS(WCSBase):\n                     \"When providing two arguments, the array must be \"\n                     \"of shape (N, {0})\".format(self.naxis))\n \n+            if 0 in xy.shape:\n+                return xy\n             if ra_dec_order and sky == 'input':\n                 xy = self._denormalize_sky(xy)\n             output = func(xy, origin)\ndiff --git a/astropy/wcs/tests/test_wcs.py b/astropy/wcs/tests/test_wcs.py\n--- a/astropy/wcs/tests/test_wcs.py\n+++ b/astropy/wcs/tests/test_wcs.py\n@@ -295,6 +295,31 @@ def test_3d_shapes():\n     assert pixel.shape == (2, 3)\n \n \n+@pytest.mark.parametrize(\n+  ",
+      "latency_s": 18.588982105255127,
+      "error": null
+    }
+  ]
+}

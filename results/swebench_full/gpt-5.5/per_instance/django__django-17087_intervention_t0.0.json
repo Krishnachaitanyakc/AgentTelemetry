@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-17087",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 557,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1929,
+      "response_excerpt": "<reasoning>\nThe migration serializer branch for class methods serializes bound methods via the owning class. Using `klass.__name__` drops outer class names for nested classes, producing `app.models.Capability.default`. Using `klass.__qualname__` preserves the full nested path, producing `app.models.Profile.Capability.default`. The checkout already contains this fix and its regression test; the targeted test passes with `python3 tests/runtests.py migrations.test_writer.WriterTests.test_serialize_",
+      "latency_s": 147.5121340751648,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

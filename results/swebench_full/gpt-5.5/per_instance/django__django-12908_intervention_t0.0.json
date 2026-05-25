@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12908",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1416,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1842,
+      "response_excerpt": "<reasoning>\nThe ORM already treats most queryset-transforming operations after `union()`, `intersection()`, and `difference()` as unsupported because they are not applied as an outer query wrapper. `distinct()` should use the same combined-query guard so both `.distinct()` and `.distinct(\"field\")` fail immediately with `NotSupportedError` instead of silently producing unchanged or misleading SQL. I verified the focused queryset combinator tests with `python3 tests/runtests.py queries.test_qs_com",
+      "latency_s": 115.75905990600586,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

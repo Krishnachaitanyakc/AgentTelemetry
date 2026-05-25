@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-14365",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2247,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2135,
+      "response_excerpt": "<reasoning>\nThe QDP parser classified command/data/new lines with a case-sensitive regex, so `read serr ...` never reached the command handling path. QDP commands are case-insensitive, and `NO` table separators / masked values should follow the same rule.\n\nThe patch compiles the QDP line classifier with `re.IGNORECASE` and normalizes data tokens before comparing to `NO`. I also added regression tests for lowercase `read serr` through `Table.read(...)` and mixed-case `NO`.\n\nVerification: `py_comp",
+      "latency_s": 145.96764993667603,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

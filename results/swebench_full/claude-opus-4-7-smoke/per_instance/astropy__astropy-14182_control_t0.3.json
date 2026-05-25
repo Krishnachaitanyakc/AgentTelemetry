@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-14182",
+  "repo": "astropy/astropy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4347,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2667,
+      "response_excerpt": "<reasoning>\nLooking at the issue, the user wants to add support for `header_rows` parameter to the RST writer (similar to how it works in fixed_width). The fix needs to:\n\n1. Add `header_rows` parameter to `RST.__init__()` and pass it to the parent `FixedWidth.__init__()`\n2. Update `RST.write()` to use the actual header row count instead of hardcoded `1`\n3. Add `header_rows` parameter support to `FixedWidth.__init__()`\n4. Add `header_rows` class attribute and `_get_header_row()` method to `FixedW",
+      "latency_s": 94.15468287467957,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

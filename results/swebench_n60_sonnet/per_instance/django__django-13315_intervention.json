@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13315",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1060,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1110,
+      "response": "Now I have a clear picture of the fix. The `django_issue` version uses `complex_filter().distinct()` which can produce duplicates with joins (especially on PostgreSQL where `ORDER BY` interacts with `DISTINCT`). The proper fix uses `Exists()` subquery which avoids joins in the outer query entirely.\n\n<reasoning>\n**Root cause**: When `limit_choices_to` is a Q object involving a join (e.g., `Q(group__name='admin')`), `complex_filter()` adds a JOIN to the queryset. If the target record matches multi...[truncated]",
+      "latency_s": 236.63212203979492,
+      "error": null
+    }
+  ]
+}

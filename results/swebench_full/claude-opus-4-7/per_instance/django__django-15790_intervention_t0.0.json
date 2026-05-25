@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15790",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1227,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1239,
+      "response_excerpt": "I now have a clear picture. The file `/private/tmp/django/django/template/backends/django.py` already has the fix in place (using `defaultdict(set)` to deduplicate paths). All tests pass, including `test_template_tags_same_library_in_installed_apps_libraries` which is the exact scenario from the issue.\n\n<reasoning>\nAnalysis of the issue:\n\n1. The bug occurs in `_check_for_template_tags_with_the_same_name()` in `django/template/backends/django.py` at line 49.\n\n2. The check works in two phases:\n   ",
+      "latency_s": 692.0811469554901,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

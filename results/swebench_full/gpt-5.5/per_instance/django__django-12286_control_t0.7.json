@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12286",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1909,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1535,
+      "response_excerpt": "<reasoning>\n1. `translation.E004` should match Django\u2019s runtime language selection behavior.\n2. Runtime fallback is already implemented by `get_supported_language_variant()`.\n3. The system check should use that resolver instead of requiring exact membership in `LANGUAGES`.\n4. Add regression coverage for sublanguages such as `de-at` when only `de` is configured.\n5. Focused test passed locally with `python3 ./tests/runtests.py check_framework.test_translation --settings=test_sqlite`.\n</reasoning>\n",
+      "latency_s": 109.08179211616516,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

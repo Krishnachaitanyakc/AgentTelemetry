@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16229",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1834,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2053,
+      "response_excerpt": "<reasoning>\nThe bug is in `BoundField.as_widget(..., only_initial=True)`. If a bound form is rendered without a posted hidden initial value, Django used `self.value()`, which is the submitted data. That makes the submitted invalid inline value become the next request\u2019s \u201cinitial\u201d baseline, so an unchanged second submit looks unchanged and the extra inline is skipped.\n\nThe fix is to render `self.initial` for hidden initial widgets when no hidden initial was posted, while still propagating an exist",
+      "latency_s": 211.77026271820068,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

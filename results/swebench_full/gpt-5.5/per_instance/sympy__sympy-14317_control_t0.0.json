@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-14317",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3127,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1395,
+      "response_excerpt": "<reasoning>\nThe LaTeX printer was calling `poly.as_expr()` and then printing the resulting `Add`. That loses the `Poly` term ordering because normal expression printing reorders terms independently. The fix is to mirror the string printer: iterate over `poly.terms()`, which yields monomials in polynomial order, format each monomial/coefficient pair, then join the terms. I also added regression coverage for the reported symbolic-coefficient case and updated the rational-coefficient expectation be",
+      "latency_s": 191.6867561340332,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "issue": {
+    "title": "Prevent Infinite Tool Call Loop in Customer Support Agent (LangGraph)",
+    "body": "### Checked other resources\n\n- [X] I added a very descriptive title to this issue.\n- [X] I searched the LangChain documentation with the integrated search.\n- [X] I used the GitHub search to find a similar question and didn't find it.\n- [X] I am sure that this is a bug in LangChain rather than my code.\n- [X] The bug is not resolved by updating to the latest stable version of LangChain (or the specific integration package).\n\n### Example Code\n\n[customer_support_llama3.zip](https://github.com/user-attachments/files/16862758/customer_support_llama3.zip)\r\n\n\n### Error Message and Stack Trace (if applicable)\n\n_No response_\n\n### Description\n\nThe customer support agent implemented using LangGraph encounters an issue where it enters an infinite loop when calling tools for information retrieval, such as flight status. The agent repeatedly calls the same tool without processing the output or providing a response to the user. This issue needs to be resolved to improve the efficiency and usability of the agent.\r\n\r\n\n\n### System Info\n\ninstall langchain-core==0.2.9 langchain-community==0.2.5 langchain-experimental==0.0.61 \\\r\n    langgraph==0.0.69 \r\n",
+    "state": "closed",
+    "comments": [
+      "I have the same issue. Even the most basic tools, sometimes loops.",
+      "Hello! We're a group of students from the University of Toronto Scarborough, and we're looking to contribute to LangChain. We'd love the opportunity to investigate this bug further.",
+      "Hi, @AtmehEsraa. I'm [Dosu](https://dosu.dev), and I'm helping the LangChain team manage their backlog. I'm marking this issue as stale.\n\n**Issue Summary:**\n- A bug in the LangGraph-based customer support agent causes an infinite loop when using information retrieval tools.\n- The agent repeatedly calls the same tool without processing the output or responding to the user.\n- FraRici90 confirmed the issue, and Mustafa0503 expressed interest in contributing to a resolution.\n\n**Next Steps:**\n- Please confirm if this issue is still relevant to the latest version of the LangChain repository by commenting here.\n- If there is no further activity, this issue will be automatically closed in 7 days.\n\nThank you for your understanding and contribution!"
+    ],
+    "labels": [
+      "bug"
+    ],
+    "url": "https://github.com/langchain-ai/langchain/issues/26019"
+  },
+  "evidence": {
+    "has_evidence": false,
+    "evidence_type": "narrative_only",
+    "reconstructible_signal": false,
+    "notes": "iter_count=False tool_call=False"
+  }
+}

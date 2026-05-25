@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-7373",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2857,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1830,
+      "response_excerpt": "<reasoning>\n`cached_eval()` keyed only by the condition string, but string marker evaluation also depends on each item\u2019s module globals. I removed that cache and evaluate the compiled expression against the current item globals every time. I also added a regression test covering identical `skipif` and `xfail` string conditions across two modules with different `condition` globals.\n\nVerified with:\n`/private/tmp/pytest543-py39-venv/bin/python -m pytest testing/test_skipping.py::TestEvaluator -q`\n<",
+      "latency_s": 168.5947449207306,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-17051",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2399,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1964,
+      "response_excerpt": "<reasoning>\nThe fix is already applied in the current codebase. The key change is in `_batched_insert` at line 2132-2138 where `returning_fields` is set when `on_conflict is None or on_conflict == OnConflict.UPDATE`.\n\nThe patch I'm proposing would have transformed the original (buggy) code that only allowed returning fields when `on_conflict` was None/falsy, to the new code that also allows it for `OnConflict.UPDATE`.\n\nLet me formalize the patch as a unified diff against the original (pre-fix) v",
+      "latency_s": 474.851233959198,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11964",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 561,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3147,
+      "response_excerpt": "<reasoning>\nThe issue is that `str()` on a `TextChoices` or `IntegerChoices` member returns the enum representation (`'MyChoice.FIRST_CHOICE'`) instead of the actual value (`'first'`). This is problematic when the value is sent to external APIs because the just-created object holds the enum instance while the DB-retrieved object holds the raw value, leading to inconsistent serialization.\n\nThe canonical fix (matching Django's actual fix for this issue) is to add a `__str__` method to the `Choices",
+      "latency_s": 286.6189317703247,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

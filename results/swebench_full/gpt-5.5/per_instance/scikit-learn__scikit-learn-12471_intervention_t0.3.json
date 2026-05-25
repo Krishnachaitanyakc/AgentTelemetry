@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-12471",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2169,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2951,
+      "response_excerpt": "<reasoning>\nThe failure happens because `handle_unknown='ignore'` temporarily replaces unknown values with `categories_[i][0]` before encoding. For fixed-width NumPy string arrays, assigning a longer fitted category into a shorter transform column truncates the value, so `_encode` later sees a non-existent category and raises. The patch widens the copied column to the fitted category dtype when needed, then adds the reported string regression case.\n\nVerification was attempted, but this checkout ",
+      "latency_s": 242.56519484519958,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

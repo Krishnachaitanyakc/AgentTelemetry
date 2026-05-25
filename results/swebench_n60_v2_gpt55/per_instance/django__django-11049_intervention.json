@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-11049",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 1223,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "durationfield": 1,
+    "parse_duration": 1,
+    "enter a valid duration": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1717,
+      "response": "<reasoning>The duration parser accepts seconds as mandatory with optional minutes and optional hours, so the user-facing form message/help text should show `[DD] [[HH:]MM:]ss[.uuuuuu]`. The model-field message is already corrected in this checkout; this patch aligns `forms.DurationField` and model-generated form fields with that format while preserving explicit overrides.</reasoning>\n<patch>diff --git a/django/forms/fields.py b/django/forms/fields.py\nindex 9c3d8d4b0f..4f4f0c1f29 100644\n--- a/django/forms/fields.py\n+++ b/django/forms/fields.py\n@@ -567,11 +567,19 @@ class DateTimeField(BaseTemporalField):\n \n class DurationField(Field):\n     default_error_messages = {\n-        \"invalid\": _(\"Enter a valid duration.\"),\n+        \"invalid\": _(\n+            \"Enter a valid duration in [DD] [[HH:]MM:]ss[.uuuuuu] format.\"\n+        ),\n         \"overflow\": _(\"The number of days must be between {min_days} and {max_days}.\"),\n     }\n+    default_help_text = _(\n+        \"Enter a duration in [DD] [[HH:]MM:]ss[.uuuuuu] format.\"\n+    )\n+\n+    def __init__(self, **kwargs):\n+        kwargs.setdefault(\"help_text\", self.default_help_text)\n+        super().__init__(**kwargs)\n \n     def prepare_value(self, value):\n         if isinstance(value, datetime.timedelta):\n             return duration_string(value)\n         return value\ndiff --git a/django/db/models/fields/__init__.py b/django/db/models/fields/__init__.py\nindex 9e7b8b7d33..2e2c35c2f3 100644\n--- a/django/db/models/fields/__init__.py\n+++ b/djang",
+      "latency_s": 179.5287265777588,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 6863,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"DurationField\"}}</tool_call>",
+      "latency_s": 13.893988132476807,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 7273,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"parse_duration\"}}</tool_call>",
+      "latency_s": 14.069051265716553,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 7688,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"Enter a valid duration\"}}</tool_call>",
+      "latency_s": 14.730466842651367,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 8143,
+      "response": "<reasoning>The investigation found the duration handling paths in the form field, model field, parser, and existing tests. `parse_duration()` accepts seconds as the required component, with optional minutes and optional hours before it, so the documented format in the invalid model-field error message should be `[DD] [[HH:]MM:]ss[.uuuuuu]`. The patch updates that message and adjusts the corresponding test expectation.</reasoning>\n<patch>diff --git a/django/db/models/fields/__init__.py b/django/db/models/fields/__init__.py\nindex 9e7b8b7d33..c5bc3f6a64 100644\n--- a/django/db/models/fields/__init__.py\n+++ b/django/db/models/fields/__init__.py\n@@ -1856,7 +1856,7 @@ class DurationField(Field):\n     default_error_messages = {\n         \"invalid\": _(\n             \"Duration has wrong format. Use one of these formats instead: \"\n-            \"[DD] [HH:[MM:]]ss[.uuuuuu].\"\n+            \"[DD] [[HH:]MM:]ss[.uuuuuu].\"\n         ),\n         \"overflow\": _(\n             \"The number of days must be between {min_days} and {max_days}.\"\ndiff --git a/tests/model_fields/test_durationfield.py b/tests/model_fields/test_durationfield.py\nindex 95ad35c1b8..df60f2efb1 100644\n--- a/tests/model_fields/test_durationfield.py\n+++ b/tests/model_fields/test_durationfield.py\n@@ -63,7 +63,7 @@ class TestSaveLoad(TestCase):\n     def test_invalid_string(self):\n         msg = (\n             \"Duration has wrong format. Use one of these formats instead: \"\n-            \"[DD] [HH:[MM:]]ss[.uuuuuu].\"\n+            \"[DD] [[HH",
+      "latency_s": 19.200592041015625,
+      "error": null
+    }
+  ]
+}

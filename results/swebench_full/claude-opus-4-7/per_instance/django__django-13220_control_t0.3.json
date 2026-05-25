@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13220",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1621,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1406,
+      "response_excerpt": "<reasoning>\nThe issue requests that `ValidationError` support equality comparison. The repository's current state has an `__eq__` that uses `hash(self) == hash(other)`. This is a flawed pattern: hash collisions can cause unrelated `ValidationError` instances to be reported as equal.\n\nThe proper fix is to compare actual contents directly:\n- For single-message errors: compare `(message, code, params)` tuples (order-independent for `params` dicts via `make_hashable`).\n- For `error_dict` based error",
+      "latency_s": 174.18545699119568,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

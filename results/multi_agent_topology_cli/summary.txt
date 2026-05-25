@@ -1,0 +1,30 @@
+================================================================================
+B2: Multi-agent topology comparison (recovered from per_run/)
+================================================================================
+Total runs: 45
+Topologies: 3 | Models: 3
+
+Per-cell results:
+  topology      model                                  n   done  cost($)    wall(s)    in_tok   out_tok 
+  ------------------------------------------------------------------------------------------------
+  hierarchical  claude_cli/claude-opus-4-7             5   5     0.0795     48.4       765      907     
+  hierarchical  claude_cli/claude-sonnet-4-6           5   5     0.0147     44.3       728      833     
+  hierarchical  codex_cli/gpt-5.5                      5   5     0.0000     34.0       640      730     
+  parallel      claude_cli/claude-opus-4-7             5   5     0.0785     47.4       742      898     
+  parallel      claude_cli/claude-sonnet-4-6           5   5     0.0151     44.7       719      863     
+  parallel      codex_cli/gpt-5.5                      5   5     0.0000     37.3       703      830     
+  sequential    claude_cli/claude-opus-4-7             5   5     0.0787     53.5       772      895     
+  sequential    claude_cli/claude-sonnet-4-6           5   5     0.0157     82.3       789      889     
+  sequential    codex_cli/gpt-5.5                      5   5     0.0000     54.9       684      788     
+
+Spans by kind (570 total):
+    AGENT: 165
+    LLM_CALL: 135
+    DELEGATION: 105
+    PLANNING: 45
+    GUARD_RAIL: 45
+    REASONING: 30
+    MEMORY: 30
+    RETRIEVAL: 15
+
+(AnomalyDetector unavailable: ModuleNotFoundError: No module named 'agenttelemetry.analysis.anomaly')

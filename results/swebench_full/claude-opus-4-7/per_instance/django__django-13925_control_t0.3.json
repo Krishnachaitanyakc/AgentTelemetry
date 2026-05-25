@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13925",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 572,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4880,
+      "response_excerpt": "The fix is correctly applied. The patch modifies `_check_default_pk` to skip W042 when the primary key is an inherited `parent_link` OneToOneField, since that field is auto-created by Django's multi-table inheritance machinery \u2014 the actual primary key check should happen on the parent class.\n\n<patch>\n--- a/django/db/models/base.py\n+++ b/django/db/models/base.py\n@@ -1299,6 +1299,11 @@ class Model(metaclass=ModelBase):\n     def _check_default_pk(cls):\n         if (\n             cls._meta.pk.auto_c",
+      "latency_s": 72.30701422691345,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

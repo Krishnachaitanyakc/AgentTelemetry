@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16873",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2369,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3163,
+      "response_excerpt": "<reasoning>\nThe `join` filter escaped list items only when `autoescape` was enabled, but always escaped the separator with `conditional_escape(arg)`. That caused `{% autoescape off %}` to leave list items raw while still turning a variable separator like `<br/>` into `&lt;br/&gt;`.\n\nThe fix makes separator escaping conditional on the same `autoescape` flag. I also updated the existing direct function test and added template coverage for a variable separator inside an `autoescape off` block.\n\nVer",
+      "latency_s": 206.30914974212646,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

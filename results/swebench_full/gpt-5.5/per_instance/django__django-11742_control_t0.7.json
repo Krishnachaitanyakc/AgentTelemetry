@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11742",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4347,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1122,
+      "response_excerpt": "<reasoning>\n1. Django already validates `choices` structure in `Field._check_choices()`, so the new check belongs there.\n2. While validating choices, track the longest string choice value, including grouped choices.\n3. If `max_length` is set and the longest choice value exceeds it, return a system check error.\n4. Add regression coverage for flat and grouped choices, and document the new check ID.\n5. Focused test run passed serially: `invalid_models_tests.test_ordinary_fields`.\n</reasoning>\n\n<pat",
+      "latency_s": 202.70754504203796,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

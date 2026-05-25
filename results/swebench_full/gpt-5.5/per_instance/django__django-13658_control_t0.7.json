@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13658",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2210,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2031,
+      "response_excerpt": "<reasoning>\nThe early `CommandParser` in `ManagementUtility.execute()` must use `self.prog_name`, because that value is computed from the `argv` passed to `ManagementUtility`, while argparse\u2019s default `prog` comes from `sys.argv[0]`. The regression test sets `sys.argv[0]` to `None`, passes an explicit `argv`, and verifies help rendering uses `django-admin` without stderr output.\n\nVerified with:\n`python3 tests/runtests.py admin_scripts.tests.ExecuteFromCommandLine.test_program_name_from_argv`\n</r",
+      "latency_s": 93.54558396339417,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16255",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2795,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2360,
+      "response_excerpt": "<reasoning>\nThe failure is caused by `Sitemap.get_latest_lastmod()` calling `max()` over an empty list when `lastmod` is callable and `items()` returns no items. The narrow fix is to use `max(..., default=None)`, which preserves `TypeError` handling for incomparable/missing values while returning `None` for an empty sitemap. I also include a regression test through the sitemap index view to confirm no `Last-Modified` header or `<lastmod>` element is emitted.\n\nThe checkout already contained this ",
+      "latency_s": 433.1856348514557,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

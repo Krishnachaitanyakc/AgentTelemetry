@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12308",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 762,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1253,
+      "response_excerpt": "<reasoning>\nThe issue is that JSONField values are displayed using Python's repr (showing single quotes for dicts) rather than as valid JSON when they appear as readonly fields in Django's admin.\n\nThe fix needs to be in `django/contrib/admin/utils.py`, specifically in the `display_for_field` function. This function is responsible for formatting field values for display in the admin. Currently it has no special handling for `JSONField`, so the value falls through to `display_for_value` which call",
+      "latency_s": 44.39572715759277,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

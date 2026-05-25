@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-15011",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1547,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1503,
+      "response_excerpt": "<reasoning>\nThe failing path is `lambdastr(..., dummify=True)`: it only dummified `Symbol`, `Function`, and `Derivative` arguments. `MatrixSymbol` is symbol-like (`Basic` with `is_symbol`) but not a `Symbol`, so `{v}` was left as an invalid Python argument name. The patch generalizes that check to all symbol-like `Basic` objects and adds a regression assertion for `MatrixSymbol(\"{v}\", ...)`.\n\nVerified with:\n`python3 -m pytest sympy/utilities/tests/test_lambdify.py::test_curly_matrix_symbol -q`\n<",
+      "latency_s": 78.3305311203003,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

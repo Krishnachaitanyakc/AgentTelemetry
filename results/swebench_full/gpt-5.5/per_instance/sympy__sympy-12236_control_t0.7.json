@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-12236",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 815,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2662,
+      "response_excerpt": "<reasoning>\nThe current checkout already returns the correct decomposition for the reported expression, so the implementation path is no longer reproducing the SymPy 1.0 bug. I added a regression test that would fail for the old wrong result `-a*t`: it verifies the pole term is present, substitution before/after `apart` is consistent, and the result is algebraically equivalent to the input.\n\nVerified with `python3 -m pytest sympy/polys/tests/test_partfrac.py -q`: 13 passed, 1 xfailed.\n</reasonin",
+      "latency_s": 97.41357469558716,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

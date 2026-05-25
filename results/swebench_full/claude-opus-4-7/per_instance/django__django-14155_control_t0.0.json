@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14155",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1065,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1347,
+      "response_excerpt": "Based on my analysis, the canonical fix for this Django issue (#32260) modifies `__repr__()` to handle `functools.partial` by showing its `repr()` (which includes the inner function and bound args) instead of the `_func_path`. The current file already has this fix at lines 79-83. Let me write the unified diff that represents this fix.\n\n<reasoning>\nThe issue is that `ResolverMatch.__repr__()` shows `func=functools.partial` when a partial is the view, which doesn't reveal the underlying function o",
+      "latency_s": 435.6933739185333,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

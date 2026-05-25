@@ -1,0 +1,67 @@
+{
+  "instance_id": "django__django-12470",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 6,
+  "proposed_patch": true,
+  "patch_len": 2807,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 2,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "find_ordering_name compiler.py": 1,
+    "def find_ordering_name": 1,
+    "field.is_relation and opts.ordering and getattr": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1610,
+      "response": "Now I have the complete picture. The bug is in `find_ordering_name` in `django/db/models/sql/compiler.py`. When ordering by `-pk` on an inherited model:\n\n1. `names_to_path` resolves `\"pk\"` to the actual field name (e.g., `parent_ptr` for a child model's OneToOneField)\n2. The field is a relation (`field.is_relation` is True)\n3. The check `getattr(field, 'attname', None) != name` evaluates as `\"parent_ptr_id\" != \"pk\"` \u2192 True\n4. Without the `name != 'pk'` guard, the code enters the relation-following branch, which follows the relation to the parent model and uses the parent's ordering, **losing the original descending direction**\n\nThe fix adds `and name != 'pk'` to the condition so that when the ordering field is literally \"pk\", it doesn't follow the relation but instead directly orders by the resolved pk column with the correct direction.\n\n<reasoning>\nThe bug is in `find_ordering_name` in `django/db/models/sql/compiler.py`. When a child model inherits `Meta.ordering = [\"-pk\"]` from a parent:\n\n1. `find_ordering_name` parses `-pk` into `name=\"pk\"`, `descending=True`\n2. `_setup_joins([\"pk\"], ...)` resolves \"pk\" via `names_to_path`, which converts \"pk\" to the actual pk field name (e.g., `parent_ptr` for the child's OneToOneField to the parent)\n3. The returned `field` is a OneToOneField relation, so `field.is_relation` is True\n4. The condition `field.is_relation and opts.ordering and getattr(field, 'attname', None) != name` is all True because `attname` is `\"parent_ptr_id\"` which !=",
+      "latency_s": 473.0877468585968,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 6749,
+      "response": "Let me investigate the codebase properly first.\n\n<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"find_ordering_name compiler.py\"}}</tool_call>",
+      "latency_s": 11.70513391494751,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 7293,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"def find_ordering_name\"}}</tool_call>",
+      "latency_s": 11.449568033218384,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 7748,
+      "response": "Now I have enough understanding of the codebase. The fix is clear: on line 726 of the unfixed version (`django_30_clean_019e`), the condition `if field.is_relation and opts.ordering and getattr(field, 'attname', None) != name` is missing a check for `name != 'pk'`. When `name` is `\"pk\"`, `_setup_joins` resolves it to the actual PK field (e.g., `parent_ptr`), whose `attname` is `parent_ptr_id` which doesn't equal `\"pk\"`, so the condition is True and the code follows the relation, losing the descending direction.\n\n<reasoning>\nThe bug is in `find_ordering_name` in `django/db/models/sql/compiler.py`. When a child model inherits `Meta.ordering = [\"-pk\"]` from a parent:\n\n1. `find_ordering_name` parses `-pk` into `name=\"pk\"`, `descending=True`\n2. `_setup_joins([\"pk\"], ...)` resolves \"pk\" to the actual pk field (e.g., `parent_ptr` for the child's OneToOneField to the parent)\n3. The field is a relation (`field.is_relation` is True)\n4. `getattr(field, 'attname', None)` returns `\"parent_ptr_id\"` which is != `\"pk\"`, so the whole condition at line 726 is True\n5. The code follows the relation and recursively processes the parent model's ordering, losing the original DESC direction\n\nThe fix is to add `and name != 'pk'` to the condition at line 726, so that when the ordering field is literally \"pk\", it skips the relation-following branch and directly creates an OrderBy with the correct descending flag.\n\nFor the test, I'll modify `GrandParent.Meta` to include `ordering = ['-pk']` and add a te",
+      "latency_s": 77.19483709335327,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 12420,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"field.is_relation and opts.ordering and getattr\"}}</tool_call>",
+      "latency_s": 12.213158130645752,
+      "error": null
+    },
+    {
+      "iteration": 6,
+      "prompt_len": 13000,
+      "response": "I've completed my investigation. The issue is clear from my analysis of the codebase.\n\n<reasoning>\nThe bug is in `find_ordering_name` in `django/db/models/sql/compiler.py`. When a child model inherits `Meta.ordering = [\"-pk\"]` from a parent:\n\n1. `find_ordering_name` parses `-pk` into `name=\"pk\"`, `descending=True`\n2. `_setup_joins([\"pk\"], ...)` resolves \"pk\" to the actual pk field (e.g., `parent_ptr` for the child's OneToOneField to the parent)\n3. The field is a relation (`field.is_relation` is True)\n4. `getattr(field, 'attname', None)` returns `\"parent_ptr_id\"` which != `\"pk\"`, so the condition on line ~712 is True\n5. The code follows the relation and recursively processes the parent model's ordering, losing the original DESC direction\n\nThe fix is to add `and name != 'pk'` to the condition, so that when the ordering field is literally \"pk\", it skips the relation-following branch and directly creates an OrderBy with the correct descending flag.\n</reasoning>\n\n<patch>\ndiff --git a/django/db/models/sql/compiler.py b/django/db/models/sql/compiler.py\nindex 7649c39..02b1b71 100644\n--- a/django/db/models/sql/compiler.py\n+++ b/django/db/models/sql/compiler.py\n@@ -722,9 +722,9 @@ class SQLCompiler:\n         field, targets, alias, joins, path, opts, transform_function = self._setup_joins(pieces, opts, alias)\n \n         # If we get to this point and the field is a relation to another model,\n-        # append the default ordering for that model unless the attribute name\n-        # of the",
+      "latency_s": 26.03733205795288,
+      "error": null
+    }
+  ]
+}

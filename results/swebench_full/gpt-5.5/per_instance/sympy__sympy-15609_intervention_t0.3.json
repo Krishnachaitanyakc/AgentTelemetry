@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-15609",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1565,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1177,
+      "response_excerpt": "<reasoning>\nThe failing LaTeX comes from `_print_MatrixElement`: it appends an element subscript directly to the printed matrix parent. If the parent already prints with a subscript, or if an indexed product introduces dummy indices, the result can contain raw or nested subscripts that LaTeX rejects.\n\nThe fix is to treat the matrix parent as a grouped atom before adding the element subscript, and to keep printing indices through the LaTeX printer. I also added a regression case for matrix symbol",
+      "latency_s": 279.7193067073822,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

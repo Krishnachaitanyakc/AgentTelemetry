@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-11897",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1368,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1426,
+      "response_excerpt": "<reasoning>\nThe inconsistent outputs both come from decomposing a `Mul` into numerator and denominator using assumption-sensitive simplification. For `exp(-x)*log(x)` with `x` positive, `fraction(expr)` rewrites `exp(-x)` as `1/exp(x)`. For `1/(x + y)/2`, it also evaluates the denominator into `2*x + 2*y`. Using `fraction(expr, exact=True)` preserves the original multiplicative structure for printing, matching pretty printing while still letting LaTeX render the expression cleanly. Regression te",
+      "latency_s": 113.88505697250366,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

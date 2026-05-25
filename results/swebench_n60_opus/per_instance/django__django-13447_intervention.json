@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13447",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1706,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1215,
+      "response": "Now I can clearly see the differences. The **original Django 3.0** code has:\n\n1. Only `_build_app_dict` (private method) \u2014 no public `build_app_dict`\n2. No `'model': model` key in the `model_dict`\n3. `get_app_list` and `app_index` call `self._build_app_dict()`\n\nThe **django_issue** copy already has the fix partially applied. Now I need to produce the correct patch against the original Django 3.0 source. The changes needed are:\n\n1. **Add `'model': model` to the model_dict** in `_build_app_dict` s...[truncated]",
+      "latency_s": 78.60123682022095,
+      "error": null
+    }
+  ]
+}

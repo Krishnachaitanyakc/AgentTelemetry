@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11815",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 602,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2426,
+      "response": "Perfect! Now let me create the final patch in unified diff format:\n\n<patch>\n--- a/django/db/migrations/serializer.py\n+++ b/django/db/migrations/serializer.py\n@@ -400,6 +400,12 @@ class Serializer:\n \n \n def serializer_factory(value):\n+    # Check for Choices before unwrapping Promise/LazyObject since it has special handling\n+    if isinstance(value, models.Choices):\n+        return ChoicesSerializer(value)\n+\n+    # Check for Enum before unwrapping Promise/LazyObject to preserve enum metadata\n+   ...[truncated]",
+      "latency_s": 221.48628401756287,
+      "error": null
+    }
+  ]
+}

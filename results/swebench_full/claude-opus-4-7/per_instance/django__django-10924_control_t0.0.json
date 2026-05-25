@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-10924",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 524,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1616,
+      "response_excerpt": "The repository isn't available in the working directory. The tools mentioned (search_code, read_file, analyze_error, propose_patch, verify_fix) aren't part of my actual tool set - this looks like a synthetic prompt simulating an autonomous agent task. I'll reason about the fix based on my knowledge of Django's `FilePathField`.\n\n<reasoning>\nThe issue is that `FilePathField.path` resolves at module import time (when the model class is defined), so migrations bake in the absolute path from the deve",
+      "latency_s": 45.773459911346436,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

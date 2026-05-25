@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-8365",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3410,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2671,
+      "response_excerpt": "<reasoning>\nThe failure comes from using `getpass.getuser()` directly as part of a path component. On Windows, `contoso\\john_doe` is interpreted as nested path components, so creating `pytest-of-contoso\\john_doe` can fail before pytest reaches its numbered tmpdir creation.\n\nThe patch normalizes `/` and `\\` in the username to `_` before building `pytest-of-{user}`. The existing `OSError` fallback to `pytest-of-unknown` remains for other platform-specific invalid names.\n\nVerified with:\n`./.venv/bi",
+      "latency_s": 160.73359203338623,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

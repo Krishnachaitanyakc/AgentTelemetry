@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13265",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3028,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2717,
+      "response": "The fix works correctly. The `AddIndex` operation now has the `order_wrt_set` dependency, which ensures it comes after `AlterOrderWithRespectTo`.\n\nHere's a summary of the three changes made to `django/db/migrations/autodetector.py`:\n\n<reasoning>\nThe bug occurs because when Django's migration autodetector generates operations for a new model with `order_with_respect_to` and an index that includes the `_order` field, the `AddIndex` operation can be placed before `AlterOrderWithRespectTo` in the mi...[truncated]",
+      "latency_s": 391.57638597488403,
+      "error": null
+    }
+  ]
+}

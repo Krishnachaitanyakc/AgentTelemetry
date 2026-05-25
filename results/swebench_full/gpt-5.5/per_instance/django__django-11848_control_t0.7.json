@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11848",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3290,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1420,
+      "response_excerpt": "<reasoning>\nThe bug is in the RFC 850 two-digit year normalization. The old logic maps `00-69` to `2000-2069` and `70-99` to `1970-1999`, which only works around a fixed 2020-ish window. RFC 7231 requires evaluating the two-digit year relative to the recipient's current year: if the interpreted year would be more than 50 years in the future, use the most recent past year with those last two digits.\n\nThe patch computes the current century from the current UTC year, compares the parsed two-digit y",
+      "latency_s": 198.709557056427,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

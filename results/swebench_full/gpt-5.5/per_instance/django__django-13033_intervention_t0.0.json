@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13033",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1618,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4526,
+      "response_excerpt": "<reasoning>\nThe ORM compiler in this checkout already has the functional guard that treats a foreign key attname like `editor_id` as a concrete column ordering target instead of expanding through the related model's default ordering. The missing coverage was the exact reported shape: a prior relation filter that already creates the join, followed by ordering on a self-referential FK attname. I tightened the existing regression test to assert both correct ASC/DESC behavior and that no extra self-",
+      "latency_s": 113.1907651424408,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

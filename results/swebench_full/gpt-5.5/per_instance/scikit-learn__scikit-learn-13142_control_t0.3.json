@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13142",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2106,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3120,
+      "response_excerpt": "<reasoning>\nThe bug is in `BaseMixture.fit_predict`: with `n_init > 1`, the loop tracks `best_params`, but the final E-step used to compute returned labels can run before restoring those best parameters. That means `fit_predict(X)` can return labels from the last initialization while `predict(X)` uses the best initialization. The fix is to restore `best_params` first, then run the final E-step. I also add a regression test with `n_init=5`.\n\nVerification was blocked locally because the source tre",
+      "latency_s": 176.72563004493713,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

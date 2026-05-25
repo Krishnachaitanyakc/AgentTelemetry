@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16379",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1339,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1877,
+      "response_excerpt": "<reasoning>\nThe race is caused by checking `os.path.exists()` before `open()`. Another thread/process can remove the cache file between those calls, so `has_key()` should follow the same pattern as `get()`: try to open the file and treat `FileNotFoundError` as a cache miss. The regression test mocks `open()` to raise `FileNotFoundError` after a key exists, covering the race window directly.\n\nVerification: `python3 -m py_compile django/core/cache/backends/filebased.py tests/cache/tests.py` passed",
+      "latency_s": 90.41900300979614,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

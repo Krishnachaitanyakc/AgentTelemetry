@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11564",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 5556,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1722,
+      "response_excerpt": "<reasoning>\nThe existing implementation prefixes relative `MEDIA_URL` and `STATIC_URL`, but caching made it incorrect for dynamic per-request `SCRIPT_NAME`. The patch keeps relative URL settings uncached, makes default storage `base_url` resolution dynamic, and prevents `StaticFilesStorage` from freezing `STATIC_URL` at initialization. I preserved direct `base_url` assignment behavior expected by existing tests.\n\nVerified with:\n`python3 ./tests/runtests.py settings_tests.tests.MediaURLStaticURLP",
+      "latency_s": 785.1920099258423,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

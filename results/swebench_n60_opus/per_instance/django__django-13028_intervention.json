@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13028",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 524,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3664,
+      "response": "Now I can see the full picture. At line 1257, `check_filterable(value)` is called where `value` is the RHS of a filter (e.g., a model instance). The check at line 1123-1126 does:\n\n```python\nif (\n    hasattr(expression, 'resolve_expression') and\n    not getattr(expression, 'filterable', True)\n):\n```\n\nThe problem: `getattr(expression, 'filterable', True)` checks the **instance** attribute. When the RHS is a `ProductMetaDataType` instance that has a `filterable` BooleanField set to `False`, `getatt...[truncated]",
+      "latency_s": 72.45177817344666,
+      "error": null
+    }
+  ]
+}

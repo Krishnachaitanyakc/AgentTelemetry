@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12856",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 557,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1292,
+      "response": "OK! So the code IS there. This suggests that maybe this issue has already been partially fixed in this version. However, I wonder if maybe the validation of CheckConstraint fields is missing? Let me re-read the issue.\n\nThe issue says: \"When a model gains a UniqueConstraint, makemigrations doesn't check that the fields named therein actually exist. This is in contrast to the older unique_together syntax, which raises models.E012 if the fields don't exist.\"\n\nSo the issue is specifically about Uniq...[truncated]",
+      "latency_s": 119.31663417816162,
+      "error": null
+    }
+  ]
+}

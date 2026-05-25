@@ -1,0 +1,21 @@
+{
+  "instance_id": "astropy__astropy-14182",
+  "repo": "astropy/astropy",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3094,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2698,
+      "response": "Good. Now I have full confidence in the fix. Here's my patch:\n\n<patch>\n--- a/astropy/io/ascii/rst.py\n+++ b/astropy/io/ascii/rst.py\n@@ -34,6 +34,25 @@\n class RST(FixedWidth):\n     \"\"\"reStructuredText simple format table.\n \n+    See: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#simple-tables\n+\n+    Example::\n+\n+      >>> from astropy.table import QTable\n+      >>> import astropy.units as u\n+      >>> import sys\n+      >>> tbl = QTable({\"wave\": [350, 950] * u.nm, \"response\": [...[truncated]",
+      "latency_s": 283.2634508609772,
+      "error": null
+    }
+  ]
+}

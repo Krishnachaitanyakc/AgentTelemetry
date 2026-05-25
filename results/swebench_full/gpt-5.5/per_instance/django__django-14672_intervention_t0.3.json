@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14672",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2151,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 7554,
+      "response_excerpt": "<reasoning>\n`ManyToManyRel.identity` is used for hashing relation objects. `through_fields` may be supplied as a list, so including it directly in the identity tuple makes `hash(self.identity)` fail with `TypeError: unhashable type: 'list'`. `ForeignObjectRel.identity` already applies `make_hashable()` to `limit_choices_to`; the same conversion is appropriate here.\n\nI added a regression test using the reported proxy-model shape and explicit list `through_fields`, then verified both edited files ",
+      "latency_s": 49.32212686538696,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

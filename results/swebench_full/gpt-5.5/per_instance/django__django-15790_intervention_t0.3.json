@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15790",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1034,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1239,
+      "response_excerpt": "<reasoning>\nThe check was comparing two overlapping sources: auto-discovered installed template tag modules and `self.engine.libraries`, which already contains the installed modules merged with `OPTIONS[\"libraries\"]`. The patch preserves the explicitly configured libraries before that merge and checks only those against the discovered installed libraries, so adding the same installed tag library in `TEMPLATES[\"OPTIONS\"][\"libraries\"]` no longer counts it twice.\nVerified with:\n`python3 tests/runte",
+      "latency_s": 176.12360382080078,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

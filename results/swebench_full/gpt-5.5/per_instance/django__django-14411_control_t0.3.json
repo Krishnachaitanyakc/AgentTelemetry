@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14411",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1605,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1196,
+      "response_excerpt": "<reasoning>\n`ReadOnlyPasswordHashWidget` renders static password hash information rather than a labelable form control, so the inherited `Widget.id_for_label()` causes `BoundField.label_tag()` to emit an invalid `for` attribute. The fix is to override `id_for_label()` to return `None`, which keeps the `<label>` but omits `for`.\n\nI added a regression test that binds `ReadOnlyPasswordHashField` to a form and checks that `label_tag()` renders `<label>Hash field:</label>`.\n\nVerified with:\n\n`/usr/bin",
+      "latency_s": 126.97704124450684,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13448",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1869,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 6005,
+      "response": "Now I have a complete understanding of the issue and the fix. The problem is:\n\n1. When `TEST: {\"MIGRATE\": False}`, Django skips the `migrate` command entirely (line 61-71)\n2. But `serialize_db_to_string()` is still called (line 77-78) and tries to query tables from migrated apps that don't exist\n\nThe fix from the newer Django version: instead of skipping `migrate`, temporarily null out `MIGRATION_MODULES` for all apps (forcing syncdb mode) and always run `migrate --run-syncdb`. This creates all ...[truncated]",
+      "latency_s": 205.33513617515564,
+      "error": null
+    }
+  ]
+}

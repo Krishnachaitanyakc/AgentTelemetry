@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15252",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3928,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2475,
+      "response_excerpt": "<reasoning>\n`MigrationRecorder` created and wrote to `django_migrations` without consulting database routers. I added a private router check using the recorder\u2019s internal `Migration` model, then made `ensure_schema()`, `applied_migrations()`, `record_applied()`, and `record_unapplied()` no-op/read-empty when `allow_migrate_model()` disallows that database. Added a regression test covering schema creation, applied migration reads, and record writes.\n\nVerified with:\n`python3 tests/runtests.py migr",
+      "latency_s": 181.2541859149933,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

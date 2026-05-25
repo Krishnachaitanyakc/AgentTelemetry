@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11422",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 956,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1494,
+      "response": "Perfect! I can now see the difference. Let me compare the key parts. The issue is in the `iter_modules_and_files` function. Looking at the django_issue version (lines 106-142), I can see it's missing the special handling for the `__main__` module that's present in the correct version.\n\nIn the django_issue version (the buggy one), lines 114-124 show:\n```python\nif not isinstance(module, ModuleType):\n    continue\n# __main__ (usually manage.py) doesn't always have a __spec__ set.\n# Handle this by fa...[truncated]",
+      "latency_s": 32.07074689865112,
+      "error": null
+    }
+  ]
+}

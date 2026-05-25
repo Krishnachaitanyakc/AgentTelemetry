@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14730",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 651,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1319,
+      "response_excerpt": "<reasoning>\nThis issue requires modifying Django's `ManyToManyField` to raise an error when a developer specifies `related_name` on a symmetrical M2M field (either explicitly via `symmetrical=True` or implicitly via self-reference using `'self'`).\n\nThe fix should go in `django/db/models/fields/related.py`, specifically in `ManyToManyField.__init__()`. The check needs to happen AFTER `symmetrical` is resolved (since it can be `None` initially and then set to True when `to == RECURSIVE_RELATIONSHI",
+      "latency_s": 34.53444504737854,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

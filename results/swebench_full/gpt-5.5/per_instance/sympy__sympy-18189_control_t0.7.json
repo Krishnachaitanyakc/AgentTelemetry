@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-18189",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2041,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1470,
+      "response_excerpt": "<reasoning>\nThe bug is in `diophantine(..., syms=...)` result remapping. Recursive solving returns tuples in canonical `var` order, but the code built the index map from `syms`, so non-default symbol order could select the wrong tuple positions. The fix maps canonical variables to tuple indices, then emits values in requested `syms` order. I also added regressions for the reported `m/n` `permute=True` case and a three-variable order that exposes the indexing bug.\n\nVerified with:\n`python3 -m pyte",
+      "latency_s": 132.70678186416626,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

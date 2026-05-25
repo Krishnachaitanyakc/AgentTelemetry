@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-19254",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1549,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1418,
+      "response_excerpt": "<reasoning>\nUpdated `dmp_zz_mignotte_bound` to mirror the existing univariate Knuth-Cohen calculation, using the multivariate L2 norm, max coefficient norm, degree sum, and ground leading coefficient. Tests were updated for the smaller expected bounds and derived Wang prime.\n\nVerification: `python3 -m pytest sympy/polys/tests/test_factortools.py -q` passed with `24 passed, 1 xfailed`.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/sympy/polys/factortools.py b/sympy/polys/factortools.py\n@@\n     dup_l",
+      "latency_s": 168.04882717132568,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

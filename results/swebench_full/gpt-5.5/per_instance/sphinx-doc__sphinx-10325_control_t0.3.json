@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-10325",
+  "repo": "sphinx-doc/sphinx",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3475,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1930,
+      "response_excerpt": "<reasoning>\nThe autodoc option parser is the right place to normalize `:inherited-members:` because both `automodule` and `autoclass` consume the parsed option set. The patch keeps the existing default behavior (`None` means ignore `object`) and makes comma-separated class lists robust by stripping whitespace and ignoring empty entries. The regression test covers parsing multiple class names and filtering inherited members from more than one base while preserving overridden members on the docume",
+      "latency_s": 226.368727684021,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

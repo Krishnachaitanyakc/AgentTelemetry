@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15388",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4106,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1593,
+      "response_excerpt": "<reasoning>\nThe template autoreloader suppresses a full reload when a changed path is inside a configured template directory. If `BASE_DIR` is added to `TEMPLATES[0][\"DIRS\"]`, broad `**/*` watching can classify editor temp files like `settings.py.tmp` or `settings.py___jb_tmp___` as template changes instead of Python source changes. The stat reloader also includes directories from `Path.glob(\"**/*\")`, so directory mtime changes from atomic saves can be consumed as template changes.\n\nThe patch fi",
+      "latency_s": 143.15949201583862,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-10451",
+  "repo": "sphinx-doc/sphinx",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 7504,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2460,
+      "response_excerpt": "<reasoning>\nThe bug happens because autodoc stores annotations under the Python parameter names (`args`, `kwargs`), while documented fields may use the rendered names (`*args`, `**kwargs`). The existing merge logic can add a second `type args` / `type kwargs` field because it does not consistently treat those spellings as aliases. The fix maps rendered signature names back to their annotation names, then checks all equivalent forms before adding synthetic type fields.\n\nVerified with:\n`uv run pyt",
+      "latency_s": 172.2906289100647,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "topology": "parallel",
+  "model": "claude_cli/claude-sonnet-4-6",
+  "question": "Compare reasoning-loop failures versus circular delegation in multi-agent systems. Which is more common, and why?",
+  "run_id": "parallel__claude_cli_claude-sonnet-4-6__q1",
+  "transcript": [
+    {
+      "agent": "researcher_a",
+      "output": "**Reasoning-loop failures** occur within a single agent: the model iteratively refines a scratchpad but oscillates between contradictory states, never reaching a terminal condition. Caused by reward hacking, insufficient stopping criteria, or conflicting tool outputs feeding back into the same context window.\n\n**Circular delegation** is a multi-agent topology bug: Agent A delegates to B, B to C, C back to A. Each hop may look locally correct \u2014 each agent believes it lacks authority or capability \u2014 but the graph has no sink.\n\n**Circular delegation is rarer but harder to detect.** It requires a specific graph topology and typically only manifests under edge-case inputs that route control flow non-deterministically. Most frameworks (LangGraph, AutoGen) now enforce DAG constraints or depth limits.\n\n**Reasoning loops are far more common** because every agent with iterative self-reflection is individually susceptible \u2014 no cross-agent topology required. Token budgets and `max_iterations` guar",
+      "latency_s": 14.628724098205566
+    },
+    {
+      "agent": "researcher_b",
+      "output": "## Reasoning-Loop Failures vs. Circular Delegation\n\n**Reasoning-loop failures** occur within a single agent: the model re-evaluates the same state repeatedly without progress. Example: a code-review agent that keeps re-checking a linting error it cannot fix, burning tokens until timeout.\n\n**Circular delegation** spans agents: Agent A hands off to B, B to C, C back to A. Example: an orchestrator routes an ambiguous ticket to a classifier, which routes it back as \"needs orchestration.\"\n\n**Which is more common?** Reasoning loops \u2014 by a wide margin.\n\nWhy:\n- Single-agent deployments outnumber multi-agent ones, so the failure surface is larger.\n- Loops emerge from ambiguous prompts or missing tool outputs; circular delegation requires specific orchestration misconfigurations.\n- LLMs naturally over-deliberate when uncertain; routing cycles require *two* agents to fail their intent-detection simultaneously.\n\n**Mitigation:** step counters + forced exits for loops; acyclic delegation graphs with",
+      "latency_s": 15.432665824890137
+    },
+    {
+      "agent": "writer",
+      "output": "## Reasoning-Loop Failures vs. Circular Delegation\n\n**Reasoning-loop failures** are single-agent failures: the model iteratively refines its scratchpad but oscillates between contradictory states, never reaching a terminal condition. Example: a code-review agent perpetually re-checking a linting error it cannot resolve, burning tokens until timeout. Caused by reward hacking, ambiguous prompts, conflicting tool outputs, or insufficient stopping criteria.\n\n**Circular delegation** is a multi-agent topology bug: Agent A delegates to B, B to C, C back to A. Each hop appears locally correct \u2014 each agent believes it lacks authority \u2014 but the graph has no sink. Example: an orchestrator routes an ambiguous ticket to a classifier, which routes it back as \"needs orchestration.\"\n\n**Reasoning loops are far more common.** Three reasons:\n\n1. **Surface area** \u2014 single-agent deployments vastly outnumber multi-agent ones; every iterative agent is individually susceptible.\n2. **Triggering conditions** \u2014 ",
+      "latency_s": 13.608241081237793
+    }
+  ],
+  "total_cost_usd": 0.01566,
+  "total_input_tokens": 715,
+  "total_output_tokens": 901,
+  "n_agents": 3,
+  "wall_clock_s": 43.68917393684387,
+  "error": null
+}

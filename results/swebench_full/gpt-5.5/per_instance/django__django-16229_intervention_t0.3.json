@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16229",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3591,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2053,
+      "response_excerpt": "<reasoning>\n1. Extra inline formsets skip validation when `empty_permitted=True` and `form.has_changed()` is false.\n2. Callable model defaults set `show_hidden_initial=True` so change detection compares posted data against a stable hidden initial value.\n3. On the first invalid POST, if the hidden initial field wasn\u2019t submitted, `BoundField.as_widget(only_initial=True)` rendered the hidden initial from `self.value()`, which is bound POST data. That made the second POST treat the invalid user valu",
+      "latency_s": 181.39887499809265,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

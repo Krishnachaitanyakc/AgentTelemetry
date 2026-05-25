@@ -1,0 +1,44 @@
+{
+  "instance_id": "sympy__sympy-21847",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 3,
+  "proposed_patch": true,
+  "answer_len": 938,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1853,
+      "response_excerpt": "The patch has already been provided. The bug in `sympy/polys/monomials.py` `itermonomials` was using `max(powers.values()) >= min_degree` (highest single-variable degree) instead of `sum(powers.values()) >= min_degree` (total degree), causing monomials like `x1*x2**2` to be excluded when `min_degree=3`. The fix replaces `max` with `sum` in both the commutative and non-commutative branches.",
+      "latency_s": 531.799015045166,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 2281,
+      "response_excerpt": "The patch has been provided. It replaces `max(powers.values()) >= min_degree` with `sum(powers.values()) >= min_degree` in both the commutative and non-commutative branches of `itermonomials` in `sympy/polys/monomials.py`, fixing the filter to use total degree as documented.",
+      "latency_s": 708.0341589450836,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 2592,
+      "response_excerpt": "The code already shows the fix is applied in the working tree, and the test case from the issue produces correct output. Let me provide the final patch in the required format.\n\n<reasoning>\nThe bug in `sympy/polys/monomials.py` `itermonomials` was that the filter used `max(powers.values()) >= min_degree` (which checks the highest single-variable degree), instead of `sum(powers.values()) >= min_degree` (total degree). This caused mixed monomials like `x1*x2**2` to be incorrectly excluded when `min",
+      "latency_s": 109.75586414337158,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-7746",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1629,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2849,
+      "response_excerpt": "<reasoning>\n1. The failing path is `WCS._array_converter()` for separate axis inputs such as `wcs_pix2world([], [], 0)`.\n2. Empty coordinate inputs should not be passed down into wcslib; they should be returned with the same empty shape, matching the existing behavior for `all_pix2world`/`all_world2pix`.\n3. The shared helper already has an early empty-axis return in this checkout, so I kept that path and added regression coverage for the basic `wcs_pix2world` and `wcs_world2pix` methods.\n4. I al",
+      "latency_s": 168.18082571029663,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

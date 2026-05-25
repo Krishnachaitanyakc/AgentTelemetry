@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-15345",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 553,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1061,
+      "response_excerpt": "The fix is applied. Added `_print_Max` and `_print_Min` methods to `MCodePrinter` so that `Max(x, 2)` produces valid Mathematica output `Max[2, x]` (with square brackets) instead of the invalid `Max(2, x)`.\n\n<patch>\n--- a/sympy/printing/mathematica.py\n+++ b/sympy/printing/mathematica.py\n@@ -111,6 +111,12 @@ class MCodePrinter(CodePrinter):\n \n     def _print_Derivative(self, expr):\n         return \"Hold[D[\" + ', '.join(self.doprint(a) for a in expr.args) + \"]]\"\n \n+    def _print_Max(self, expr):\n",
+      "latency_s": 390.0495300292969,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

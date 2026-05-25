@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13265",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4402,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2717,
+      "response": "Perfect! The fix is in place. Now let me create a comprehensive summary of the changes and verify the logic is sound:\n\n## Summary of Changes\n\nThe fix addresses the issue where `AlterOrderWithRespectTo()` was being generated after `AddIndex()` operations that reference the `_order` field, causing a crash because the `_order` field doesn't exist yet.\n\n**The Problem:**\n1. When creating a new model with both `order_with_respect_to` and indexes containing `_order`\n2. The old code added ALL indexes im...[truncated]",
+      "latency_s": 151.54703211784363,
+      "error": null
+    }
+  ]
+}

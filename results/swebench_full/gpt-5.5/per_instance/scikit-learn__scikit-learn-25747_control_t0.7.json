@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-25747",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4812,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 6953,
+      "response_excerpt": "<reasoning>\nThe crash happens because pandas output wrapping always tries to replace a pandas result index with the original input index. For aggregating transformers, the result has fewer rows, so assigning the original index raises a pandas length mismatch. The fix is to only override an existing pandas DataFrame/Series index when its length matches the produced output; otherwise preserve the transformer-produced index. I added focused regression coverage for FeatureUnion and the low-level wra",
+      "latency_s": 129.3641848564148,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

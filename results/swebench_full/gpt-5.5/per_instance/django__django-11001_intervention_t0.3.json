@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11001",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2262,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3014,
+      "response_excerpt": "<reasoning>\nThe duplicate detection in `SQLCompiler.get_order_by()` strips `ASC`/`DESC` by matching `ordering_parts` against the compiled SQL. With multiline `RawSQL`, the regex must treat newlines as normal characters; otherwise it can compare only the final line and falsely drop distinct expressions. The fix is to add `re.DOTALL` and cover the reported case with a regression test. I verified the targeted test with `python3 tests/runtests.py ordering.tests.OrderingTests.test_order_by_multiline_",
+      "latency_s": 120.7708830833435,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

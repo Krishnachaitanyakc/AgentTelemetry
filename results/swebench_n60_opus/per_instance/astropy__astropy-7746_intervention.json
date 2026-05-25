@@ -1,0 +1,21 @@
+{
+  "instance_id": "astropy__astropy-7746",
+  "repo": "astropy/astropy",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 804,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2880,
+      "response": "Wait \u2014 astropy 5.0 already has the fix (`if any([x.size == 0 for x in axes]): return axes` and `if 0 in xy.shape: return xy`). The issue must be from an even older version. The traceback in the issue has lines 1223-1269, suggesting a version WITHOUT these guards.\n\nLet me check \u2014 the issue references the source code where `_return_list_of_arrays` does NOT have the empty check. The line numbers from the traceback:\n- Line 1223: `if ra_dec_order and sky == 'input':`\n- Line 1225: `output = func(xy, o...[truncated]",
+      "latency_s": 178.40212893486023,
+      "error": null
+    }
+  ]
+}

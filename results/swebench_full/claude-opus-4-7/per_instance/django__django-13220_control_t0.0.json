@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13220",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1058,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1406,
+      "response_excerpt": "<reasoning>\nThe current file already contains `__eq__` and `__hash__` methods that implement the requested behavior with order-independent comparison. The fix uses:\n- `make_hashable` for dicts (sorts keys)\n- `sorted(self.error_list, key=operator.attrgetter(\"message\"))` for lists\n- Per-error hashing of (message, code, params) with `make_hashable` for params dict\n\nThe patch that fixes the issue adds these `__eq__` and `__hash__` methods to the `ValidationError` class, plus the `import operator` an",
+      "latency_s": 106.69915699958801,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

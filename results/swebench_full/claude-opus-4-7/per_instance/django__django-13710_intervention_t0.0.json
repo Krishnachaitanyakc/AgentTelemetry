@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13710",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 684,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1714,
+      "response_excerpt": "<reasoning>\nThe fix is straightforward. In `InlineModelAdmin.__init__`, when `verbose_name_plural` is None, we should derive it from the user-specified `verbose_name` if one was given. The cleanest way to detect whether the user specified a custom `verbose_name` is to check the class attribute *before* it's overwritten with the model meta default. We restructure the conditional so:\n\n1. If `verbose_name` is None (user didn't set it), use the model's verbose_name AND the model's verbose_name_plura",
+      "latency_s": 131.36905193328857,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

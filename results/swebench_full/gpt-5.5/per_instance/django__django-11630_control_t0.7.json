@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11630",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 5632,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1454,
+      "response_excerpt": "<reasoning>\nThe regression is caused by treating duplicate `Meta.db_table` values as a hard error globally. That is valid for a single database, but not for projects using database routers where same-named tables can live in separate databases. The patch keeps `models.E028` when no routers are configured, but relaxes it to `models.W035` with an explicit hint when `DATABASE_ROUTERS` is set. Focused tests cover same-app and cross-app duplicate table names under routers.\n\nI attempted to run the foc",
+      "latency_s": 114.53114104270935,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

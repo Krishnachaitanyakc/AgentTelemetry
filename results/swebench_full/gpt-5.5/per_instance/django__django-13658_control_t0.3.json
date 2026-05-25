@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13658",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1782,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2031,
+      "response_excerpt": "<reasoning>\nThe bug is in the early management parser used to consume `--settings` and `--pythonpath`. `ManagementUtility.__init__()` already computes `self.prog_name` from the explicit `argv`, but `CommandParser` defaults to `sys.argv[0]` unless `prog` is passed. Passing `prog=self.prog_name` makes help/error usage text honor the supplied argv and avoids failures when `sys.argv[0]` is invalid. I added a regression test that patches `sys.argv[0]` to `None` while calling `execute_from_command_lin",
+      "latency_s": 128.96974802017212,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

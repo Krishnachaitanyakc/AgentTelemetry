@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13895",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1131,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1337,
+      "response_excerpt": "<reasoning>\nThe simplification becomes inequivalent when `cancel()` asks `Pow.as_numer_denom()` to split a power like `((-3*x - 1)/12)**x` into `(-3*x - 1)**x/12**x`. That split can change branch behavior after substituting a rational value for `x`, because the numerator is an additive expression with unknown sign.\n\nThe patch keeps non-integer powers of additive numerators intact unless the numerator is known nonnegative. This prevents `simplify()` from producing the unsafe separated form while ",
+      "latency_s": 203.88664031028748,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

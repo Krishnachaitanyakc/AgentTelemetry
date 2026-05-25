@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-6116",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1049,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1784,
+      "response_excerpt": "<reasoning>\n1. `--collect-only` is registered in `src/_pytest/main.py` with existing aliases `--collectonly` and `--co`.\n2. Pytest already uses uppercase short options for public non-reserved shortcuts, so `-C` is a natural one-character alias for collection-only mode.\n3. The patch adds `-C` to the same option declaration, preserving the existing `collectonly` destination and behavior.\n4. A focused regression test verifies that `pytest -C` lists the collected test and does not execute it.\n5. Ver",
+      "latency_s": 67.08682608604431,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

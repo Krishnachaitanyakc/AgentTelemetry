@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-11564",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 1438,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "static_url media_url settings": 1,
+    "_add_script_prefix lazysettings": 1,
+    "get_script_prefix set_script_prefix": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1939,
+      "response": "I'll investigate the Django codebase to understand how `STATIC_URL` and `MEDIA_URL` are handled, then propose a fix for `SCRIPT_NAME` support.\n\n<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"STATIC_URL MEDIA_URL settings\"}}</tool_call>",
+      "latency_s": 14.91029691696167,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 2573,
+      "response": "Now I have the full picture. Looking at the existing test at line 610-629, paths starting with `/` are explicitly tested to NOT be prefixed. This is the core of the issue.\n\nThe key problem: when `STATIC_URL = '/static/'` (which is the common case), and the app is served under a sub-path via `SCRIPT_NAME`, the `_add_script_prefix` method skips paths starting with `/`, so `SCRIPT_NAME` is never prepended.\n\nThe fix needs to:\n1. **Not cache** `MEDIA_URL`/`STATIC_URL` in `self.__dict__` since `SCRIPT_NAME` can change per request\n2. Update `_add_script_prefix` to also handle paths starting with `/` (but not full URLs like `http://` or `https://`)\n\n<reasoning>\nThe issue is in `django/conf/__init__.py` in two places:\n\n1. **`__getattr__` (line 130-138)**: The code caches the result of `_add_script_prefix` in `self.__dict__`. Since `SCRIPT_NAME` can vary per request (thread-local via `set_script_prefix`), the cached value becomes stale. The fix is to NOT cache these values - return them directly without storing in `self.__dict__`.\n\n2. **`_add_script_prefix` (line 207-220)**: The method skips paths starting with `/`, but paths like `/static/` should also get the `SCRIPT_NAME` prefix prepended. The fix is to only skip full URLs (`http://`, `https://`) but handle `/`-prefixed paths by prepending the script prefix.\n\nLooking at the existing tests in `tests/settings_tests/tests.py`, the `test_not_prefixed` test explicitly asserts that `/path/` is NOT prefixed - this test will need to be upda",
+      "latency_s": 120.08961606025696,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 5812,
+      "response": "Let me continue investigating the codebase more thoroughly.\n\n<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"_add_script_prefix LazySettings\"}}</tool_call>",
+      "latency_s": 12.206113576889038,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 6373,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"get_script_prefix set_script_prefix\"}}</tool_call>",
+      "latency_s": 12.222382068634033,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 6893,
+      "response": "Now I have the full picture. The current code:\n\n1. Already avoids caching `MEDIA_URL`/`STATIC_URL` (line 133-134) \n2. `_add_script_prefix` skips paths starting with `/` (line 216)\n\nThe issue is that the most common Django configuration is `STATIC_URL = '/static/'` \u2014 a path starting with `/`. The current fix only works for relative paths like `static/` (without leading `/`). \n\nThe fix needs to change `_add_script_prefix` to only skip full URLs (`http://`, `https://`) but NOT paths starting with `/`, since those should get `SCRIPT_NAME` prepended.\n\n<reasoning>\nThe issue is in `django/conf/__init__.py` in the `_add_script_prefix` method (line 216). Currently it skips values starting with `http://`, `https://`, or `/`. The problem is that the most common `STATIC_URL` value is `/static/` (starts with `/`), so `SCRIPT_NAME` is never prepended.\n\nThe fix:\n1. In `_add_script_prefix`: Remove `/` from the skip check so that paths like `/static/` get `SCRIPT_NAME` prepended. Only skip full URLs (`http://`, `https://`).\n2. Update the tests to reflect the new behavior where `/path/` DOES get prefixed with `SCRIPT_NAME`.\n\nThe key change is on line 216:\n- Old: `if value.startswith((\"http://\", \"https://\", \"/\")):`\n- New: `if value.startswith((\"http://\", \"https://\")):`\n\nAnd update the test at line 610-629 to reflect that paths starting with `/` now get prefixed.\n</reasoning>\n\n<patch>\n--- a/django/conf/__init__.py\n+++ b/django/conf/__init__.py\n@@ -213,7 +213,7 @@ class LazySettings(LazyObject):\n",
+      "latency_s": 84.93979907035828,
+      "error": null
+    }
+  ]
+}

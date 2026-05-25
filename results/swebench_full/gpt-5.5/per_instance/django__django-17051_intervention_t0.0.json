@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-17051",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3051,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1964,
+      "response_excerpt": "<reasoning>\nThe ORM already distinguishes conflict modes with `OnConflict`. `ignore_conflicts` can suppress rows, so Django cannot reliably map returned IDs to input objects. `update_conflicts` performs an upsert and supported backends can return one row per input row, so `_batched_insert()` should keep `db_returning_fields` for `OnConflict.UPDATE` as well as plain inserts. The bulk-create assertion should use the same condition, and tests/docs should reflect that only `ignore_conflicts` disable",
+      "latency_s": 159.2775318622589,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13315",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 574,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1110,
+      "response": "<reasoning>\nThe issue is in `django/forms/models.py` in the `apply_limit_choices_to_to_formfield` function.\n\nWhen `limit_choices_to` on a ForeignKey uses a Q object that involves a join (i.e., traversing a relationship like `Q(categories__name='cat1')`), the `complex_filter()` call creates a SQL JOIN which can produce duplicate rows. For example, if a related object matches multiple rows through the join, it appears multiple times in the form's dropdown choices.\n\nThe fix is simple: add `.distinc...[truncated]",
+      "latency_s": 205.98307299613953,
+      "error": null
+    }
+  ]
+}

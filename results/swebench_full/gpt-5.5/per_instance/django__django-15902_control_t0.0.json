@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15902",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2486,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1235,
+      "response_excerpt": "<reasoning>\nThe warning is raised because `ManagementForm` inherits `Form` and, when rendered with `{{ formset.management_form }}`, uses the renderer\u2019s generic form template. On affected Django versions that generic template is `django/forms/default.html`, so rendering the management form triggers the deprecation even though it only emits hidden inputs.\n\nThe fix is to give `ManagementForm` its own minimal template and add both Django and Jinja2 versions. The regression test sets the generic form",
+      "latency_s": 289.2413880825043,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

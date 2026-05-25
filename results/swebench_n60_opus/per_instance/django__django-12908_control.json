@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12908",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 559,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1873,
+      "response": "`NotSupportedError` is already imported. Now I have everything I need. The fix is to add a check in the `distinct()` method that raises `NotSupportedError` when the queryset has a combinator (i.e., was produced by `union()`, `intersection()`, or `difference()`).\n\n<reasoning>\nThe issue is that in Django 2.2.1, calling `.distinct()` on a combined queryset (produced by `.union()`) silently does nothing. The SQL compiler has an if/else branching structure where the combinator branch and the distinct...[truncated]",
+      "latency_s": 355.2872669696808,
+      "error": null
+    }
+  ]
+}

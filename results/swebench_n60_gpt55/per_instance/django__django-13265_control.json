@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13265",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 5477,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2717,
+      "response": "<reasoning>\n`_order` is a synthetic column created by `AlterOrderWithRespectTo`, so an `AddIndex` that references `_order` must depend on that operation. The autodetector already tracks created fields and removed `order_with_respect_to`, but it didn\u2019t have a dependency kind for \u201c`order_with_respect_to` has been set.\u201d The patch adds that dependency and applies it to generated `AddIndex` operations whose index fields include `_order`, including compound indexes with a `ForeignKey`.\n\nVerified with:...[truncated]",
+      "latency_s": 390.29481506347656,
+      "error": null
+    }
+  ]
+}

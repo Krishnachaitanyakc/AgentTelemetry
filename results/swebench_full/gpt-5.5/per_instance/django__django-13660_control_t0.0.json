@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13660",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2802,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3099,
+      "response_excerpt": "<reasoning>\nThe crash happens because `exec(code)` inside `handle()` executes in the function frame. Imports made by the executed top-level code are locals of `handle()`, but functions defined by that code resolve globals through the exec globals namespace, so `django` is missing when `f()` runs.\n\nThe fix is to pass an explicit globals dictionary to `exec()`. In current Django shell behavior, that dictionary should include the command module globals and the shell namespace from `get_namespace()`",
+      "latency_s": 64.65144896507263,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

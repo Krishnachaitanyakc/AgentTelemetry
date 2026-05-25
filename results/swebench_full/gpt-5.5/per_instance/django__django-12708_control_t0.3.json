@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12708",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2204,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1753,
+      "response_excerpt": "<reasoning>\nThe crash happens because deleting an `index_together` constraint only filtered introspected constraints by `index=True`. On backends that report unique constraints as indexes too, the matching set includes both the `_idx` and `_uniq` constraints. The fix is to require `unique=False` when deleting `index_together`, so `_delete_composed_index()` selects only the plain index. I verified the focused regression test with `python3 tests/runtests.py migrations.test_operations.OperationTest",
+      "latency_s": 109.27256917953491,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

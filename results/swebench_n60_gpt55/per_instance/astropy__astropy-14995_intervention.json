@@ -1,0 +1,21 @@
+{
+  "instance_id": "astropy__astropy-14995",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2537,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3282,
+      "response": "<reasoning>\n1. The failure is in `NDArithmeticMixin._arithmetic_mask`: scalar operands are wrapped as NDData-like operands with `mask=None`.\n2. When `self.mask` exists and `operand.mask is None`, the old code reached `handle_mask(self.mask, operand.mask)`, so `np.bitwise_or(mask, None)` raised `TypeError`.\n3. The correct one-mask behavior is already documented in the method: return a copy of the mask that exists.\n4. The patch adds that missing branch and a regression test for integer bitmasks wi...[truncated]",
+      "latency_s": 137.49055695533752,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-12454",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 743,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2027,
+      "response_excerpt": "<reasoning>\nThe failure comes from checking lower-triangular positions with `j in range(i)` even when `i >= self.cols`, which tries to access nonexistent columns in tall rectangular matrices. The fix is to cap the inner range at `self.cols`, so only valid matrix entries below the diagonal are inspected.\n\nIn the checkout at `/private/tmp/sympy`, this fix and a regression assertion for `zeros(4, 2)` are already present. I verified:\n- `zeros(4, 2).is_upper` returns `True`\n- `Matrix([[1], [2], [3]])",
+      "latency_s": 252.38891220092773,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

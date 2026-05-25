@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-10914",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4016,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1815,
+      "response_excerpt": "<reasoning>\nThe issue requests setting the default `FILE_UPLOAD_PERMISSIONS` to `0o644` to ensure consistent file permissions regardless of which upload handler is used (MemoryUploadedFile vs TemporaryUploadedFile).\n\nThe current default of `None` causes inconsistent behavior:\n- `MemoryUploadedFile` writes get the system's umask (typically 0o644)\n- `TemporaryUploadedFile` writes use `os.rename` from `tempfile.NamedTemporaryFile`, which creates files with `0o600` permissions for security reasons\n\n",
+      "latency_s": 113.03292322158813,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

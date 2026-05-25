@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-10297",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2886,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2325,
+      "response_excerpt": "<reasoning>\n`RidgeClassifierCV` already inherits the `store_cv_values` implementation from `_BaseRidgeCV`, but its constructor did not expose or forward the flag. The fix adds the parameter, forwards it to the base class, documents it, and adds regression coverage for binary and multilabel classifier outputs.\n\nVerification: `py_compile` passed. Focused pytest collection was blocked because the old scikit-learn checkout was not built (`sklearn.__check_build._check_build` missing).\n</reasoning>\n\n<",
+      "latency_s": 198.86418104171753,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

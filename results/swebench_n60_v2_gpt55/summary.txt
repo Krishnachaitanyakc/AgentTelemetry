@@ -1,0 +1,11 @@
+========================================================================
+B1v2: SWE-bench n=60 forced-tool-use via gpt-5.5
+========================================================================
+Elapsed: 25651s
+Forced min_searches=3, intervention threshold=3
+
+  control      : 50/60 (83.3%)  avg_iter=4.5  avg_searches=2.6  intv_trigs=0.00  patch_suppr=0.85  max_repeats=1
+  intervention : 51/60 (85.0%)  avg_iter=4.7  avg_searches=2.8  intv_trigs=0.00  patch_suppr=0.92  max_repeats=1
+
+Fisher's exact two-sided p = 1.0000
+Significant at alpha=0.05:  False

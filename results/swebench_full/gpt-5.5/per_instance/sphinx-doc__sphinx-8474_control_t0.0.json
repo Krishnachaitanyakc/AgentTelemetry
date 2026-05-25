@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-8474",
+  "repo": "sphinx-doc/sphinx",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2965,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1353,
+      "response_excerpt": "<reasoning>\nSphinx 3.3 stopped assigning figure numbers to uncaptioned standard enumerable nodes, which is correct, but `:numref:` still tried to look up a number for a labelled uncaptioned table and emitted a warning. The resolver should mirror the numbering pass: if a non-section standard enumerable node has no numfig title/caption, return the existing fallback content without warning.\n\nVerified with:\n`uv run python -m pytest tests/test_builders/test_build_html_numfig.py::test_numfig_disabled_",
+      "latency_s": 257.97342681884766,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

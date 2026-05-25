@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13471",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2471,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1578,
+      "response_excerpt": "<reasoning>\nThe failure happens when a Python 2 pickle stores the `Float` mantissa as a hexadecimal string with a long suffix, e.g. `'1L'`. On Python 3, parsing that directly as base 16 raises `ValueError`.\n\nThe patch normalizes the pickled mantissa before parsing: remove an optional `0x` prefix, strip a Python 2 long suffix (`L` or `l`), then pass the clean hex string to `MPZ`. I also added a regression test with a protocol-2 pickle shaped like the failing Python 2 output.\n\nVerified with:\n`pyth",
+      "latency_s": 77.79059410095215,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

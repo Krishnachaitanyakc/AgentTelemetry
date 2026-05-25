@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11848",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 810,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1451,
+      "response": "The fix is already present in the `django_issue_31377` directory. Let me now write the final reasoning and patch.\n\n<reasoning>\n**The Bug:**\nThe original `parse_http_date` in `django/utils/http.py` used a hardcoded cutoff to interpret two-digit years in RFC 850 dates:\n- `year < 70` \u2192 add 2000 (giving 2000\u20132069)\n- `year >= 70` \u2192 add 1900 (giving 1970\u20131999)\n\nThis does not comply with RFC 7231 which says:\n> Recipients of a timestamp value in rfc850-date format, which uses a two-digit year, MUST inte...[truncated]",
+      "latency_s": 277.68536019325256,
+      "error": null
+    }
+  ]
+}

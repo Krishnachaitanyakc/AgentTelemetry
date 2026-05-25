@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13447",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3953,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1215,
+      "response": "<reasoning>\nThe current repository already includes the model class in each admin app-list model dictionary as ``model``. This patch exposes the existing app dictionary builder as ``AdminSite.build_app_dict()``, keeps ``_build_app_dict()`` as a compatibility wrapper, routes ``get_app_list()`` through the new public method, and adds docs, release notes, and tests covering the public API and model class access.\n\nVerified with:\n`python3 tests/runtests.py admin_views.test_adminsite --verbosity 1 --p...[truncated]",
+      "latency_s": 142.96123504638672,
+      "error": null
+    }
+  ]
+}

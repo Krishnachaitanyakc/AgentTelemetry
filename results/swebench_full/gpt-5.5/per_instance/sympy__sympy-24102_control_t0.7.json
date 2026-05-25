@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-24102",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4150,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2500,
+      "response_excerpt": "<reasoning>\nThe failure comes from `parse_mathematica` tokenizing symbols with an ASCII-only literal regex: `[A-Za-z][A-Za-z0-9]*`. Non-ASCII identifiers like `\u03bb` are not tokenized as symbols, so parsing cannot reduce the expression to a single AST.\n\nThe patch builds the literal regex from Python identifier-valid Unicode codepoint ranges, excluding `_` because Mathematica uses underscores for patterns. This keeps existing identifier behavior while allowing Greek, CJK, combining marks, and other ",
+      "latency_s": 83.42808818817139,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

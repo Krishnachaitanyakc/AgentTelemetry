@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16820",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3222,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1182,
+      "response_excerpt": "<reasoning>\nThe optimizer already folds `AddIndex + RenameIndex`, but not `CreateModel(options={\"index_together\": ...}) + RenameIndex(old_fields=...)`, which is the sequence produced when migrating from `Meta.index_together` to `Meta.indexes`. During squashing, that left deprecated `index_together` in the squashed `CreateModel`.\n\nThe patch teaches `CreateModel.reduce()` to replace the matching `index_together` entry with a named `models.Index` and drop the redundant `RenameIndex`. I added a regr",
+      "latency_s": 217.58493208885193,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

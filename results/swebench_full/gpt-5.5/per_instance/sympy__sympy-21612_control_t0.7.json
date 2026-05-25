@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-21612",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 669,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1473,
+      "response_excerpt": "<reasoning>\n1. Located the default LaTeX parser tests in `sympy/parsing/tests/test_latex.py`.\n2. Verified the current parser already constructs the nested denominator as a grouped expression.\n3. Added a regression test for `\\frac{\\frac{a^3+b}{c}}{\\frac{1}{c^2}}` with the exact unevaluated SymPy tree, so future changes cannot flatten the denominator to `/1/(c**2)`.\n4. Verified with `python3 -m pytest sympy/parsing/tests/test_latex.py -q`: `5 passed, 1 xfailed`.\n</reasoning>\n\n<patch>\ndiff --git a/",
+      "latency_s": 135.30716395378113,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

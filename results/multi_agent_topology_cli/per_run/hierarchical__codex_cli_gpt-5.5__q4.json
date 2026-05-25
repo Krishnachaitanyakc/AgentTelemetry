@@ -1,0 +1,29 @@
+{
+  "topology": "hierarchical",
+  "model": "codex_cli/gpt-5.5",
+  "question": "Describe how a closed-loop intervention based on telemetry signals can recover a stuck agent. Give a concrete example using the REASONING span kind.",
+  "run_id": "hierarchical__codex_cli_gpt-5.5__q4",
+  "transcript": [
+    {
+      "agent": "facts_specialist",
+      "output": "- A closed-loop intervention uses telemetry to detect abnormal agent behavior, apply a corrective action, then monitor whether the agent recovers.\n\n- \u201cStuck\u201d signals can include long-running spans, repeated reasoning patterns, no tool calls, no state changes, excessive token use, or repeated failed attempts.\n\n- With a `REASONING` span, telemetry might show the agent spending 90 seconds and thousands of tokens reasoning without producing an action.\n\n- A controller can intervene by injecting a directive such as: \u201cStop analyzing. Summarize the current blocker in one sentence, choose the next executable step, and call the relevant tool.\u201d\n\n- Recovery is confirmed when subsequent telemetry shows a new tool/action span, reduced reasoning duration, or forward progress toward the task.",
+      "latency_s": 10.313388109207153
+    },
+    {
+      "agent": "analysis_specialist",
+      "output": "1. **Intervention sensitivity vs. false positives**: Telemetry can detect a stuck agent when repeated `REASONING` spans show no state change, rising token use, or repeated plans. Aggressive triggers recover faster but may interrupt valid deep reasoning.\n\n2. **Autonomy vs. control**: A closed loop can automatically inject a new instruction, switch tools, or reset context. This helps recovery, but too much automation may override the agent\u2019s intended strategy.\n\n3. **Observability cost vs. recovery quality**: Rich `REASONING` span signals, such as duration, token growth, repeated hypotheses, and missing tool calls, make stuck detection more accurate. The trade-off is extra telemetry complexity and privacy/debug overhead.\n\nExample: if several consecutive `REASONING` spans repeat \u201cI need to inspect the file\u201d without any tool call, the controller can intervene: \u201cStop reasoning and run a file search now.\u201d",
+      "latency_s": 12.439669132232666
+    },
+    {
+      "agent": "manager_synthesis",
+      "output": "A closed-loop intervention recovers a stuck agent by using telemetry to detect nonproductive behavior, applying a corrective directive, and then checking whether the agent resumes progress. The controller watches signals such as long `REASONING` spans, repeated plans, rising token use, no tool calls, no state changes, or repeated failed attempts. When those signals cross a threshold, it intervenes without fully taking over the task.\n\nFor example, telemetry might show three consecutive `REASONING` spans where the agent spends 90 seconds and thousands of tokens repeating, \u201cI need to inspect the file,\u201d but never calls a search or read tool. The controller can inject: \u201cStop analyzing. Summarize the blocker in one sentence, choose the next executable step, and call the relevant tool now.\u201d Recovery is confirmed if the next spans show a file-search or read action, shorter reasoning duration, and observable task progress.\n\nThe key trade-off is sensitivity: earlier intervention speeds recovery,",
+      "latency_s": 10.93284296989441
+    }
+  ],
+  "total_cost_usd": 0.0,
+  "total_input_tokens": 634,
+  "total_output_tokens": 689,
+  "n_agents": 3,
+  "wall_clock_s": 33.69637989997864,
+  "error": null
+}

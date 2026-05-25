@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15320",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1525,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1733,
+      "response_excerpt": "<reasoning>\n`Subquery.as_sql()` assumes `self.query.as_sql()` returns SQL wrapped in parentheses, then strips those parentheses with `[1:-1]` before applying its own template. That only happens when the inner `Query` has `subquery=True`. Without setting that flag in `Subquery.__init__()`, the slice removes the first and last characters of valid SQL instead. The fix is to mark the cloned query as a subquery, leaving the original queryset untouched, and add a regression test for direct `Subquery.a",
+      "latency_s": 101.53480100631714,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

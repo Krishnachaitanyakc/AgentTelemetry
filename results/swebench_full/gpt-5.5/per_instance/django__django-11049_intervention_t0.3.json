@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11049",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1141,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1500,
+      "response_excerpt": "<reasoning>\nThe parser accepts seconds-only (`\"30\"`), minutes-seconds (`\"15:30\"`), and hours-minutes-seconds (`\"1:15:30\"`), so the old message incorrectly implied `HH:` could appear without `MM:`. I updated the `DurationField` invalid format text to `[DD] [[HH:]MM:]ss[.uuuuuu]` and adjusted the regression test expectation.\n\nVerified with:\n`PYTHONPATH=. /private/tmp/django_w042_py39_venv/bin/python tests/runtests.py model_fields.test_durationfield.TestValidation.test_invalid_string --settings=tes",
+      "latency_s": 409.3668689727783,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

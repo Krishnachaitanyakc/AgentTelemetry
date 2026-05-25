@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13401",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1725,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2059,
+      "response": "All three (`django_22`, `django_30`, `django_old`) have the same buggy code. The issue is clear: `__eq__`, `__lt__`, and `__hash__` only use `creation_counter`, ignoring the field's `model`. Fields inherited from an abstract base class share the same `creation_counter` but belong to different concrete models, so they incorrectly compare as equal.\n\nThe fix needs to:\n1. `__eq__`: Also compare `model` (via `getattr` since unbound fields don't have `model`)\n2. `__lt__`: Order by `creation_counter` f...[truncated]",
+      "latency_s": 57.2257239818573,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12700",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 470,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2528,
+      "response": "This is a site-packages installation, not a source checkout. The actual fix needs to be applied to `django_30/django/views/debug.py`.\n\nNow I have everything I need. The fix is straightforward: add `list` and `tuple` handling to the standalone `cleanse_setting()` function in Django 3.0's `debug.py`.\n\n<reasoning>\nThe issue is that `cleanse_setting()` in Django 3.0 (and below) only recursively cleanses `dict` values but passes through `list` and `tuple` values as-is. This means sensitive keys neste...[truncated]",
+      "latency_s": 179.09503817558289,
+      "error": null
+    }
+  ]
+}

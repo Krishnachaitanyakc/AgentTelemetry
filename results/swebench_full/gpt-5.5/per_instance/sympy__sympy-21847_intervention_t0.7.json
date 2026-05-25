@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-21847",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2752,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1853,
+      "response_excerpt": "<reasoning>\nThe scalar-degree branch was generating combinations of exactly `max_degree` items and using `1` as padding, then filtering by the count of `1`s. That misses mixed commutative monomials such as `x1*x2**2` when `min_degrees == max_degrees == 3`.\n\nThe fix is to generate monomials for every actual total degree in `range(min_degree, max_degree + 1)`. For commutative variables this uses `combinations_with_replacement`; for noncommutative variables it uses `product`, preserving existing be",
+      "latency_s": 51.383465051651,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

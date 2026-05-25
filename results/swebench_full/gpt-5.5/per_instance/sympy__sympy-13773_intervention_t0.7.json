@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13773",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1782,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1448,
+      "response_excerpt": "<reasoning>\nThe explicit `Matrix` path in this checkout already rejects scalar `@`, but `MatrixExpr` still treated `@` like `*`, so `2 @ A` and `A @ 2` produced scalar-matrix multiplication. I changed `MatrixExpr.__matmul__` and `__rmatmul__` to return `NotImplemented` unless the other operand is matrix-like, which lets Python raise `TypeError` for scalar operands while preserving valid matrix multiplication.\n\nVerified with:\n`python3 -m pytest sympy/matrices/expressions/tests/test_matexpr.py -q`",
+      "latency_s": 99.5210587978363,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

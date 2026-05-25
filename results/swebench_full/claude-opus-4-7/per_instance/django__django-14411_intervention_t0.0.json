@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14411",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 353,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1196,
+      "response_excerpt": "<reasoning>\nThe issue is about `ReadOnlyPasswordHashWidget` having a `<label>` with a `for` attribute pointing to a non-labelable element (a `<div>` rather than an input). The widget renders a div containing text and a button, neither of which are labelable elements.\n\nLooking at `django/forms/boundfield.py:194-200`, the `label_tag` method checks `widget.id_for_label(id_)` and only adds the `for` attribute if it returns a truthy value:\n\n```python\nid_ = widget.attrs.get(\"id\") or self.auto_id\nif id",
+      "latency_s": 347.91813611984253,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

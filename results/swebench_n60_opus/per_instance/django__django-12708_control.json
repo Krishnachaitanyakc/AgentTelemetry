@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12708",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 634,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1784,
+      "response": "The fix is clean. Here's the summary:\n\n<reasoning>\nThe bug occurs when a model has both `unique_together` and `index_together` on the same fields. When a migration tries to delete `index_together`, the `alter_index_together` method calls `_delete_composed_index` with `{'index': True}` as constraint kwargs. This gets passed to `_constraint_names`, which filters database constraints by `index=True`.\n\nThe problem is that on databases like PostgreSQL, a unique constraint is also implemented as an in...[truncated]",
+      "latency_s": 158.55189871788025,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-17022",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3384,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1757,
+      "response_excerpt": "<reasoning>\nThe bug is in the NumPy-family code printer used by `lambdify`: `Identity(n)` was falling back to the symbolic name `I`, which then resolved to Python\u2019s complex unit `1j`. The fix is to teach `NumPyPrinter` to print concrete identity matrices as `numpy.eye(size)`. For symbolic dimensions, the printer should fail explicitly with `NotImplementedError` instead of emitting ambiguous code. I verified the concrete case returns `[[2, 2], [3, 5]]`, and the symbolic dimension case raises. Foc",
+      "latency_s": 71.49702787399292,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

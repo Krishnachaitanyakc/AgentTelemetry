@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-16281",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4292,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2317,
+      "response_excerpt": "<reasoning>\nThe product pretty-printer was adding one extra vertical body row beyond the printed term height, which caused the blank row above the lower limit. The sign width formula also made the product one column wider than the proposed improved shape. The patch makes the body height match `func_height` exactly and narrows the product sign by one column while preserving a minimum width for one-line terms. Tests were updated and expanded for the issue example.\n</reasoning>\n\n<patch>\n```diff\ndif",
+      "latency_s": 357.46050214767456,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

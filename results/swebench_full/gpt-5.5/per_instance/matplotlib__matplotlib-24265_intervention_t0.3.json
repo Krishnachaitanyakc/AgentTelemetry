@@ -1,0 +1,26 @@
+{
+  "instance_id": "matplotlib__matplotlib-24265",
+  "repo": "matplotlib/matplotlib",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4165,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2050,
+      "response_excerpt": "<reasoning>\nThe regression happens because Matplotlib 3.6 renamed bundled seaborn styles to `seaborn-v0_8-*`. `style.use(\"seaborn-colorblind\")` already maps the deprecated name, but `style.library` is still a plain dict, so direct access bypasses that compatibility path and raises `KeyError`.\n\nThe patch lifts the deprecated seaborn mapping into a shared helper, reuses it in `use()`, and wraps `style.library` in a small dict subclass whose `__getitem__` maps deprecated seaborn names with the same",
+      "latency_s": 197.6211929321289,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-11897",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1338,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1426,
+      "response_excerpt": "<reasoning>\n1. The inconsistent LaTeX output comes from `_print_Mul` calling `fraction(expr)` with the default simplification behavior.\n2. That default rewrites `exp(-x)` as `1/exp(x)` when splitting numerator/denominator, and expands `2*(x + y)` into `2*x + 2*y`.\n3. Pretty printing preserves the original multiplicative structure, so the LaTeX printer should request an exact numerator/denominator split.\n4. Changing this to `fraction(expr, exact=True)` preserves `exp(-x)` and grouped denominators",
+      "latency_s": 149.04293298721313,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

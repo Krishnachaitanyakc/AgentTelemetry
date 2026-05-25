@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12453",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 877,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3731,
+      "response": "Now I have the full picture. The fix needs to be applied to `django_22/django/db/backends/base/creation.py`:\n\n1. Add `transaction` to the import from `django.db`\n2. Wrap the deserialization loop in `transaction.atomic()`\n\n<reasoning>\nThe issue is clear: `deserialize_db_from_string` saves deserialized objects one by one without a transaction. If a model with a foreign key is saved before the referenced model, an integrity error occurs. The fix is to wrap the save loop in `transaction.atomic()`, w...[truncated]",
+      "latency_s": 112.16259694099426,
+      "error": null
+    }
+  ]
+}

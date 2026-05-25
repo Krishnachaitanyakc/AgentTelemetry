@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13230",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 493,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1167,
+      "response": "<reasoning>\nLooking at the issue and the code:\n\n1. The issue requests adding `item_comments` support directly to `feed.add_item()` in `syndication/views.py` without needing the `item_extra_kwargs` workaround.\n\n2. From reading `feedgenerator.py` (lines 85-88), `add_item()` already accepts `comments=None` as a named parameter and stores it in the item dict as `'comments'`. The `Rss201rev2Feed.add_item_elements()` renders it as `<comments>` XML element.\n\n3. Looking at `views.py` (lines 201-218), I ...[truncated]",
+      "latency_s": 218.40137195587158,
+      "error": null
+    }
+  ]
+}

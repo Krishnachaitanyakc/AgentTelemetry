@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11630",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3121,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1485,
+      "response": "Now I have enough context to write the fix. The root cause is clear:\n\n- Lines 39\u201347: if `DATABASE_ROUTERS` is set, the severity is only downgraded to `Warning`. But the check still warns even when the conflicting models are intentionally routed to **separate databases** \u2014 exactly the pattern the issue describes.\n- The fix should use `router.db_for_read()` to determine each model's target database, then only flag conflicts where two models with the same `db_table` are routed to the **same** datab...[truncated]",
+      "latency_s": 155.31516194343567,
+      "error": null
+    }
+  ]
+}

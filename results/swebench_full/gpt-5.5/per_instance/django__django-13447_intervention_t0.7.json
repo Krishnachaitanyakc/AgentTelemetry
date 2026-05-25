@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13447",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3830,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1184,
+      "response_excerpt": "<reasoning>\n1. `AdminSite.get_app_list()` already returns model dictionaries containing the model class under `\"model\"`.\n2. The remaining issue is that the reusable dictionary builder is private as `_build_app_dict()`.\n3. The patch makes it public as `build_app_dict()`, updates `get_app_list()` to call the public method, and leaves `_build_app_dict` as an alias for compatibility.\n4. It documents the new method and adds focused tests for the unfiltered and app-label-filtered cases.\n5. Verified wi",
+      "latency_s": 164.57587099075317,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

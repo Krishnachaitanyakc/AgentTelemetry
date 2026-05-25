@@ -1,0 +1,28 @@
+{
+  "instance_id": "django__django-11848",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 2,
+  "proposed_patch": true,
+  "answer_len": 785,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1451,
+      "response": "The fix is clean and correct. Here's what changed:\n\n**Before (broken):** Compared just the two-digit year against the last two digits of the current year (`year - (current_year % 100) > 50`), which is an incorrect interpretation of the RFC 7231 rule and fails at century boundaries.\n\n**After (fixed):** First computes the full candidate year by adding the two-digit year to the current century, then checks if that candidate year is more than 50 years in the future (`year - current_year > 50`). If s...[truncated]",
+      "latency_s": 81.40750002861023,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 2246,
+      "response": "Both files are fixed. Here's the patch:\n\n<patch>\n--- a/django/utils/http.py\n+++ b/django/utils/http.py\n@@ -176,12 +176,10 @@ def parse_http_date(date):\n         if year < 100:\n             current_year = datetime.datetime.utcnow().year\n             current_century = current_year - (current_year % 100)\n-            if year - (current_year % 100) > 50:\n-                # year that appears to be more than 50 years in the future are\n-                # interpreted as representing the past.\n-         ...[truncated]",
+      "latency_s": 112.83517527580261,
+      "error": null
+    }
+  ]
+}

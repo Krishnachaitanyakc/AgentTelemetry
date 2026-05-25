@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-11040",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3989,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1553,
+      "response_excerpt": "<reasoning>\nThe failure occurs because float `n_neighbors` reaches low-level neighbor heap code before validation. The fix adds a shared `_check_n_neighbors` helper and calls it during fitting for estimator-level `n_neighbors`, and inside `kneighbors` / `kneighbors_graph` for method-level overrides.\n\nI verified syntax with `python3 -m py_compile`. The focused pytest run could not start because this environment\u2019s `python3` lacks `distutils`, which this older checkout imports from `conftest.py`.\n<",
+      "latency_s": 142.33134579658508,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

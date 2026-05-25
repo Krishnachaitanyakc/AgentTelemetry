@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12589",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 533,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3211,
+      "response_excerpt": "<reasoning>\nNow I have clearly identified the issue and the fix.\n\n**The Problem:**\nIn Django 3.0, when calling `query.values(\"status\").annotate(total_count=Count(\"status\"))` where `status` is a `Subquery` annotation, the GROUP BY clause uses just the alias name `\"status\"`. If the query has joined tables (from filter conditions like `Q(ab_a__b=1)`) that contain a column also named `\"status\"`, this creates an ambiguous column reference in the SQL.\n\n**Trace through the issue:**\n1. Initial query: `A",
+      "latency_s": 736.1717748641968,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12453",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3340,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3731,
+      "response": "<reasoning>\n1. Serialization order can put a row containing a foreign key before the referenced row, and cycles make model sorting insufficient.\n2. Deserialization should load the full serialized database as one unit: wrap it in a transaction, temporarily disable constraint checks, then validate constraints after all rows are saved.\n3. The regression test loads an object that references another object serialized later, matching the failure mode.\n4. The current checkout already contains the equiv...[truncated]",
+      "latency_s": 166.11182808876038,
+      "error": null
+    }
+  ]
+}

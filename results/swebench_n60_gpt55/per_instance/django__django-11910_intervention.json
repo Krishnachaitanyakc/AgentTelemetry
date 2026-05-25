@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11910",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 9447,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1997,
+      "response": "<reasoning>\nThe autodetector temporarily rewrites relation metadata to compare fields across renames. When an `AlterField` is also emitted, it reused that mutated `new_field`, so the generated migration could serialize the old primary-key name in `to_field`. The patch compares cloned relation fields instead, leaving the real target field intact for emitted operations. I added a regression test covering a renamed primary key plus an `AlterField` on the referencing `ForeignKey`.\n\nVerified with:\n`p...[truncated]",
+      "latency_s": 295.8347508907318,
+      "error": null
+    }
+  ]
+}

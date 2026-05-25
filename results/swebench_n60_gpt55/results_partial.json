@@ -1,0 +1,2526 @@
+{
+  "elapsed_s": 27096.46859407425,
+  "n_done": 120,
+  "results": [
+    {
+      "instance_id": "astropy__astropy-12907",
+      "repo": "astropy/astropy",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1363,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2073,
+          "response": "<reasoning>\nThe bug is in `_cstack` when the right operand is already a separability matrix from a nested compound model. The code allocates the lower-right block correctly, but fills it with `1` instead of copying the nested model\u2019s matrix, which turns separable nested outputs into fully coupled outputs. The patch preserves that matrix and adds a regression test for the exact `Pix2Sky_TAN() & (Linear1D & Linear1D)` case. I verified the expected behavior with a direct regression script.\n</reason...[truncated]",
+          "latency_s": 295.69813108444214,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-14182",
+      "repo": "astropy/astropy",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2271,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2698,
+          "response": "<reasoning>\n`ascii.rst` inherits the fixed-width writer, which already knows how to emit arbitrary `header_rows`. The RST wrapper was hard-coded for one header row: its constructor rejected `header_rows`, its separator line index assumed one header row, and reading always used a fixed data start. The patch forwards `header_rows`, chooses the separator after however many header rows are emitted, and sets the read data start from that same count. I also added a regression test covering `name`, `un...[truncated]",
+          "latency_s": 198.66715908050537,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-14365",
+      "repo": "astropy/astropy",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1945,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2166,
+          "response": "<reasoning>\nThe QDP parser recognizes command lines using a single regular expression in `astropy/io/ascii/qdp.py`. In Astropy 5.1 that regex is compiled case-sensitively, so lowercase `read serr ...` is rejected before the later command parsing can lowercase the command type. The fix is to compile the line classifier regex with `re.IGNORECASE` and add regression coverage for lowercase QDP commands.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/astropy/io/ascii/qdp.py b/astropy/io/ascii/qdp.py\ninde...[truncated]",
+          "latency_s": 125.17929983139038,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-14995",
+      "repo": "astropy/astropy",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2424,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3282,
+          "response": "<reasoning>\n1. The v5.3 mask path already returns the existing mask when `self.mask is None`, but only checked `operand is None` for the opposite case.\n2. For arithmetic against a scalar or an `NDDataRef` without a mask, `operand.mask` can be `None`; v5.3 then calls `handle_mask(self.mask, None)`, which breaks for integer bitmasks with `np.bitwise_or`.\n3. The fix is to treat `operand.mask is None` the same as `operand is None`: return a deepcopy of `self.mask`.\n4. I added a regression test for i...[truncated]",
+          "latency_s": 446.4071102142334,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-6938",
+      "repo": "astropy/astropy",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1365,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1354,
+          "response": "<reasoning>\nThe current implementation writes the replacement result back into `output_field`, which is the required behavior because string replacement returns a new array. I added a regression assertion that inspects the written FITS bytes and verifies that ASCII table `D` formats actually emit `D` exponent separators, not `E`.\n\nVerification: `py_compile` passes. The targeted pytest import is blocked in this checkout because Astropy cannot determine its package version during `conftest.py` imp...[truncated]",
+          "latency_s": 263.86424803733826,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-7746",
+      "repo": "astropy/astropy",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2185,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2880,
+          "response": "<reasoning>\n1. The failure comes from sending zero-coordinate inputs through wcslib. The fix keeps normal broadcasting/shape validation, then short-circuits empty inputs before calling wcslib.\n2. Empty list/array inputs now return empty output arrays with the expected broadcast shape. `ra_dec_order=True` still goes through the existing RA/DEC validation helpers.\n3. Added regression coverage for `wcs_pix2world`, `wcs_world2pix`, `all_pix2world`, and `all_world2pix`.\n4. `python3 -m py_compile astr...[truncated]",
+          "latency_s": 276.6552560329437,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-10914",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 588,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1846,
+          "response": "<reasoning>\nThe storage layer already calls `os.chmod()` after saving when `FILE_UPLOAD_PERMISSIONS` is not `None`, covering both streamed uploads and moved temporary uploads. The inconsistent permission behavior comes from the global default being `None`, so the smallest fix is to default it to `0o644`. I verified locally that both in-memory and temporary uploaded files save as `0o644`.\n</reasoning>\n\n<patch>\ndiff --git a/django/conf/global_settings.py b/django/conf/global_settings.py\n--- a/djan...[truncated]",
+          "latency_s": 104.79646825790405,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-10924",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2058,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1647,
+          "response": "<reasoning>\n1. `FilePathField.path` must remain the original value during `deconstruct()` so migrations can serialize a callable reference instead of a machine-specific absolute path.\n2. The callable should only be evaluated when building the form field choices.\n3. I made that formfield resolution explicit and added a regression test that serializes a `FilePathField` with a top-level callable.\n4. Focused tests passed with manually configured settings; the partial checkout could not run Django\u2019s ...[truncated]",
+          "latency_s": 259.6216928958893,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11001",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1806,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3045,
+          "response": "<reasoning>\nThe duplicate ORDER BY filter strips ASC/DESC before adding expressions to `seen`. With the old regex, `.` didn\u2019t span newlines, so multiline `RawSQL` expressions were reduced to only their final line and distinct expressions with the same tail were treated as duplicates. The fix makes the regex span the full SQL expression with `re.DOTALL`, and the regression test covers both normal and `distinct()` query paths.\n</reasoning>\n\n<patch>\ndiff --git a/django/db/models/sql/compiler.py b/d...[truncated]",
+          "latency_s": 349.6615080833435,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11019",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 8625,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2626,
+          "response": "<reasoning>\nThe bug comes from reducing media lists pairwise: an intermediate merge can invent an ordering constraint between independent files. The fix keeps the original contributing lists and merges all lists for each media type in one topological sort, so only explicit adjacent ordering constraints are considered. I verified the current checkout\u2019s media tests with `python3 -m tests.forms_tests.tests.test_media`.\n</reasoning>\n\n<patch>\ndiff --git a/django/forms/widgets.py b/django/forms/widget...[truncated]",
+          "latency_s": 232.07124996185303,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11039",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2186,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1704,
+          "response": "<reasoning>\n`sqlmigrate` should only emit transaction wrappers when both conditions are true: the migration is atomic and the selected database can roll back DDL. The regression test mirrors the existing non-atomic migration test, but patches `connection.features.can_rollback_ddl` to `False`. In this checkout, this patch is already present; targeted tests pass with `python3 tests/runtests.py migrations.test_commands.MigrateTests.test_sqlmigrate_for_non_atomic_migration migrations.test_commands.M...[truncated]",
+          "latency_s": 66.05496191978455,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11049",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 4561,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1531,
+          "response": "<reasoning>\nThe parser accepts seconds as mandatory, with optional minutes and hours before them, so the user-facing standard format should be `[DD] [[HH:]MM:]ss[.uuuuuu]`. The patch updates `forms.DurationField` to use that corrected format in its invalid message, adds default help text, propagates that help text from model `DurationField.formfield()` unless overridden, and adds focused tests. Verified with:\n\n`python3 tests/runtests.py forms_tests.field_tests.test_durationfield --verbosity 2 --...[truncated]",
+          "latency_s": 291.2471423149109,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11099",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 937,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1589,
+          "response": "<reasoning>\nThe username validators should use absolute string anchors. The checkout already had `\\Z` and trailing-newline tests, so the remaining fix is to replace `^` with `\\A` for both ASCII and Unicode validators. Verified with `python3 tests/runtests.py auth_tests.test_validators.UsernameValidatorsTests`.\n</reasoning>\n\n<patch>\ndiff --git a/django/contrib/auth/validators.py b/django/contrib/auth/validators.py\nindex bf3894a4d9..81f2120605 100644\n--- a/django/contrib/auth/validators.py\n+++ b/d...[truncated]",
+          "latency_s": 91.93781113624573,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11133",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1702,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1720,
+          "response": "<reasoning>\n`memoryview` is bytes-like, but `HttpResponse.content` treated it as a generic iterable and `make_bytes()` stringified it when reached directly. The fix is to route `memoryview` through the same conversion path as `bytes` and exclude it from iterator consumption. I added a regression test for `HttpResponse(memoryview(...))`.\n\nVerification: `git diff --check` and `py_compile` passed. The full `httpwrappers` test runner could not run in this environment because this old Django checkout...[truncated]",
+          "latency_s": 153.0952320098877,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11179",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1577,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1108,
+          "response": "<reasoning>\nThe fast-delete branch returns before the normal collected-instance cleanup that clears primary keys after deletion. Clearing the instance primary key in that branch makes `Model.delete()` behave consistently for dependency-free models. A regression test verifies the model can be fast-deleted and its `pk` becomes `None`.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/django/db/models/deletion.py b/django/db/models/deletion.py\n--- a/django/db/models/deletion.py\n+++ b/django/db/models/dele...[truncated]",
+          "latency_s": 173.33379006385803,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11283",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 4332,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2018,
+          "response": "<reasoning>\nThe migration fails because it bulk-updates old proxy permissions to the proxy content type even when matching permissions already exist there, violating the unique `(content_type, codename)` constraint. The patch wraps the update in an atomic block, catches `IntegrityError`, and emits an audit warning instead of aborting the migration. A regression test creates the duplicate target permissions and verifies the migration reports the warning.\n\nVerification: `python3 -m py_compile ...`...[truncated]",
+          "latency_s": 132.53028512001038,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11422",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1972,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1494,
+          "response": "<reasoning>\n`StatReloader` builds its watched set from loaded module files. In the affected code, `iter_modules_and_files()` skipped modules without `__spec__`; `manage.py` runs as `__main__` and commonly has no spec, so it was never watched. The patch special-cases `__main__` and uses `__file__` when available, with regression coverage. I verified the equivalent current tests with `PYTHONPATH=tests python3 -m tests.runtests utils_tests.test_autoreload.TestIterModulesAndFiles`.\n</reasoning>\n\n<pa...[truncated]",
+          "latency_s": 149.64275002479553,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11564",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": false,
+      "answer_len": 0,
+      "tool_pattern": {},
+      "error": "timeout after 480s",
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1753,
+          "response": "",
+          "latency_s": 480.02818298339844,
+          "error": "timeout after 480s"
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11583",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1709,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 5490,
+          "response": "<reasoning>\nThe crash happens after the module file passes `Path.exists()`, while `Path.resolve()` is traversing the filesystem and raises `ValueError: embedded null byte`. The existing guard only covered `exists()`, so the resolution failure still escaped. I moved `resolve().absolute()` inside the same `ValueError` guard and added a regression test where `exists()` succeeds but `resolve()` raises.\n\nVerified with:\n`python3 tests/runtests.py utils_tests.test_autoreload.TestIterModulesAndFiles`\n`p...[truncated]",
+          "latency_s": 272.749568939209,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11620",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1996,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1715,
+          "response": "<reasoning>\nThe DEBUG 404 renderer assumes `request.resolver_match` exists when an `Http404` has no resolver metadata. A converter-raised `Http404` can reach this path before resolution has completed, so the debug helpers should tolerate a missing match and still render the technical 404. The regression test now verifies the technical 404 shell and the original `Http404` message.\nVerified with `DebugViewTests`, the targeted converter test, and URL converter exception tests.\n</reasoning>\n\n<patch>...[truncated]",
+          "latency_s": 411.3794150352478,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11630",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 5757,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1485,
+          "response": "<reasoning>\nThe duplicate `db_table` check is correct when Django has no routing information, but with `DATABASE_ROUTERS` configured the same table name can validly exist in separate databases. The fix keeps `models.E028` for un-routed projects and downgrades the collision to `models.W035` with a routing hint when routers are installed.\n\nI verified the current checkout\u2019s equivalent behavior with:\n`python3 tests/runtests.py check_framework.test_model_checks.DuplicateDBTableTests`\n</reasoning>\n\n<p...[truncated]",
+          "latency_s": 160.46476864814758,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11742",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 4435,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1153,
+          "response": "<reasoning>\nThe check belongs in `Field._check_choices()` because that method already validates the normalized choice structure. The patch tracks the longest string choice value while validating flat and grouped choices, then emits `fields.E009` only after choices are known to be structurally valid. I verified the behavior with `python3 tests/runtests.py invalid_models_tests.test_ordinary_fields.CharFieldTests`.\n</reasoning>\n\n<patch>\ndiff --git a/django/db/models/fields/__init__.py b/django/db/m...[truncated]",
+          "latency_s": 191.69611859321594,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11797",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1782,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1581,
+          "response": "<reasoning>\n`Exact.process_rhs()` was unconditionally replacing a sliced queryset RHS with a primary-key select. That is only correct for an unqualified queryset; if the RHS already has explicit selected fields from `values()` or annotations, clearing the select also changes the subquery\u2019s grouping. The fix mirrors the existing `__in` behavior: only add `pk` when the RHS has no selected fields. I verified the reported query now preserves `MAX(id)` and `GROUP BY email`, and ran the matching looku...[truncated]",
+          "latency_s": 377.1950511932373,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11815",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3452,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2426,
+          "response": "<reasoning>\nThe migration serializer must not reconstruct enum members from their `.value`, because translated lazy values can change by active locale. Serializing by member name is stable, so enum members should be emitted as `EnumClass['MEMBER']`. I verified the relevant migration writer enum tests pass.\n</reasoning>\n\n<patch>\ndiff --git a/django/db/migrations/serializer.py b/django/db/migrations/serializer.py\n--- a/django/db/migrations/serializer.py\n+++ b/django/db/migrations/serializer.py\n@@ ...[truncated]",
+          "latency_s": 240.75267934799194,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11848",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3660,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1451,
+          "response": "<reasoning>\nThe fixed cutoff was in `django.utils.http.parse_http_date()`: two-digit years were mapped with a hard-coded `00-69 => 2000-2069` and `70-99 => 1970-1999`. I changed that to anchor the two-digit year in the current century and only roll it back one century if it appears more than 50 years in the future. I also expanded the RFC 850 tests with mocked current years around the boundary.\n\nVerification: `python3 -m py_compile` and `git diff --check` passed. The full Django test runner coul...[truncated]",
+          "latency_s": 169.34846711158752,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11905",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 4314,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1234,
+          "response": "<reasoning>\nImplemented the fix by validating direct `__isnull` RHS values during lookup preparation, so truthy/falsey non-booleans are rejected before query compilation. Kept the SQL-time guard for expression RHS values and reused it in JSON key `isnull` SQL renderers, which otherwise bypass `IsNull.as_sql()` on SQLite/Oracle.\n\nVerified with:\n`python3 tests/runtests.py --parallel 1 lookup model_fields.test_jsonfield foreign_object.test_tuple_lookups`\n</reasoning>\n\n<patch>\ndiff --git a/django/db...[truncated]",
+          "latency_s": 305.5821580886841,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11910",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": false,
+      "answer_len": 0,
+      "tool_pattern": {},
+      "error": "timeout after 480s",
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1997,
+          "response": "",
+          "latency_s": 479.9694390296936,
+          "error": "timeout after 480s"
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11964",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 668,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3178,
+          "response": "<reasoning>\nThe bug happens because a freshly assigned `TextChoices`/`IntegerChoices` member remains an enum instance on the model object, so `str(field_value)` can use enum formatting instead of the underlying database value. The focused fix is to make Django\u2019s `Choices.__str__()` return `str(self.value)`, preserving `repr()` while making string conversion match retrieved field values. Verified with `python3 tests/runtests.py model_enums -v 1 --parallel 1`.\n</reasoning>\n\n<patch>\ndiff --git a/dj...[truncated]",
+          "latency_s": 148.03190112113953,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11999",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1654,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1337,
+          "response": "<reasoning>\n1. `Field.contribute_to_class()` was unconditionally installing Django\u2019s generated `get_FOO_display()` method for choice fields.\n2. In Django 2.2+, ordinary class attributes are attached before fields contribute themselves, so that unconditional `setattr()` overwrites an explicitly defined `get_FOO_display()`.\n3. The fix is to only install the generated method if the model class doesn\u2019t already provide one.\n4. I added a regression test for a model that defines `get_foo_bar_display()`...[truncated]",
+          "latency_s": 135.80500888824463,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12113",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1355,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 5599,
+          "response": "<reasoning>\nSQLite was ignoring custom on-disk `TEST[\"NAME\"]` values in `test_db_signature()`. That made separate aliases like `default` and `other` look like the same test database when both original `NAME` values were empty, so the test runner mirrored them onto one SQLite file and `TestCase` transactions then hit `database is locked`. The fix is to include the resolved test database name in the signature for non-memory SQLite databases. I verified the focused regression test passes in the ava...[truncated]",
+          "latency_s": 236.73872900009155,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12125",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2886,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2414,
+          "response": "<reasoning>\n1. `Field.deconstruct()` already preserves nested class names with `__qualname__`, producing paths like `app.models.Outer.Inner`.\n2. `DeconstructibleSerializer._serialize_path()` still split that path at the last dot, causing imports like `import app.models.Outer`, which is invalid because `Outer` is a class, not a module.\n3. The fix lets `ModelFieldSerializer` pass the real class module when the deconstructed path matches the field class path, so the expression remains `app.models.O...[truncated]",
+          "latency_s": 250.60705995559692,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12184",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2240,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1802,
+          "response": "<reasoning>\nThe crash happens when Django drops `None` named captures before deciding whether the regex has named groups. For an optional named group like `(?P<format>(html|json|xml))?`, the missing match becomes `{}` after filtering, so Django incorrectly falls back to `match.groups()` and passes positional `None` values to the view.\n\nThe fix is to decide positional-vs-keyword handling from the original `groupdict()`, then remove `None` keyword values afterward so view defaults still apply. I v...[truncated]",
+          "latency_s": 209.4667990207672,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12284",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1918,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1705,
+          "response": "<reasoning>\n`get_FOO_display()` is installed in `Field.contribute_to_class()` as a `partialmethod` bound to the field object. The old `hasattr()` guard incorrectly sees an inherited generated method from an abstract base class, so a child model overriding the field keeps using the base field\u2019s choices. Checking `cls.__dict__` preserves methods explicitly defined on the current class while allowing a replacement field on a child class to install its own display method.\n\nVerified with: `PYTHONPATH...[truncated]",
+          "latency_s": 175.43790197372437,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12286",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3054,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1566,
+          "response": "<reasoning>\nThe system check was doing its own direct membership check against `LANGUAGES`, so `LANGUAGE_CODE='de-at'` failed when only `('de', 'German')` was configured. Django already has `get_supported_language_variant()` for this exact fallback behavior, so the check should delegate to it. I also added regression coverage for unsupported languages still raising `translation.E004` and supported sublanguage/base-language fallbacks passing.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/django/core...[truncated]",
+          "latency_s": 127.5419249534607,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12308",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1794,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1284,
+          "response": "<reasoning>\n`display_for_field()` is used for readonly admin field rendering. Its JSON branch was calling `json.dumps()` directly, which incorrectly serializes `InvalidJSONInput` instead of preserving the raw invalid input. `forms.JSONField.prepare_value()` already handles both valid JSON serialization and `InvalidJSONInput`, so the admin should delegate to the model field\u2019s form field. The existing `TypeError` fallback is kept for unencodable Python values.\n\nVerified with `python3 tests/runtest...[truncated]",
+          "latency_s": 136.08037900924683,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12453",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3657,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3731,
+          "response": "<reasoning>\n`deserialize_db_from_string()` saved each deserialized object one at a time, so serialized rollback could fail when a row with foreign keys appeared before the referenced rows. The fix mirrors `loaddata`: load inside `transaction.atomic()`, disable constraint checks where supported, then explicitly validate constraints for touched tables. I added a regression test that deserializes `PossessedCar` before its referenced `Car` and `Person`.\n\nVerified with:\n`uv run --python 3.11 --with p...[truncated]",
+          "latency_s": 220.04655480384827,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12470",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2845,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1424,
+          "response": "<reasoning>\nThe bug happens when `\"-pk\"` is inherited onto a multi-table child model. Resolving `pk` hits the parent link relation, and the ORM incorrectly expands the related model\u2019s default ordering, flipping the intended descending direction. The fix is to treat `\"pk\"` like the concrete FK attname shortcut and skip related default-ordering expansion.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/django/db/models/sql/compiler.py b/django/db/models/sql/compiler.py\n--- a/django/db/models/sql/compil...[truncated]",
+          "latency_s": 217.95923590660095,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12497",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3654,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1612,
+          "response": "<reasoning>\nThe incorrect hint is emitted from `ManyToManyField` validation for ambiguous intermediary models. Both ambiguous directions, `fields.E334` and `fields.E335`, suggested `ForeignKey(..., symmetrical=False, through=...)`, even though `through` and `symmetrical` are `ManyToManyField` arguments. The patch changes both hints to `ManyToManyField(\"self\", through=\"...\")` and updates/adds tests for both branches.\n\nVerification: `git diff --check` and `python3 -m py_compile` passed. The focuse...[truncated]",
+          "latency_s": 126.5341649055481,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12589",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": false,
+      "answer_len": 0,
+      "tool_pattern": {},
+      "error": "timeout after 480s",
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3242,
+          "response": "",
+          "latency_s": 480.0336740016937,
+          "error": "timeout after 480s"
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12700",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2972,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2528,
+          "response": "<reasoning>\nThe vulnerable path is `SafeExceptionReporterFilter.cleanse_setting()`: it already recurses into `dict`, `list`, and `tuple`, but mapping-like settings and deque-style iterables can still pass through unchanged. I changed dictionary handling to use `collections.abc.Mapping`, added recursive `deque` handling while preserving `maxlen`, and added a regression test for `MappingProxyType` and `deque`.\n\nVerified with:\n`python3 tests/runtests.py view_tests.tests.test_debug.ExceptionReporter...[truncated]",
+          "latency_s": 323.1712100505829,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12708",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2774,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1784,
+          "response": "<reasoning>\nThe crash happens because deleting an `index_together` asks introspection for every index on the fields. On backends that report unique constraints as indexes, the matching `unique_together` is counted too. The fix is to request only non-unique indexes when deleting `index_together`.\n\nVerified with:\n`/usr/bin/python3 tests/runtests.py schema.tests.SchemaTests.test_delete_index_together_with_unique_together schema.tests.SchemaTests.test_index_together migrations.test_operations.Operat...[truncated]",
+          "latency_s": 476.63999795913696,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12747",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 658,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1752,
+          "response": "<reasoning>\nThe current `Collector.delete()` implementation already omits zero-count model entries, so the returned shape should consistently be `(0, {})`. I added regression coverage for both relevant paths: a simple fast-deletable model (`Base`) and a model that uses cascade collection (`Avatar`).\n</reasoning>\n\n<patch>\ndiff --git a/tests/delete/tests.py b/tests/delete/tests.py\nindex 664cdfb440..8d02af5065 100644\n--- a/tests/delete/tests.py\n+++ b/tests/delete/tests.py\n@@ -654,6 +654,10 @@ class...[truncated]",
+          "latency_s": 172.33480191230774,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12856",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2948,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1292,
+          "response": "<reasoning>\n1. `UniqueConstraint` field validation was inside `UniqueConstraint.check()`, but `Model._check_constraints()` only calls it when database aliases are provided.\n2. `makemigrations` runs model checks without database aliases, so missing `UniqueConstraint.fields` were skipped.\n3. The patch runs database-independent `UniqueConstraint` field/include validation once before the database-specific constraint checks.\n4. Verified with `python3 tests/runtests.py invalid_models_tests.test_models...[truncated]",
+          "latency_s": 291.222384929657,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12908",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 979,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1873,
+          "response": "<reasoning>\n`QuerySet.union()`, `intersection()`, and `difference()` mark the query with `query.combinator`. Other unsupported follow-up operations already call `_not_support_combined_queries()`, which raises `NotSupportedError`. The affected revision missed that guard in `distinct()`, so `distinct()`/`distinct(*fields)` was accepted even though it had no effect on the combined query.\n\nI verified the focused combinator unsupported-operation test passes in the current checkout with `python3 tests...[truncated]",
+          "latency_s": 210.11633586883545,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12915",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 5377,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1711,
+          "response": "<reasoning>\nThe staticfiles ASGI wrapper inherits from `ASGIHandler`, but it does not initialize the normal async middleware chain. Static file requests therefore must be handled by the staticfiles mixin directly. Adding `get_response_async()` to `StaticFilesHandlerMixin` lets `ASGIStaticFilesHandler` serve files asynchronously by wrapping the existing synchronous static file serving path, including the `Http404` fallback.\n\nI verified the existing targeted coverage in the checkout with:\n`PYTHONP...[truncated]",
+          "latency_s": 94.74862384796143,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12983",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1854,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1206,
+          "response": "<reasoning>\nThe bug is in `django.utils.text.slugify()`: it strips whitespace before collapsing spaces/dashes, but never trims leading/trailing dashes or underscores from the final slug. The fix trims `-` and `_` after separator collapsing, preserving internal underscores. I added regression cases for the reported input plus dash, underscore, and mixed boundary cases. Verified with `/usr/bin/python3 tests/runtests.py utils_tests.test_text` passing 14 tests.\n</reasoning>\n\n<patch>\ndiff --git a/dja...[truncated]",
+          "latency_s": 151.3472878932953,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13028",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2239,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3664,
+          "response": "<reasoning>\nThe `filterable` guard is meant for ORM expressions, where `filterable = False` marks expressions such as window clauses as invalid in `WHERE`. A normal model instance can also have a field named `filterable`, so checking that attribute on arbitrary RHS values incorrectly rejects valid foreign key filters. The fix is to honor `filterable` only on expression-like objects, and add a regression test with a related model instance whose `filterable` field is `False`.\n</reasoning>\n\n<patch>...[truncated]",
+          "latency_s": 199.8486189842224,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13033",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2354,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 4557,
+          "response": "<reasoning>\nThe ordering resolver was treating nested FK attnames like `record__root_id` differently from direct FK attnames like `author_id`. It compared `field.attname` to the full lookup path, so `root_id != record__root_id` and Django incorrectly expanded the related model\u2019s `Meta.ordering`. Comparing against only the final lookup component makes explicit `_id` ordering take precedence at any relation depth, allowing `trim_joins()` to collapse the unnecessary self-join.\n</reasoning>\n\n<patch>...[truncated]",
+          "latency_s": 141.89957189559937,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13158",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1719,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2001,
+          "response": "<reasoning>\n`QuerySet.none()` marks the outer query empty, but combined query SQL is built from `query.combined_queries`. Those component queries must also be marked empty. Since `none()` clones the queryset first, `Query.clone()` must deep-clone `combined_queries` so calling `none()` doesn\u2019t mutate the original union queryset.\n</reasoning>\n\n<patch>\ndiff --git a/django/db/models/sql/query.py b/django/db/models/sql/query.py\n--- a/django/db/models/sql/query.py\n+++ b/django/db/models/sql/query.py\n@...[truncated]",
+          "latency_s": 122.91722393035889,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13220",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 5297,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1437,
+          "response": "<reasoning>\nImplemented `ValidationError` equality by comparing a normalized structural representation instead of object identity or rendered messages. The normalized form preserves message/code/params identity, ignores ordering for field and non-field error lists, and keeps duplicate error counts via `Counter`. Added `__hash__` to keep equal errors hash-consistent.\n\nVerified with focused tests in the current checkout and direct unit-test execution against the pre-fix issue baseline.\n</reasoning...[truncated]",
+          "latency_s": 401.54137921333313,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13230",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3264,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1167,
+          "response": "<reasoning>\n1. `SyndicationFeed.add_item()` already accepts `comments` and RSS output already renders `<comments>`.\n2. The high-level `Feed.get_feed()` didn\u2019t pass `item_comments` into `add_item()`.\n3. Added the missing forwarding hook, plus a regression test using `item_comments()` directly.\n4. Verification: `python3 -m py_compile` passed for touched Python files. The focused Django test runner couldn\u2019t start because this old checkout imports removed stdlib `cgi` under the available Python.\n</r...[truncated]",
+          "latency_s": 182.33989810943604,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13265",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 5477,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2717,
+          "response": "<reasoning>\n`_order` is a synthetic column created by `AlterOrderWithRespectTo`, so an `AddIndex` that references `_order` must depend on that operation. The autodetector already tracks created fields and removed `order_with_respect_to`, but it didn\u2019t have a dependency kind for \u201c`order_with_respect_to` has been set.\u201d The patch adds that dependency and applies it to generated `AddIndex` operations whose index fields include `_order`, including compound indexes with a `ForeignKey`.\n\nVerified with:...[truncated]",
+          "latency_s": 390.29481506347656,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13315",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 4855,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1110,
+          "response": "<reasoning>\n1. `complex_filter()` applies `limit_choices_to` joins directly to the form field queryset, so multi-value joins can duplicate model rows.\n2. A correlated `Exists()` filter checks whether each outer row satisfies `limit_choices_to` without joining the outer queryset, avoiding duplicate choices.\n3. The regression test creates duplicate join paths for both `Q` and dict `limit_choices_to`.\n4. Verified with `/usr/bin/python3 -Wall tests/runtests.py model_forms.tests.LimitChoicesToTests`:...[truncated]",
+          "latency_s": 259.27618408203125,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13321",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1387,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 5247,
+          "response": "<reasoning>\n1. The traceback matches the older session backend where `decode()` falls back to `_legacy_decode()` after `signing.loads()` fails.\n2. `_legacy_decode()` decoded base64 before entering its existing broad exception handler, so malformed session data could raise `binascii.Error: Incorrect padding`.\n3. Moving the base64 decode into the existing `try` makes malformed legacy payloads behave like other invalid session data: return `{}`.\n4. Added a regression test for malformed signed-looki...[truncated]",
+          "latency_s": 142.29724311828613,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13401",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 718,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2059,
+          "response": "<reasoning>\nThe current checkout already has the implementation fix: `Field.__eq__` compares both `creation_counter` and `model`, and `Field.__lt__` keeps creation-counter ordering while breaking ties by model. `__hash__` should remain based on `creation_counter` only because model assignment happens after field construction, and including model would make the hash mutable. I added a direct regression assertion for the reported set de-duplication behavior.\n</reasoning>\n\n<patch>\ndiff --git a/test...[truncated]",
+          "latency_s": 309.44831585884094,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13447",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3953,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1215,
+          "response": "<reasoning>\nThe current checkout already includes the `model` key in each admin app-list model dictionary and has tests/docs for it. The remaining issue is exposing the app dictionary builder as public API. The patch renames the implementation to `build_app_dict()`, keeps `_build_app_dict()` as a compatibility shim, documents the new method, adds release notes, and tests the public method plus app-label filtering.\n\nVerified with:\n`python3 ./tests/runtests.py admin_views.test_adminsite --parallel...[truncated]",
+          "latency_s": 204.63505101203918,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13448",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3146,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 6005,
+          "response": "<reasoning>\n1. `TEST[\"MIGRATE\"] = False` currently skips `migrate` entirely, so no test database tables are created.\n2. Serialization then walks migrated apps and queries tables such as `django_admin_log`, causing the reported crash.\n3. The fix is to still run `migrate --run-syncdb`, but temporarily set every app\u2019s migration module to `None` so tables are created directly from models.\n4. The regression test now verifies that `migrate` is called with migrations disabled and that `settings.MIGRATI...[truncated]",
+          "latency_s": 117.78958797454834,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13551",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3406,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1428,
+          "response": "<reasoning>\nPassword reset tokens were tied to password, last_login, timestamp, and pk, but not the email address used to request the reset. Including the current email in `_make_hash_value()` makes any token generated before an email change fail validation afterward. The implementation uses `get_email_field_name()` and `getattr(..., '')` so custom user models and models without an email attribute are handled.\n\nVerified with:\n`/usr/bin/python3 tests/runtests.py auth_tests.test_tokens`\n</reasonin...[truncated]",
+          "latency_s": 217.90125584602356,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13590",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2556,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1684,
+          "response": "<reasoning>\nThe crash is caused by rebuilding iterable lookup RHS values with `type(value)(generator)`. That works for `list` and plain `tuple`, but a `namedtuple` constructor expects each field as a positional argument. The fix keeps the existing generic path for normal iterables and adds a namedtuple-specific reconstruction path using argument expansion. I also included a focused `__range` regression test using a namedtuple RHS.\n\nVerified in the current checkout with:\n`python3 tests/runtests.p...[truncated]",
+          "latency_s": 192.15396118164062,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13658",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": false,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2540,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2062,
+          "response": "<reasoning>\n`ManagementUtility` already computes `self.prog_name` from the explicit argv, but the early parser used for `--settings`/`--pythonpath` didn\u2019t receive it, so `argparse` fell back to `sys.argv[0]`. The fix is to pass `prog=self.prog_name` there and add a regression test where `sys.argv[0]` is `None`.\n\nI verified the behavior with a direct regression script. The full old Django test runner could not start under the available Python 3.14 because that Django version imports the removed s...[truncated]",
+          "latency_s": 186.84598684310913,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-12907",
+      "repo": "astropy/astropy",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1797,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2073,
+          "response": "<reasoning>\n`CompoundModel` is a `Model`, so `_cstack` can treat a nested compound operand as one opaque model and lose its internal separability. The fix checks `CompoundModel` first, recursively computes its separability matrix, pads it into the left or right output block, then stacks as before. I added regression coverage for the reported `Pix2Sky_TAN() & (Linear1D & Linear1D)` case and direct `_cstack` handling.\n\nVerification: `git diff --check`, `compileall`, and a direct matrix check passe...[truncated]",
+          "latency_s": 230.59293007850647,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-14182",
+      "repo": "astropy/astropy",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2435,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2698,
+          "response": "<reasoning>\nThe failure is in `RST.__init__`: `FixedWidth` already supports `header_rows`, but `RST` did not accept or forward it. RST also assumed exactly one header row when duplicating the separator line, so that index needs to depend on `len(header_rows)`. For reading, data starts after the top separator, all header rows, and the middle separator, so `data.start_line` must be `2 + len(header_rows)`.\n\nI added a focused round-trip regression test for `QTable.read/write(..., format=\"ascii.rst\",...[truncated]",
+          "latency_s": 244.80497193336487,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-14365",
+      "repo": "astropy/astropy",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1410,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2166,
+          "response": "<reasoning>\nThe failure happens before error-column parsing: `_line_type()` classifies QDP lines with a regex compiled case-sensitively, so `read serr 1 2` is rejected as unrecognized. The later parser already normalizes `serr`/`terr` with `.lower()`, so the minimal fix is to compile the line-type regex with `re.IGNORECASE`. I added a regression test for the exact lowercase command form from the issue.\n\nVerification: `py_compile` passed for the changed files. Running the focused pytest was block...[truncated]",
+          "latency_s": 165.05791306495667,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-14995",
+      "repo": "astropy/astropy",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2537,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3282,
+          "response": "<reasoning>\n1. The failure is in `NDArithmeticMixin._arithmetic_mask`: scalar operands are wrapped as NDData-like operands with `mask=None`.\n2. When `self.mask` exists and `operand.mask is None`, the old code reached `handle_mask(self.mask, operand.mask)`, so `np.bitwise_or(mask, None)` raised `TypeError`.\n3. The correct one-mask behavior is already documented in the method: return a copy of the mask that exists.\n4. The patch adds that missing branch and a regression test for integer bitmasks wi...[truncated]",
+          "latency_s": 137.49055695533752,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-6938",
+      "repo": "astropy/astropy",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1325,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1354,
+          "response": "<reasoning>\nThe FITS ASCII write path must assign the result of the exponent replacement because string replacement returns a new array. In this checkout the assignment is already present, so I added a targeted regression check that inspects the raw FITS bytes and verifies `D` exponent output is actually written, not just readable on round-trip.\n\nVerified with:\n`/private/tmp/astropy_fits_venv/bin/python -m pytest astropy/io/fits/tests/test_table.py::TestTableFunctions::test_ascii_floattypes -q`\n...[truncated]",
+          "latency_s": 377.678181886673,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-7746",
+      "repo": "astropy/astropy",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 895,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2880,
+          "response": "<reasoning>\nThe WCS converter must not call wcslib with zero coordinates; that path already short-circuits empty inputs in this checkout. I added regression coverage for empty list/array inputs across the four public pixel/world transform methods, including the single `(0, 2)` coordinate-array form. Verified with `python3 -m pytest -c /dev/null astropy/wcs/tests/test_wcs.py::test_zero_size_input astropy/wcs/tests/test_wcs.py::test_empty_coordinate_arrays -q`.\n</reasoning>\n\n<patch>\ndiff --git a/a...[truncated]",
+          "latency_s": 218.9780809879303,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-10914",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1001,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1846,
+          "response": "<reasoning>\nThe checkout already has `FILE_UPLOAD_PERMISSIONS = 0o644`, and the settings reference documents the explicit `None` caveat. The remaining gap from the issue is the File Uploads topic page, so I added a focused note explaining the default and the inconsistent operating-system-dependent behavior when `FILE_UPLOAD_PERMISSIONS` is set to `None`.\n\nVerified with:\n`python3 tests/runtests.py file_storage.tests.FileStoragePermissions test_utils.tests.OverrideSettingsTests.test_override_file_...[truncated]",
+          "latency_s": 211.9127812385559,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-10924",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3810,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1647,
+          "response": "<reasoning>\n`forms.FilePathField` still treated a callable `path` as the path object itself, which breaks direct form usage and also covers older model-field behavior where the callable may be passed through to the form field. The patch resolves callable paths during initialization and uses the resolved path for recursive choice labels. I verified the focused form tests, model field callable tests, and migration function serialization test pass with a temporary `cgi` shim needed for this older D...[truncated]",
+          "latency_s": 303.5239911079407,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11001",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1915,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3045,
+          "response": "<reasoning>\nThe duplicate ORDER BY filtering must compare the full compiled ordering expression with only ASC/DESC removed. Anchoring the regex to the start of the whole SQL string and using DOTALL keeps multiline RawSQL expressions from collapsing to their identical final line.\n\nAdded a regression test with two multiline RawSQL orderings that share the same last line. Verified with:\n`python3 ./tests/runtests.py ordering.tests.OrderingTests.test_order_by_multiline_raw_sql`\n`python3 ./tests/runte...[truncated]",
+          "latency_s": 312.44050192832947,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11019",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 11649,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2626,
+          "response": "<reasoning>\n1. The warning comes from pairwise merging: an intermediate merged list records ordering between independent assets.\n2. The fix is to merge all original media lists at once, treating each list as explicit adjacent ordering constraints.\n3. A stable topological sort preserves valid relative order and warns only for real cycles.\n4. I moved the existing migration topological-sort helper into `django.utils` so form media can share it.\n5. Verified the targeted media merge tests and topolog...[truncated]",
+          "latency_s": 373.6368291378021,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11039",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 4783,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1704,
+          "response": "<reasoning>\n`sqlmigrate` should only request outer transaction wrapping when both the migration is atomic and the selected backend can roll back DDL. The regression test should use a normal atomic migration and mock `connection.features.can_rollback_ddl` to `False`, ensuring `BEGIN`/`COMMIT` are omitted for non-transactional-DDL backends.\n\nThe checkout I inspected already contains this fix, and the focused regression test passes with:\n`python3 tests/runtests.py migrations.test_commands.MigrateTe...[truncated]",
+          "latency_s": 187.58285331726074,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11049",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 4561,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1531,
+          "response": "<reasoning>\nThe form `DurationField` still used a generic invalid message, while the model validation message already had the corrected `[DD] [[HH:]MM:]ss[.uuuuuu]` format. The patch updates the form error, adds default help text with override support, propagates that help text from model fields to generated form fields, and adds focused tests/docs. Verified with `PYTHONPATH=. python3 tests/runtests.py forms_tests.field_tests.test_durationfield model_fields.test_durationfield --parallel=1`.\n</re...[truncated]",
+          "latency_s": 110.93910002708435,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11099",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1951,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1589,
+          "response": "<reasoning>\nThe username validators used `$`, which can match before a trailing newline. Replacing both regex anchors with `\\A` and `\\Z` makes the match cover the whole string strictly. I also added regression cases for trailing newlines to both validator tests. The full Django test runner is blocked here because Python 3.14 no longer provides `cgi`, but a focused file-level smoke test confirmed both validators now reject `trailingnewline\\n`.\n</reasoning>\n\n<patch>\ndiff --git a/django/contrib/aut...[truncated]",
+          "latency_s": 145.97671103477478,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11133",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1642,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1720,
+          "response": "<reasoning>\n`HttpResponse.content` stores bytes after passing input through `make_bytes()`. `memoryview` must be treated as byte content, not converted through `str(value)`, and it must not be consumed as an arbitrary iterable on Python versions where `memoryview` is iterable. The patch updates both paths and adds a regression test.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/django/http/response.py b/django/http/response.py\n--- a/django/http/response.py\n+++ b/django/http/response.py\n@@ -229,7 +2...[truncated]",
+          "latency_s": 208.80046486854553,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11179",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1649,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1108,
+          "response": "<reasoning>\n1. The fast-delete single-instance path returns before the normal cleanup loop that clears collected instances' primary keys.\n2. Adding the same `setattr(..., None)` before that early return makes fast-delete behavior match normal `Model.delete()`.\n3. I added a regression test using `User`, which can be fast-deleted, and asserted its `pk` is cleared after `delete()`.\n4. Verified with `delete.tests.FastDeleteTests`: 9 tests passed.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/django/db/...[truncated]",
+          "latency_s": 183.87688493728638,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11283",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 4899,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2018,
+          "response": "<reasoning>\n1. The migration bulk-updates proxy permissions from the concrete model content type to the proxy model content type.\n2. If the destination permission already exists, as with manually-created proxy permissions or a concrete model later recreated as a proxy, the bulk update violates the unique `(content_type, codename)` constraint.\n3. The migration should not abort in that case. Wrap each model update in an atomic block, catch the `IntegrityError`, and warn that the conflicting permis...[truncated]",
+          "latency_s": 133.33151507377625,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11422",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2032,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1494,
+          "response": "<reasoning>\n`StatReloader` watches the files returned by `iter_modules_and_files()`. In Django 2.2.1, modules with `__spec__ is None` are skipped, and `manage.py` is loaded as `__main__` without a spec when run as `python manage.py runserver`. The patch special-cases `__main__` and falls back to `__file__`, with tests for both the normal script case and the no-`__file__` case. I verified the synthetic failing case now includes the script path and `py_compile` passes.\n</reasoning>\n\n<patch>\ndiff -...[truncated]",
+          "latency_s": 173.52041602134705,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11564",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 14537,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1753,
+          "response": "<reasoning>\nThe fix should live at the settings/storage URL layer, because both template tags and storage URLs already flow through `settings.STATIC_URL`, `settings.MEDIA_URL`, or storage `base_url`. The existing prefixing was cached too early, so a changed per-request `SCRIPT_NAME` could be ignored. This patch recomputes the script-prefixed static/media settings on access and avoids snapshotting default storage base URLs. I also added direct tests for settings, file storage, staticfiles storage...[truncated]",
+          "latency_s": 327.1396758556366,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11583",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1721,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 5490,
+          "response": "<reasoning>\nThe crash happens after `Path.exists()` succeeds, when `Path.resolve()` raises `ValueError(\"embedded null byte\")`. Django already ignored `ValueError` for invalid paths in this loop, but `resolve()` was outside that guard. The patch moves resolution into the existing `try` block and adds a regression test that forces `Path.resolve()` to raise.\n\nVerified with:\n`python3 tests/runtests.py utils_tests.test_autoreload.TestIterModulesAndFiles.test_path_resolve_with_embedded_null_bytes util...[truncated]",
+          "latency_s": 65.82045006752014,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11620",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2564,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1715,
+          "response": "<reasoning>\nThe crash happens while rendering the debug 404 page. `technical_404_response()` calls `resolve(request.path)` again to identify the raising view, but it only catches `Resolver404`. A path converter can raise a plain `Http404`, so that second resolve escapes and turns the debug 404 into a server error. Catching `Http404` preserves existing `Resolver404` handling because `Resolver404` is an `Http404` subclass, and lets the technical 404 render with the converter\u2019s message.\n</reasoning...[truncated]",
+          "latency_s": 333.2977228164673,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11630",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 6138,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1485,
+          "response": "<reasoning>\nThe duplicate `db_table` check is too strict when `DATABASE_ROUTERS` is configured: the same table name can be valid if models are routed to separate databases, and Django can\u2019t reliably prove every route during system checks. The patch keeps `models.E028` when no routers are configured, but downgrades it to `models.W035` with a routing hint when routers are present.\n\nVerified focused behavior with:\n`python3 tests/runtests.py check_framework.test_model_checks.DuplicateDBTableTests`\n<...[truncated]",
+          "latency_s": 212.2235713005066,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11742",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": false,
+      "answer_len": 0,
+      "tool_pattern": {},
+      "error": "timeout after 480s",
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1153,
+          "response": "",
+          "latency_s": 480.0051567554474,
+          "error": "timeout after 480s"
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11797",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": false,
+      "answer_len": 0,
+      "tool_pattern": {},
+      "error": "timeout after 480s",
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1581,
+          "response": "",
+          "latency_s": 480.02287793159485,
+          "error": "timeout after 480s"
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11815",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 5364,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2426,
+          "response": "<reasoning>\nThe migration serializer was reconstructing enum members by value, e.g. `Status('Good')`. That makes migrations depend on translated or otherwise mutable enum values. The fix is to serialize enum members by their stable member name, e.g. `Status['GOOD']`, and update migration writer tests to cover lazy translated enum values.\n</reasoning>\n\n<patch>\ndiff --git a/django/db/migrations/serializer.py b/django/db/migrations/serializer.py\nindex 27b5cbd379..8aa6a04935 100644\n--- a/django/db/m...[truncated]",
+          "latency_s": 176.56317830085754,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11848",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2971,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1451,
+          "response": "<reasoning>\nUpdated `parse_http_date()` to compute two-digit years relative to the current UTC year, per RFC 7231, instead of using the fixed `70` cutoff. Added regression tests for the 50-year boundary and a future century case.\n\nVerification:\n- `python3 -m py_compile django/utils/http.py tests/utils_tests/test_http.py` passed.\n- Focused import-level assertions passed.\n- Full Django 2.2 test runner could not start on this Python because stdlib `cgi` is missing.\n</reasoning>\n\n<patch>\ndiff --git ...[truncated]",
+          "latency_s": 222.06853103637695,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11905",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 4314,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1234,
+          "response": "<reasoning>\n`IsNull.as_sql()` rejected non-boolean RHS values too late for direct values, because join promotion decisions happen immediately after lookup construction. The patch validates direct RHS values in `get_prep_lookup()`, keeps the SQL-time guard for expression RHS values, and adds JSON key-transform checks for SQLite/Oracle backend overrides.\n\nVerified with:\n`python3 tests/runtests.py lookup.tests.LookupTests.test_isnull_non_boolean_value model_fields.test_jsonfield.TestQuerying.test_i...[truncated]",
+          "latency_s": 203.43251132965088,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11910",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 9447,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1997,
+          "response": "<reasoning>\nThe autodetector temporarily rewrites relation metadata to compare fields across renames. When an `AlterField` is also emitted, it reused that mutated `new_field`, so the generated migration could serialize the old primary-key name in `to_field`. The patch compares cloned relation fields instead, leaving the real target field intact for emitted operations. I added a regression test covering a renamed primary key plus an `AlterField` on the referencing `ForeignKey`.\n\nVerified with:\n`p...[truncated]",
+          "latency_s": 295.8347508907318,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11964",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2117,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3178,
+          "response": "<reasoning>\nAssigned TextChoices/IntegerChoices members can remain enum objects on a fresh model instance, so their string conversion must match the stored primitive value. The fix makes all Django Choices stringify via their `.value` while keeping `repr()` unchanged. I added regression assertions for fresh CharField and IntegerField assignment paths and verified the targeted tests pass.\n</reasoning>\n\n<patch>\ndiff --git a/django/db/models/enums.py b/django/db/models/enums.py\nindex cb17fe9756..e9...[truncated]",
+          "latency_s": 193.71535205841064,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-11999",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2508,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1337,
+          "response": "<reasoning>\n`Field.contribute_to_class()` was installing the generated `get_FOO_display()` method after model attributes were available, so it overwrote a user-defined method. The fix is to skip generation when the method is defined directly on the class being built. Using `cls.__dict__` rather than `hasattr()` preserves explicit overrides while still allowing subclasses with overridden choices to get their own generated display method.\n\nFocused tests pass on the current checkout. The older regr...[truncated]",
+          "latency_s": 180.6056010723114,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12113",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": false,
+      "answer_len": 0,
+      "tool_pattern": {},
+      "error": "timeout after 480s",
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 5599,
+          "response": "",
+          "latency_s": 480.00735807418823,
+          "error": "timeout after 480s"
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12125",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3535,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2414,
+          "response": "<reasoning>\nThe serializer was splitting deconstructed paths on the final dot, so a nested field path like `app.models.Outer.Inner` produced `import app.models.Outer`. The patch preserves the real defining module when the deconstructed path matches the class `module.qualname`, while still emitting the full nested class path in migration code.\n\nVerified with `python3 tests/runtests.py migrations.test_writer --parallel=1`.\n</reasoning>\n\n<patch>\ndiff --git a/django/db/migrations/serializer.py b/dja...[truncated]",
+          "latency_s": 338.92562890052795,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12184",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2336,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1802,
+          "response": "<reasoning>\nThe crash happens because `RegexPattern.match()` filtered `None` values from named captures before deciding whether the regex had named groups. When all named captures were optional and missing, `kwargs` became empty, so Django fell back to `match.groups()` and passed unnamed nested groups as positional args.\n\nThe fix is to decide `args` from the original `groupdict()`, then remove `None` values from `kwargs`. I added a regression URL matching the reported shape, including the nested...[truncated]",
+          "latency_s": 214.24080896377563,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12284",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1896,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1705,
+          "response": "<reasoning>\nThe generated `get_FOO_display()` method was skipped whenever a subclass inherited any method with the same name. For an abstract base model, that inherited method is bound to the base field and therefore uses the base choices. Checking only `cls.__dict__` preserves methods explicitly defined on the current class while allowing a subclass field override to install a new display method.\n\nVerification: `python3 -m py_compile django/db/models/fields/__init__.py` passed. The matching reg...[truncated]",
+          "latency_s": 240.75852417945862,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12286",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3111,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1566,
+          "response": "<reasoning>\nLocated `translation.E004` in `django/core/checks/translation.py`. The check compared `LANGUAGE_CODE` directly against `LANGUAGES`, so `de-at` failed even when `de` was available. Django already has the correct fallback logic in `get_supported_language_variant()`, so the fix is to reuse it and add regression coverage for sublanguage fallback. Focused tests pass in this checkout with `python3 tests/runtests.py check_framework.test_translation -v 2`.\n</reasoning>\n\n<patch>\ndiff --git a/...[truncated]",
+          "latency_s": 123.78039288520813,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12308",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2059,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1284,
+          "response": "<reasoning>\n1. `display_for_field()` was directly calling `json.dumps()` for model `JSONField` values, which skips `forms.JSONField.prepare_value()`.\n2. `prepare_value()` preserves `InvalidJSONInput` and still serializes normal JSON values with the model field encoder.\n3. I also removed the truthiness guard so non-empty falsy JSON values like `False` render as valid JSON (`false`).\n4. Verified with `python3 tests/runtests.py admin_utils --verbosity=1 --parallel=1`.\n</reasoning>\n\n<patch>\ndiff --g...[truncated]",
+          "latency_s": 158.78529620170593,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12453",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3340,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3731,
+          "response": "<reasoning>\n1. Serialization order can put a row containing a foreign key before the referenced row, and cycles make model sorting insufficient.\n2. Deserialization should load the full serialized database as one unit: wrap it in a transaction, temporarily disable constraint checks, then validate constraints after all rows are saved.\n3. The regression test loads an object that references another object serialized later, matching the failure mode.\n4. The current checkout already contains the equiv...[truncated]",
+          "latency_s": 166.11182808876038,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12470",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2941,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1424,
+          "response": "<reasoning>\nThe bug is in `find_ordering_name()`. In multi-table inheritance, `pk` may resolve to a parent-link relation, so the compiler was treating `-pk` as \u201cfollow the related model\u2019s default ordering\u201d. That recursively applied `-pk` with `DESC` as the default order, which flips back to `ASC`.\n\nThe fix is to treat `pk` as a terminal ordering shortcut, like an explicit parent-link attname, and not expand related model default ordering for it. I verified the old behavior produced `ORDER BY ......[truncated]",
+          "latency_s": 219.74260711669922,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12497",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2736,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1612,
+          "response": "<reasoning>\nThe bad hint is emitted by `ManyToManyField` relationship-model checks for ambiguous through-model foreign keys. The fix is to suggest `ManyToManyField`, where `through` belongs, and to remove the obsolete `symmetrical=False`. Tests are updated for both ambiguous \u201cfrom\u201d and \u201cto\u201d cases. Static diff checks and Python compilation passed locally; the old Django checkout\u2019s focused test run was blocked by the available Python/runtime dependencies.\n</reasoning>\n\n<patch>\ndiff --git a/django/...[truncated]",
+          "latency_s": 315.0484540462494,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12589",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3610,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3242,
+          "response": "<reasoning>\nThe ambiguous `GROUP BY \"status\"` is produced because Django groups by a selected annotation alias even when joined tables also have a column with that name. The fix is to detect column names from joined models in `Query.set_group_by()` and avoid alias-based grouping when an annotation alias collides, forcing the expression/source columns to be used instead. I also added a regression test with a `rating` alias colliding with a joined model field.\n\nVerification: `python3 -m py_compile...[truncated]",
+          "latency_s": 357.38289284706116,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12700",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3057,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2528,
+          "response": "<reasoning>\n1. Found the checkout matching the report at `/private/tmp/django_issue_31377`.\n2. `cleanse_setting()` only recursed into dictionaries, so sensitive keys inside nested lists/tuples were returned unchanged.\n3. Added recursive handling for `list` and `tuple` values while preserving existing dictionary behavior.\n4. Added a regression test covering nested dictionaries inside lists and tuples.\n5. Full test runner is blocked by Python 3.14 incompatibility with this old Django branch (`cgi`...[truncated]",
+          "latency_s": 232.76904797554016,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12708",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3884,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1784,
+          "response": "<reasoning>\nThe crash happens because `alter_index_together()` deletes by searching for any constraint with `index=True` on the target columns. On backends where a unique constraint is also reported as index-backed, the matching set includes both the unique constraint and the plain index. The fix is to delete only non-unique indexes for `index_together`, and to keep unique deletion constrained away from primary keys.\n\nVerified with:\n`/usr/bin/python3 tests/runtests.py migrations.test_operations....[truncated]",
+          "latency_s": 245.42665696144104,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12747",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2149,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1752,
+          "response": "<reasoning>\nThe inconsistency is caused by fast-delete recording `{model_label: 0}` while the empty cascade path records no model counters. The patch normalizes only the zero-total case to `(0, {})`, preserving existing behavior where non-empty deletes may include zero counters for related models. Verified with `tests/runtests.py delete` passing: 54 tests, 1 skipped.\n</reasoning>\n\n<patch>\ndiff --git a/django/db/models/deletion.py b/django/db/models/deletion.py\nindex 16dff6a1cd..41dd4df308 100644...[truncated]",
+          "latency_s": 191.0377779006958,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12856",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2948,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1292,
+          "response": "<reasoning>\n1. `Model.check()` calls `_check_constraints(databases)`, and `makemigrations` can run checks without database aliases.\n2. `UniqueConstraint` field validation was inside `UniqueConstraint.check()`, which only runs per database, so missing fields were skipped in the no-database path.\n3. The fix runs `UniqueConstraint` field/include validation once from `Model._check_constraints()` before database-specific checks, and removes it from the per-connection method to avoid duplicate errors....[truncated]",
+          "latency_s": 96.0197958946228,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12908",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1436,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1873,
+          "response": "<reasoning>\n`QuerySet.distinct()` already rejects combined querysets through `_not_support_combined_queries()`, but existing coverage only checked plain `distinct()`. This adds a regression test for the reported shape: two annotated querysets combined, followed by `order_by().distinct(\"field\")`, asserting `NotSupportedError`.\nVerified with:\n`python3 tests/runtests.py queries.test_qs_combinators.QuerySetSetOperationTests.test_distinct_fields_unsupported_on_combined_qs --verbosity=2`\n</reasoning>\n...[truncated]",
+          "latency_s": 118.96861982345581,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12915",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2126,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1711,
+          "response": "<reasoning>\n1. `ASGIStaticFilesHandler` skips middleware loading, so falling through to `BaseHandler.get_response_async()` leaves `_middleware_chain` as `None`.\n2. `StaticFilesHandlerMixin` already owns static-file response behavior for WSGI; adding an async counterpart there keeps WSGI and ASGI behavior aligned.\n3. The async method wraps the existing sync static file serving and exception response code with `sync_to_async()`.\n4. Added focused async tests for successful static file serving and 4...[truncated]",
+          "latency_s": 151.1600022315979,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-12983",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3278,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1206,
+          "response": "<reasoning>\n`slugify()` preserved leading/trailing underscores and hyphens because those characters are allowed by the cleanup regex and the final normalization only collapsed spaces/dashes. The fix trims `-` and `_` after normalization, preserving internal underscores. I added focused tests for ASCII and Unicode behavior and updated the public docs/docstrings.\n\nVerified with:\n`uv run --python 3.11 --with . python tests/runtests.py utils_tests.test_text template_tests.filter_tests.test_slugify`\n...[truncated]",
+          "latency_s": 215.2647271156311,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13028",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3425,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 3664,
+          "response": "<reasoning>\nThe crash happens because `Query.check_filterable()` checks `getattr(rhs, \"filterable\", True)` on any RHS object. A model instance used as a foreign-key RHS can legitimately have a model field named `filterable`, so `filterable=False` is mistaken for the ORM expression flag.\n\nThe fix is to enforce `filterable` only on ORM expressions, identified by `resolve_expression()`. A regression test adds a `filterable` field to an existing related model and verifies filtering by an instance wi...[truncated]",
+          "latency_s": 166.14266109466553,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13033",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2019,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 4557,
+          "response": "<reasoning>\nThe bug is in `SQLCompiler.find_ordering_name()`. For nested paths like `record__root_id`, Django resolved the final field as the FK field but compared `field.attname` against the whole path. Since `\"root_id\" != \"record__root_id\"`, it incorrectly treated the field as a relation and expanded the related model's default ordering, causing the extra self-join and reversed direction.\n\nThe fix is to compare the FK attname with the final path component, `pieces[-1]`. I verified the relevant...[truncated]",
+          "latency_s": 122.46504807472229,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13158",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1719,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2001,
+          "response": "<reasoning>\n`ModelMultipleChoiceField.clean([])` returns `self.queryset.none()`. For a combined queryset, marking only the outer query empty is insufficient because SQL generation uses the combined operand queries. The fix is to clone combined queries and recursively mark each operand empty, while preserving the original combined queryset. Verified with the focused regression test on the current checkout.\n</reasoning>\n\n<patch>\ndiff --git a/django/db/models/sql/query.py b/django/db/models/sql/que...[truncated]",
+          "latency_s": 132.62190890312195,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13220",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 5803,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1437,
+          "response": "<reasoning>\n`ValidationError` already had equality, but it compared hashes and preserved ordering in nested error lists. The patch makes equality structural by normalizing errors into hashable representations. Error lists are compared as multisets with `Counter`, so ordering is ignored while duplicate counts and differing codes/params still matter. I also added regression tests for field and non-field error ordering.\n\nVerification passed:\n`PYTHONPATH=tests:. python3 -m tests.runtests test_except...[truncated]",
+          "latency_s": 135.5404350757599,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13230",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3054,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1167,
+          "response": "<reasoning>\n`feedgenerator.add_item()` already accepts `comments` and RSS output already emits it, but `Feed.get_feed()` must pass the syndication hook through. The patch adds `comments=self._get_dynamic_attr(\"item_comments\", item)`, covers it in RSS syndication tests, and documents the new hook. Focused verification: `python3 tests/runtests.py syndication_tests` passes.\n</reasoning>\n\n<patch>\ndiff --git a/django/contrib/syndication/views.py b/django/contrib/syndication/views.py\n--- a/django/cont...[truncated]",
+          "latency_s": 176.37525367736816,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13265",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 5465,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2717,
+          "response": "<reasoning>\nThe crash happens because `_order` is created by `AlterOrderWithRespectTo`, while `AddIndex` only depended on the model and related fields. The patch adds an explicit dependency type for \u201corder_with_respect_to has been set\u201d and attaches it to indexes that include `_order`, including compound indexes such as `[\"book\", \"_order\"]`.\n\nVerified with:\n`python3 tests/runtests.py migrations.test_autodetector.AutodetectorTests.test_set_alter_order_with_respect_to_index_constraint_unique_togeth...[truncated]",
+          "latency_s": 249.6325650215149,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13315",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 4855,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1110,
+          "response": "<reasoning>\nThe duplicate options come from applying `limit_choices_to` directly to the form field queryset. When the condition traverses multi-value relations, the join can return the same target row multiple times. The fix is to apply the condition inside an `EXISTS` subquery tied to the outer row primary key, preserving the original queryset while avoiding duplicate rows.\n\nVerification: syntax-checked the modified files, and ran `model_forms.tests.LimitChoicesToTests` successfully in a compat...[truncated]",
+          "latency_s": 269.8165669441223,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13321",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 1370,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 5247,
+          "response": "<reasoning>\nThe crash happens because `decode()` falls back to `_legacy_decode()` after signed-session decoding fails, but `_legacy_decode()` performs `base64.b64decode()` before entering its defensive `try` block. Invalid legacy-looking data can therefore raise `binascii.Error` instead of returning an empty session.\n\nThe fix moves the base64/ascii decode into the existing exception handling block, preserving current behavior for valid legacy data and corrupted legacy hashes. I added a regressio...[truncated]",
+          "latency_s": 179.49700093269348,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13401",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3944,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2059,
+          "response": "<reasoning>\nThe cloned fields inherited from an abstract model share the same `creation_counter`, so comparing only that counter makes fields from different concrete models equal. The fix keeps `creation_counter` as the primary ordering key for compatibility, but includes the attached model when equality, hash, or ordering need to distinguish otherwise identical cloned fields. I added a regression test for equality, set behavior, ordering, and hashes.\n\nVerified with the focused model field tests...[truncated]",
+          "latency_s": 235.09108424186707,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13447",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3953,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1215,
+          "response": "<reasoning>\nThe current repository already includes the model class in each admin app-list model dictionary as ``model``. This patch exposes the existing app dictionary builder as ``AdminSite.build_app_dict()``, keeps ``_build_app_dict()`` as a compatibility wrapper, routes ``get_app_list()`` through the new public method, and adds docs, release notes, and tests covering the public API and model class access.\n\nVerified with:\n`python3 tests/runtests.py admin_views.test_adminsite --verbosity 1 --p...[truncated]",
+          "latency_s": 142.96123504638672,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13448",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 5466,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 6005,
+          "response": "<reasoning>\n1. With `TEST[\"MIGRATE\"] = False`, the old code skipped the `migrate` command entirely.\n2. That meant no tables were created, but test database serialization still tried to read models from migrated apps such as `django_admin_log`.\n3. The fix is to still call `migrate --run-syncdb`, but temporarily disable migration modules for all apps so Django syncs model tables without applying migrations.\n4. Regression tests assert that migrations produce an empty plan and the app is synced when...[truncated]",
+          "latency_s": 201.20063376426697,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13551",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 3491,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1428,
+          "response": "<reasoning>\nThe token hash previously ignored the user\u2019s email, so a token requested before an email change could still validate afterward. The patch adds the resolved email field value to `_make_hash_value()`, using `getattr(..., '')` so custom users without an email attribute remain supported. Tests cover both Django\u2019s built-in `User.email` and a custom `EMAIL_FIELD`.\n\nVerified with `git diff --check` and `python3 -m py_compile`. The full Django test runner could not start here because this ol...[truncated]",
+          "latency_s": 126.06254410743713,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13590",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2568,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 1684,
+          "response": "<reasoning>\n`Query.resolve_lookup_value()` rebuilt all tuple subclasses with a single generator argument. Named tuples require positional field values, so `__range=NamedTuple(...)` crashed. The fix stores the resolved values, detects namedtuple classes via `_make`, and expands the generator into the constructor. I also include a regression test for a namedtuple RHS in a range lookup. Verified in the current checkout with `python3 tests/runtests.py expressions.tests.IterableLookupInnerExpressions...[truncated]",
+          "latency_s": 110.03818798065186,
+          "error": null
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-13658",
+      "repo": "django/django",
+      "model": "gpt-5.5",
+      "max_iterations": 8,
+      "intervention_enabled": true,
+      "iterations": 1,
+      "proposed_patch": true,
+      "answer_len": 2609,
+      "tool_pattern": {},
+      "error": null,
+      "history": [
+        {
+          "iteration": 1,
+          "prompt_len": 2062,
+          "response": "<reasoning>\n`ManagementUtility.__init__()` already computes `self.prog_name` from the explicit argv passed to `execute_from_command_line()`. The early parser in `execute()` must use that value too; otherwise `argparse` falls back to `sys.argv[0]`, which can be invalid in embedded callers.\n\nI added a regression test that patches `sys.argv[0]` to `None` while passing `['django-admin', 'help', 'shell']` explicitly, and asserts the generated usage uses `django-admin`.\n\nVerification: `git diff --chec...[truncated]",
+          "latency_s": 139.64209985733032,
+          "error": null
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "instance_id": "django__django-14667",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 2,
+  "proposed_patch": true,
+  "answer_len": 2374,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1834,
+      "response_excerpt": "The patch has been proposed in my previous response. The fix addresses the bug in `django/db/models/sql/query.py` where `QuerySet.only(\"name\").defer(\"name\")` failed to properly restrict the SQL query to only the primary key.",
+      "latency_s": 927.7146010398865,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 2094,
+      "response_excerpt": "<reasoning>\nThe bug was in two places in `django/db/models/sql/query.py`:\n\n1. **`add_deferred_loading`** had broken logic. When you chained `.only(\"name\").defer(\"name\")`, the `else` branch tried to be clever: when removing all immediate-load fields left an empty set, it called `clear_deferred_loading()` (which resets state to \"load all fields\") and then only re-added fields that weren't originally in the immediate set. For `.only(\"name\").defer(\"name\")`, this wiped out the restriction entirely, f",
+      "latency_s": 308.3602068424225,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

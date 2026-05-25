@@ -1,0 +1,68 @@
+{
+  "instance_id": "django__django-11815",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 6,
+  "proposed_patch": true,
+  "patch_len": 5292,
+  "total_searches": 4,
+  "unique_queries": 4,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "enumserializer migrations serializer.py": 1,
+    "migrationwriter serialize enum tests": 1,
+    "regexflag enum serialization test_writer": 1,
+    "class enumserializer serialize self.value.value": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2612,
+      "response": "<reasoning>Enum migration serialization should reference enum members by stable member name, not by value, because enum values can be lazy translated or otherwise unstable. The serializer should emit `EnumClass['MEMBER']`, and tests should cover translated, text, binary, integer, and related enum serialization output.</reasoning>\n<patch>diff --git a/django/db/migrations/serializer.py b/django/db/migrations/serializer.py\n--- a/django/db/migrations/serializer.py\n+++ b/django/db/migrations/serializer.py\n@@ -120,9 +120,10 @@ class EnumSerializer(BaseSerializer):\n     def serialize(self):\n         enum_class = self.value.__class__\n         module = enum_class.__module__\n-        v_string, v_imports = serializer_factory(self.value.value).serialize()\n-        imports = {'import %s' % module, *v_imports}\n-        return \"%s.%s(%s)\" % (module, enum_class.__name__, v_string), imports\n+        return (\n+            '%s.%s[%r]' % (module, enum_class.__name__, self.value.name),\n+            {'import %s' % module},\n+        )\n \n \n class FloatSerializer(BaseSimpleSerializer):\ndiff --git a/tests/migrations/test_writer.py b/tests/migrations/test_writer.py\n--- a/tests/migrations/test_writer.py\n+++ b/tests/migrations/test_writer.py\n@@ -257,6 +257,10 @@ class WriterTests(SimpleTestCase):\n             A = 'a-value'\n             B = 'value-b'\n \n+        class TextTranslatedEnum(enum.Enum):\n+            A = _('a-value')\n+            B = _('value-b')\n+\n         class BinaryEnum(enum.Enum):\n         ",
+      "latency_s": 94.30879473686218,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 8515,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"EnumSerializer migrations serializer.py\"}}</tool_call>",
+      "latency_s": 21.509673833847046,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 9055,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"MigrationWriter serialize enum tests\"}}</tool_call>",
+      "latency_s": 13.372063159942627,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 9580,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"RegexFlag enum serialization test_writer\"}}</tool_call>",
+      "latency_s": 14.60536503791809,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 10125,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"class EnumSerializer serialize self.value.value\"}}</tool_call>",
+      "latency_s": 13.958974123001099,
+      "error": null
+    },
+    {
+      "iteration": 6,
+      "prompt_len": 10705,
+      "response": "<reasoning>Enum members in migrations should be serialized by member name because the name is stable while the value may be translated or otherwise environment-dependent. Updating `EnumSerializer` to emit `EnumClass['NAME']` avoids evaluating translated enum values when old migrations are imported. Tests should cover regular string enums, lazy-translated enum values, bytes, ints, field defaults, choices, and the existing `RegexFlag` enum serialization.</reasoning>\n<patch>diff --git a/django/db/migrations/serializer.py b/django/db/migrations/serializer.py\n--- a/django/db/migrations/serializer.py\n+++ b/django/db/migrations/serializer.py\n@@ -120,9 +120,10 @@ class EnumSerializer(BaseSerializer):\n     def serialize(self):\n         enum_class = self.value.__class__\n         module = enum_class.__module__\n-        v_string, v_imports = serializer_factory(self.value.value).serialize()\n-        imports = {'import %s' % module, *v_imports}\n-        return \"%s.%s(%s)\" % (module, enum_class.__name__, v_string), imports\n+        return (\n+            \"%s.%s[%r]\" % (module, enum_class.__name__, self.value.name),\n+            {\"import %s\" % module},\n+        )\n \n \n class FloatSerializer(BaseSimpleSerializer):\ndiff --git a/tests/migrations/test_writer.py b/tests/migrations/test_writer.py\n--- a/tests/migrations/test_writer.py\n+++ b/tests/migrations/test_writer.py\n@@ -257,6 +257,10 @@ class WriterTests(SimpleTestCase):\n             A = 'a-value'\n             B = 'value-b'\n \n+        class Tex",
+      "latency_s": 22.119431972503662,
+      "error": null
+    }
+  ]
+}

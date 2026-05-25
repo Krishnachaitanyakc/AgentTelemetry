@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12908",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 809,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1873,
+      "response": "I now have the full picture. The fix requires two changes:\n\n1. Add `self._not_support_combined_queries('distinct')` to the `distinct()` method in `query.py`\n2. Add `'distinct'` to the `test_unsupported_operations_on_combined_qs` test list\n\n<reasoning>\nThe issue is that `QuerySet.distinct()` doesn't call `self._not_support_combined_queries('distinct')` before proceeding. Every other mutating queryset method (`filter`, `exclude`, `annotate`, `defer`, `only`, `extra`, `delete`, `update`, `select_re...[truncated]",
+      "latency_s": 248.77093386650085,
+      "error": null
+    }
+  ]
+}

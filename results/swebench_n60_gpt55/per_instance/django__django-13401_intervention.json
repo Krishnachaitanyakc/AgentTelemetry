@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13401",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3944,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2059,
+      "response": "<reasoning>\nThe cloned fields inherited from an abstract model share the same `creation_counter`, so comparing only that counter makes fields from different concrete models equal. The fix keeps `creation_counter` as the primary ordering key for compatibility, but includes the attached model when equality, hash, or ordering need to distinguish otherwise identical cloned fields. I added a regression test for equality, set behavior, ordering, and hashes.\n\nVerified with the focused model field tests...[truncated]",
+      "latency_s": 235.09108424186707,
+      "error": null
+    }
+  ]
+}

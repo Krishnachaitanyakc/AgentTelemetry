@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-14983",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2674,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2103,
+      "response_excerpt": "<reasoning>\nThe repeated splitters do not inherit the cross-validator/base estimator repr path, so Python falls back to object repr. The fix adds an explicit `__repr__` to `_RepeatedSplits`, and stores `n_splits` on both concrete repeated splitter classes so the repr can reflect their public constructor parameters. I added regression coverage for default and custom values.\n\nVerification: `python3 -m py_compile sklearn/model_selection/_split.py sklearn/model_selection/tests/test_split.py` passed.",
+      "latency_s": 89.57787489891052,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15790",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1040,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1239,
+      "response_excerpt": "<reasoning>\nThe duplicate warning comes from checking the backend's merged `engine.libraries`, which already includes installed app libraries, after independently collecting installed template tag modules. The fix is to preserve only the user-supplied `OPTIONS[\"libraries\"]` and compare those custom aliases against discovered installed libraries. The existing regression test class covers the installed-app plus configured-library case.\n\nVerified with:\n`python3 tests/runtests.py check_framework.tes",
+      "latency_s": 186.43620204925537,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

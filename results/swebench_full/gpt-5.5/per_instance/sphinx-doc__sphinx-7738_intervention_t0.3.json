@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-7738",
+  "repo": "sphinx-doc/sphinx",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3916,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1868,
+      "response_excerpt": "<reasoning>\nNapoleon escapes trailing underscores in consumed field names when `strip_signature_backslash` is enabled. That is correct for `:ivar:` field-list output, but wrong when napoleon emits a real `.. attribute::` directive: directive arguments should receive the raw Python attribute name, otherwise HTML shows the backslash.\n\nThe patch adds an `escape_name` option to field consumption, keeps the existing default for parameters and `:ivar:`, and disables escaping only for the `.. attribute",
+      "latency_s": 107.6414520740509,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15781",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3900,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2055,
+      "response_excerpt": "<reasoning>\n1. The help text is passed to `argparse.ArgumentParser(description=...)`.\n2. Django hard-coded `DjangoHelpFormatter`, which inherits argparse\u2019s default `HelpFormatter` and collapses whitespace/newlines in descriptions.\n3. Argparse already supports preserving description formatting via formatters such as `RawDescriptionHelpFormatter`.\n4. The least invasive fix is to expose the formatter as a `BaseCommand.formatter_class` attribute, defaulting to Django\u2019s existing formatter for backwar",
+      "latency_s": 86.19391393661499,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

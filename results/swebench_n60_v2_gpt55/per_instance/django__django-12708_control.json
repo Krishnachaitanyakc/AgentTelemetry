@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-12708",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 4181,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "_delete_composed_index": 1,
+    "alterindextogether": 1,
+    "assertindexexists unique_together": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1970,
+      "response": "<reasoning>Deleting an `index_together` entry must match only the non-unique index. On backends that report a unique constraint as an index, querying with only `index=True` finds both the `_idx` index and the `_uniq` constraint. Adding `unique=False` narrows the introspection match, and the regression test verifies that removing `index_together` leaves the matching `unique_together` constraint intact.</reasoning>\n<patch>diff --git a/django/db/backends/base/schema.py b/django/db/backends/base/schema.py\n--- a/django/db/backends/base/schema.py\n+++ b/django/db/backends/base/schema.py\n@@ -394,7 +394,12 @@ class BaseDatabaseSchemaEditor:\n         news = {tuple(fields) for fields in new_index_together}\n         # Deleted indexes\n         for fields in olds.difference(news):\n-            self._delete_composed_index(model, fields, {'index': True}, self.sql_delete_index)\n+            self._delete_composed_index(\n+                model,\n+                fields,\n+                {'index': True, 'unique': False},\n+                self.sql_delete_index,\n+            )\n         # Created indexes\n         for field_names in news.difference(olds):\n             fields = [model._meta.get_field(field) for field in field_names]\ndiff --git a/tests/migrations/test_base.py b/tests/migrations/test_base.py\n--- a/tests/migrations/test_base.py\n+++ b/tests/migrations/test_base.py\n@@ -55,7 +55,11 @@ class MigrationTestBase(TransactionTestCase):\n                 any(\n                     c[\"index\"]\n       ",
+      "latency_s": 160.711256980896,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 6847,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"_delete_composed_index\"}}</tool_call>",
+      "latency_s": 14.531893014907837,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 7302,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"AlterIndexTogether\"}}</tool_call>",
+      "latency_s": 15.450201988220215,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 7737,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"assertIndexExists unique_together\"}}</tool_call>",
+      "latency_s": 12.515504837036133,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 8247,
+      "response": "<reasoning>Removing an `index_together` index should target only the plain index. The existing lookup uses `{'index': True}`, which can also match a `unique_together` constraint on the same columns because unique constraints are reported as indexes by introspection. Filtering with `unique=False` makes deletion unambiguous and preserves the unique constraint.</reasoning>\n<patch>diff --git a/django/db/backends/base/schema.py b/django/db/backends/base/schema.py\n--- a/django/db/backends/base/schema.py\n+++ b/django/db/backends/base/schema.py\n@@ -394,7 +394,12 @@ class BaseDatabaseSchemaEditor:\n         news = {tuple(fields) for fields in new_index_together}\n         # Deleted indexes\n         for fields in olds.difference(news):\n-            self._delete_composed_index(model, fields, {'index': True}, self.sql_delete_index)\n+            self._delete_composed_index(\n+                model,\n+                fields,\n+                {'index': True, 'unique': False},\n+                self.sql_delete_index,\n+            )\n         # Created indexes\n         for field_names in news.difference(olds):\n             fields = [model._meta.get_field(field) for field in field_names]\ndiff --git a/tests/migrations/test_base.py b/tests/migrations/test_base.py\n--- a/tests/migrations/test_base.py\n+++ b/tests/migrations/test_base.py\n@@ -55,7 +55,11 @@ class MigrationTestBase(TransactionTestCase):\n                 any(\n                     c[\"index\"]\n                     for c in connections[using].in",
+      "latency_s": 20.081849098205566,
+      "error": null
+    }
+  ]
+}

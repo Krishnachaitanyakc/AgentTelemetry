@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-14365",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2041,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2135,
+      "response_excerpt": "<reasoning>\nThe QDP parser classifies command/data/new-table lines with a regex that only matches uppercase `READ`, `SERR`, `TERR`, and `NO`. Since QDP commands are case-insensitive, the line classifier should compile its regex with `re.IGNORECASE`.\n\nBecause that also allows lowercase `no` data tokens to be accepted, the later value conversion must normalize `NO` before checking for masked values. The regression test covers lowercase `read serr` and lowercase `no`.\n\nI attempted to run `astropy/i",
+      "latency_s": 150.34629607200623,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

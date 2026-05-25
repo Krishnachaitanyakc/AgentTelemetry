@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-18835",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2033,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1572,
+      "response_excerpt": "<reasoning>\nI found `uniq` in `sympy/utilities/iterables.py`. The existing mutation check was only reliable while iterating the original sequence. For unhashable values, the fallback recursed over `seq[i + 1:]`, so later yields checked a sliced copy rather than the caller\u2019s original list.\n\nThe patch makes `uniq` a single-pass iterator: hashable items are tracked in `seen`, unhashable items in `result`, and the size check always applies to the original `seq` after every yielded value.\n\nVerified w",
+      "latency_s": 333.64308619499207,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

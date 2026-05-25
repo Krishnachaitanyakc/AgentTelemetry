@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13497",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2660,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1112,
+      "response_excerpt": "<reasoning>\nThe bug is caused by comparing `discrete_features` directly to `'auto'`. When `discrete_features` is a NumPy array, that comparison is elementwise and can warn or error. The fix is to only perform the string comparison after confirming the value is string-like. I also added coverage for NumPy index arrays and boolean masks, verifying they match list behavior without warnings. Focused pytest verification could not run because `pytest` is not installed in this environment.\n</reasoning>",
+      "latency_s": 239.8751938343048,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

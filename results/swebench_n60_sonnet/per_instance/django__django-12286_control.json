@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12286",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1054,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1566,
+      "response": "Now I have a clear picture of both the bug and the fix. The current `check_language_settings_consistent` manually strips sublanguage suffixes and only checks `settings.LANGUAGES`, while `get_supported_language_variant` is the canonical function that handles all fallback logic (including checking actual translation files). The fix is to use `get_supported_language_variant` instead.\n\n<reasoning>\nThe bug: `check_language_settings_consistent` builds prefix variants of `LANGUAGE_CODE` and checks them...[truncated]",
+      "latency_s": 178.4122757911682,
+      "error": null
+    }
+  ]
+}

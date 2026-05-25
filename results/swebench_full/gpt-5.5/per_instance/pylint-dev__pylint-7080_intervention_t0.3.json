@@ -1,0 +1,26 @@
+{
+  "instance_id": "pylint-dev__pylint-7080",
+  "repo": "pylint-dev/pylint",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2372,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 25568,
+      "response_excerpt": "<reasoning>\nThe recursive path walker can hand `ignore-paths` absolute paths internally, while users often configure anchored paths relative to the invocation cwd, for example `^src/gen/.*`. The fix keeps existing matching against the normalized internal path, and also matches against `os.path.relpath(...)` so cwd-relative anchored patterns work during recursive discovery. The `ValueError` guard preserves Windows behavior when cwd and target path are on different drives.\n\nVerified with:\n`pytest ",
+      "latency_s": 630.9436218738556,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

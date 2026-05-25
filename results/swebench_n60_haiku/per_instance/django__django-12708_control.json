@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12708",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2462,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1784,
+      "response": "That's a different test. Let me now analyze and propose the fix. The core issue is in the `_delete_composed_index` method. When both `unique_together` and `index_together` exist on the same fields, and one is deleted, the database introspection finds both constraints.\n\nThe fix should handle this better by:\n1. First checking if there's a constraint with the exact name we're looking for\n2. If there are multiple constraints, try to pick the right one based on whether it's unique or indexed\n\nLet me ...[truncated]",
+      "latency_s": 55.59808301925659,
+      "error": null
+    }
+  ]
+}

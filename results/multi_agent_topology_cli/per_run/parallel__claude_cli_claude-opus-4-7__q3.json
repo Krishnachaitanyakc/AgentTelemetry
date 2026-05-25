@@ -1,0 +1,29 @@
+{
+  "topology": "parallel",
+  "model": "claude_cli/claude-opus-4-7",
+  "question": "What are the limitations of using mock LLM clients for benchmarking agent fault detection? Propose two ways to validate against real production traces.",
+  "run_id": "parallel__claude_cli_claude-opus-4-7__q3",
+  "transcript": [
+    {
+      "agent": "researcher_a",
+      "output": "**Limitations of mock LLM clients:**\n\n1. **Distributional drift**: Mocks emit canned tool calls/text that miss real model quirks\u2014token-boundary errors, partial JSON, retry storms, schema hallucinations, and rate-limit cascades that drive most production faults.\n2. **Temporal artifacts absent**: No realistic latency variance, streaming chunk timing, or mid-stream disconnects\u2014so timeout/cancellation logic stays untested.\n3. **Coverage bias**: Authors mock failures they already imagine; unknown-unknowns (e.g., tokenizer drift after model upgrade, tool-call ID collisions) never surface.\n4. **State-space collapse**: Deterministic mocks underrepresent stochastic loops, infinite recursion, and emergent multi-agent deadlocks.\n\n**Validation against production traces:**\n\n1. **Trace replay harness**: Capture sanitized request/response/tool-call traces with timestamps; replay them through the agent under test, injecting recorded latencies and errors. Compare detector verdicts against ground-truth ",
+      "latency_s": 15.993625164031982
+    },
+    {
+      "agent": "researcher_b",
+      "output": "**Limitations of mock LLM clients:**\n\n1. **Synthetic fault distributions** miss long-tail real failures (rare token sequences, provider-specific timeouts, partial streaming corruption).\n2. **Deterministic outputs** hide flakiness from temperature, nucleus sampling, and load-dependent latency variance.\n3. **No drift modeling** \u2014 mocks freeze a snapshot, missing model version updates, silent API behavior changes, and degraded modes under throttling.\n4. **Tool-call schemas** in mocks rarely reproduce malformed JSON, hallucinated arguments, or schema-version skew seen in production.\n\n**Validation against production traces:**\n\n1. **Shadow replay harness:** Capture sanitized prod request/response pairs (with PII redaction) into a trace store; replay them through the agent's fault detector offline and compute precision/recall against ground-truth incident labels from oncall postmortems.\n2. **Live mirrored traffic with dual-path scoring:** Tee a small percentage of real production calls to the",
+      "latency_s": 16.309832096099854
+    },
+    {
+      "agent": "writer",
+      "output": "**Limitations of mock LLM clients:**\n\n1. **Distributional gaps**: Canned outputs miss long-tail production faults\u2014token-boundary errors, partial/streaming JSON corruption, hallucinated tool arguments, schema-version skew, and rate-limit cascades.\n2. **Missing temporal dynamics**: No realistic latency variance, streaming chunk timing, or mid-stream disconnects, so timeout, retry, and cancellation paths stay untested.\n3. **Determinism hides stochasticity**: Fixed outputs suppress temperature/nucleus-sampling flakiness, infinite recursion, and emergent multi-agent deadlocks.\n4. **Coverage bias and frozen snapshots**: Authors only mock failures they imagine; unknown-unknowns (tokenizer drift post-upgrade, tool-call ID collisions, silent API behavior changes, throttled-degraded modes) never surface.\n\n**Validation against production traces:**\n\n1. **Trace replay harness**: Capture sanitized (PII-redacted) request/response/tool-call traces with timestamps and recorded latencies/errors. Replay ",
+      "latency_s": 16.81398892402649
+    }
+  ],
+  "total_cost_usd": 0.08466,
+  "total_input_tokens": 809,
+  "total_output_tokens": 967,
+  "n_agents": 3,
+  "wall_clock_s": 49.13507008552551,
+  "error": null
+}

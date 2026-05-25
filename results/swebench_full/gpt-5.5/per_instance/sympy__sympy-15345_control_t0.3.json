@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-15345",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1153,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1061,
+      "response_excerpt": "<reasoning>\n`Max(x, 2)` is canonicalized by SymPy to argument order `(2, x)`, so the printer should not try to preserve input order. The bug is that `Max`/`Min` can fall through to the generic code-printer function path, which emits `Max(2, x)` with parentheses. Explicit Mathematica printer methods route them through Mathematica function syntax, producing valid Wolfram code like `Max[2, x]`.\n\nVerified with `/private/tmp/sympy-mcode-venv/bin/python -m pytest sympy/printing/tests/test_mathematica.",
+      "latency_s": 110.62015008926392,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

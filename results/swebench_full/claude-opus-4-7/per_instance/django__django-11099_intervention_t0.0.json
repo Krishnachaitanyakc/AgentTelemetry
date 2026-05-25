@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11099",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 781,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1558,
+      "response_excerpt": "<reasoning>\nThe issue describes a well-known Python regex quirk: `$` matches both end-of-string and a trailing newline. The fix is to replace `^` and `$` with `\\A` and `\\Z` in the two username validators (`ASCIIUsernameValidator` and `UnicodeUsernameValidator`) in `django/contrib/auth/validators.py`.\n\nThe change is trivial and isolated to a single file. Both validators share the same regex pattern `r'^[\\w.@+-]+$'` which should become `r'\\A[\\w.@+-]+\\Z'`.\n</reasoning>\n\n<patch>\n--- a/django/contrib",
+      "latency_s": 36.44687819480896,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

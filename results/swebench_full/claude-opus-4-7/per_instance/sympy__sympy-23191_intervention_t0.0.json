@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-23191",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 934,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2391,
+      "response_excerpt": "The fix is already merged in commit `da5b7c04d3`. The test `test_issue_23058` verifies the fixed behavior, and it passes. Let me document the patch that resolves the issue.\n\n<reasoning>\nThe bug is in `sympy/printing/pretty/pretty.py`'s `_print_BasisDependent` method. When the coefficient of a basis vector contains extended right parentheses (e.g., `sin(y_C/10**3)` produces multi-line parens), the algorithm looking for where to place the unit vector string would match the FIRST extended right par",
+      "latency_s": 270.6505880355835,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

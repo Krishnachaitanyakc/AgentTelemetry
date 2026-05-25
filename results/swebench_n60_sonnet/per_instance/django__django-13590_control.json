@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13590",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 668,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1684,
+      "response": "I found the bug. In `django_groupby_probe/django/db/models/sql/query.py` at line 1069, the code passes a generator directly to `type(value)(...)`. For regular `list` and `tuple` this works fine since they accept iterables, but named tuples require positional arguments \u2014 so `Range(generator_obj)` fails with `TypeError: __new__() missing 1 required positional argument: 'far'`.\n\n<reasoning>\nThe bug is in `django/db/models/sql/query.py` in the `resolve_lookup_value` method. The offending code is:\n\n`...[truncated]",
+      "latency_s": 140.67049884796143,
+      "error": null
+    }
+  ]
+}

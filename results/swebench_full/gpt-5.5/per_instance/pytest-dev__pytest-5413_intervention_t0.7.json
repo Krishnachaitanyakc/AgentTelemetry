@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-5413",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1872,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3715,
+      "response_excerpt": "<reasoning>\nI changed `ExceptionInfo.__str__` so a filled `pytest.raises(... ) as excinfo` object now stringifies like the captured exception itself, matching normal `except ... as e: str(e)` behavior. For unfilled/in-flight `ExceptionInfo` objects, `str()` still returns the existing helpful context-manager representation.\n\nVerification run:\n`python3 -m pytest -o minversion=0 testing/code/test_excinfo.py -q`\n`python3 -m pytest -o minversion=0 testing/python/raises.py -q`\n</reasoning>\n\n<patch>\n``",
+      "latency_s": 136.81070113182068,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

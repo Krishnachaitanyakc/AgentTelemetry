@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13265",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3931,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2686,
+      "response_excerpt": "<reasoning>\nThe issue is that when a model has `order_with_respect_to` AND an index referencing `_order`, the autodetector generates `AddIndex` operations BEFORE `AlterOrderWithRespectTo`, but `AlterOrderWithRespectTo` is what creates the `_order` field. This causes the migration to crash because it tries to add an index on a field that doesn't exist yet.\n\nThe fix needs:\n1. **`check_dependency`** must recognize that `AlterOrderWithRespectTo` operation effectively creates the `_order` field, so d",
+      "latency_s": 257.25409603118896,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

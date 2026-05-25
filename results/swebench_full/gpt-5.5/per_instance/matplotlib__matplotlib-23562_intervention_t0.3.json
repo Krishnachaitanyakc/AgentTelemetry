@@ -1,0 +1,26 @@
+{
+  "instance_id": "matplotlib__matplotlib-23562",
+  "repo": "matplotlib/matplotlib",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1450,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2059,
+      "response_excerpt": "<reasoning>\nThe failure occurs because `_facecolors2d` is only created during 3D projection/draw. Calling `get_facecolors()` immediately after `plot_surface()` reaches the facecolor getter before projection has happened, so the attribute is missing.\n\nThe patch makes `Poly3DCollection` fall back to the base `PolyCollection` colors when the 2D projected color cache has not been initialized yet. It applies the same fix to edge colors for symmetry. A regression test covers the reported `plot_surface",
+      "latency_s": 258.883229970932,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

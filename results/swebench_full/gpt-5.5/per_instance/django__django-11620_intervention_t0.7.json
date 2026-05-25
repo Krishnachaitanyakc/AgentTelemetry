@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11620",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2249,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1684,
+      "response_excerpt": "<reasoning>\nThe 500/plain-text failure happens while Django is trying to render the technical 404 page. `technical_404_response()` calls `get_caller()`, and when the request wasn\u2019t resolved yet, `get_caller()` resolves the path again. If a path converter raises `Http404`, that second resolve raises another `Http404` while the debug 404 response is being constructed.\n\nThe fix is to treat `Http404` during this best-effort caller lookup as \u201cno caller available\u201d instead of letting it escape. A regre",
+      "latency_s": 224.44858407974243,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

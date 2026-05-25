@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-10924",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 2558,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "class filepathfield": 1,
+    "filepathfield formfield path": 1,
+    "filepathfield deconstruct migrations": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1833,
+      "response": "<reasoning>Allowing `FilePathField.path` to be callable works with existing migration serialization because `deconstruct()` preserves the callable. The missing piece is resolving the callable when creating the form field, where Django needs the actual filesystem path to build choices.</reasoning>\n<patch>diff --git a/django/db/models/fields/__init__.py b/django/db/models/fields/__init__.py\n--- a/django/db/models/fields/__init__.py\n+++ b/django/db/models/fields/__init__.py\n@@ -1709,7 +1709,7 @@ class FilePathField(Field):\n \n     def formfield(self, **kwargs):\n         return super().formfield(**{\n-            'path': self.path,\n+            'path': self.path() if callable(self.path) else self.path,\n             'match': self.match,\n             'recursive': self.recursive,\n             'form_class': forms.FilePathField,\ndiff --git a/docs/ref/models/fields.txt b/docs/ref/models/fields.txt\n--- a/docs/ref/models/fields.txt\n+++ b/docs/ref/models/fields.txt\n@@ -868,6 +868,23 @@ directory on the filesystem. Has three special arguments, of which the first is\n     Required. The absolute filesystem path to a directory from which this\n     :class:`FilePathField` should get its choices. Example: ``\"/home/images\"``.\n \n+    ``path`` may also be a callable, such as a function to dynamically set the\n+    path at runtime. Example::\n+\n+        import os\n+        from django.conf import settings\n+        from django.db import models\n+\n+        def images_path():\n+            return os.path.join(",
+      "latency_s": 115.81744480133057,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4966,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"class FilePathField\"}}</tool_call>",
+      "latency_s": 13.523464918136597,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 5406,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"FilePathField formfield path\"}}</tool_call>",
+      "latency_s": 13.625536918640137,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 5891,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"FilePathField deconstruct migrations\"}}</tool_call>",
+      "latency_s": 14.68678092956543,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 6416,
+      "response": "<reasoning>`FilePathField` already stores `path` on the model field and migration deconstruction can preserve callable values. The runtime break is that the model field passes `self.path` directly into the form field, but `forms.FilePathField` expects an actual filesystem path when building choices. Resolve the callable only when creating the form field, while leaving the stored field value unchanged for migrations.</reasoning>\n<patch>diff --git a/django/db/models/fields/__init__.py b/django/db/models/fields/__init__.py\n--- a/django/db/models/fields/__init__.py\n+++ b/django/db/models/fields/__init__.py\n@@ -1709,7 +1709,7 @@ class FilePathField(Field):\n \n     def formfield(self, **kwargs):\n         return super().formfield(**{\n-            'path': self.path,\n+            'path': self.path() if callable(self.path) else self.path,\n             'match': self.match,\n             'recursive': self.recursive,\n             'form_class': forms.FilePathField,\ndiff --git a/docs/ref/models/fields.txt b/docs/ref/models/fields.txt\n--- a/docs/ref/models/fields.txt\n+++ b/docs/ref/models/fields.txt\n@@ -868,6 +868,23 @@ directory on the filesystem. Has three special arguments, of which the first is\n     Required. The absolute filesystem path to a directory from which this\n     :class:`FilePathField` should get its choices. Example: ``\"/home/images\"``.\n \n+    ``path`` may also be a callable, such as a function to dynamically set the\n+    path at runtime. Example::\n+\n+        import os\n+        ",
+      "latency_s": 18.97732400894165,
+      "error": null
+    }
+  ]
+}

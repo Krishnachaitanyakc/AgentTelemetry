@@ -1,0 +1,26 @@
+{
+  "instance_id": "pydata__xarray-4248",
+  "repo": "pydata/xarray",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4975,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1665,
+      "response_excerpt": "<reasoning>\n1. The dataset overview is built by `xarray/core/formatting.py::summarize_variable`.\n2. Coordinates and data variables both flow through that formatter, so adding units there fixes the plain text `Dataset` repr broadly.\n3. I added a shared `_summarize_variable_name()` helper that appends `\", in {units}\"` when a variable has a non-empty `attrs[\"units\"]`.\n4. `_calculate_col_width()` now accounts for the expanded display name so repr columns remain aligned.\n5. The HTML repr uses the sam",
+      "latency_s": 72.66490197181702,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

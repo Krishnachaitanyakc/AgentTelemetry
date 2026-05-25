@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13447",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3550,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1184,
+      "response_excerpt": "<reasoning>\n1. Inspected `django.contrib.admin.sites.AdminSite`; the app-list model dictionaries already include `\"model\": model`.\n2. Made `_build_app_dict()` public as `build_app_dict()`.\n3. Updated `get_app_list()` to call the public method so subclasses can customize it.\n4. Kept `_build_app_dict()` as a compatibility wrapper.\n5. Added a regression test covering both `build_app_dict()` and the rendered `app_list` context.\n6. Documented the new public API and added a release note.\n\nVerified wit",
+      "latency_s": 227.57804703712463,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

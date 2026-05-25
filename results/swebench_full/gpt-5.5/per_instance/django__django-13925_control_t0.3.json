@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13925",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1210,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4880,
+      "response_excerpt": "<reasoning>\n`models.W042` is intended for the implicit default `AutoField` primary key, but multi-table inheritance also creates an `auto_created` primary key: the child model\u2019s parent-link `OneToOneField`. That field is not a default `AutoField`, so the check must exclude parent links. I added a regression test for a child inheriting an explicitly declared parent primary key.\n\nVerified with:\n`/private/tmp/django_w042_py39_venv/bin/python tests/runtests.py check_framework.test_model_checks.Model",
+      "latency_s": 405.6330919265747,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

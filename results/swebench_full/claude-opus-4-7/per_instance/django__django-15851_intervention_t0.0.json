@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15851",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 398,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1426,
+      "response_excerpt": "<reasoning>\nThe issue is clear: in the PostgreSQL dbshell client, the order of arguments matters. `psql` expects all options to precede the database name. The buggy version of the code adds the database name to the args list before extending with the user-provided parameters, causing psql to ignore them.\n\nThe fix is to ensure that `args.extend(parameters)` is called BEFORE `args += [dbname]`, so the database name is the last argument passed to psql.\n\nLooking at `/private/tmp/django/django/db/bac",
+      "latency_s": 124.26100397109985,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

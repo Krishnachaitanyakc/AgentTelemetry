@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15789",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3114,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1327,
+      "response_excerpt": "<reasoning>\n1. Located `django.utils.html.json_script()` and confirmed the intended change is to make the JSON encoder configurable while preserving `DjangoJSONEncoder` as the default.\n2. Added a focused regression test proving a custom encoder class is passed through to `json.dumps()`.\n3. Added utility documentation for `django.utils.html.json_script()` since only the template filter was documented.\n4. Verified the focused test with `python3 tests/runtests.py utils_tests.test_html.TestUtilsHtml",
+      "latency_s": 126.44919109344482,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

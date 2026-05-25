@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15498",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 401,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1144,
+      "response_excerpt": "All test cases pass. The fix explicitly handles empty strings for the `If-Modified-Since` header.\n\n<reasoning>\nThe issue describes that empty strings used to be ignored for the `If-Modified-Since` header but started raising exceptions after commit `d6aff369ad3`. That commit changed `matches.group(1)` to `matches[1]` in `was_modified_since()`. With an empty string header:\n- `re.match(...)` returned `None` (the pattern requires `[^;]+` which needs at least one character)\n- `None.group(1)` raised `",
+      "latency_s": 538.9142830371857,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

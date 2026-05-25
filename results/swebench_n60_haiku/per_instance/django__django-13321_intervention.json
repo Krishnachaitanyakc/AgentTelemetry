@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13321",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 761,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5247,
+      "response": "Good, so the exception IS being caught. That means the issue must be something else. Let me look at the error stack trace one more time. Actually, I notice the stack trace shows line 126 is where the error occurs, which is the `encoded_data = base64.b64decode(session_data.encode('ascii'))` line. But this line SHOULD be inside the try block...\n\nUnless the version of Django in the user's environment has DIFFERENT code. Let me check what version of Django actually had this issue. Looking at the iss...[truncated]",
+      "latency_s": 147.76711416244507,
+      "error": null
+    }
+  ]
+}

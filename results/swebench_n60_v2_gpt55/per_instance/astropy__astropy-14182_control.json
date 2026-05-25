@@ -1,0 +1,67 @@
+{
+  "instance_id": "astropy__astropy-14182",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 6,
+  "proposed_patch": true,
+  "patch_len": 1579,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 2,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "class rst": 1,
+    "header_rows": 1,
+    "fixedwidth header_rows start_line": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2884,
+      "response": "<reasoning>RST already builds on FixedWidth, which has the header_rows machinery. The failure comes from RST not accepting/forwarding header_rows and from hard-coded separator/data offsets that assume exactly one header row. The patch forwards header_rows, computes the separator index from the configured header row count, updates read offsets, and adds a round-trip test with name/unit/dtype header rows.</reasoning>\n<patch>diff --git a/astropy/io/ascii/rst.py b/astropy/io/ascii/rst.py\n--- a/astropy/io/ascii/rst.py\n+++ b/astropy/io/ascii/rst.py\n@@ -22,7 +22,6 @@ class SimpleRSTHeader(FixedWidthHeader):\n \n \n class SimpleRSTData(FixedWidthData):\n-    start_line = 3\n     end_line = -1\n     splitter_class = FixedWidthTwoLineDataSplitter\n \n@@ -51,11 +50,15 @@ class RST(FixedWidth):\n     data_class = SimpleRSTData\n     header_class = SimpleRSTHeader\n \n-    def __init__(self):\n-        super().__init__(delimiter_pad=None, bookend=False)\n+    def __init__(self, header_rows=None):\n+        super().__init__(delimiter_pad=None, bookend=False, header_rows=header_rows)\n \n     def write(self, lines):\n         lines = super().write(lines)\n-        lines = [lines[1]] + lines + [lines[1]]\n-        return lines\n+        idx = len(self.header.header_rows)\n+        return [lines[idx]] + lines + [lines[idx]]\n+\n+    def read(self, table):\n+        self.data.start_line = 2 + len(self.header.header_rows)\n+        return super().read(table)\ndiff --git a/astropy/io/ascii/tests/test_rst.py b/astropy/io/a",
+      "latency_s": 201.2179560661316,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 5919,
+      "response": "<reasoning>RST is a FixedWidth-based writer, so it can reuse the existing header_rows support. The bug is that RST did not accept header_rows, assumed a single header row when choosing separator lines, and hard-coded the read data start line. The fix forwards header_rows, computes separator/data positions from the configured header row count, and adds a focused round-trip test.</reasoning>\n<patch>diff --git a/astropy/io/ascii/rst.py b/astropy/io/ascii/rst.py\n--- a/astropy/io/ascii/rst.py\n+++ b/astropy/io/ascii/rst.py\n@@ -22,7 +22,6 @@ class SimpleRSTHeader(FixedWidthHeader):\n \n \n class SimpleRSTData(FixedWidthData):\n-    start_line = 3\n     end_line = -1\n     splitter_class = FixedWidthTwoLineDataSplitter\n \n@@ -51,11 +50,15 @@ class RST(FixedWidth):\n     data_class = SimpleRSTData\n     header_class = SimpleRSTHeader\n \n-    def __init__(self):\n-        super().__init__(delimiter_pad=None, bookend=False)\n+    def __init__(self, header_rows=None):\n+        super().__init__(delimiter_pad=None, bookend=False, header_rows=header_rows)\n \n     def write(self, lines):\n         lines = super().write(lines)\n-        lines = [lines[1]] + lines + [lines[1]]\n-        return lines\n+        idx = len(self.header.header_rows)\n+        return [lines[idx]] + lines + [lines[idx]]\n+\n+    def read(self, table):\n+        self.data.start_line = 2 + len(self.header.header_rows)\n+        return super().read(table)\ndiff --git a/astropy/io/ascii/tests/test_rst.py b/astropy/io/ascii/tests/test_rst.py\n---",
+      "latency_s": 153.0458586215973,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 8928,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"class RST\"}}</tool_call>",
+      "latency_s": 19.56141996383667,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 9320,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"header_rows\"}}</tool_call>",
+      "latency_s": 13.341259956359863,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 9722,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"FixedWidth header_rows start_line\"}}</tool_call>",
+      "latency_s": 14.84691309928894,
+      "error": null
+    },
+    {
+      "iteration": 6,
+      "prompt_len": 10234,
+      "response": "<reasoning>RST uses the FixedWidth implementation underneath, but its constructor did not forward `header_rows` and its separator placement assumed one header row. This patch forwards the option and uses the configured header row count when inserting the top/bottom separators, with a regression test for the requested name/unit output.</reasoning>\n<patch>diff --git a/astropy/io/ascii/rst.py b/astropy/io/ascii/rst.py\n--- a/astropy/io/ascii/rst.py\n+++ b/astropy/io/ascii/rst.py\n@@ -51,11 +51,12 @@ class RST(FixedWidth):\n     data_class = SimpleRSTData\n     header_class = SimpleRSTHeader\n \n-    def __init__(self):\n-        super().__init__(delimiter_pad=None, bookend=False)\n+    def __init__(self, header_rows=None):\n+        super().__init__(delimiter_pad=None, bookend=False, header_rows=header_rows)\n \n     def write(self, lines):\n         lines = super().write(lines)\n-        lines = [lines[1]] + lines + [lines[1]]\n+        separator = lines[len(self.header.header_rows)]\n+        lines = [separator] + lines + [separator]\n         return lines\ndiff --git a/astropy/io/ascii/tests/test_rst.py b/astropy/io/ascii/tests/test_rst.py\n--- a/astropy/io/ascii/tests/test_rst.py\n+++ b/astropy/io/ascii/tests/test_rst.py\n@@ -4,6 +4,7 @@ from io import StringIO\n \n import pytest\n \n+import astropy.units as u\n from astropy.io import ascii\n from astropy.table import QTable\n \n@@ -165,3 +166,21 @@ Col1      Col2 Col3 Col4\n  2.4 's worlds    2    2\n ==== ========= ==== ====\n \"\"\")\n+\n+\n+def test_write_he",
+      "latency_s": 74.73299407958984,
+      "error": null
+    }
+  ]
+}

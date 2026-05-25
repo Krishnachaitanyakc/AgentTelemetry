@@ -1,0 +1,29 @@
+{
+  "topology": "sequential",
+  "model": "codex_cli/gpt-5.5",
+  "question": "Describe how a closed-loop intervention based on telemetry signals can recover a stuck agent. Give a concrete example using the REASONING span kind.",
+  "run_id": "sequential__codex_cli_gpt-5.5__q4",
+  "transcript": [
+    {
+      "agent": "planner",
+      "output": "1. What telemetry patterns indicate an agent is stuck, specifically in `REASONING` spans, such as repeated thoughts, long duration, no tool calls, or unchanged plans?\n\n2. What closed-loop policy should detect those signals and trigger an intervention, such as summarizing state, narrowing the goal, forcing a tool call, or resetting context?\n\n3. What concrete recovery example shows a `REASONING` span exceeding a threshold, the controller intervening, and the agent resuming progress successfully?",
+      "latency_s": 9.697136163711548
+    },
+    {
+      "agent": "researcher",
+      "output": "**Structured Findings**\n\n1. **Stuck-Agent Signals in `REASONING` Spans**\n   - A `REASONING` span is suspicious when it runs far longer than historical p95/p99 duration for similar tasks.\n   - Repeated or near-duplicate thoughts indicate looping.\n   - No tool calls, code edits, searches, or external observations during the span suggests no new information is entering the loop.\n   - Plans that remain unchanged across multiple reasoning updates indicate stalled decision-making.\n   - Token usage rising without state change is another strong stuck signal.\n\n2. **Closed-Loop Intervention Policy**\n   - Monitor live spans for duration, semantic repetition, lack of tool activity, unchanged plan state, and token burn rate.\n   - If thresholds are crossed, interrupt with the least invasive recovery action first: summarize current state, restate the next concrete goal, and ask the agent to take one observable action.\n   - Escalate if needed: force a tool call, reduce scope, checkpoint useful context",
+      "latency_s": 14.921180009841919
+    },
+    {
+      "agent": "writer",
+      "output": "A closed-loop intervention recovers a stuck agent by continuously monitoring telemetry from live `REASONING` spans and acting when the span shows signs of unproductive looping. Useful signals include duration far beyond historical p95 or p99 for similar tasks, repeated or near-duplicate thoughts, no tool calls or external observations, unchanged plans, and rising token usage without state change.\n\nWhen these thresholds are crossed, the controller should apply the least invasive recovery step first: interrupt the agent, summarize the current known state, restate the next concrete objective, and require one observable action. If the agent still does not progress, the controller can escalate by forcing a diagnostic tool call, narrowing the task scope, checkpointing useful context, or resetting the working context.\n\nExample: while debugging a failing test, an agent enters a long `REASONING` span. After 8 minutes, telemetry shows 12 repeated thoughts, no commands run, and no plan changes. T",
+      "latency_s": 10.811237812042236
+    }
+  ],
+  "total_cost_usd": 0.0,
+  "total_input_tokens": 706,
+  "total_output_tokens": 787,
+  "n_agents": 3,
+  "wall_clock_s": 35.44286298751831,
+  "error": null
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13033",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1035,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4526,
+      "response_excerpt": "<reasoning>\nThe bug report describes a Django issue where ordering by a self-referencing FK using the `_id` suffix (e.g., `order_by(\"record__root_id\")`) produces incorrect SQL with:\n1. An unnecessary extra JOIN (LEFT OUTER JOIN to the same self-referencing table)\n2. An incorrect DESC sort order (inherited from the related model's `Meta.ordering = (\"-id\",)`)\n\nRoot cause: In `django/db/models/sql/compiler.py`, the `find_ordering_name` method has a condition that triggers recursion into the related",
+      "latency_s": 527.9180781841278,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

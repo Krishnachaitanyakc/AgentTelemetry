@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-11001",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 1781,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "sqlcompiler get_order_by ordering_parts": 1,
+    "rawsql multiline order_by tests": 1,
+    "ordering_parts asc desc regex compiler": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3231,
+      "response": "<reasoning>The duplicate ORDER BY detection strips ASC/DESC with a regex. Because `.` didn\u2019t match newlines, multiline `RawSQL` expressions were reduced to only their final line, so different expressions with the same last line were treated as duplicates. Enabling `re.DOTALL` makes the regex compare the full compiled SQL expression. The regression test covers multiline `RawSQL` ordering on both normal and `distinct()` querysets.</reasoning>\n<patch>diff --git a/django/db/models/sql/compiler.py b/django/db/models/sql/compiler.py\nindex 7649c39262..23bc339e78 100644\n--- a/django/db/models/sql/compiler.py\n+++ b/django/db/models/sql/compiler.py\n@@ -32,7 +32,8 @@ class SQLCompiler:\n         self.select = None\n         self.annotation_col_map = None\n         self.klass_info = None\n-        self.ordering_parts = re.compile(r'(.*)\\s(ASC|DESC)(.*)')\n+        # Multiline ordering SQL clause may appear from RawSQL.\n+        self.ordering_parts = re.compile(r'^(.*)\\s(ASC|DESC)(.*)', re.MULTILINE | re.DOTALL)\n         self._meta_ordering = None\n \n     def setup_query(self):\ndiff --git a/tests/expressions/tests.py b/tests/expressions/tests.py\nindex c22ff34ee8..a8897fa069 100644\n--- a/tests/expressions/tests.py\n+++ b/tests/expressions/tests.py\n@@ -384,6 +384,29 @@ class BasicExpressionsTests(TestCase):\n         )\n         self.assertSequenceEqual(mustermanns_by_seniority, [self.max, mary])\n \n+    def test_order_by_multiline_sql(self):\n+        raw_order_by = (\n+            RawSQL('''\n+       ",
+      "latency_s": 94.08057975769043,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 5761,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"SQLCompiler get_order_by ordering_parts\"}}</tool_call>",
+      "latency_s": 13.122493267059326,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 6301,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"RawSQL multiline order_by tests\"}}</tool_call>",
+      "latency_s": 15.649752140045166,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 6801,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"ordering_parts ASC DESC regex compiler\"}}</tool_call>",
+      "latency_s": 13.075401067733765,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 7336,
+      "response": "<reasoning>Duplicate ORDER BY detection strips the direction from compiled ordering SQL before adding it to the `seen` set. The existing regex only compares the final line for multiline `RawSQL`, so distinct expressions ending with the same line collapse into one. Compiling the regex with `re.DOTALL` makes the leading capture span newlines, so duplicate detection uses the full expression. The regression test orders by two multiline `RawSQL` expressions with identical trailing lines and verifies both remain in the query.</reasoning>\n<patch>diff --git a/django/db/models/sql/compiler.py b/django/db/models/sql/compiler.py\nindex 7649c39262..5b02aabf5f 100644\n--- a/django/db/models/sql/compiler.py\n+++ b/django/db/models/sql/compiler.py\n@@ -32,7 +32,7 @@ class SQLCompiler:\n         self.select = None\n         self.annotation_col_map = None\n         self.klass_info = None\n-        self.ordering_parts = re.compile(r'(.*)\\s(ASC|DESC)(.*)')\n+        self.ordering_parts = re.compile(r'(.*)\\s(ASC|DESC)(.*)', re.DOTALL)\n         self._meta_ordering = None\n \n     def setup_query(self):\ndiff --git a/tests/expressions/tests.py b/tests/expressions/tests.py\nindex c22ff34ee8..f773d1a506 100644\n--- a/tests/expressions/tests.py\n+++ b/tests/expressions/tests.py\n@@ -384,6 +384,29 @@ class BasicExpressionsTests(TestCase):\n         )\n         self.assertSequenceEqual(mustermanns_by_seniority, [self.max, mary])\n \n+    def test_order_by_multiline_rawsql(self):\n+        qs = Company.objects.order_by(\n+  ",
+      "latency_s": 18.726014137268066,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-16792",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3860,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2722,
+      "response_excerpt": "<reasoning>\nThe failure comes from `CodeGen.routine()`: explicit `argument_sequence` entries that are not already discovered from `expr.free_symbols` are added as new `InputArgument`s. For an unused `MatrixSymbol`, that path dropped the shape metadata, so downstream C/Cython code saw `x` as scalar `double` instead of array `double *`.\n\nThe patch keeps the existing array dimension logic in one helper and reuses it when creating explicit, otherwise-unused array arguments. I also added coverage for",
+      "latency_s": 195.02619814872742,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

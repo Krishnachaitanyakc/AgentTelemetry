@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15347",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 575,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2207,
+      "response_excerpt": "The current file at `django/contrib/messages/storage/cookie.py:23` already has the fix (`if obj.extra_tags is not None:`). The buggy original code was `if obj.extra_tags:` which used a truthy check. Let me provide the patch that fixes the bug described in the issue.\n\n<reasoning>\nThe bug is in `MessageEncoder.default()` in `django/contrib/messages/storage/cookie.py`. The original buggy code used `if obj.extra_tags:` which is falsy for both `None` and `\"\"`. This means when `extra_tags=\"\"` was seri",
+      "latency_s": 53.85949206352234,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

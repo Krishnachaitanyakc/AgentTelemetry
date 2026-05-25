@@ -1,0 +1,35 @@
+{
+  "instance_id": "django__django-11905",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 2,
+  "proposed_patch": false,
+  "patch_len": 0,
+  "total_searches": 0,
+  "unique_queries": 0,
+  "max_query_repeats": 0,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {},
+  "error": "timeout after 600s",
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1420,
+      "response": "Now let me check when `get_prep_lookup` is called. Looking at the `Lookup.__init__` method (lines 33-36), I see it calls `self.get_prep_lookup()` when initializing. However, for `IsNull`, the `prepare_rhs = False` is set, which means it bypasses the preparation. Let me verify this by looking at line 88-96:\n\nThe validation should probably happen in `get_prep_lookup()` method of the `IsNull` class instead of (or in addition to) the `as_sql()` method. This would catch the error earlier and be more consistent with Django's pattern. Let me check if there's a `get_prep_lookup` method in `IsNull`:\n\nLooking at the code, there's no `get_prep_lookup` override in the `IsNull` class. The issue is asking to validate early that only boolean values are accepted. Let me create a fix by adding validation in `get_prep_lookup`:\n\n<reasoning>\nLooking at the Django code:\n\n1. The `IsNull` lookup is defined at line 658 in `/private/tmp/django-repo/django/db/models/lookups.py`\n2. Currently, validation happens in the `as_sql()` method (line 663-666)\n3. The test `test_isnull_non_boolean_value` expects a `ValueError` to be raised with the message \"The QuerySet value for an isnull lookup must be True or False.\"\n4. The validation is triggered when calling `.exists()` on the queryset, which happens during query compilation\n\nThe issue mentions that the validation should be earlier and more explicit. The best place to add this validation is in the `get_prep_lookup()` method, which is called during lookup ini",
+      "latency_s": 119.61312103271484,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4324,
+      "response": "",
+      "latency_s": 599.987185716629,
+      "error": "timeout after 600s"
+    }
+  ]
+}

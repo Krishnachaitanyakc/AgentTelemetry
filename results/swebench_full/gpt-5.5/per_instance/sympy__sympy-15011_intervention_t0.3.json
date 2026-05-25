@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-15011",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1827,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1503,
+      "response_excerpt": "<reasoning>\nThe failure comes from lambdify\u2019s generated Python signature. Invalid scalar `Symbol` names were already detected and replaced with `Dummy` arguments, but `MatrixSymbol` was not going through that branch, so names like `{v}` could still be emitted into generated source. `MatrixSymbol` is symbol-like in SymPy (`is_symbol`), so the fix is to apply the same dummification/safe-identifier logic to any `Basic` object with `is_symbol`, not only scalar `Symbol`.\n\nI verified the current check",
+      "latency_s": 152.72341585159302,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

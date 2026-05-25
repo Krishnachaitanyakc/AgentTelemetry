@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-14365",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1753,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2135,
+      "response_excerpt": "<reasoning>\nI inspected `astropy/io/ascii/qdp.py` and the QDP tests. The line classifier in this checkout already uses `re.IGNORECASE`, so lowercase commands are recognized as commands. I added explicit regression coverage for the issue\u2019s `read serr 1 2` example and made command-key normalization use `casefold()` when building `err_specs`.\n\nVerification note: I could not run the focused test because this environment\u2019s `python3` does not have `pytest` installed.\n</reasoning>\n\n<patch>\n```diff\ndiff",
+      "latency_s": 87.75880694389343,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

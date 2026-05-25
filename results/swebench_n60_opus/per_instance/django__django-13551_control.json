@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13551",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1203,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1428,
+      "response": "The fix is applied. Here's a summary of the change:\n\n**Problem:** `PasswordResetTokenGenerator._make_hash_value()` didn't include the user's email address in the hash. This meant that if a user requested a password reset, then changed their email, the old password reset token would still be valid \u2014 a security issue.\n\n**Fix:** Added the user's email to the hash value in `_make_hash_value()` (lines 83-85):\n- `user.get_email_field_name()` \u2014 gets the correct email field name via `AbstractBaseUser`, ...[truncated]",
+      "latency_s": 189.89363813400269,
+      "error": null
+    }
+  ]
+}

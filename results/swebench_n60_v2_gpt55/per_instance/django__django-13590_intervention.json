@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-13590",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 1744,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "resolve_lookup_value": 1,
+    "iterablelookupinnerexpressionstests": 1,
+    "num_employees__range": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1870,
+      "response": "<reasoning>`resolve_lookup_value()` recursively rebuilds iterable lookup values. Lists and plain tuples accept a single iterable, but namedtuple constructors require one positional argument per field. The fix keeps the existing behavior for list/tuple while expanding resolved values only for namedtuple classes. A regression test covers `__range` with a named 2-tuple.</reasoning>\n<patch>\ndiff --git a/django/db/models/sql/query.py b/django/db/models/sql/query.py\n--- a/django/db/models/sql/query.py\n+++ b/django/db/models/sql/query.py\n@@ -1070,10 +1070,13 @@ class Query(BaseExpression):\n         elif isinstance(value, (list, tuple)):\n             # The items of the iterable may be expressions and therefore need\n             # to be resolved independently.\n-            return type(value)(\n+            values = (\n                 self.resolve_lookup_value(sub_value, can_reuse, allow_joins, simple_col)\n                 for sub_value in value\n             )\n+            if hasattr(type(value), '_make'):  # namedtuple\n+                return type(value)(*values)\n+            return type(value)(values)\n         return value\n \n     def solve_lookup_type(self, lookup):\ndiff --git a/tests/expressions/tests.py b/tests/expressions/tests.py\n--- a/tests/expressions/tests.py\n+++ b/tests/expressions/tests.py\n@@ -1,3 +1,4 @@\n+from collections import namedtuple\n import datetime\n import pickle\n import unittest\n@@ -845,6 +846,15 @@ class IterableLookupInnerExpressionsTests(TestCase):\n             o",
+      "latency_s": 82.29829907417297,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4271,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"resolve_lookup_value\"}}</tool_call>",
+      "latency_s": 17.64808201789856,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 4716,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"IterableLookupInnerExpressionsTests\"}}</tool_call>",
+      "latency_s": 16.776849031448364,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 5236,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"num_employees__range\"}}</tool_call>",
+      "latency_s": 14.058125019073486,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 5681,
+      "response": "<reasoning>`resolve_lookup_value()` rebuilds list and tuple lookup values after resolving any nested expressions. A plain tuple can be rebuilt from a single generator, but a namedtuple constructor expects its fields as separate positional arguments. The patch materializes the resolved values and splats them for namedtuple instances while preserving existing list/plain tuple behavior. The regression test exercises a `__range` lookup using a named 2-tuple.</reasoning>\n<patch>diff --git a/django/db/models/sql/query.py b/django/db/models/sql/query.py\n--- a/django/db/models/sql/query.py\n+++ b/django/db/models/sql/query.py\n@@ -1070,10 +1070,12 @@ class Query(BaseExpression):\n         elif isinstance(value, (list, tuple)):\n             # The items of the iterable may be expressions and therefore need\n             # to be resolved independently.\n-            return type(value)(\n+            values = [\n                 self.resolve_lookup_value(sub_value, can_reuse, allow_joins, simple_col)\n                 for sub_value in value\n-            )\n+            ]\n+            value_type = type(value)\n+            return value_type(*values) if hasattr(value_type, '_fields') else value_type(values)\n         return value\n \n     def solve_lookup_type(self, lookup):\ndiff --git a/tests/expressions/tests.py b/tests/expressions/tests.py\n--- a/tests/expressions/tests.py\n+++ b/tests/expressions/tests.py\n@@ -1,3 +1,4 @@\n+from collections import namedtuple\n import datetime\n import pickle\n import unit",
+      "latency_s": 17.00514578819275,
+      "error": null
+    }
+  ]
+}

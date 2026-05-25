@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11620",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2564,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1715,
+      "response": "<reasoning>\nThe crash happens while rendering the debug 404 page. `technical_404_response()` calls `resolve(request.path)` again to identify the raising view, but it only catches `Resolver404`. A path converter can raise a plain `Http404`, so that second resolve escapes and turns the debug 404 into a server error. Catching `Http404` preserves existing `Resolver404` handling because `Resolver404` is an `Http404` subclass, and lets the technical 404 render with the converter\u2019s message.\n</reasoning...[truncated]",
+      "latency_s": 333.2977228164673,
+      "error": null
+    }
+  ]
+}

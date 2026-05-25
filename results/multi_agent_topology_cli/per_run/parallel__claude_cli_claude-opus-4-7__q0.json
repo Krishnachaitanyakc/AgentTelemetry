@@ -1,0 +1,29 @@
+{
+  "topology": "parallel",
+  "model": "claude_cli/claude-opus-4-7",
+  "question": "What are three concrete ways autonomous AI agents fail in production deployments, and what observability primitives would catch each?",
+  "run_id": "parallel__claude_cli_claude-opus-4-7__q0",
+  "transcript": [
+    {
+      "agent": "researcher_a",
+      "output": "**1. Tool-call loops / runaway recursion.** Agent re-invokes the same tool with near-identical args, burning tokens/$ without progress (e.g., retrying a failing API forever).\n*Catch:* per-trace tool-call frequency histograms + n-gram repetition detector on the action sequence; alert when Levenshtein distance between consecutive tool inputs < threshold over a sliding window.\n\n**2. Silent context corruption.** Stale/poisoned data from RAG or prior tool output gets laundered into \"facts\" the agent acts on. No exception fires.\n*Catch:* provenance tags on every context span (source URI, retrieval timestamp, trust tier) propagated through the trace; assertion checks that grounded claims cite a span with trust \u2265 required tier.\n\n**3. Goal drift across long horizons.** Agent quietly substitutes an easier sub-goal (deletes failing tests instead of fixing them).\n*Catch:* embedding-distance monitor between the original task spec and the current plan/state at each step; spike \u2192 human review. Pair w",
+      "latency_s": 15.160526037216187
+    },
+    {
+      "agent": "researcher_b",
+      "output": "**1. Tool-call loops / runaway cost.** Agent retries a failing tool (e.g., flaky API) hundreds of times, burning tokens. *Catch with:* per-trace tool-call counters, token spend budgets per session, and rate-of-change alerts on cost/trace_id.\n\n**2. Silent capability drift after model/prompt updates.** Agent still \"succeeds\" but quality degrades \u2014 wrong tool selected, shallower reasoning, hallucinated arguments. *Catch with:* golden-set replay on every deploy, structured eval scores logged per turn (tool-choice accuracy, argument validity), and shadow-traffic diffing between model versions.\n\n**3. Goal misgeneralization on out-of-distribution inputs.** Agent confidently completes the wrong task \u2014 e.g., refunds instead of escalates, deletes instead of archives. *Catch with:* action-class telemetry (counts of irreversible operations per user segment), human-in-the-loop sampling on high-blast-radius tools, and anomaly detection on action-distribution shifts vs. baseline.\n\nCommon thread: inst",
+      "latency_s": 14.334836959838867
+    },
+    {
+      "agent": "writer",
+      "output": "**1. Tool-call loops / runaway cost.** Agent retries the same tool with near-identical args (flaky API, unsatisfiable query), burning tokens without progress.\n*Catch:* per-trace tool-call counters and token/cost budgets per session; n-gram repetition detector on the action sequence with Levenshtein distance between consecutive inputs; rate-of-change alerts on cost per trace_id.\n\n**2. Silent context & capability drift.** Stale or poisoned RAG output gets laundered into \"facts,\" or post-deploy model/prompt changes quietly degrade tool choice and argument quality \u2014 no exception fires either way.\n*Catch:* provenance tags on every context span (source URI, retrieval timestamp, trust tier) with assertions that grounded claims cite a span at the required tier; golden-set replay on every deploy with structured eval scores per turn (tool-choice accuracy, argument validity); shadow-traffic diffing between versions.\n\n**3. Goal drift / misgeneralization.** Agent substitutes an easier sub-goal (del",
+      "latency_s": 15.46358609199524
+    }
+  ],
+  "total_cost_usd": 0.07872,
+  "total_input_tokens": 738,
+  "total_output_tokens": 902,
+  "n_agents": 3,
+  "wall_clock_s": 44.975749254226685,
+  "error": null
+}

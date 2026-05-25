@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11797",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2178,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1550,
+      "response_excerpt": "<reasoning>\nThe subquery is explicitly selecting an annotation via `values(\"max_id\")`, but `_subquery_fields_len` only counted `self.select`. For annotation-only selected queries, that falls back to the model primary-key width, which can make lookup preparation treat the subquery as if it had no explicit selected result.\n\nThe fix counts the expressions represented by `Query.selected`, resolving annotation references and selected column indexes before computing subquery arity. The regression test",
+      "latency_s": 476.80799198150635,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

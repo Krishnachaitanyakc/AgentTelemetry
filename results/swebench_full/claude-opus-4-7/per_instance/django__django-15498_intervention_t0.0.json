@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15498",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1089,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1144,
+      "response_excerpt": "<reasoning>\nThe issue references Django commit d6aff369ad3 which changed `was_modified_since()` in `django/views/static.py` so that an empty string for the If-Modified-Since header now raises an exception instead of being silently ignored.\n\nLooking at the original behavior: the function had a `try/except` block catching `(AttributeError, ValueError, OverflowError)` and returning `True` (meaning \"treat as modified\"). The change likely removed or narrowed this exception handling, causing empty str",
+      "latency_s": 44.910720109939575,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

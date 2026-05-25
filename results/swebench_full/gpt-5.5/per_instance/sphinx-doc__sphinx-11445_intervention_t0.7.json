@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-11445",
+  "repo": "sphinx-doc/sphinx",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 5191,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2589,
+      "response_excerpt": "<reasoning>\nThe prolog insertion code skips initial docinfo fields before inserting `rst_prolog`. A heading line can also match the docinfo field-marker pattern, so the prolog may be inserted between the title text and its underline. The fix checks whether the next line is a valid section underline before treating a field-like line as docinfo. I added a focused utility regression and an HTML build regression for the reported top-level domain-role title case.\n\nVerified with:\n`.venv/bin/python -m ",
+      "latency_s": 199.98120403289795,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

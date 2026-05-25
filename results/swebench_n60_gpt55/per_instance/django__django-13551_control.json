@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13551",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3406,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1428,
+      "response": "<reasoning>\nPassword reset tokens were tied to password, last_login, timestamp, and pk, but not the email address used to request the reset. Including the current email in `_make_hash_value()` makes any token generated before an email change fail validation afterward. The implementation uses `get_email_field_name()` and `getattr(..., '')` so custom user models and models without an email attribute are handled.\n\nVerified with:\n`/usr/bin/python3 tests/runtests.py auth_tests.test_tokens`\n</reasonin...[truncated]",
+      "latency_s": 217.90125584602356,
+      "error": null
+    }
+  ]
+}

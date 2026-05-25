@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-7746",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1694,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2849,
+      "response_excerpt": "<reasoning>\nThe failing path is `WCS._array_converter` for multi-axis inputs. Empty coordinate arrays should not be passed into wcslib, but the empty check must happen after NumPy broadcasting so cases like `([], 1, origin)` return matching empty arrays for each axis. The patch moves the guard after `np.broadcast_arrays` and adds regression coverage for empty list inputs, empty NumPy arrays, empty Nx2 coordinate arrays, and empty/scalar broadcasting.\n\nVerification note: focused pytest could not ",
+      "latency_s": 167.39916610717773,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

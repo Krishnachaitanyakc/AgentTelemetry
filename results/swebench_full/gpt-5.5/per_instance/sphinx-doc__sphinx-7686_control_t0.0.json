@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-7686",
+  "repo": "sphinx-doc/sphinx",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 6381,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2125,
+      "response_excerpt": "<reasoning>\nThe autosummary module scanner relied mostly on runtime `__module__` checks. That misses interpreter-added module attributes like `__builtins__` and imported values without useful `__module__` metadata, so custom module templates iterating over `members` could still emit imported/non-local names.\n\nThe patch makes `ModuleScanner.scan()` source-aware when `ModuleAnalyzer` can read the module: it parses top-level definitions, assignments, and imports, then treats names not defined in th",
+      "latency_s": 274.31910490989685,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

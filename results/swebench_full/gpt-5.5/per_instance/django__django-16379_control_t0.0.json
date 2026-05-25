@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16379",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1286,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1877,
+      "response_excerpt": "<reasoning>\n`FileBasedCache.has_key()` had a TOCTOU race: it checked `os.path.exists()` and then opened the file. If another process deleted the cache file between those operations, `FileNotFoundError` escaped. The existing `get()`/`touch()` behavior treats a missing file as a cache miss, so `has_key()` should do the same by attempting `open()` directly and catching `FileNotFoundError`.\n\nAdded a regression test that creates a cache entry, then simulates the file disappearing at `open()` time.\n\nV",
+      "latency_s": 144.08761382102966,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

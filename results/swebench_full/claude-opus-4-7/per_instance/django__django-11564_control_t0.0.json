@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11564",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1575,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1722,
+      "response_excerpt": "<reasoning>\nLooking at the codebase, I can see that Django needs SCRIPT_NAME support added to STATIC_URL and MEDIA_URL. The cleanest approach is to add this to `LazySettings.__getattr__` in `django/conf/__init__.py`, since this would automatically apply to all consumers of `settings.STATIC_URL` and `settings.MEDIA_URL` (including the `{% static %}` template tag, `FileSystemStorage`, `StaticFilesStorage`, etc.) without needing to modify each one individually.\n\nThe fix involves:\n1. Intercepting `M",
+      "latency_s": 221.67256879806519,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

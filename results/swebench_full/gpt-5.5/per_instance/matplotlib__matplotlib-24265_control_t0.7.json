@@ -1,0 +1,26 @@
+{
+  "instance_id": "matplotlib__matplotlib-24265",
+  "repo": "matplotlib/matplotlib",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4165,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2050,
+      "response_excerpt": "<reasoning>\n`style.use(\"seaborn-colorblind\")` already remaps deprecated seaborn style names to `seaborn-v0_8-*`, but direct `style.library[...]` access bypasses that remapping because `library` is a plain dict. The patch extracts the existing seaborn-name compatibility logic into a helper, wraps the style library in a small dict subclass that applies the same helper in `__getitem__`, and adds a regression test for `mpl.style.library[\"seaborn-colorblind\"]`.\n\nI attempted to run the focused test wi",
+      "latency_s": 115.15584397315979,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

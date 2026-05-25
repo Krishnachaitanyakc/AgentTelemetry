@@ -1,0 +1,61 @@
+{
+  "instance_id": "django__django-11742",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 3938,
+  "total_searches": 4,
+  "unique_queries": 4,
+  "max_query_repeats": 1,
+  "patch_suppressions": 0,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "field._check_choices max_length choices": 1,
+    "invalid choice max_length field checks": 1,
+    "checks.e009 max_length choices": 1,
+    "django/db/models/fields/__init__.py _check_choices": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1339,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"Field._check_choices max_length choices\"}}</tool_call>",
+      "latency_s": 61.346330881118774,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 1879,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"invalid choice max_length field checks\"}}</tool_call>",
+      "latency_s": 13.740257024765015,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 2414,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"checks.E009 max_length choices\"}}</tool_call>",
+      "latency_s": 16.342931270599365,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 2909,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"django/db/models/fields/__init__.py _check_choices\"}}</tool_call>",
+      "latency_s": 17.964255809783936,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 3504,
+      "response": "<reasoning>The existing field check path validates malformed `choices` and invalid `max_length` independently, but it doesn't compare the declared `max_length` against the longest concrete choice value. The fix belongs in `Field._check_choices()`, because that method already walks grouped and ungrouped choices and reports `fields.E005`. While iterating choices, track the longest value length for string-like values, then emit a new field check error when `self.max_length` is set and too small. Tests should cover grouped choices, direct choices, and the no-error case.</reasoning>\n<patch>diff --git a/django/db/models/fields/__init__.py b/django/db/models/fields/__init__.py\nindex 28374272f4..1b3d4f5a91 100644\n--- a/django/db/models/fields/__init__.py\n+++ b/django/db/models/fields/__init__.py\n@@ -250,6 +250,7 @@ class Field(RegisterLookupMixin):\n \n     def _check_choices(self):\n         if not self.choices:\n+            return []\n             return []\n \n         def is_value(value):\n@@ -259,6 +260,7 @@ class Field(RegisterLookupMixin):\n \n         error = None\n         values = []\n+        choice_max_length = 0\n         for choices_group in self.choices:\n             try:\n                 group_name, group_choices = choices_group\n@@ -269,10 +271,14 @@ class Field(RegisterLookupMixin):\n                     break\n                 if isinstance(group_choices, str):\n                     break\n-                values.extend(value for value, human_name in group_choices)\n+               ",
+      "latency_s": 23.578413009643555,
+      "error": null
+    }
+  ]
+}

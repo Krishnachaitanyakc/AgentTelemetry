@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15498",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1676,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1144,
+      "response_excerpt": "<reasoning>\nThe empty `If-Modified-Since` header should behave like an absent or invalid conditional header, so the static file view should serve the full response instead of attempting conditional handling. I updated `was_modified_since()` to reject falsy header values before parsing, and added a request-level regression test for `If-Modified-Since: \"\"`.\n\nVerification: `python3 ./tests/runtests.py view_tests.tests.test_static --verbosity 2 --parallel 1` passes.\n</reasoning>\n\n<patch>\n```diff\ndif",
+      "latency_s": 276.6250789165497,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

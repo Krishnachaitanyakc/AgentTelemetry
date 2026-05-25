@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-5413",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1675,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3715,
+      "response_excerpt": "<reasoning>\n`pytest.raises(...) as excinfo` returns an `ExceptionInfo`, whose `str()` previously fell back to `__repr__`, producing traceback-location style output. A normal caught exception uses `str(exception)`, so the least surprising behavior is for filled `ExceptionInfo.__str__` to delegate to `str(self.value)`. For unfilled context managers, it keeps the existing repr-like placeholder.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/src/_pytest/_code/code.py b/src/_pytest/_code/code.py\n--- a/sr",
+      "latency_s": 161.63289999961853,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

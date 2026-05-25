@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-19254",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2686,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1418,
+      "response_excerpt": "<reasoning>\nImplemented the multivariate replacement in `dmp_zz_mignotte_bound` using the same Knuth-Cohen structure as `dup_zz_mignotte_bound`: total degree, Euclidean coefficient norm, leading coefficient, and max norm. Updated tests for the tighter bound and the Wang prime derived from it.\n\nVerified with:\n`python3 -m pytest sympy/polys/tests/test_factortools.py -q`\nResult: `24 passed, 1 xfailed`.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/sympy/polys/factortools.py b/sympy/polys/factortools.p",
+      "latency_s": 315.4011528491974,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

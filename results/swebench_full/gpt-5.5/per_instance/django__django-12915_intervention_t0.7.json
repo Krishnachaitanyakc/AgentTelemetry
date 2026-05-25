@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12915",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3386,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1680,
+      "response_excerpt": "<reasoning>\n1. `ASGIStaticFilesHandler.__call__()` delegates static HTTP requests to `ASGIHandler.__call__()`.\n2. `ASGIHandler` then calls `self.get_response_async(request)`.\n3. Without an async staticfiles override, resolution falls through to `BaseHandler.get_response_async()`, whose middleware chain was never loaded for the staticfiles wrapper, causing `_middleware_chain` to be `None`.\n4. The fix is to serve static files through an async `get_response_async()` path, mirroring the synchronous ",
+      "latency_s": 134.45210599899292,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

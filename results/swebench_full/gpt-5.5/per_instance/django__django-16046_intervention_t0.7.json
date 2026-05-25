@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16046",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1180,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1113,
+      "response_excerpt": "<reasoning>\nThe crash comes from indexing `str_number[0]` after `str_number = str(number)`. If the formatter receives an empty string, this raises `IndexError`. Guarding the sign check with `str_number and ...` preserves existing formatting behavior for all non-empty values and lets empty strings pass through unchanged.\n\nVerified with:\n`uv run --python 3.11 --with 'asgiref>=3.2.10' --with pytz --with 'sqlparse>=0.2.2' ./tests/runtests.py utils_tests.test_numberformat`\n</reasoning>\n\n<patch>\n```di",
+      "latency_s": 71.58827114105225,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

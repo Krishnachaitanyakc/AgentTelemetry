@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11630",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2698,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1485,
+      "response": "The fix looks correct. Here's the summary:\n\n<patch>\n--- a/django/core/checks/model_checks.py\n+++ b/django/core/checks/model_checks.py\n@@ -38,21 +38,36 @@ def check_all_models(app_configs=None, **kwargs):\n             constraints[model_constraint.name].append(model._meta.label)\n-    if settings.DATABASE_ROUTERS:\n-        error_class, error_id = Warning, 'models.W035'\n-        error_hint = (\n-            'You have configured settings.DATABASE_ROUTERS. Verify that %s '\n-            'are correctly r...[truncated]",
+      "latency_s": 135.99779295921326,
+      "error": null
+    }
+  ]
+}

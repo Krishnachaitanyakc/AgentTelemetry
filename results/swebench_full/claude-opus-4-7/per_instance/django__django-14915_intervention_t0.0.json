@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14915",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 349,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1801,
+      "response_excerpt": "<reasoning>\nThe issue is that `ModelChoiceIteratorValue` (introduced in Django 3.1) defines `__eq__` but not `__hash__`. In Python, when you define `__eq__` without `__hash__`, the class becomes unhashable (`__hash__` is set to `None`). This breaks code like `value in some_dict`, since dict membership testing requires hashing the key.\n\nThe fix is to add a `__hash__` method that hashes `self.value`, which is consistent with the `__eq__` behavior (which compares `self.value`).\n\nLooking at `/privat",
+      "latency_s": 129.14864087104797,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

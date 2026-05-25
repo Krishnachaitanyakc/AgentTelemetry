@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13241",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2817,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1612,
+      "response_excerpt": "<reasoning>\nKernelPCA eigenvectors are mathematically sign-indeterminate, so dense/ARPACK decompositions can return equivalent components with opposite signs. scikit-learn already has `svd_flip` for deterministic SVD/eigenvector orientation. The patch applies it after sorting KernelPCA eigenvectors and strengthens existing tests to assert exact sign consistency instead of comparing absolute values.\n\nVerification: `python3 -m py_compile sklearn/decomposition/kernel_pca.py sklearn/decomposition/te",
+      "latency_s": 84.37658786773682,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

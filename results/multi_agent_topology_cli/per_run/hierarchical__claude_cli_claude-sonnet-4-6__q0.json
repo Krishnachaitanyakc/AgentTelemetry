@@ -1,0 +1,29 @@
+{
+  "topology": "hierarchical",
+  "model": "claude_cli/claude-sonnet-4-6",
+  "question": "What are three concrete ways autonomous AI agents fail in production deployments, and what observability primitives would catch each?",
+  "run_id": "hierarchical__claude_cli_claude-sonnet-4-6__q0",
+  "transcript": [
+    {
+      "agent": "facts_specialist",
+      "output": "- **Tool call loops** \u2014 agent repeatedly invokes the same tool without progress. Catch with: step-count metrics, cycle detection on tool call sequences, latency histograms per tool.\n\n- **Context window exhaustion** \u2014 long-running tasks bloat the prompt until the model truncates or halts. Catch with: token-count gauges per turn, alerts at 80% window capacity, trace spans annotating compaction events.\n\n- **Silent semantic drift** \u2014 agent completes steps but pursues the wrong goal after misinterpreting ambiguous instructions. Catch with: LLM-as-judge eval probes on intermediate outputs, goal-consistency checks comparing final state to original intent, structured output validation.\n\n- **Tool failure cascades** \u2014 one flaky API call causes the agent to fabricate results or halt. Catch with: per-tool error rate counters, timeout alerts, structured logs tagging each tool response as success/failure/timeout.\n\n- **Reward hacking** \u2014 agent satisfies the literal metric while violating intent. Catc",
+      "latency_s": 15.275053977966309
+    },
+    {
+      "agent": "analysis_specialist",
+      "output": "**Trade-off 1: Observability depth vs. latency**\nRich tracing (full prompt/response logging, tool call chains) catches most failures but adds latency and cost. Lightweight metrics (token counts, error rates) are fast but miss semantic drift and reasoning failures.\n\n**Trade-off 2: Determinism vs. capability**\nHighly constrained agents (strict tool allowlists, output schemas) are easy to monitor with schema validators and assertion checks \u2014 but fail on novel tasks. Flexible agents handle edge cases but require semantic similarity scoring and LLM-as-judge evaluators to catch subtle failures, which are themselves unreliable.\n\n**Trade-off 3: Reactive vs. proactive observability**\nPost-hoc log analysis (structured spans, replay buffers) identifies what failed after the fact. Real-time guardrails (confidence thresholds, circuit breakers on tool call frequency) prevent cascading failures but introduce false positives that interrupt valid workflows.",
+      "latency_s": 17.96979808807373
+    },
+    {
+      "agent": "manager_synthesis",
+      "output": "**Three Production Failure Modes for Autonomous AI Agents**\n\n**1. Tool call loops.** The agent repeatedly invokes the same tool without progress. Catch with step-count metrics and cycle detection on tool call sequences; latency histograms per tool surface stuck states early.\n\n**2. Context window exhaustion.** Long-running tasks bloat the prompt until the model truncates or halts mid-task. Catch with per-turn token-count gauges, alerts at 80% window capacity, and trace spans annotating compaction events.\n\n**3. Silent semantic drift.** The agent completes all steps but pursues the wrong goal after misinterpreting ambiguous instructions \u2014 the hardest failure to detect. Catch with LLM-as-judge probes on intermediate outputs and goal-consistency checks comparing final state to original intent.\n\n**Key trade-off:** rich tracing catches semantic drift but adds latency; lightweight metrics are fast but blind to reasoning failures. A tiered approach \u2014 cheap counters for loops and token pressure,",
+      "latency_s": 12.088046073913574
+    }
+  ],
+  "total_cost_usd": 0.013839,
+  "total_input_tokens": 708,
+  "total_output_tokens": 781,
+  "n_agents": 3,
+  "wall_clock_s": 45.3551549911499,
+  "error": null
+}

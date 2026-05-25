@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14017",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1807,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2063,
+      "response_excerpt": "<reasoning>\nThe failure happens because `Q.__and__()` / `Q.__or__()` delegate to `Q._combine()`, and `_combine()` only accepts another `Q`. `Exists` is a conditional expression, and expression-side combinations already wrap conditional operands in `Q`, so the symmetric fix is to let `Q._combine()` accept conditional expressions by wrapping them in `Q(other)`. Non-conditional objects still raise `TypeError`.\n\nI could not run the Django test suite in this environment because the available Python l",
+      "latency_s": 98.75723171234131,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

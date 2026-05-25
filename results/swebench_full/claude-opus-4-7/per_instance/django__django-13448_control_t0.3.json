@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13448",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 635,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5974,
+      "response_excerpt": "The fix is applied. Here is the summary:\n\n**Root cause:** In `django/db/backends/base/creation.py`, when `TEST.MIGRATE: False` is set, the test runner correctly skips running migrations, but then unconditionally calls `serialize_db_to_string()`. Since migrations didn't run, the tables (like `django_admin_log`) don't exist in the database, causing the `UndefinedTable` error during serialization.\n\n**Fix:** Skip the database serialization when `MIGRATE` is `False`, since there's no point serializin",
+      "latency_s": 550.416345834732,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

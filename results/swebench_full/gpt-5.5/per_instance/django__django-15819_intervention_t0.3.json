@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15819",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3511,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1338,
+      "response_excerpt": "<reasoning>\n`inspectdb` already detected repeated relation targets, but only after the first relation had been emitted. That meant the first field kept Django\u2019s default reverse accessor while later fields got explicit `related_name`s. I changed the command to count relation targets before rendering fields, then add a generated `related_name` to every relation whose target appears more than once in the same model.\n\nVerification: `python3 tests/runtests.py inspectdb --parallel=1` passes. The non-s",
+      "latency_s": 188.4805190563202,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

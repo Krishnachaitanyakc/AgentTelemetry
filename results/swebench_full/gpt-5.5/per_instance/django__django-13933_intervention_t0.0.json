@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13933",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4239,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2001,
+      "response_excerpt": "<reasoning>\n`ModelChoiceField.to_python()` already passes `params={\"value\": value}` when raising `invalid_choice`, so the fix is to update the default error message to use `%(value)s`. I updated affected tests to expect the submitted invalid value, including admin raw-id widget validation output where HTML escaping is required.\n\nVerified with:\n`PYTHONPATH=/private/tmp/django python3 runtests.py model_forms.test_modelchoicefield -v 1`\n`PYTHONPATH=/private/tmp/django python3 runtests.py admin_widg",
+      "latency_s": 289.01505994796753,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

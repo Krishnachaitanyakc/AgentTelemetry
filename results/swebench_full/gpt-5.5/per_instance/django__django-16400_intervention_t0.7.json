@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16400",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1316,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3148,
+      "response_excerpt": "<reasoning>\nThe permission creation path already uses the selected database alias for reads and writes in this checkout. I added a regression test that exercises the actual `migrate --database=other` path with a router that raises if Django asks it for a read database, matching the reported failure mode.\n\nVerified with:\n`python3 tests/runtests.py auth_tests.test_management.CreatePermissionsMultipleDatabasesTests -v 2`\n</reasoning>\n\n<patch>\ndiff --git a/tests/auth_tests/test_management.py b/tests",
+      "latency_s": 172.51567602157593,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

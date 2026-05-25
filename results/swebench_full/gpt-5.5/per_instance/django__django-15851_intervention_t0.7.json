@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15851",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1266,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1426,
+      "response_excerpt": "<reasoning>\nThe PostgreSQL dbshell command builds the `psql` argv in `DatabaseClient.settings_to_cmd_args_env()`. `psql` treats tokens after the database name as extra positional arguments, so Django must append user-provided dbshell parameters before appending `dbname`.\n\nThe patch moves `args.extend(parameters)` before `args += [dbname]` and updates the PostgreSQL dbshell test to cover the reported `-c \"select ...\"` case.\n\nVerification:\n- Full focused test runner could not start because this en",
+      "latency_s": 74.65703892707825,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

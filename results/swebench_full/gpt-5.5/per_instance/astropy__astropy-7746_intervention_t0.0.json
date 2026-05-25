@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-7746",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1706,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2849,
+      "response_excerpt": "<reasoning>\nThe WCS conversion path already avoids calling wcslib for empty coordinate arrays, but it checks for emptiness before broadcasting. That means inputs like `([], 1, 0)` return one empty axis and one scalar-shaped axis instead of consistently returning empty output arrays. Moving the empty check after `np.broadcast_arrays` preserves the original fix for `([], [], 0)` while making broadcastable empty inputs behave correctly. I added focused regression tests for empty list/array inputs a",
+      "latency_s": 161.54915714263916,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

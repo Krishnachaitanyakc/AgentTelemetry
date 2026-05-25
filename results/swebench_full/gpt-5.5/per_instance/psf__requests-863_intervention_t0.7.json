@@ -1,0 +1,26 @@
+{
+  "instance_id": "psf__requests-863",
+  "repo": "psf/requests",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 997,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1598,
+      "response_excerpt": "<reasoning>\nThe hook initialization path calls `Request.register_hook()` for each item in the supplied `hooks` dict. In this checkout, `register_hook()` already handles both a single callable and an iterable of callables, so `{\"response\": [hook1, hook2]}` prepares as two response hooks instead of a nested list. The patch adds focused regression coverage for that behavior and verifies dispatch invokes both hooks in order.\n\nVerification: the new focused test passes in the local Requests venv. A co",
+      "latency_s": 103.29669189453125,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

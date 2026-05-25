@@ -1,0 +1,29 @@
+{
+  "topology": "hierarchical",
+  "model": "claude_cli/claude-sonnet-4-6",
+  "question": "Compare reasoning-loop failures versus circular delegation in multi-agent systems. Which is more common, and why?",
+  "run_id": "hierarchical__claude_cli_claude-sonnet-4-6__q1",
+  "transcript": [
+    {
+      "agent": "facts_specialist",
+      "output": "- **Reasoning-loop failures** occur when a single agent cycles through the same reasoning steps without progress (e.g., re-evaluating the same dead-end plan repeatedly).\n- **Circular delegation** occurs when Agent A delegates to Agent B, which delegates back to A (or through a chain returning to A), creating an infinite handoff cycle.\n- **Reasoning loops are more common** because they arise from a single agent's internal state \u2014 no coordination infrastructure required to trigger them.\n- Circular delegation requires architectural conditions: multiple agents, a shared task-routing mechanism, and insufficient loop-detection \u2014 making it rarer but harder to debug.\n- Reasoning loops are amplified by long context windows and chain-of-thought prompting, where models are encouraged to \"keep thinking\" past a useful stopping point.\n- Both share a root cause: **lack of termination conditions** \u2014 either an explicit step limit, a confidence threshold, or a visited-state check.",
+      "latency_s": 14.492791175842285
+    },
+    {
+      "agent": "analysis_specialist",
+      "output": "## Reasoning-Loop Failures vs. Circular Delegation\n\n**1. Detection difficulty**\nReasoning-loop failures are self-contained \u2014 a single agent spins on its own state, producing observable token waste or timeout. Circular delegation is distributed across agents, making the cycle harder to trace and terminate.\n\n**2. Root cause**\nReasoning loops stem from poor termination conditions or reward shaping within one model. Circular delegation stems from underspecified ownership boundaries between agents \u2014 an architectural flaw, not a model flaw.\n\n**3. Recovery cost**\nReasoning loops fail fast and cheaply (one agent restarts). Circular delegation can corrupt shared state across multiple agents before detection, making recovery more expensive.\n\n**Which is more common: Reasoning-loop failures.**\nThey occur even in single-agent systems and scale with model complexity. Circular delegation requires multi-agent orchestration with ambiguous routing \u2014 a narrower, more avoidable design mistake. Most produc",
+      "latency_s": 14.389915227890015
+    },
+    {
+      "agent": "manager_synthesis",
+      "output": "Reasoning-loop failures are more common than circular delegation. A reasoning loop requires only one agent and one bad termination condition \u2014 it emerges naturally from chain-of-thought prompting and long context windows that encourage models to keep deliberating past any useful stopping point. This makes them endemic to single-agent systems, not just multi-agent ones.\n\nCircular delegation, by contrast, demands a specific architectural stack: multiple agents, a shared routing mechanism, and absent loop-detection. That's a narrower failure mode \u2014 rarer, but significantly harder to debug when it does occur, because the cycle is distributed across agents rather than visible in one agent's output.\n\nBoth failures share the same root cause: missing termination conditions. The difference is scope. Reasoning loops are a model-level flaw \u2014 fixable with step limits or confidence thresholds applied to a single agent. Circular delegation is an architectural flaw \u2014 requiring ownership boundaries an",
+      "latency_s": 12.781675100326538
+    }
+  ],
+  "total_cost_usd": 0.014366999999999998,
+  "total_input_tokens": 704,
+  "total_output_tokens": 817,
+  "n_agents": 3,
+  "wall_clock_s": 41.678366899490356,
+  "error": null
+}

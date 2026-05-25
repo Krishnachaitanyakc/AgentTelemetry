@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-20049",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4683,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3378,
+      "response_excerpt": "<reasoning>\nThe failure happens because `Point.vel(frame)` only searches for a neighboring point with an explicitly defined velocity in the requested frame. If none exists, it raises even when the point has a known position vector that can be differentiated in that frame.\n\nThe patch keeps the existing behavior when any connected point has velocity information, but adds a fallback for the case where no velocity is defined anywhere in the connected position graph: differentiate this point\u2019s positi",
+      "latency_s": 44.470561027526855,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

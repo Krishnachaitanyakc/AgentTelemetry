@@ -1,0 +1,26 @@
+{
+  "instance_id": "matplotlib__matplotlib-22711",
+  "repo": "matplotlib/matplotlib",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2160,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4335,
+      "response_excerpt": "<reasoning>\nThe failure happens because `RangeSlider.__init__` creates the selected range with `axvspan`/`axhspan`. When `valinit` has identical endpoints, the polygon can contain only 4 vertices. `set_val` then mutates `xy[4]`, assuming a closed 5-vertex polygon, which raises `IndexError`.\n\nThe robust fix is to rebuild the polygon vertices in `set_val` instead of mutating the existing array in-place. That preserves the intended closed polygon shape for both normal and degenerate ranges. I also ",
+      "latency_s": 122.97121596336365,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

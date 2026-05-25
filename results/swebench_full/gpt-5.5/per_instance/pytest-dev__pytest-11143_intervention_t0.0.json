@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-11143",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1258,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 6050,
+      "response_excerpt": "<reasoning>\nThe crash happens because `is_rewrite_disabled()` assumes its input is a string and uses `\"PYTEST_DONT_REWRITE\" in docstring`. When `mod.docstring` is an integer, that raises `TypeError`. The fix is to make the helper treat only string values as docstrings. I also added a direct regression test for an AST whose `Module.docstring` is numeric.\n\nVerification: the new focused test passes with `pytest -c /dev/null testing/test_assertrewrite.py::TestIssue11140::test_non_string_module_docst",
+      "latency_s": 136.3803322315216,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

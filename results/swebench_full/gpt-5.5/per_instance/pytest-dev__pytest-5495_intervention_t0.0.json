@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-5495",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2609,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1537,
+      "response_excerpt": "<reasoning>\nThe confusing `52` comes from treating `bytes`/`bytearray` as generic sequences of integers. Existing bytes handling already avoids numeric per-index diffs, but it only covered `bytes` and lacked a regression test for length-only comparisons. The patch treats `bytearray` as bytes-like too and verifies length-only bytes-like diffs omit the ordinal \u201cfirst extra item\u201d message.\n</reasoning>\n\n<patch>\ndiff --git a/src/_pytest/assertion/util.py b/src/_pytest/assertion/util.py\nindex 07918a6.",
+      "latency_s": 350.7133572101593,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

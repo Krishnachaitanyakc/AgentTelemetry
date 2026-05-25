@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-24102",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4250,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2500,
+      "response_excerpt": "<reasoning>\nThe 1.11 tokenizer only recognized ASCII identifiers with `_literal = r\"[A-Za-z][A-Za-z0-9]*\"`, so a symbol like `\u03bb` produced no token and the parser could not build a single AST. The patch changes the identifier regex to include Unicode characters that Python accepts in identifiers, while still excluding `_` because Mathematica uses underscores for pattern syntax. I also added regression coverage for Greek, CJK, combined Unicode symbols, and implicit multiplication between Unicode i",
+      "latency_s": 164.38191723823547,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

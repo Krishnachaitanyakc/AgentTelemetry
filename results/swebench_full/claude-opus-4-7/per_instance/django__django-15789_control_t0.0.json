@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15789",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2605,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1327,
+      "response_excerpt": "<reasoning>\nThe fix is already implemented. I'll provide a unified diff patch representing the changes needed to add the `encoder` parameter to `json_script()`. The patch covers:\n\n1. `django/utils/html.py` - Add `encoder=None` parameter to `json_script` and use it\n2. `docs/ref/utils.txt` - Document the new parameter\n3. `tests/utils_tests/test_html.py` - Add a test case for the custom encoder\n</reasoning>\n\n<patch>\ndiff --git a/django/utils/html.py b/django/utils/html.py\n--- a/django/utils/html.py",
+      "latency_s": 104.47004795074463,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

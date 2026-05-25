@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12708",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 995,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1753,
+      "response_excerpt": "<reasoning>\nThe bug occurs in `django/db/backends/base/schema.py` in `_delete_composed_index()`. When deleting an `index_together` while a `unique_together` exists on the same fields, the `_constraint_names()` query returns 2 constraints (the unique one and the index one), causing `ValueError: Found wrong number (2) of constraints`.\n\nThe existing code already handled the symmetric case for `unique=True` \u2014 it filters constraint_names down to the one whose name matches the default unique constrain",
+      "latency_s": 96.90016317367554,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

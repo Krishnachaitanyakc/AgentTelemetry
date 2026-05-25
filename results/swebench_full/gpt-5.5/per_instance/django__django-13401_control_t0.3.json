@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13401",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1866,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2028,
+      "response_excerpt": "<reasoning>\nThe checkout already had `Field.__eq__()` and `Field.__lt__()` comparing model identity when `creation_counter` collides, so the remaining inconsistency was `__hash__()`. I updated hashing to include the model when first computed, while caching the value to preserve Django\u2019s existing hash immutability expectation after a field is attached to a model. Field copies drop the cached hash so copied abstract fields compute their own model-aware hash.\n\nVerified with:\n`python3 tests/runtests",
+      "latency_s": 204.15250301361084,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

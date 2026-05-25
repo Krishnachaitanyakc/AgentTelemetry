@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11099",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 746,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1589,
+      "response": "This test file is about a different Django issue (related to URL converters). Let me understand the structure better. Based on the problem statement, I need to create a patch that changes the regex from `^...$` to `\\A...\\Z`. Let me write a simple test to demonstrate the issue and then create the patch:\n\n<reasoning>\nLooking at all the evidence:\n\n1. The issue description says the validators currently use `r'^[\\w.@+-]+$'` which allows trailing newlines\n2. The fix should change it to `r'\\A[\\w.@+-]+\\...[truncated]",
+      "latency_s": 91.5292899608612,
+      "error": null
+    }
+  ]
+}

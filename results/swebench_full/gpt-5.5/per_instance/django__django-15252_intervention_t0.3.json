@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15252",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3686,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2475,
+      "response_excerpt": "<reasoning>\n`MigrationRecorder` was bypassing the database router because it directly checked/created/updated `django_migrations`. The fix adds a router check for the recorder\u2019s synthetic `Migration` model and makes schema creation plus applied/unapplied recording no-op when migrations aren\u2019t allowed on that database. `applied_migrations()` also returns `{}` for disallowed aliases.\n\nVerification run:\n`python3 tests/runtests.py migrations.test_loader.RecorderTests`\n</reasoning>\n\n<patch>\n```diff\nd",
+      "latency_s": 195.6242470741272,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

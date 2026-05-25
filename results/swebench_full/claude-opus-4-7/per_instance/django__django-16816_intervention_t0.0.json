@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16816",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 944,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5745,
+      "response_excerpt": "<reasoning>\nThe bug is in `_check_list_display_item` in `django/contrib/admin/checks.py`. When `list_display` contains the name of a reverse relation (like `\"choice\"` referring to `Choice.question` reverse FK), the original code only catches `ManyToManyField` via `isinstance(field, models.ManyToManyField)`, missing reverse FK relations (`ManyToOneRel`) and reverse M2M relations (`ManyToManyRel`).\n\nTrace for `list_display = [\"choice\"]` on `QuestionAdmin`:\n1. `callable(\"choice\")` \u2192 False\n2. `hasat",
+      "latency_s": 424.1557340621948,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "topology": "sequential",
+  "model": "codex_cli/gpt-5.5",
+  "question": "What are the limitations of using mock LLM clients for benchmarking agent fault detection? Propose two ways to validate against real production traces.",
+  "run_id": "sequential__codex_cli_gpt-5.5__q3",
+  "transcript": [
+    {
+      "agent": "planner",
+      "output": "1. Which agent fault types are missed or distorted by mock LLM clients because they lack real model variability, latency, refusal behavior, tool-call errors, and context sensitivity?\n\n2. How do benchmark metrics change when comparing mock-client runs against replayed production traces with identical prompts, tools, inputs, and expected fault labels?\n\n3. What two validation methods are feasible: trace replay in a sandboxed harness, and shadow evaluation on sampled live production sessions with human or automated fault annotations?",
+      "latency_s": 10.395843029022217
+    },
+    {
+      "agent": "researcher",
+      "output": "**Structured Findings**\n\n1. **Mock-client limitations:** Mock LLM clients often miss or distort agent fault types that depend on real model behavior: stochastic variability, inconsistent reasoning, latency spikes, refusals, malformed or partial tool calls, context-window effects, prompt sensitivity, and recovery behavior after ambiguous outputs.\n\n2. **Benchmark distortion:** Fault-detection metrics from mock runs can overstate reliability because outputs are deterministic, cleaner, and easier to classify. Compared with replayed production traces using identical prompts, tools, inputs, and expected fault labels, precision/recall may shift substantially, especially for faults triggered by timing, refusal policies, tool-call formatting, or context-dependent model drift.\n\n3. **Validation method 1: trace replay:** Re-run sampled production traces in a sandboxed harness with the same prompts, tools, inputs, and expected labels. Compare detected faults against annotated ground truth to measur",
+      "latency_s": 10.81064486503601
+    },
+    {
+      "agent": "writer",
+      "output": "Mock LLM clients are useful for deterministic regression tests, but they are weak benchmarks for real-world agent fault detection. They often fail to reproduce faults that depend on actual model behavior, including stochastic outputs, prompt sensitivity, refusals, malformed or partial tool calls, latency spikes, context-window effects, inconsistent reasoning, and recovery after ambiguous responses. Because mock outputs are usually cleaner and more predictable, detector precision and recall can look better than they would in production, especially for timing-related, policy-related, formatting-related, or context-dependent faults.\n\nTwo production-grounded validation methods can reduce this distortion:\n\n1. **Trace replay:** Re-run sampled production traces in a sandboxed harness using the same prompts, tools, inputs, and expected labels. Compare detector results with annotated ground truth to measure recall, false positives, and coverage by fault type.\n\n2. **Shadow evaluation:** Run the ",
+      "latency_s": 8.956079244613647
+    }
+  ],
+  "total_cost_usd": 0.0,
+  "total_input_tokens": 731,
+  "total_output_tokens": 809,
+  "n_agents": 3,
+  "wall_clock_s": 30.18005895614624,
+  "error": null
+}

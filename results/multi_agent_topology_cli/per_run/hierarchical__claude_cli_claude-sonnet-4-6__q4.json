@@ -1,0 +1,29 @@
+{
+  "topology": "hierarchical",
+  "model": "claude_cli/claude-sonnet-4-6",
+  "question": "Describe how a closed-loop intervention based on telemetry signals can recover a stuck agent. Give a concrete example using the REASONING span kind.",
+  "run_id": "hierarchical__claude_cli_claude-sonnet-4-6__q4",
+  "transcript": [
+    {
+      "agent": "facts_specialist",
+      "output": "- **Telemetry spans expose agent internals**: The `REASONING` span kind (from OpenTelemetry-based agent tracing) captures a model's chain-of-thought steps, including duration, token counts, and intermediate outputs.\n\n- **Stuck detection via span metrics**: A watchdog monitors `reasoning.duration_ms` and loop-count attributes. If a `REASONING` span exceeds a threshold (e.g., 30s or 10 iterations with no tool call emitted), it triggers an intervention.\n\n- **Concrete example**: An agent looping on a math proof emits repeated `REASONING` spans with identical `thought.content` hashes. The controller detects stale hashes across 3 consecutive spans and injects a system message: *\"You appear stuck. Abandon current approach and try a different strategy.\"*\n\n- **Recovery actions**: Intervention options include prompt injection, tool-call forcing, context truncation, or agent restart with a modified system prompt.\n\n- **Closed-loop closure**: The controller re-subscribes to subsequent `REASONING` s",
+      "latency_s": 14.889379978179932
+    },
+    {
+      "agent": "analysis_specialist",
+      "output": "## Key Trade-offs\n\n**1. Responsiveness vs. False Positive Rate**\nTriggering recovery on short reasoning spans catches real stalls quickly, but may interrupt legitimate deep-thinking loops. A tight timeout (e.g., 30s no progress) recovers fast; a loose one (120s) reduces spurious interrupts but wastes wall-clock time.\n\n**2. Recovery Fidelity vs. Complexity**\nSimple recovery (kill + restart) is easy to implement but loses in-progress reasoning state. Richer interventions (inject a \"rethink\" prompt, roll back to last checkpoint) preserve context but require the telemetry layer to understand span semantics \u2014 coupling observability to agent internals.\n\n**3. Automation vs. Observability Cost**\nA fully closed loop (telemetry \u2192 detector \u2192 actuator) recovers without human involvement, but every intervention fires a new REASONING span, potentially inflating trace volume and obscuring root cause. Human-in-the-loop adds latency but keeps the trace interpretable.",
+      "latency_s": 14.67465615272522
+    },
+    {
+      "agent": "manager_synthesis",
+      "output": "A watchdog subscribes to the agent's OpenTelemetry trace stream and monitors `REASONING` spans for stall signals: elapsed `reasoning.duration_ms` exceeding a threshold, loop-count attributes climbing without a tool call emitted, or repeated identical `thought.content` hashes across consecutive spans.\n\n**Concrete example:** An agent solving a math proof emits three `REASONING` spans in succession, each with the same content hash and no downstream tool-call span. The controller detects stale hashes on the third occurrence and injects a system message \u2014 *\"You appear stuck. Abandon current approach and try a different strategy.\"* \u2014 directly into the model's context. It then re-subscribes to subsequent `REASONING` spans; if a new, distinct content hash appears within the timeout window, the alert clears. If not, escalation options include forcing a specific tool call, truncating accumulated context, or restarting the agent with a modified system prompt.\n\nThe key trade-off is threshold tunin",
+      "latency_s": 15.07041311264038
+    }
+  ],
+  "total_cost_usd": 0.014595,
+  "total_input_tokens": 715,
+  "total_output_tokens": 830,
+  "n_agents": 3,
+  "wall_clock_s": 44.64811182022095,
+  "error": null
+}

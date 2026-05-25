@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-11630",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 5605,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "models.e028": 1,
+    "duplicatedbtabletests": 1,
+    "database_routers db_table multiple models": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1671,
+      "response": "<reasoning>The duplicate `db_table` check is valid for single-database projects, but with `DATABASE_ROUTERS` configured the same table name can be routed to separate databases. The patch keeps `models.E028` when no routers are configured and downgrades the collision to `models.W035` with a routing hint when routers are present, plus tests and docs for the warning.</reasoning>\n<patch>diff --git a/django/core/checks/model_checks.py b/django/core/checks/model_checks.py\n--- a/django/core/checks/model_checks.py\n+++ b/django/core/checks/model_checks.py\n@@ -4,7 +4,8 @@ from collections import defaultdict\n from itertools import chain\n \n from django.apps import apps\n-from django.core.checks import Error, Tags, register\n+from django.conf import settings\n+from django.core.checks import Error, Tags, Warning, register\n \n \n @register(Tags.models)\n@@ -35,14 +36,25 @@ def check_all_models(app_configs=None, **kwargs):\n             indexes[model_index.name].append(model._meta.label)\n         for model_constraint in model._meta.constraints:\n             constraints[model_constraint.name].append(model._meta.label)\n+    if settings.DATABASE_ROUTERS:\n+        error_class, error_id = Warning, 'models.W035'\n+        error_hint = (\n+            'You have configured settings.DATABASE_ROUTERS. Verify that %s '\n+            'are correctly routed to separate databases.'\n+        )\n+    else:\n+        error_class, error_id = Error, 'models.E028'\n+        error_hint = None\n     for db_table, model_labels i",
+      "latency_s": 128.54201579093933,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 7934,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"models.E028\"}}</tool_call>",
+      "latency_s": 14.063187837600708,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 8334,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"DuplicateDBTableTests\"}}</tool_call>",
+      "latency_s": 13.908127069473267,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 8784,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"DATABASE_ROUTERS db_table multiple models\"}}</tool_call>",
+      "latency_s": 12.669825077056885,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 9334,
+      "response": "<reasoning>After checking the duplicate table-name check, its tests, and the multi-database router setting, the issue is that Django treats duplicate `db_table` values as an unconditional error. That is too strict when `DATABASE_ROUTERS` is configured, because the models may legitimately live on different databases. The patch keeps the existing error for single-database projects, but emits a warning with a routing hint when routers are configured.</reasoning>\n<patch>diff --git a/django/core/checks/model_checks.py b/django/core/checks/model_checks.py\n--- a/django/core/checks/model_checks.py\n+++ b/django/core/checks/model_checks.py\n@@ -4,7 +4,8 @@ from collections import defaultdict\n from itertools import chain\n \n from django.apps import apps\n-from django.core.checks import Error, Tags, register\n+from django.conf import settings\n+from django.core.checks import Error, Tags, Warning, register\n \n \n @register(Tags.models)\n@@ -35,14 +36,25 @@ def check_all_models(app_configs=None, **kwargs):\n             indexes[model_index.name].append(model._meta.label)\n         for model_constraint in model._meta.constraints:\n             constraints[model_constraint.name].append(model._meta.label)\n+    if settings.DATABASE_ROUTERS:\n+        error_class, error_id = Warning, 'models.W035'\n+        error_hint = (\n+            'You have configured settings.DATABASE_ROUTERS. Verify that %s '\n+            'are correctly routed to separate databases.'\n+        )\n+    else:\n+        error_class, error_i",
+      "latency_s": 23.207210063934326,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13220",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1984,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1437,
+      "response": "<reasoning>\nThe current `__eq__` method in `ValidationError` compares by hash values:\n```python\ndef __eq__(self, other):\n    if not isinstance(other, ValidationError):\n        return NotImplemented\n    return hash(self) == hash(other)\n```\n\nThis is problematic because:\n1. Hash collisions can cause false positives (different errors appear equal).\n2. The `__hash__` for `error_dict` doesn't sort errors within each field's list, making it order-sensitive when it shouldn't be.\n\nThe fix should:\n1. Repl...[truncated]",
+      "latency_s": 102.17191195487976,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-21171",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1487,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 9183,
+      "response_excerpt": "<reasoning>\nThe failure comes from `LatexPrinter._print_Pow`: when the base is a function, it calls the function printer with `exp=...`. `SingularityFunction` is a function printer, so its LaTeX printer must accept `exp` and incorporate it into the rendered output. The checkout already contains this fix and regression tests; I verified with `/private/tmp/sympy-latex-venv/bin/python -m pytest sympy/printing/tests/test_latex.py -k SingularityFunction -q`.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a",
+      "latency_s": 88.68988275527954,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

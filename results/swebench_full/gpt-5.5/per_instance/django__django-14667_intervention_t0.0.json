@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14667",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2901,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1834,
+      "response_excerpt": "<reasoning>\n`only()` stores an immediate-loading field set using `deferred_loading = (..., False)`. When `defer()` removed the last field from that set, Django cleared deferred loading entirely, so `only(\"name\").defer(\"name\")` fell back to selecting all columns.\n\nThe fix preserves an empty immediate-loading set as distinct from \u201cno restrictions,\u201d so SQL generation still builds an `only` select mask containing just the primary key. `only()` with no arguments still clears restrictions to preserve ",
+      "latency_s": 246.80190300941467,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

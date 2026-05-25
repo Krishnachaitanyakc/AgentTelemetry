@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-5227",
+  "repo": "pytest-dev/pytest",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 414,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1839,
+      "response_excerpt": "<reasoning>\nI've confirmed the location where DEFAULT_LOG_FORMAT is defined. The issue requests changing the format from `\"%(filename)-25s %(lineno)4d %(levelname)-8s %(message)s\"` to `\"%(levelname)-8s %(name)s:%(filename)s:%(lineno)d %(message)s\"`.\n\nThe fix is in `src/_pytest/logging.py` and changes the single `DEFAULT_LOG_FORMAT` constant. Let me propose the unified diff patch.\n</reasoning>\n\n<patch>\n--- a/src/_pytest/logging.py\n+++ b/src/_pytest/logging.py\n@@ -18,7 +18,7 @@\n from _pytest.confi",
+      "latency_s": 355.3601710796356,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

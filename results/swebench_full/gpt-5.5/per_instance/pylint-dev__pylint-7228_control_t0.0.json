@@ -1,0 +1,26 @@
+{
+  "instance_id": "pylint-dev__pylint-7228",
+  "repo": "pylint-dev/pylint",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1952,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4907,
+      "response_excerpt": "<reasoning>\n1. The crash comes from regex config values being compiled directly with `re.compile`, which lets `re.error` escape through argparse as a traceback.\n2. Pylint should still reject unsupported Python regex syntax like `\\p{Han}`, but it should report a normal configuration error instead of crashing.\n3. The fix is to wrap regex compilation and raise `argparse.ArgumentTypeError`, which argparse renders as a clean CLI/config parse failure.\n4. The regression test uses the reported `function",
+      "latency_s": 87.1279149055481,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15061",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 439,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1161,
+      "response_excerpt": "I have enough context. The issue describes that the original `MultiWidget.id_for_label` method appended `'_0'` to the ID, creating `f'{id_}_0'`, which made the `<label for=\"...\">` point to the first subwidget. The fix is to make `id_for_label` return an empty string so no `for=` attribute is rendered.\n\n<reasoning>\nThe issue (Django ticket #32338) is about `MultiWidget`'s `id_for_label` method generating an id like `f'{id_}_0'`, which doesn't make sense because:\n\n1. It auto-links the parent `<lab",
+      "latency_s": 229.7795798778534,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-14182",
+  "repo": "astropy/astropy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4347,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2667,
+      "response_excerpt": "<reasoning>\nThe issue requests `header_rows` support in `ascii.rst` output, matching what's already in `ascii.fixed_width`. The fix needs to:\n\n1. **`astropy/io/ascii/fixedwidth.py`** \u2014 Generalize `FixedWidthData.write()` to emit any list of header rows (driven by a new `header_rows` class attribute defaulting to `['name']`) and add a `_get_header_row(attr)` helper that pulls the corresponding `col.info` attribute. Also add a `header_rows` keyword to `FixedWidth.__init__` so subclasses can opt in",
+      "latency_s": 98.5751039981842,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

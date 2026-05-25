@@ -1,0 +1,49 @@
+{
+  "instance_id": "django__django-12747",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 4,
+  "proposed_patch": false,
+  "patch_len": 0,
+  "total_searches": 0,
+  "unique_queries": 0,
+  "max_query_repeats": 0,
+  "patch_suppressions": 3,
+  "intervention_triggers": 0,
+  "query_counts": {},
+  "error": "claude exit 1: Claude Code at Meta (https://fburl.com/claude.code.users)\nUsing AI Gateway\n",
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1938,
+      "response": "Now I have a complete understanding of the bug. Here's my analysis and fix:\n\n**Root cause:** In `Collector.delete()`, there are three places where model labels get added to `deleted_counter` even when the count is 0:\n\n1. **Line 302** \u2014 single-instance fast-delete path: always returns `{model._meta.label: count}` even when `count == 0`\n2. **Line 315** \u2014 fast deletes loop: `deleted_counter[qs.model._meta.label] += count` unconditionally (count may be 0 for empty querysets)\n3. **Line 333** \u2014 instances loop: same issue\n\nFor \"simple\" models (no FKs), `can_fast_delete()` returns `True` so the queryset goes to `self.fast_deletes`. When empty, `_raw_delete()` returns 0, but it still increments the counter giving `{'my_app.SimpleModel': 0}`.\n\nFor models with FKs, nothing gets added to `self.data` or `self.fast_deletes` for an empty queryset, leaving `deleted_counter` as `{}`.\n\nThe fix: guard each counter increment with `if count:`, and apply the same to the single-instance fast-delete return.\n\n<reasoning>\nThe inconsistency arises because:\n- Simple models are fast-deletable; their queryset is appended to `self.fast_deletes` even when empty. `_raw_delete()` returns 0, and `deleted_counter[label] += 0` adds a zero entry.\n- FK models: when the queryset is empty, `collect()` returns early (no objects), so `self.data` and `self.fast_deletes` remain empty, leaving `deleted_counter` as `{}`.\n\nThree locations need `if count:` guards so zero-count deletions never pollute the result dictionary.\n",
+      "latency_s": 245.3629550933838,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 5249,
+      "response": "I have all the information needed. Here's my analysis and fix:\n\n**Root cause:** In `Collector.delete()` at line 487 of `django_repo`, the single-instance fast-delete optimization path always returns `{model._meta.label: count}` in the dict regardless of whether `count` is 0 or not. The fast_deletes loop (lines 503-504) and the regular data loop (lines 537-538) already have `if count:` guards \u2014 only the single-instance path is missing this guard.\n\n<reasoning>\nThe inconsistency between simple models (no FK) and FK models when deleting zero objects comes from the single-instance fast-delete code path. When `len(self.data) == 1 and len(instances) == 1` and the instance can be fast-deleted, line 487 returns `{model._meta.label: count}` unconditionally. If `count == 0` (i.e., the object was already deleted by another process), the result is `(0, {'my_app.SimpleModel': 0})` instead of `(0, {})`.\n\nThe fix is to guard this return with a conditional so the dict only contains the label when count > 0, consistent with the other two code paths in the same method.\n</reasoning>\n\n<patch>\n--- a/django/db/models/deletion.py\n+++ b/django/db/models/deletion.py\n@@ -484,7 +484,7 @@ class Collector:\n                 with transaction.mark_for_rollback_on_error(self.using):\n                     count = sql.DeleteQuery(model).delete_batch(\n                         [instance.pk], self.using\n                     )\n                 setattr(instance, model._meta.pk.attname, None)\n-                return c",
+      "latency_s": 119.25722193717957,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 7199,
+      "response": "I now have complete understanding of all three fix locations. Here is the final patch:\n\n<reasoning>\nThe bug stems from `Collector.delete()` in `django/db/models/deletion.py`. There are three code paths that update `deleted_counter`, and all three can add zero-count entries:\n\n1. **Line 302** \u2014 single-instance fast-delete: `return count, {model._meta.label: count}` always puts the label in the dict even when `count == 0`.\n2. **Line 315** \u2014 `fast_deletes` loop: `deleted_counter[qs.model._meta.label] += count` adds a 0-count entry when `_raw_delete()` deletes nothing. For a simple model (no FK), an empty queryset is still appended to `self.fast_deletes` by `collect()`, so this path fires.\n3. **Line 333** \u2014 regular `data` loop: same issue as above.\n\nFor FK models, `self.data` and `self.fast_deletes` are both empty when there's nothing to delete, so `deleted_counter` stays `{}`. For simple models, the empty queryset lands in `self.fast_deletes` giving `{'my_app.SimpleModel': 0}`.\n\nThe fix is to guard all three `deleted_counter` updates with `if count:` so zero-count deletes never pollute the result dictionary.\n</reasoning>\n\n<patch>\n--- a/django/db/models/deletion.py\n+++ b/django/db/models/deletion.py\n@@ -299,7 +299,8 @@ class Collector:\n             if self.can_fast_delete(instance):\n                 with transaction.mark_for_rollback_on_error():\n                     count = sql.DeleteQuery(model).delete_batch([instance.pk], self.using)\n                 setattr(instance, model._met",
+      "latency_s": 77.43645310401917,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 10180,
+      "response": "",
+      "latency_s": 112.85559391975403,
+      "error": "claude exit 1: Claude Code at Meta (https://fburl.com/claude.code.users)\nUsing AI Gateway\n"
+    }
+  ]
+}

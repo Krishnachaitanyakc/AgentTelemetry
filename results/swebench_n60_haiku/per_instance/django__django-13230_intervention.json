@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13230",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 531,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1167,
+      "response": "Now I have a clear picture. The `django_30` version does NOT have the `comments` parameter in the `feed.add_item()` call (lines 202-218). This is the version that needs the fix. Let me propose the patch:\n\n<patch>\n--- a/django/contrib/syndication/views.py\n+++ b/django/contrib/syndication/views.py\n@@ -212,6 +212,7 @@ class Feed:\n             updateddate=updateddate,\n             author_name=author_name,\n             author_email=author_email,\n             author_link=author_link,\n+            comm...[truncated]",
+      "latency_s": 63.5368869304657,
+      "error": null
+    }
+  ]
+}

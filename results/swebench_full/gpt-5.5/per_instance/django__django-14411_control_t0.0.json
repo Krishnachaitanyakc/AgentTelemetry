@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14411",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1351,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1196,
+      "response_excerpt": "<reasoning>\nThe widget renders a `<div>` and text, not a labelable form control. Django\u2019s `BoundField.label_tag()` asks the widget for `id_for_label()`, and if that returns a truthy id it emits `for=\"...\"`. The correct fix is for `ReadOnlyPasswordHashWidget.id_for_label()` to return `None`, making the label render without `for`.\n\nI found this checkout already contains that implementation and regression test. Targeted verification could not run because the environment is missing `asgiref`.\n</reas",
+      "latency_s": 110.62500190734863,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

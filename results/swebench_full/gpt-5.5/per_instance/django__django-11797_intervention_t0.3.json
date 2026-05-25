@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11797",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 780,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1550,
+      "response_excerpt": "<reasoning>\nThe exact lookup path must not replace the selected aggregate subquery with the model primary key when the RHS query already has an explicit `.values(\"max_id\")` selection. The current behavior is guarded by `Query.has_select_fields`; this patch adds a regression test confirming that a sliced grouped aggregate subquery used in an exact lookup keeps `GROUP BY name` instead of being rewritten to `GROUP BY id`.\n\nVerified with:\n`python3 ./tests/runtests.py queries.tests.SubqueryTests.test",
+      "latency_s": 259.51875019073486,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

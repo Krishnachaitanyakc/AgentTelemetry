@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15202",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1375,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1311,
+      "response_excerpt": "<reasoning>\nThe issue is in `django/core/validators.py` in `URLValidator.__call__`. There are two unprotected `urlsplit(value)` calls:\n\n1. Line 129 (in the `else` branch): `host_match = re.search(r'^\\[(.+)\\](?::\\d{2,5})?$', urlsplit(value).netloc)` \n2. Line 141 (after the try/except): `if len(urlsplit(value).hostname) > 253:`\n\n`urlsplit()` can raise `ValueError(\"Invalid IPv6 URL\")` for malformed URLs (e.g., when the URL contains `]` without matching `[`). The traceback in the issue points to lin",
+      "latency_s": 421.9858181476593,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-10949",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 5010,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2284,
+      "response_excerpt": "<reasoning>\n`check_array` only tracked `array.dtype`, but pandas `DataFrame` stores per-column dtypes in `array.dtypes`, so `dtype_orig` is `None` and the `warn_on_dtype` branch never runs. The fix stores DataFrame-like original dtypes, uses them for `\"numeric\"` and dtype-list decisions, and warns when the final ndarray dtype differs from the original column dtype set. I added regression coverage for object, mixed, and mixed numeric DataFrames.\n\nVerification: `py_compile` passes. Running the foc",
+      "latency_s": 248.66305589675903,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

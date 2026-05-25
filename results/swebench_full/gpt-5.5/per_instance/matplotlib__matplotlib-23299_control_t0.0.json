@@ -1,0 +1,26 @@
+{
+  "instance_id": "matplotlib__matplotlib-23299",
+  "repo": "matplotlib/matplotlib",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1982,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2582,
+      "response_excerpt": "<reasoning>\nThe bug happens because `rc_context()` snapshots `rcParams` before backend auto-selection. If the backend is still the auto sentinel, creating the first figure inside the context resolves and sets a real backend, but exiting the context restores the old sentinel. A later `get_backend()` then resolves the backend again, and in the affected code path `switch_backend()` calls `close(\"all\")`, clearing `Gcf.figs`.\n\nThe fix is to exclude `backend` from the rc snapshot restored by `rc_conte",
+      "latency_s": 226.66164088249207,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

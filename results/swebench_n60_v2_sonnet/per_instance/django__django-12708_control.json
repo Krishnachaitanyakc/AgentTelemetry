@@ -1,0 +1,77 @@
+{
+  "instance_id": "django__django-12708",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 8,
+  "proposed_patch": false,
+  "patch_len": 0,
+  "total_searches": 0,
+  "unique_queries": 0,
+  "max_query_repeats": 0,
+  "patch_suppressions": 8,
+  "intervention_triggers": 0,
+  "query_counts": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1970,
+      "response": "<reasoning>\n**Root cause**: In `alter_index_together`, when removing an `index_together`, `_delete_composed_index` is called with `{'index': True}` as `constraint_kwargs`. This is forwarded to `_constraint_names`, which uses these keyword arguments as filters. Since `unique` is not included in the kwargs, the `unique` filter inside `_constraint_names` is skipped (because `unique is None`). As a result, when a model has both `index_together` and `unique_together` on the same fields, **both** constraints match the filter `index=True`:\n\n1. The `index_together` index: `{index: True, unique: False}`  \n2. The `unique_together` unique index: `{index: True, unique: True}`\n\nBoth pass, so `constraint_names` contains 2 entries instead of 1, triggering:\n```\nValueError: Found wrong number (2) of constraints for ...\n```\n\n**Fix**: Add `'unique': False` to the `constraint_kwargs` dict passed to `_delete_composed_index` in `alter_index_together`. This makes `_constraint_names` skip any entry where `infodict['unique'] != False` (i.e., skip unique constraints), so only the plain non-unique `index_together` index is found.\n</reasoning>\n\n<patch>\n--- a/django/db/backends/base/schema.py\n+++ b/django/db/backends/base/schema.py\n@@ -393,7 +393,7 @@ class BaseDatabaseSchemaEditor:\n         olds = {tuple(fields) for fields in old_index_together}\n         news = {tuple(fields) for fields in new_index_together}\n         # Deleted indexes\n         for fields in olds.difference(news):\n-            self._del",
+      "latency_s": 279.0744388103485,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4084,
+      "response": "I've completed my investigation. The key findings are:\n\n1. **`_constraint_names`** (line 1154): When `unique` is `None`, the unique-filter is skipped, so both `index_together` indexes (unique=False) and `unique_together` constraints (unique=True) pass through when only `index=True` is specified.\n\n2. **`alter_index_together`**: The delete path used to call `_delete_composed_index` with just `{'index': True}`, which matched both a plain index and a unique constraint on the same columns, causing `ValueError: Found wrong number (2) of constraints`.\n\n3. **The fix**: Adding `'unique': False` to the constraint_kwargs ensures `_constraint_names` skips any `unique=True` entry, leaving only the plain non-unique index.\n\n<reasoning>\nThe bug occurs in `alter_index_together` when deleting an `index_together` that shares its columns with a `unique_together`. The call to `_delete_composed_index` used `{'index': True}` as constraint_kwargs, which was forwarded to `_constraint_names`. In `_constraint_names`, the `unique` filter is only applied when `unique is not None`; since it was `None`, both the non-unique `index_together` index and the unique `unique_together` constraint (which is also an index on the DB level with `index=True`) matched, yielding 2 results and raising a ValueError.\n\nThe fix is to add `'unique': False` so that `_constraint_names` skips any constraint where `infodict['unique'] != False`, thus returning only the plain non-unique index.\n</reasoning>\n\n<patch>\n--- a/django/db/b",
+      "latency_s": 140.36684274673462,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 6538,
+      "response": "The root cause is now fully understood. In `_constraint_names` (line 1152): when `unique is None` (not passed), the unique filter is skipped \u2014 so a `unique_together` constraint (with `index=True, unique=True`) also matches the filter `index=True`. With both the `index_together` and `unique_together` on the same fields, two constraints are found, triggering the ValueError.\n\n**Fix**: Pass `'unique': False` so only non-unique indexes match.\n\n<reasoning>\nThe bug is in `alter_index_together` at line 396 of `django/db/backends/base/schema.py` in the issue repo. It calls `_delete_composed_index` with constraint_kwargs `{'index': True}`, which is forwarded to `_constraint_names`. In `_constraint_names`, the unique filter (`if unique is not None and infodict['unique'] != unique: continue`) is only applied when `unique` is not None. Since it's `None` here, the filter is skipped entirely.\n\nWhen a model has both `index_together` and `unique_together` on the same fields, the DB has two constraints on those columns: a regular index (`index=True, unique=False`) and a unique index (`index=True, unique=True`). Both pass the `index=True` filter, so `constraint_names` has 2 entries instead of 1, raising `ValueError: Found wrong number (2) of constraints for ...`.\n\nThe fix is to add `'unique': False` to the kwargs so only the non-unique index is matched. The newer version of Django already contains this fix, confirming the correct approach.\n</reasoning>\n\n<patch>\n--- a/django/db/backends/base/sch",
+      "latency_s": 91.22183895111084,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 8976,
+      "response": "The investigation is complete. Here's the full picture:\n\n- **Line 396** of the issue repo's `schema.py`: `_delete_composed_index` is called with only `{'index': True}`.\n- **Line 1152** in `_constraint_names`: the `unique` filter is only applied when `unique is not None` \u2014 so with `unique=None`, both the plain `index_together` index (`unique=False`) and the `unique_together` constraint (`unique=True`) both pass when `index=True`.\n- **Line 410** in `_delete_composed_index`: raises `ValueError` when `len(constraint_names) != 1`, which happens when 2 constraints are found.\n\nThe fix is to add `'unique': False` to the kwargs so only the non-unique index is matched.\n\n<reasoning>\nWhen a model has both `index_together` and `unique_together` on the same fields, the DB contains two constraints on those columns: a plain index (index=True, unique=False) and a unique constraint (index=True, unique=True). The call to `_delete_composed_index` in `alter_index_together` passes only `{'index': True}`, which means `unique=None` is passed to `_constraint_names`. In `_constraint_names`, the unique filter (`if unique is not None and infodict['unique'] != unique: continue`) is skipped when `unique is None`, so both constraints pass and `constraint_names` has 2 entries, triggering `ValueError: Found wrong number (2) of constraints for ...`.\n\nThe fix is to add `'unique': False` to the constraint_kwargs so that `_constraint_names` skips any constraint with `unique=True`, leaving only the non-unique `in",
+      "latency_s": 69.4111647605896,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 11490,
+      "response": "I have enough information to write the patch. The bug is at line 396 of `/private/tmp/django_issue_31377/django/db/backends/base/schema.py`: `alter_index_together` calls `_delete_composed_index` with only `{'index': True}`. In `_constraint_names`, the `unique` filter (line 1152) is only applied when `unique is not None` \u2014 so passing `unique=None` lets both the plain `index_together` index and the `unique_together` unique constraint pass the filter, yielding 2 results instead of 1 and triggering the ValueError.\n\nThe fix is to add `'unique': False` to the constraint_kwargs.\n\n<reasoning>\nIn `alter_index_together`, the call to `_delete_composed_index` passes `{'index': True}` as constraint_kwargs. This gets forwarded to `_constraint_names` with `unique=None`. Inside `_constraint_names`, the unique filter is: `if unique is not None and infodict['unique'] != unique: continue`. When `unique is None`, this check is entirely skipped. When a model has both `index_together` and `unique_together` on the same fields, the DB contains both a plain index (`index=True, unique=False`) and a unique index (`index=True, unique=True`). Both pass the `index=True` filter, so `constraint_names` has 2 entries, causing the `ValueError: Found wrong number (2) of constraints`.\n\nAdding `'unique': False` to the constraint_kwargs ensures that only the non-unique index is matched, leaving exactly 1 result.\n</reasoning>\n\n<patch>\n--- a/django/db/backends/base/schema.py\n+++ b/django/db/backends/base/schema.py\n@",
+      "latency_s": 97.0357780456543,
+      "error": null
+    },
+    {
+      "iteration": 6,
+      "prompt_len": 13880,
+      "response": "I now have all the information needed. The root cause is clear: in `alter_index_together` (line 396), `_delete_composed_index` is called with only `{'index': True}`. In `_constraint_names` (line 1152), the `unique` filter is only applied when `unique is not None`. Since `unique` is not passed, both the `index_together` plain index (`unique=False`) and the `unique_together` constraint (`unique=True`) \u2014 both of which have `index=True` \u2014 pass the filter, yielding 2 results and raising `ValueError`.\n\nThe fix is to add `'unique': False` to the constraint_kwargs so only non-unique indexes are matched.\n\n<reasoning>\nIn `alter_index_together` (line 396 of `django/db/backends/base/schema.py`), `_delete_composed_index` is called with constraint_kwargs `{'index': True}`. This is forwarded to `_constraint_names` (line 1138), which applies the `unique` filter only when `unique is not None` (line 1152). Since `unique` is not passed (defaults to `None`), the unique filter is skipped entirely.\n\nWhen a model has both `index_together` and `unique_together` on the same fields, the database contains two constraints on those columns:\n1. A plain non-unique index from `index_together`: `index=True, unique=False`\n2. A unique constraint/index from `unique_together`: `index=True, unique=True`\n\nBoth pass the `index=True` filter since the unique filter is bypassed, so `constraint_names` has 2 entries instead of 1, triggering `ValueError: Found wrong number (2) of constraints for ...`.\n\nAdding `'unique': ",
+      "latency_s": 76.99424195289612,
+      "error": null
+    },
+    {
+      "iteration": 7,
+      "prompt_len": 16953,
+      "response": "I've confirmed the root cause. The `_constraint_names` method at line 1152 only applies the `unique` filter when `unique is not None`. When `alter_index_together` calls `_delete_composed_index` with only `{'index': True}`, `unique` is `None`, so both the `index_together` plain index (`unique=False`) and the `unique_together` unique constraint (`unique=True`) match the `index=True` filter \u2014 producing 2 results and raising the ValueError.\n\n<reasoning>\nThe bug is in `alter_index_together` in `/private/tmp/django_issue_31377/django/db/backends/base/schema.py` at line 396. It calls `_delete_composed_index` with constraint_kwargs `{'index': True}`, which is forwarded to `_constraint_names` with `unique=None`.\n\nIn `_constraint_names` (line 1152):\n```python\nif unique is not None and infodict['unique'] != unique:\n    continue\n```\nWhen `unique is None`, the filter is skipped entirely. When a model has both `index_together` and `unique_together` on the same fields, the DB has two constraints on those columns: a plain index (`index=True, unique=False`) and a unique constraint (`index=True, unique=True`). Both pass the `index=True` filter, so `constraint_names` has 2 entries, triggering `ValueError: Found wrong number (2) of constraints for ...`.\n\nThe symmetrical fix is to add `'unique': False` to the constraint_kwargs in `alter_index_together`, exactly as `alter_unique_together` correctly passes `{'unique': True}` (which implicitly excludes non-unique indexes). This ensures `_constraint_",
+      "latency_s": 103.95369100570679,
+      "error": null
+    },
+    {
+      "iteration": 8,
+      "prompt_len": 19550,
+      "response": "I've now made enough search calls to confirm the root cause. The fix is clear: in `alter_index_together` (line 396), the call to `_delete_composed_index` uses only `{'index': True}` as constraint_kwargs. In `_constraint_names` (line 1152), the `unique` filter is only applied when `unique is not None`. Since `unique` is not passed, both the plain `index_together` index (`index=True, unique=False`) and the `unique_together` constraint (`index=True, unique=True`) match, giving 2 results and raising the `ValueError`.\n\n<reasoning>\nThe bug is in `alter_index_together` at line 396 of `django/db/backends/base/schema.py`. It calls `_delete_composed_index(model, fields, {'index': True}, self.sql_delete_index)`, which forwards `unique=None` to `_constraint_names`.\n\nIn `_constraint_names` (line 1152):\n```python\nif unique is not None and infodict['unique'] != unique:\n    continue\n```\nWhen `unique is None`, this filter is skipped entirely.\n\nWhen a model has both `index_together` and `unique_together` on the same fields, the database contains two constraints on those columns:\n1. A plain non-unique index from `index_together`: `index=True, unique=False`\n2. A unique constraint/index from `unique_together`: `index=True, unique=True`\n\nBoth pass the `index=True` filter because the `unique` check is bypassed. `_delete_composed_index` then sees `len(constraint_names) != 1` (it's 2) and raises `ValueError: Found wrong number (2) of constraints for ...`.\n\nThe fix is to add `'unique': False` to the c",
+      "latency_s": 99.11854100227356,
+      "error": null
+    }
+  ]
+}

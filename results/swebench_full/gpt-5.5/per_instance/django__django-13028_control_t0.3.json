@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13028",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2126,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3633,
+      "response_excerpt": "<reasoning>\nThe bug is in `Query.check_filterable()`: it treats any RHS object with a `filterable=False` attribute as a non-filterable SQL expression. Model instances can legitimately have a field named `filterable`, so the check must only apply to expression-like objects. Django expressions expose `resolve_expression()`, so guard the `filterable` check with that capability and add a regression test using a related model instance whose `filterable` field is `False`.\n\nI found this fix already pre",
+      "latency_s": 96.9177770614624,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

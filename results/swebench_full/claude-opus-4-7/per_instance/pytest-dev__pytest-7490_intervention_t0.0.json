@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-7490",
+  "repo": "pytest-dev/pytest",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 987,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 23576,
+      "response_excerpt": "<reasoning>\n**Analysis of the Issue:**\n\nThe bug is that when `request.node.add_marker(pytest.mark.xfail(...))` is called inside a test, the dynamic xfail mark is not picked up in pytest 6.0.0rc0+. In pytest 5.x, the xfail mark was re-evaluated, so failing assertions were correctly treated as expected failures.\n\n**Root Cause (in pytest 6.0.0rc0):**\n\nIn `src/_pytest/skipping.py`, the original buggy implementation of `pytest_runtest_call` only evaluated xfail marks BEFORE the test ran (in setup or ",
+      "latency_s": 404.29494285583496,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

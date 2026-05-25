@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-17630",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1477,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4222,
+      "response_excerpt": "<reasoning>\nThe failure happens because block multiplication can simplify a zero block to scalar `S.Zero`, which has no `.rows`/`.cols`. The next block multiplication then tries to read block sizes and crashes. The fix normalizes scalar zero entries produced by `_blockmul` back into `ZeroMatrix` with the correct resulting block shape. I also extended the regression test to cover the direct chained `_blockmul` case from the issue.\n\nVerified with:\n`/private/tmp/sympy-blockmatrix-venv/bin/python -m",
+      "latency_s": 277.5742919445038,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

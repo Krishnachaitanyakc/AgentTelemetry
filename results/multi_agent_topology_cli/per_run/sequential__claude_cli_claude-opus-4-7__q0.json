@@ -1,0 +1,29 @@
+{
+  "topology": "sequential",
+  "model": "claude_cli/claude-opus-4-7",
+  "question": "What are three concrete ways autonomous AI agents fail in production deployments, and what observability primitives would catch each?",
+  "run_id": "sequential__claude_cli_claude-opus-4-7__q0",
+  "transcript": [
+    {
+      "agent": "planner",
+      "output": "1. What are documented failure modes of autonomous AI agents in production (e.g., infinite tool-call loops, prompt injection, hallucinated actions, context drift, runaway cost), and which have caused real incidents?\n2. What observability primitives exist for LLM agent systems (trace spans per tool call, token/cost meters, decision-graph logging, eval scorers, guardrail telemetry), and which vendors/OSS implement them?\n3. For each failure mode, which specific signal (metric, trace attribute, or log event) provides the earliest reliable detection, and what threshold or anomaly pattern triggers alerting?",
+      "latency_s": 12.007597208023071
+    },
+    {
+      "agent": "researcher",
+      "output": "# Findings: Autonomous AI Agent Failure Modes & Observability\n\n**1. Runaway tool-call loops**\n- *Failure*: Agent recursively invokes tools (search\u2192summarize\u2192search) without progress; documented in LangChain/AutoGPT incidents and ChatGPT plugin runaways causing cost spikes.\n- *Primitive*: Per-session tool-call counter and span-depth metric (OpenTelemetry GenAI semantic conventions, LangSmith trace tree, Arize Phoenix). \n- *Trigger*: alert when tool_calls_per_session > p99 baseline (typically 15\u201325) OR identical (tool_name, args_hash) repeats \u22653\u00d7 within a trace.\n\n**2. Indirect prompt injection via tool outputs**\n- *Failure*: Retrieved web/email/doc content contains hidden instructions that hijack the agent (Bing Chat \"Sydney\" leaks, Microsoft Copilot EchoLeak CVE-2024, Slack AI exfiltration PoC).\n- *Primitive*: Guardrail telemetry comparing user-intent embedding to executed-action embedding (NeMo Guardrails, Lakera, Protect AI); tool-output content scanners.\n- *Trigger*: cosine drift > 0",
+      "latency_s": 23.406208038330078
+    },
+    {
+      "agent": "writer",
+      "output": "# Three Production Failure Modes for Autonomous AI Agents\n\n**1. Runaway tool-call loops.** Agents recursively chain tools (search\u2192summarize\u2192search) without converging, burning budget \u2014 a pattern seen in LangChain and AutoGPT incidents. Catch this with per-session tool-call counters and span-depth metrics (OpenTelemetry GenAI conventions, LangSmith, Arize Phoenix). Alert when calls per session exceed the p99 baseline (typically 15\u201325) or when the same `(tool_name, args_hash)` repeats three or more times in a single trace.\n\n**2. Indirect prompt injection via tool outputs.** Retrieved content \u2014 emails, web pages, docs \u2014 smuggles instructions that hijack the agent, as in the Microsoft Copilot EchoLeak CVE and the Slack AI exfiltration PoC. Deploy guardrail telemetry (NeMo Guardrails, Lakera, Protect AI) that embeds user intent and executed actions, then alert on cosine drift above 0.4 or any injection-classifier hit on tool returns.\n\n**3. Hallucinated or malformed tool calls.** Agents fabr",
+      "latency_s": 13.82765817642212
+    }
+  ],
+  "total_cost_usd": 0.075945,
+  "total_input_tokens": 743,
+  "total_output_tokens": 864,
+  "n_agents": 3,
+  "wall_clock_s": 49.27053904533386,
+  "error": null
+}

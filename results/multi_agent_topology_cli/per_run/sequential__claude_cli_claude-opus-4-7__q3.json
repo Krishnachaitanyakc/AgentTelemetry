@@ -1,0 +1,29 @@
+{
+  "topology": "sequential",
+  "model": "claude_cli/claude-opus-4-7",
+  "question": "What are the limitations of using mock LLM clients for benchmarking agent fault detection? Propose two ways to validate against real production traces.",
+  "run_id": "sequential__claude_cli_claude-opus-4-7__q3",
+  "transcript": [
+    {
+      "agent": "planner",
+      "output": "1. **Fidelity gap**: How do mock LLM response distributions (latency, token patterns, error modes) diverge from real model behavior, and which fault classes (hallucinated tool calls, partial outputs, rate-limit cascades) are systematically underrepresented?\n2. **Coverage bias**: Do hand-crafted mock scenarios miss long-tail failure modes that emerge only under real traffic distributions and adversarial inputs?\n3. **Detector overfitting**: Does tuning fault detectors against mocks cause false-positive inflation on production traces?\n\n**Validation approaches**: (a) Replay sampled production traces through the detector and compare precision/recall to mock-derived metrics; (b) Shadow-deploy the detector alongside live agents and measure agreement with human-labeled incident postmortems.",
+      "latency_s": 13.402364015579224
+    },
+    {
+      "agent": "researcher",
+      "output": "# Findings: Mock LLM Limitations for Agent Fault Detection\n\n**1. Fidelity gap**\n- Mocks use deterministic or canned distributions; real models exhibit heavy-tailed latency (P99 often 5-10x median), bursty token streaming, and provider-side throttling that mocks rarely simulate.\n- Underrepresented fault classes: malformed/hallucinated tool-call JSON, mid-stream truncation, semantic drift across long contexts, schema-valid-but-wrong arguments, rate-limit cascades that compound across parallel agents, and provider 5xx retry storms.\n- Mocks rarely model temperature-driven variance or context-length degradation, so detectors miss state-dependent failures.\n\n**2. Coverage bias**\n- Hand-crafted scenarios encode authors' failure imagination; long-tail issues (rare prompt-injection patterns, Unicode edge cases, tool-result feedback loops) emerge only under real traffic.\n- Adversarial/user-driven inputs shift the input distribution, exposing detectors to OOD prompts not represented in fixtures.\n\n",
+      "latency_s": 18.311691999435425
+    },
+    {
+      "agent": "writer",
+      "output": "# Limitations of Mock LLM Clients for Agent Fault Detection\n\nMock LLM clients suffer from three compounding weaknesses that undermine fault-detection benchmarks:\n\n**Fidelity gap.** Real models exhibit heavy-tailed latency (P99 often 5-10x median), bursty token streaming, and provider-side throttling that canned mocks seldom reproduce. Critical fault classes\u2014malformed tool-call JSON, mid-stream truncation, schema-valid-but-semantically-wrong arguments, context-length degradation, and rate-limit cascades across parallel agents\u2014are systematically underrepresented.\n\n**Coverage bias.** Hand-crafted fixtures encode the authors' failure imagination, missing long-tail issues like rare prompt-injection patterns, Unicode edge cases, and tool-result feedback loops that surface only under live traffic.\n\n**Detector overfitting.** Thresholds tuned against artificially clean mock noise floors learn harness artifacts rather than fault signatures, inflating production false positives.\n\n## Validation ag",
+      "latency_s": 14.45239806175232
+    }
+  ],
+  "total_cost_usd": 0.08355,
+  "total_input_tokens": 810,
+  "total_output_tokens": 952,
+  "n_agents": 3,
+  "wall_clock_s": 46.187939167022705,
+  "error": null
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13964",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1192,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2664,
+      "response_excerpt": "I've verified the fix. The patch needs to add the `elif` block in `_prepare_related_fields_for_save` which syncs the FK attribute when the related object has been saved after assignment but the FK attname is still empty.\n\n<reasoning>\nThe issue describes a data loss bug where setting `order.product = Product()` before the Product has its primary key set, then later setting/saving the Product, leaves `order.product_id` as an empty string. The root cause is in the `ForwardManyToOneDescriptor.__set_",
+      "latency_s": 430.51047682762146,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

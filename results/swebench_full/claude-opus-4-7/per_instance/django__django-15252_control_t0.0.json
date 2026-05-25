@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15252",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1803,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2475,
+      "response_excerpt": "<reasoning>\nThe issue is that `MigrationRecorder` in `django/db/migrations/recorder.py` doesn't check the database router's `allow_migrate` method before creating the `django_migrations` table or recording migration state. This causes the migration table to be created on every connection, even ones the router explicitly disallows.\n\nThe fix needs to:\n1. Import `router` from `django.db`\n2. In `ensure_schema()`: check `router.allow_migrate()` before creating the table - if not allowed, just return\n",
+      "latency_s": 48.38586711883545,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

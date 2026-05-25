@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16229",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1092,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2053,
+      "response_excerpt": "Now I have enough context. Let me write up the analysis and propose the fix.\n\n<reasoning>\n**Issue Analysis:**\n\nThe bug occurs in Django's `BoundField.as_widget()` method in `django/forms/boundfield.py`. When a form field has `show_hidden_initial=True` (which happens automatically for fields with callable defaults), Django renders both the regular widget AND a hidden input named `initial-<fieldname>`. This hidden input is used by `_has_changed()` to detect whether the value changed.\n\n**The bug fl",
+      "latency_s": 146.39921307563782,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

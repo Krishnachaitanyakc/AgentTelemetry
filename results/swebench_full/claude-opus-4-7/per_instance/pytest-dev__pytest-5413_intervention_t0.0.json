@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-5413",
+  "repo": "pytest-dev/pytest",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 824,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3715,
+      "response_excerpt": "I'll propose the patch that explicitly defines `__str__` to return the repr (the historical fix from PR #5412). This makes the intent unambiguous so users see `<ExceptionInfo ...>` when calling `str(e)`, clearly indicating it's not the exception message:\n\n<reasoning>\nThe issue: In pytest 4.6.2, `str(excinfo)` returned something like `<console>:3: LookupError: A` (from `_getreprcrash()`) which looked like an exception message but was truncated to one line. This was a confusing \"gotcha\" for users.",
+      "latency_s": 541.4209549427032,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

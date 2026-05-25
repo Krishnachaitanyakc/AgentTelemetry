@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13265",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2680,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2717,
+      "response": "Good - `fields_orders` is a list of 2-tuples `(field_name, order)`, so `f, *_ in index.fields_orders` correctly unpacks the field name.\n\n<reasoning>\nThe bug is clear: when a new model is created with `order_with_respect_to` and an index that includes the `_order` field, the generated migration places `AddIndex` before `AlterOrderWithRespectTo`. Since `AlterOrderWithRespectTo` is what creates the `_order` column, the `AddIndex` fails because the column doesn't exist yet.\n\nThe fix requires three c...[truncated]",
+      "latency_s": 366.4874849319458,
+      "error": null
+    }
+  ]
+}

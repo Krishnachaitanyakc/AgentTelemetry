@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12589",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1126,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3242,
+      "response": "Now I have a clear understanding. Let me propose the fix:\n\n<patch>\n--- a/django/db/models/sql/compiler.py\n+++ b/django/db/models/sql/compiler.py\n@@ -115,7 +115,12 @@ class SQLCompiler:\n         # Note that even if the group_by is set, it is only the minimal\n         # set to group by. So, we need to add cols in select, order_by, and\n         # having into the select in any case.\n+        # However, for subqueries with an explicit group_by set (via\n+        # .values().annotate()), adding select ...[truncated]",
+      "latency_s": 179.7483389377594,
+      "error": null
+    }
+  ]
+}

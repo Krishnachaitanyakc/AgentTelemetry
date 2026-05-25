@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14752",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1373,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3641,
+      "response_excerpt": "<reasoning>\nThe file already shows the refactored state with `serialize_result` extracted. The patch I need to propose is the one that transforms the original code (without `serialize_result`) to the refactored version. The patch adds:\n1. A new `serialize_result` method \n2. Updates `get()` to use `self.serialize_result(obj, to_field_name)` instead of the inline dict\n3. Updates the docstring to reference `serialize_result()`\n</reasoning>\n\n<patch>\n--- a/django/contrib/admin/views/autocomplete.py\n+",
+      "latency_s": 47.26641321182251,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

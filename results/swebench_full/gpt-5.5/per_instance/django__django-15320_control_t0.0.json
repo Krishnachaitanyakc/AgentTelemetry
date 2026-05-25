@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15320",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1517,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1733,
+      "response_excerpt": "<reasoning>\n`Subquery.as_sql()` strips the first and last characters from `query.as_sql()` because `Query.as_sql()` is expected to return parenthesized SQL for subqueries. Directly constructed `Subquery(queryset)` didn\u2019t set `query.subquery = True`, so the raw SQL was unwrapped and got corrupted into `(ELECT ... )`.\n\nThe fix clones the incoming `Query` and marks the clone as a subquery in `Subquery.__init__()`. Cloning avoids mutating the caller\u2019s original queryset.\n\nVerified with:\n`/usr/bin/pyt",
+      "latency_s": 231.00332188606262,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

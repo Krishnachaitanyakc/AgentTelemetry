@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-10914",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4910,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1815,
+      "response_excerpt": "<reasoning>\nThe inconsistent permission behavior comes from `FileSystemStorage._save()` only applying `os.chmod()` when `FILE_UPLOAD_PERMISSIONS` is not `None`. With the old default of `None`, in-memory uploads used the process umask while temporary-file uploads could retain tempfile permissions such as `0o600`. The narrow fix is to make the global default explicit (`0o644`) so both paths are normalized after save, while preserving the old behavior for users who explicitly set `FILE_UPLOAD_PERMI",
+      "latency_s": 221.90743017196655,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

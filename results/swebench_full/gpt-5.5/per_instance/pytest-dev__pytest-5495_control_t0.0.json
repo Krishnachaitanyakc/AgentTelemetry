@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-5495",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2137,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1537,
+      "response_excerpt": "<reasoning>\nThe confusing `52` comes from treating bytes-like values as generic sequences of integers. Pytest already slices `bytes` on index mismatches so it shows `b'4'` instead of `52`; this patch extends that treatment to `bytearray` and adds regression coverage for length-only byte comparisons such as `b'' == b'42'`, ensuring pytest shows only the full byte repr diff.\n\nVerified:\n- New focused tests pass: `2 passed`\n- Full `testing/test_assertion.py` could not be cleanly run under the config",
+      "latency_s": 170.85858511924744,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

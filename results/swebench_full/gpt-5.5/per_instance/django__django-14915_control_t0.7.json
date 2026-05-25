@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14915",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1351,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1801,
+      "response_excerpt": "<reasoning>\n`ModelChoiceIteratorValue` defines `__eq__`, so Python makes instances unhashable unless `__hash__` is explicitly defined. Since equality compares by the wrapped prepared value, hashing should use that same wrapped value. This restores use in dict/set membership such as `value in {1: ...}` while preserving equality with raw primary key values.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/django/forms/models.py b/django/forms/models.py\n--- a/django/forms/models.py\n+++ b/django/forms/mod",
+      "latency_s": 83.7129590511322,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

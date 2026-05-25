@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15213",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1397,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1533,
+      "response_excerpt": "<reasoning>\n1. `Q(pk__in=[])` compiles by raising `EmptyResultSet`, and selected annotations already turn that into a false literal.\n2. `~Q(pk__in=[])` raises `FullResultSet`; selected expressions need the symmetric handling and should compile to a true literal.\n3. I verified the focused annotation cases with `python3 tests/runtests.py ...`; they pass in the checked-out tree, which already contains this fix.\n</reasoning>\n\n<patch>\ndiff --git a/django/db/models/sql/compiler.py b/django/db/models/s",
+      "latency_s": 174.22405362129211,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

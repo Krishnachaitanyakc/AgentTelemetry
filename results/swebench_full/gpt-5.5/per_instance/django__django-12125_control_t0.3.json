@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12125",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1856,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2383,
+      "response_excerpt": "<reasoning>\nThe field path now preserves `__qualname__`, but nested field paths like `app.models.Outer.Inner` were still producing an invalid import: `import app.models.Outer`. The serializer should keep the full expression while importing only the real module prefix. I changed `_serialize_path()` to walk back to the longest loaded module prefix and added a regression test for an inner `CharField` subclass.\n\nVerified with:\n`python3 tests/runtests.py migrations.test_writer --parallel 1`\n</reasoni",
+      "latency_s": 293.78219413757324,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

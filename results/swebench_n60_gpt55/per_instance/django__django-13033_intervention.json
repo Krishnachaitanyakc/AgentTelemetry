@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13033",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2019,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4557,
+      "response": "<reasoning>\nThe bug is in `SQLCompiler.find_ordering_name()`. For nested paths like `record__root_id`, Django resolved the final field as the FK field but compared `field.attname` against the whole path. Since `\"root_id\" != \"record__root_id\"`, it incorrectly treated the field as a relation and expanded the related model's default ordering, causing the extra self-join and reversed direction.\n\nThe fix is to compare the FK attname with the final path component, `pieces[-1]`. I verified the relevant...[truncated]",
+      "latency_s": 122.46504807472229,
+      "error": null
+    }
+  ]
+}

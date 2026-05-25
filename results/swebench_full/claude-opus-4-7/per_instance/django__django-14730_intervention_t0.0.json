@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14730",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2910,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1319,
+      "response_excerpt": "The fix is already applied in this version of the Django repository. The check `_check_ignored_options` in `django/db/models/fields/related.py` (lines 1569-1577) raises `fields.E345` error when `related_name` is set on a symmetrical ManyToManyField. The corresponding tests exist in `tests/invalid_models_tests/test_relative_fields.py` and the documentation is in `docs/ref/checks.txt`.\n\n<reasoning>\nThe issue requests adding a check that raises an error when a developer defines `related_name` on a ",
+      "latency_s": 411.4106137752533,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

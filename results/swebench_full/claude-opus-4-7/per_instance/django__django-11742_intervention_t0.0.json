@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11742",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1776,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1122,
+      "response_excerpt": "I have enough context to provide the fix. The unfixed `_check_choices` in `/private/tmp/django221/django/db/models/fields/__init__.py` needs the `max_length` check added.\n\n<reasoning>\nThe Django issue requests adding a system check to ensure that `Field.max_length` is at least as long as the longest value in `Field.choices`. Without this, users only discover the problem when trying to save records with values that are too long.\n\nI located the unfixed `_check_choices()` method in `/private/tmp/dj",
+      "latency_s": 514.7705771923065,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

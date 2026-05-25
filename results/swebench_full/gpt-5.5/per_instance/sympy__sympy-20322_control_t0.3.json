@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-20322",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1275,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1459,
+      "response_excerpt": "<reasoning>\nThe active checkout already simplifies the reported expression consistently for `evaluate=False` and `evaluate=True`. I added a focused regression test so future changes to parsing or generic simplification cannot reintroduce the invalid `4*ceiling(x/4) - 3` result. Verified with:\n`/private/tmp/sympy-venv/bin/python -m pytest sympy/simplify/tests/test_simplify.py -k sympify_evaluate_false_ceiling_simplify`\n</reasoning>\n\n<patch>\ndiff --git a/sympy/simplify/tests/test_simplify.py b/sym",
+      "latency_s": 226.02924299240112,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13551",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3491,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1428,
+      "response": "<reasoning>\nThe token hash previously ignored the user\u2019s email, so a token requested before an email change could still validate afterward. The patch adds the resolved email field value to `_make_hash_value()`, using `getattr(..., '')` so custom users without an email attribute remain supported. Tests cover both Django\u2019s built-in `User.email` and a custom `EMAIL_FIELD`.\n\nVerified with `git diff --check` and `python3 -m py_compile`. The full Django test runner could not start here because this ol...[truncated]",
+      "latency_s": 126.06254410743713,
+      "error": null
+    }
+  ]
+}

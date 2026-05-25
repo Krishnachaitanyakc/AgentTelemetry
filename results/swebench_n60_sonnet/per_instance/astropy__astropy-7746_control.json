@@ -1,0 +1,21 @@
+{
+  "instance_id": "astropy__astropy-7746",
+  "repo": "astropy/astropy",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1503,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2880,
+      "response": "The fix is already present in the current file. I can now clearly identify what the patch should be: before the fix, `_return_list_of_arrays` passed empty arrays directly to `func()` (which calls the underlying C wcslib code that fails with ncoord/nelem inconsistency), and `_return_single_array` had no guard either.\n\n<reasoning>\nThe bug: when empty lists/arrays are passed to WCS transformation methods like `wcs_pix2world([], [], 0)`, the code stacks them into an `(0, naxis)` array and passes it ...[truncated]",
+      "latency_s": 257.23312997817993,
+      "error": null
+    }
+  ]
+}

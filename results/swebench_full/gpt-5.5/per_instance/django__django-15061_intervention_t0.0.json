@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15061",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2390,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1161,
+      "response_excerpt": "<reasoning>\nMultiWidget currently returns the first subwidget id (`id_0`) from `id_for_label()`, which makes `BoundField.label_tag()` render `for=\"...\"` on the top-level label. A MultiWidget has multiple rendered controls and no single correct target, so the method should return an empty string, matching Django\u2019s existing pattern for suppressing a label `for` attribute.\n\nI updated the existing MultiValueField rendering expectations and added a direct regression test for `MultiWidget.id_for_label",
+      "latency_s": 152.71668601036072,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

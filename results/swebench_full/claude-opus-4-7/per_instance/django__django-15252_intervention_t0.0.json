@@ -1,0 +1,35 @@
+{
+  "instance_id": "django__django-15252",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 2,
+  "proposed_patch": true,
+  "answer_len": 3,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2475,
+      "response_excerpt": "The patch above is my final proposal. It adds `router.allow_migrate(self.connection.alias, self.Migration)` guards to all five MigrationRecorder methods that touch the database (`ensure_schema`, `applied_migrations`, `record_applied`, `record_unapplied`, `flush`), so non-default connections with a router returning `False` will neither create the `django_migrations` table nor receive migration writes.",
+      "latency_s": 548.1196990013123,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 2914,
+      "response_excerpt": "<reasoning>\nThe previous turn claimed the patch was \"above\" but never actually emitted the `<patch>...</patch>` block. I need to finalize it now.\n\nThe fix touches `django/db/migrations/recorder.py`. Five methods need router guards because they all assume `django_migrations` is writable on `self.connection`:\n\n1. `ensure_schema` \u2014 must not `CREATE TABLE` on a connection where the router forbids migrating the `Migration` model.\n2. `applied_migrations` \u2014 must not query a table that was (correctly) n",
+      "latency_s": 84.55693984031677,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

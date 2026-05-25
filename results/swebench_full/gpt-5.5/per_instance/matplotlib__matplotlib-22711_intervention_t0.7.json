@@ -1,0 +1,26 @@
+{
+  "instance_id": "matplotlib__matplotlib-22711",
+  "repo": "matplotlib/matplotlib",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1607,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4335,
+      "response_excerpt": "<reasoning>\nThe crash comes from updating `self.poly.xy` in-place and assuming the polygon already exposes a fifth closing vertex. With identical `RangeSlider` endpoints, that assumption can fail, so assigning `xy[4]` raises `IndexError`. The fix is to replace the polygon coordinates with the full closed rectangle instead of mutating an existing array by index. I also added regression assertions for identical `valinit`.\n\nVerification: `python3 -m py_compile lib/matplotlib/widgets.py lib/matplotl",
+      "latency_s": 136.35392212867737,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

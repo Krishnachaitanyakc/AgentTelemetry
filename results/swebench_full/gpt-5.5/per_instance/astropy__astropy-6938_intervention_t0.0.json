@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-6938",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1559,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1323,
+      "response_excerpt": "<reasoning>\nThe bug is real: `chararray.replace` returns a new array, so the D-exponent conversion is lost unless assigned back. The fix is to write the replaced values back into `output_field`. I also added a focused regression test for an ASCII table `D` column that checks the serialized data contains `D+00` and not `E+00`.\n\n`pytest` was unavailable in this environment, but a direct FITS write check in a built checkout confirmed the fixed path emits `D` separators.\n</reasoning>\n\n<patch>\ndiff -",
+      "latency_s": 146.12309002876282,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

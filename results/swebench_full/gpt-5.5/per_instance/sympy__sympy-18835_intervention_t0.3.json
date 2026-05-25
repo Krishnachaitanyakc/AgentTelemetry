@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-18835",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1939,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1572,
+      "response_excerpt": "<reasoning>\n`uniq` iterates lazily, so list mutation by the caller after a yielded value can otherwise change the remaining iteration silently. The fix records `len(seq)` when available and checks it after each yielded value resumes. Iterators without `len()` keep the previous behavior. I also added regression tests for hashable and unhashable elements. Focused test passes with `python3 -m pytest sympy/utilities/tests/test_iterables.py -k test_uniq`.\n</reasoning>\n\n<patch>\ndiff --git a/sympy/util",
+      "latency_s": 79.32148814201355,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

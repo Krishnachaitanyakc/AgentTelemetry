@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-21171",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 677,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 9183,
+      "response_excerpt": "The patch has been proposed. The fix adds the `exp=None` keyword argument to `_print_SingularityFunction` in `sympy/printing/latex.py` and properly wraps the LaTeX output when an exponent is supplied, matching the pattern used by sibling printers like `_print_DiracDelta` and `_print_Heaviside`.\n\n<patch>\n--- a/sympy/printing/latex.py\n+++ b/sympy/printing/latex.py\n@@ -1969,10 +1969,12 @@ def _print_DiracDelta(self, expr, exp=None):\n             tex = r\"\\left(%s\\right)^{%s}\" % (tex, exp)\n         r",
+      "latency_s": 327.02706813812256,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

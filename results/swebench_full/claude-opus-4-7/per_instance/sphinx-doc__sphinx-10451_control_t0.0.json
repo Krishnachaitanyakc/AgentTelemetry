@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-10451",
+  "repo": "sphinx-doc/sphinx",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1897,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2460,
+      "response_excerpt": "The diff is clean. Here is my final analysis and patch:\n\n<reasoning>\n**Root cause:** In `sphinx/ext/autodoc/typehints.py`:\n\n1. `record_typehints` stores annotations using bare parameter names (e.g., `'args'`, `'kwargs'`) since it uses `param.name` directly.\n2. `modify_field_list` builds an `arguments` dict from existing docstring fields. When parsing `:param *args:`, the field name is split and the name `'*args'` (with the asterisks) becomes the dict key.\n3. When iterating annotations to add typ",
+      "latency_s": 530.8932931423187,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

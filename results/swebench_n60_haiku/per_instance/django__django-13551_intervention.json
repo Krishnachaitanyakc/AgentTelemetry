@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13551",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1741,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1428,
+      "response": "Now let me create the patch. The fix needs to:\n1. Add the email field to the hash value\n2. Update the docstring to document this change\n\n<patch>\n--- a/django/contrib/auth/tokens.py\n+++ b/django/contrib/auth/tokens.py\n@@ -64,17 +64,25 @@ class PasswordResetTokenGenerator:\n         return \"%s-%s\" % (ts_b36, hash_string)\n \n     def _make_hash_value(self, user, timestamp):\n         \"\"\"\n-        Hash the user's primary key and some user state that's sure to change\n+        Hash the user's primary key...[truncated]",
+      "latency_s": 163.23369431495667,
+      "error": null
+    }
+  ]
+}

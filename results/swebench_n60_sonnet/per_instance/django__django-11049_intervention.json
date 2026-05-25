@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11049",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 422,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1531,
+      "response": "Now I have a clear picture. The form field's \"invalid\" error message says only `\"Enter a valid duration.\"` without showing the expected format. The fix is to update that message to include the correct format `[DD] [[HH:]MM:]ss[.uuuuuu]`.\n\n<reasoning>\nThe issue reports two things:\n1. The DurationField error message shows an incorrect format string `[DD] [HH:[MM:]]ss[.uuuuuu]` \u2014 it should be `[DD] [[HH:]MM:]ss[.uuuuuu]` (hours optional only when minutes present, not the other way around).\n2. Durat...[truncated]",
+      "latency_s": 138.28707933425903,
+      "error": null
+    }
+  ]
+}

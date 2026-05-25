@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12908",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 824,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1873,
+      "response": "The fix is clear and complete. Here's the summary:\n\n<reasoning>\nThe issue is that calling `.distinct()` on a union queryset silently does nothing in Django 2.2.1. The SQL compiler for combined queries (union/intersection/difference) uses a separate code path (`get_combinator_sql`) that doesn't handle the `DISTINCT` flag, so calling `.distinct()` on a union queryset sets the flag but it's ignored during SQL generation \u2014 producing silently incorrect results.\n\nThe fix adds:\n1. A `_not_support_combi...[truncated]",
+      "latency_s": 392.20443892478943,
+      "error": null
+    }
+  ]
+}

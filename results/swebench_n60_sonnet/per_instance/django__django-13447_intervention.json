@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13447",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 867,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1215,
+      "response": "Now I have a clear picture of what the original code looks like (in `django_22`) vs. what needs to change. The original:\n1. Only has `_build_app_dict` (private method, line 401)\n2. Does **not** include `'model': model` in the `model_dict` (lines 431-437)\n3. Calls `self._build_app_dict` internally (lines 474, 505)\n\nThe fix needs to:\n1. Rename `_build_app_dict` \u2192 `build_app_dict` (make it public)\n2. Keep `_build_app_dict` as a deprecated backward-compat shim\n3. Add `'model': model` to the `model_d...[truncated]",
+      "latency_s": 127.97697901725769,
+      "error": null
+    }
+  ]
+}

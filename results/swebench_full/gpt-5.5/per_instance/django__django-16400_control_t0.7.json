@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16400",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1123,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3148,
+      "response_excerpt": "<reasoning>\nThe `migrate --database=...` command passes the selected alias through `post_migrate` as `using`. `create_permissions()` already uses that alias for querying content types and permissions, but when it builds a new unsaved `Permission` and assigns `permission.content_type = ctype`, Django\u2019s FK descriptor may consult `router.db_for_write()` if the new `Permission` has no `_state.db`.\n\nThe fix is to set `permission._state.db = using` before assigning the `ContentType`, so relation assig",
+      "latency_s": 147.82605004310608,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

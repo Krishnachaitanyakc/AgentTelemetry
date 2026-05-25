@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12915",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2642,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1680,
+      "response_excerpt": "<reasoning>\nThe ASGI staticfiles wrapper skips `ASGIHandler.__init__()`, so `_middleware_chain` is never initialized. Static requests then fall through to `BaseHandler.get_response_async()`, which tries to await `None`.\n\nThe sync path already bypasses middleware by overriding `get_response()`. The fix is to add the matching async override to `StaticFilesHandlerMixin`, running the existing synchronous static file serving and exception response code via `sync_to_async()`.\n\nI also added a regressio",
+      "latency_s": 269.2559406757355,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

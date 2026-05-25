@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-10451",
+  "repo": "sphinx-doc/sphinx",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 8652,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2460,
+      "response_excerpt": "<reasoning>\nThe bug is in autodoc\u2019s typehint merge pass: annotations are stored under bare names (`args`, `kwargs`), while documented variadic parameters may appear as `*args` and `**kwargs` in the field list. The old merge logic could fail to associate those names correctly and append extra incomplete fields.\n\nThe patch normalizes variadic parameter names from the rendered signature, then uses that mapping when adding or augmenting `:param:` / `:type:` fields. I also adjusted the regression fix",
+      "latency_s": 175.35835313796997,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

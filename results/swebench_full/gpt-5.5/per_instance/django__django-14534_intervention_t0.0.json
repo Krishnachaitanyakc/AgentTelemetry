@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14534",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1216,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2434,
+      "response_excerpt": "<reasoning>\nThe checkout already contains the intended implementation: `BoundWidget.id_for_label` returns the id generated in `self.data[\"attrs\"]`. I added a regression test for `CheckboxSelectMultiple(attrs={\"id\": ...})` so the old behavior of reconstructing `id_%s_%s` would fail. Verified with `python3 tests/runtests.py` for the two focused tests.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/tests/forms_tests/tests/test_forms.py b/tests/forms_tests/tests/test_forms.py\nindex 2c1ec78650..38e361b48",
+      "latency_s": 73.30193424224854,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

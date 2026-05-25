@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11099",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 781,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1558,
+      "response_excerpt": "<reasoning>\nThe repository isn't checked out locally, but this is a well-documented Django issue with a trivial, well-defined fix. The issue clearly identifies:\n\n1. **File**: `django/contrib/auth/validators.py`\n2. **Problem**: Both `ASCIIUsernameValidator` and `UnicodeUsernameValidator` use `r'^[\\w.@+-]+$'`. In Python regex, `$` matches before a trailing newline, so usernames like `\"foo\\n\"` incorrectly pass validation.\n3. **Fix**: Replace `^` with `\\A` and `$` with `\\Z`, since `\\A` and `\\Z` only",
+      "latency_s": 24.644052982330322,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-18835",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2105,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1572,
+      "response_excerpt": "<reasoning>\n`uniq` already checked the original sequence length, but the unhashable-item path recursed over slices. That meant mutations to the original list could be missed after the first unhashable item, and mixed hashable/unhashable inputs could yield duplicate hashable values. The patch handles `TypeError` per element instead, preserving one pass over the original sequence and checking its size immediately after every yielded unique value.\n\nVerified with:\n`./.venv/bin/python -m pytest sympy",
+      "latency_s": 127.08742094039917,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

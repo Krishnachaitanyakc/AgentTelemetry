@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-12125",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 3162,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "field deconstruct __name__": 1,
+    "typeserializer migrations serializer __name__": 1,
+    "__qualname__ nested class migrations serialization": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2600,
+      "response": "<reasoning>Migration paths for nested classes must use `__qualname__`, not `__name__`. `Field.deconstruct()` controls custom field class paths, while `TypeSerializer` controls class-valued kwargs such as enum classes passed to custom fields.</reasoning>\n<patch>diff --git a/django/db/migrations/serializer.py b/django/db/migrations/serializer.py\n--- a/django/db/migrations/serializer.py\n+++ b/django/db/migrations/serializer.py\n@@ -269,7 +269,7 @@ class TypeSerializer(BaseSerializer):\n             if module == builtins.__name__:\n                 return self.value.__name__, set()\n             else:\n-                return \"%s.%s\" % (module, self.value.__name__), {\"import %s\" % module}\n+                return \"%s.%s\" % (module, self.value.__qualname__), {\"import %s\" % module}\n \n \n class UUIDSerializer(BaseSerializer):\ndiff --git a/django/db/models/fields/__init__.py b/django/db/models/fields/__init__.py\n--- a/django/db/models/fields/__init__.py\n+++ b/django/db/models/fields/__init__.py\n@@ -191,7 +191,7 @@ class Field(RegisterLookupMixin):\n \n     def __repr__(self):\n         \"\"\"Display the module, class, and name of the field.\"\"\"\n-        path = '%s.%s' % (self.__class__.__module__, self.__class__.__name__)\n+        path = '%s.%s' % (self.__class__.__module__, self.__class__.__qualname__)\n         name = getattr(self, 'name', None)\n         if name is not None:\n             return '<%s: %s>' % (path, name)\n@@ -448,7 +448,7 @@ class Field(RegisterLookupMixin):\n                     ke",
+      "latency_s": 119.17645215988159,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4840,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"Field deconstruct __name__\"}}</tool_call>",
+      "latency_s": 14.086345911026001,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 5315,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"TypeSerializer migrations serializer __name__\"}}</tool_call>",
+      "latency_s": 13.69448709487915,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 5885,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"__qualname__ nested class migrations serialization\"}}</tool_call>",
+      "latency_s": 13.800875902175903,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 6480,
+      "response": "<reasoning>Use `__qualname__` when serializing class paths so nested classes keep their containing class path. This affects both custom `Field.deconstruct()` paths and class objects serialized by migrations, such as enum classes passed as field kwargs.</reasoning>\n<patch>diff --git a/django/db/migrations/serializer.py b/django/db/migrations/serializer.py\n--- a/django/db/migrations/serializer.py\n+++ b/django/db/migrations/serializer.py\n@@ -269,7 +269,7 @@ class TypeSerializer(BaseSerializer):\n             if module == builtins.__name__:\n                 return self.value.__name__, set()\n             else:\n-                return \"%s.%s\" % (module, self.value.__name__), {\"import %s\" % module}\n+                return \"%s.%s\" % (module, self.value.__qualname__), {\"import %s\" % module}\n \n \n class UUIDSerializer(BaseSerializer):\ndiff --git a/django/db/models/fields/__init__.py b/django/db/models/fields/__init__.py\n--- a/django/db/models/fields/__init__.py\n+++ b/django/db/models/fields/__init__.py\n@@ -191,7 +191,7 @@ class Field(RegisterLookupMixin):\n \n     def __repr__(self):\n         \"\"\"Display the module, class, and name of the field.\"\"\"\n-        path = '%s.%s' % (self.__class__.__module__, self.__class__.__name__)\n+        path = '%s.%s' % (self.__class__.__module__, self.__class__.__qualname__)\n         name = getattr(self, 'name', None)\n         if name is not None:\n             return '<%s: %s>' % (path, name)\n@@ -448,7 +448,7 @@ class Field(RegisterLookupMixin):\n            ",
+      "latency_s": 20.276124954223633,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13142",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1313,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3120,
+      "response_excerpt": "<reasoning>\n`fit_predict` was doing its final E-step before restoring `best_params`. With `n_init > 1`, that means returned labels could come from the last initialization, while `predict` uses the stored best initialization. Moving the final E-step after `_set_parameters(best_params)` makes `fit_predict(X)` use the same fitted parameters as `predict(X)`.\n\nVerification: `python3 -m py_compile sklearn/mixture/base.py` passed. Pytest collection was blocked by missing `distutils` in this environment",
+      "latency_s": 265.03894901275635,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

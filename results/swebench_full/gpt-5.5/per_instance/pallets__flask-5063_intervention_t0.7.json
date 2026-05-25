@@ -1,0 +1,26 @@
+{
+  "instance_id": "pallets__flask-5063",
+  "repo": "pallets/flask",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3926,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2833,
+      "response_excerpt": "<reasoning>\nThe `routes` command already detects when any rule uses a host or subdomain, but for subdomains it only displayed the raw subdomain value. The fix uses `SERVER_NAME` to expand subdomain routes into full domains when possible, while preserving the existing `Subdomain` output when `SERVER_NAME` is unset and preserving `Host` output for host matching.\n\nI added coverage for subdomain routes with `SERVER_NAME`, including a root-domain route, and verified `--sort domain` orders by the disp",
+      "latency_s": 101.16144490242004,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

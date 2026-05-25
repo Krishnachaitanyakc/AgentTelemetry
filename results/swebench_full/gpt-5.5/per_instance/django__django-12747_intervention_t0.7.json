@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12747",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1730,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1721,
+      "response_excerpt": "<reasoning>\nThe inconsistency comes from `Collector.delete()`\u2019s single-object fast-delete optimization. Other delete paths only add a per-model counter when `count` is nonzero, but this optimization returned `{label: count}` unconditionally. If the database reports zero deleted rows, that produced `{label: 0}`.\n\nThe patch makes the single-object fast-delete path match the rest of deletion accounting: return an empty dict when no rows were deleted. I added a focused `QuerySet.delete()` regression",
+      "latency_s": 189.16473388671875,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

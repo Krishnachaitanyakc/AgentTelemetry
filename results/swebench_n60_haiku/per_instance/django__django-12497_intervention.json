@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12497",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1197,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1612,
+      "response": "Looking at the investigation, the code appears to already be correct. The hint uses `ManyToManyField` which is the right suggestion. However, the issue reporter mentioned they would provide a PR with the correction. Let me check if there's perhaps an issue with the second error (E335) or if there's something about the hint that could be improved.\n\n<patch>\nLooking at the Django codebase investigation, the error hints at lines 1695-1702 and 1716-1723 in `/private/tmp/django_full/django/db/models/f...[truncated]",
+      "latency_s": 289.03744530677795,
+      "error": null
+    }
+  ]
+}

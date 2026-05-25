@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13915",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1363,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1472,
+      "response_excerpt": "<reasoning>\n1. The bad result comes from `Mul` simplifying a factor with exponent `0` to `1`.\n2. That is normally valid, but not when the base being cancelled already contains an infinity, e.g. `(zoo + x)/(zoo + y)`.\n3. Dropping that base erases an undefined subexpression and can turn an indeterminate expression into `1`.\n4. The fix is to return `NaN` when zero-exponent cancellation would discard an `Add` or `Mul` containing `oo`, `-oo`, or `zoo`.\n5. I verified the focused regression in the curr",
+      "latency_s": 106.24843502044678,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

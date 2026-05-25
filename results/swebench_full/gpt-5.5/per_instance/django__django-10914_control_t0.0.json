@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-10914",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4028,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1815,
+      "response_excerpt": "<reasoning>\nThe inconsistent permissions come from `FILE_UPLOAD_PERMISSIONS = None`: streamed temp files may retain tempfile permissions such as `0o600`, while in-memory uploads are created with `0o666 & ~umask`. Django already applies `os.chmod()` when `file_permissions_mode` is not `None`, so the fix is to set the default to `0o644`.\n\nI updated the default setting, adjusted tests that expected the old default, added coverage for explicitly setting `FILE_UPLOAD_PERMISSIONS=None`, and updated th",
+      "latency_s": 301.63993406295776,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16046",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 996,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1113,
+      "response_excerpt": "<reasoning>\nThe crash is caused by indexing `str_number[0]` after converting non-Decimal values with `str(number)`. Literal `None` and `\"\"` are already handled earlier, but an object that stringifies to `\"\"` can still reach the index operation. Guarding the normalized `str_number` preserves existing empty-value behavior and avoids changing normal numeric formatting.\n</reasoning>\n\n<patch>\ndiff --git a/django/utils/numberformat.py b/django/utils/numberformat.py\nindex c064ce6..f761ca7 100644\n--- a/",
+      "latency_s": 132.83584117889404,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

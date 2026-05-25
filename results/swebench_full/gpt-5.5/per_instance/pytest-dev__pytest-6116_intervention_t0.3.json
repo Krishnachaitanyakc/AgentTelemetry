@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-6116",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1042,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1784,
+      "response_excerpt": "<reasoning>\n`--co` already exists in this checkout, but the issue asks for a one-character shortcut. `-c` is already used for `--config-file`, so I added the unused uppercase `-C` alias to the existing collect-only option. I also added a focused regression test that proves `pytest -C` collects a failing test without executing it.\n\nVerified with:\n`./.venv/bin/python -m pytest -o minversion=0 testing/test_collection.py::TestCollectFS::test_collect_only_short_option`\n\nAlso checked help output inclu",
+      "latency_s": 187.2524869441986,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

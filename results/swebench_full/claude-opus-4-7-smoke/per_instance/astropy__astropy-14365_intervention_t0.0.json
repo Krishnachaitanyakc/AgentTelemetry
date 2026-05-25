@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-14365",
+  "repo": "astropy/astropy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1127,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2135,
+      "response_excerpt": "Now I have enough information. The fix is straightforward \u2014 the QDP regex matching needs to be case-insensitive. Let me trace through the original bug and provide the canonical patch.\n\nThe buggy code (pre-fix astropy 5.1) had two issues:\n1. The regex was compiled without `re.IGNORECASE`, then was matched against `line.upper()`. But uppercasing the entire line broke matching of valid lowercase data tokens (e.g., `nan`).\n2. The `NO` masked-value check was case-sensitive: `if v == \"NO\":`.\n\nThe cano",
+      "latency_s": 272.9918920993805,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

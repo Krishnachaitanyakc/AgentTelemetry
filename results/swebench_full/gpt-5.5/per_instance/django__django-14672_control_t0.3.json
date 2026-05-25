@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14672",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1553,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 7554,
+      "response_excerpt": "<reasoning>\nThe failure comes from `ManyToManyRel.__hash__()` hashing `self.identity`. `ForeignObjectRel.identity` already normalizes `limit_choices_to` with `make_hashable()`, but `ManyToManyRel.identity` also includes `through_fields`, which can be a list. A list in that identity tuple makes hashing fail during model checks on inherited/proxy reverse relations.\n\nThe fix is to normalize `through_fields` the same way before adding it to the identity tuple. I also added a regression test using an",
+      "latency_s": 227.3866069316864,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

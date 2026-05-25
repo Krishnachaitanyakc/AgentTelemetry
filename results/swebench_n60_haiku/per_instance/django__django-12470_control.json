@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12470",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 902,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1424,
+      "response": "Now based on my analysis, I believe the fix is to modify the condition on line 716 of compiler.py. The issue is that the `name != 'pk'` check prevents the inherited ordering from being applied properly.\n\nLet me propose the patch:\n\n<patch>\n--- a/django/db/models/sql/compiler.py\n+++ b/django/db/models/sql/compiler.py\n@@ -713,7 +713,9 @@ class SQLCompiler:\n         # If we get to this point and the field is a relation to another model,\n         # append the default ordering for that model unless th...[truncated]",
+      "latency_s": 307.720440864563,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11964",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 538,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3178,
+      "response": "I see that `_setattr` is just the standard `setattr`. The issue is that values are being directly stored in the instance without going through field conversion. Now I understand the problem better.\n\nThe issue is that when you set a value on a model instance using `setattr`, it goes directly to `__dict__`. When you later retrieve it, if it's an enum, it stays as an enum. The fix should be to handle enum values in the field's value conversion methods.\n\nLet me look at the problem more carefully. Th...[truncated]",
+      "latency_s": 119.90680599212646,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13551",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1633,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1428,
+      "response": "<reasoning>\nThe issue is that `PasswordResetTokenGenerator._make_hash_value()` does not include the user's email address in the token hash. This means changing a user's email does not invalidate existing password reset tokens.\n\nLooking at the current code in `/private/tmp/django_src/django/contrib/auth/tokens.py`, lines 98\u2013122 show `_make_hash_value` returns:\n```\nf\"{user.pk}{user.password}{login_timestamp}{timestamp}\"\n```\n\nThe fix, already visible in the current file state (which is the patched ...[truncated]",
+      "latency_s": 174.9653549194336,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14382",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 538,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1452,
+      "response_excerpt": "<patch>\n--- a/django/core/management/templates.py\n+++ b/django/core/management/templates.py\n@@ -105,7 +105,7 @@ class TemplateCommand(BaseCommand):\n         else:\n             top_dir = os.path.abspath(os.path.expanduser(target))\n             if app_or_project == \"app\":\n-                self.validate_name(os.path.basename(top_dir), \"directory\")\n+                self.validate_name(os.path.basename(top_dir.rstrip(os.sep)), \"directory\")\n             if not os.path.exists(top_dir):\n                 ",
+      "latency_s": 158.28104281425476,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

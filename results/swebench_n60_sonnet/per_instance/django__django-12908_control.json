@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12908",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 863,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1873,
+      "response": "I have all the information needed. The fix requires two changes:\n\n1. **`django/db/models/query.py`**: Add `self._not_support_combined_queries('distinct')` to the `distinct()` method so it raises `NotSupportedError` when called after `union()`/`intersection()`/`difference()`\n2. **`tests/queries/test_qs_combinators.py`**: Add `'distinct'` to the tested operations in `test_unsupported_operations_on_combined_qs`\n\n<reasoning>\nThe issue is that calling `.distinct()` on a union queryset silently doesn'...[truncated]",
+      "latency_s": 381.40907168388367,
+      "error": null
+    }
+  ]
+}

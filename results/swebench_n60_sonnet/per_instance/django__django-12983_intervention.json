@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12983",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1784,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1206,
+      "response": "Now I have a complete understanding of the issue. The bug is that `slugify()` doesn't strip leading/trailing dashes and underscores. The fix requires:\n\n1. Adding `.strip('-_')` to strip leading/trailing dashes and underscores from the result\n2. Lowercasing the value before applying the regex (minor ordering improvement)\n3. Adding test cases for the new behavior\n\n<reasoning>\n**The Bug:**\nThe current `slugify()` implementation processes `\"___This is a test ---\"` as follows:\n1. After regex and lowe...[truncated]",
+      "latency_s": 233.28663897514343,
+      "error": null
+    }
+  ]
+}

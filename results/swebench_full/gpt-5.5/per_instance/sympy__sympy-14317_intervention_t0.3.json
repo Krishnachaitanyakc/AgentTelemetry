@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-14317",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3138,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1395,
+      "response_excerpt": "<reasoning>\nThe LaTeX printer was printing `Poly` through `poly.as_expr()`, which lets normal `Add` ordering reorder terms by expression sort rules. `Poly.terms()` already provides the polynomial\u2019s logical monomial order, matching `str` and pretty printing, so `_print_Poly` should build the rendered polynomial term-by-term from `poly.terms()`.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/sympy/printing/latex.py b/sympy/printing/latex.py\n--- a/sympy/printing/latex.py\n+++ b/sympy/printing/latex.py\n@",
+      "latency_s": 271.66355085372925,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

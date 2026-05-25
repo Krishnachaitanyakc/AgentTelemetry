@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-12471",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2001,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2951,
+      "response_excerpt": "<reasoning>\nThe unsafe path is in `_BaseEncoder._transform`: for `handle_unknown='ignore'`, it temporarily replaces unknown entries with a known category before encoding. The code already widens fixed-width NumPy string dtypes when categories are also fixed-width strings, but it misses the case where fitted categories are `object` dtype and transform input is fixed-width string dtype. Assigning a long object string into that fixed-width array can truncate, causing `_encode` to see a bogus unknow",
+      "latency_s": 199.86066675186157,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

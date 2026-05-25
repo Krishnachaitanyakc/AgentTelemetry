@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-13028",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 2692,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "check_filterable": 1,
+    "filterable resolve_expression notsupportederror": 1,
+    "disallowed in the filter clause": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3850,
+      "response": "<reasoning>`check_filterable()` was intended to reject ORM expressions marked `filterable=False`, but it was also reading arbitrary RHS object attributes. A model instance with a BooleanField named `filterable=False` was therefore mistaken for a non-filterable expression. The fix is to only apply the `filterable` guard to objects that are ORM expressions, plus a regression test using a related model instance with `filterable=False`.</reasoning>\n<patch>```diff\ndiff --git a/django/db/models/sql/query.py b/django/db/models/sql/query.py\n--- a/django/db/models/sql/query.py\n+++ b/django/db/models/sql/query.py\n@@ -1127,7 +1127,10 @@ class Query(BaseExpression):\n \n     def check_filterable(self, expression):\n         \"\"\"Raise an error if expression cannot be used in a WHERE clause.\"\"\"\n-        if not getattr(expression, 'filterable', True):\n+        if (\n+            hasattr(expression, 'resolve_expression') and\n+            not getattr(expression, 'filterable', True)\n+        ):\n             raise NotSupportedError(\n                 expression.__class__.__name__ + ' is disallowed in the filter '\n                 'clause.'\ndiff --git a/tests/queries/models.py b/tests/queries/models.py\n--- a/tests/queries/models.py\n+++ b/tests/queries/models.py\n@@ -75,6 +75,7 @@ class ExtraInfo(models.Model):\n     note = models.ForeignKey(Note, models.CASCADE, null=True)\n     value = models.IntegerField(null=True)\n     date = models.ForeignKey(DateTimePK, models.SET_NULL, null=True)\n+    filterable = ",
+      "latency_s": 111.63221192359924,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 7248,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"check_filterable\"}}</tool_call>",
+      "latency_s": 13.476051807403564,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 7673,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"filterable resolve_expression NotSupportedError\"}}</tool_call>",
+      "latency_s": 13.695600032806396,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 8253,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"disallowed in the filter clause\"}}</tool_call>",
+      "latency_s": 13.692683935165405,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 8753,
+      "response": "<reasoning>`check_filterable()` should reject ORM expressions marked `filterable=False`, but it currently reads a plain RHS object's `filterable` attribute too. That makes model instances with a field named `filterable` fail incorrectly. The patch scopes the guard to expression-like objects and adds a regression test for filtering by a related instance whose `filterable` field is `False`.</reasoning>\n<patch>diff --git a/django/db/models/sql/query.py b/django/db/models/sql/query.py\n--- a/django/db/models/sql/query.py\n+++ b/django/db/models/sql/query.py\n@@ -1127,7 +1127,10 @@ class Query(BaseExpression):\n \n     def check_filterable(self, expression):\n         \"\"\"Raise an error if expression cannot be used in a WHERE clause.\"\"\"\n-        if not getattr(expression, 'filterable', True):\n+        if (\n+            hasattr(expression, 'resolve_expression') and\n+            not getattr(expression, 'filterable', True)\n+        ):\n             raise NotSupportedError(\n                 expression.__class__.__name__ + ' is disallowed in the filter '\n                 'clause.'\ndiff --git a/tests/queries/models.py b/tests/queries/models.py\n--- a/tests/queries/models.py\n+++ b/tests/queries/models.py\n@@ -75,6 +75,7 @@ class ExtraInfo(models.Model):\n     note = models.ForeignKey(Note, models.CASCADE, null=True)\n     value = models.IntegerField(null=True)\n     date = models.ForeignKey(DateTimePK, models.SET_NULL, null=True)\n+    filterable = models.BooleanField(default=True)\n \n     class Meta:\n",
+      "latency_s": 18.69911503791809,
+      "error": null
+    }
+  ]
+}

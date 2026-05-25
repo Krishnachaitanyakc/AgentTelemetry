@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-22714",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2194,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2452,
+      "response_excerpt": "<reasoning>\nThe crash happens because `Point.__new__` validates numeric coordinates with `im(a)`. Inside global `evaluate(False)`, `im(Integer(1))` remains unevaluated as `im(1)`, and that expression is truthy, so the constructor incorrectly treats real integer coordinates as imaginary.\n\nThe fix makes only the validation call evaluate normally, without changing the user-requested `Point(..., evaluate=False)` behavior for float conversion or simplification. I added a regression test for the exact",
+      "latency_s": 179.7677400112152,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15902",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2740,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1235,
+      "response_excerpt": "<reasoning>\nThe warning is emitted because `ManagementForm` inherits `Form.template_name`, which delegates to the renderer\u2019s general form template. For affected projects, that can be the deprecated `default.html`, even though management forms only need hidden inputs.\n\nThe patch gives `ManagementForm` a dedicated template and adds matching Django/Jinja2 built-in templates. The regression test uses a renderer whose normal form template is missing, proving the management form no longer depends on t",
+      "latency_s": 280.56117391586304,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

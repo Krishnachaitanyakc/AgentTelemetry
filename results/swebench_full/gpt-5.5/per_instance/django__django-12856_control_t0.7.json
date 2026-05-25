@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12856",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3639,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1261,
+      "response_excerpt": "<reasoning>\nThe model check path already validates `unique_together` through `Model._check_local_fields()`, which returns `models.E012` for missing fields and also catches M2M/non-local invalid references. `UniqueConstraint.check()` validates backend feature support and expression/condition references, but the plain `fields=` names need the same local-field validation before migrations are generated. The patch initializes `errors` from `_check_local_fields()` for `fields` and `include`, preservi",
+      "latency_s": 87.07304072380066,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11001",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2245,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3014,
+      "response_excerpt": "<reasoning>\n`SQLCompiler.get_order_by()` de-duplicates ordering expressions after stripping the trailing `ASC`/`DESC`. The existing regex only matched per line, so multiline `RawSQL` expressions with identical final lines collapsed incorrectly. The fix is to make that regex span newlines, and the regression test asserts three similar multiline `RawSQL` orderings are all retained.\n\nVerified with:\n`python3 tests/runtests.py ordering.tests.OrderingTests.test_order_by_multiline_raw_sql --verbosity 2",
+      "latency_s": 183.41878485679626,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

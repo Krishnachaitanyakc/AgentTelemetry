@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13447",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 459,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1215,
+      "response": "Perfect! I can see that both versions already have `'model': model` in the model_dict at line 442 in the old version. The model class is already being included. \n\nLooking at the issue description again: \"I need to manipulate the app_list in my custom admin view, and the easiest way to get the result is to have access to the model class (currently the dictionary is a serialized model).\"\n\nThis suggests that when the context is used in templates, the model object might be getting serialized. But ac...[truncated]",
+      "latency_s": 105.25295329093933,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "psf__requests-2148",
+  "repo": "psf/requests",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1621,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3104,
+      "response_excerpt": "<reasoning>\n1. `Response.iter_content()` already translates urllib3 stream exceptions into Requests exceptions.\n2. A raw `socket.error` from the underlying socket can still escape that translation layer.\n3. The fix is to catch `socket.error` in the urllib3 streaming branch and raise `requests.exceptions.ConnectionError`.\n4. I extended the existing exception-wrapping unit test with `socket.error` and removed its unused `httpbin` fixture dependency.\n5. Verified with: `.venv/bin/python -m pytest te",
+      "latency_s": 143.42478775978088,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

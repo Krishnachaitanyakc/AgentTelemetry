@@ -1,0 +1,26 @@
+{
+  "instance_id": "pydata__xarray-4094",
+  "repo": "pydata/xarray",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 422,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2398,
+      "response_excerpt": "Now I have all the information needed. Let me write up the analysis and patch.\n\n<reasoning>\nThe issue is in `xarray/core/dataarray.py` in `to_unstacked_dataset` (line 3063-3126). \n\n**Problem trace:**\n1. `data = xr.Dataset({\"a\": arr, \"b\": arr})` with both vars 1D over `x`.\n2. `data.to_stacked_array('y', sample_dims=['x'])` creates a (x=3, y=2) array. Since there are no stacking_dims (only sample_dim 'x'), the multi-index on 'y' has only one level: `variable` with values `['a', 'b']`.\n3. In `to_un",
+      "latency_s": 565.6049029827118,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14238",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1747,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3384,
+      "response_excerpt": "<reasoning>\nThe failure path is `Options._get_default_pk_class()`, which imports `DEFAULT_AUTO_FIELD` and validates it with `issubclass(pk_class, AutoField)`. `AutoField` uses `AutoFieldMeta.__subclasscheck__()`, so the compatibility tuple must include custom subclasses of `BigAutoField` and `SmallAutoField`, not only the built-in classes. I updated `_subclasses` to include current direct subclasses of both classes and added regression coverage for a `SmallAutoField` subclass as `DEFAULT_AUTO_FI",
+      "latency_s": 153.6279947757721,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

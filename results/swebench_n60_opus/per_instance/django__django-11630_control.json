@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11630",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1493,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1485,
+      "response": "The fix looks correct. Here's the summary:\n\n<reasoning>\nThe issue is that Django 2.2 introduced check `models.E028` which raises a hard `Error` whenever two models (even in different apps) share the same `db_table` name. However, this is a valid configuration when models are routed to different databases via `DATABASE_ROUTERS`.\n\nThe fix (which was later implemented in Django 3.0+) is to:\n1. Check if `settings.DATABASE_ROUTERS` is configured\n2. If yes: downgrade the check from `Error` (id `models...[truncated]",
+      "latency_s": 122.41277384757996,
+      "error": null
+    }
+  ]
+}

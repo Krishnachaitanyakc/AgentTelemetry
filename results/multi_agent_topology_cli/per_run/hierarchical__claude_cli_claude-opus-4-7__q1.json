@@ -1,0 +1,29 @@
+{
+  "topology": "hierarchical",
+  "model": "claude_cli/claude-opus-4-7",
+  "question": "Compare reasoning-loop failures versus circular delegation in multi-agent systems. Which is more common, and why?",
+  "run_id": "hierarchical__claude_cli_claude-opus-4-7__q1",
+  "transcript": [
+    {
+      "agent": "facts_specialist",
+      "output": "- **Reasoning-loop failures**: An agent gets stuck repeating the same chain-of-thought, retrying failed actions, or oscillating between two hypotheses without converging \u2014 typically caused by missing termination criteria, hallucinated state, or tool errors that don't update the agent's belief.\n\n- **Circular delegation**: Agent A hands a task to B, B routes it back to A (or via C \u2192 A), forming a cycle \u2014 typically caused by overlapping role definitions, weak routing logic, or each agent believing the other is better suited.\n\n- **Reasoning loops are more common** in practice because they occur within a single agent and need only one bad feedback signal, whereas circular delegation requires multiple agents with mis-specified responsibilities to coincide.\n\n- **Detection differs**: reasoning loops show as repeated tokens/tool calls and are catchable with step limits; circular delegation shows as growing handoff chains and needs graph-level cycle detection.\n\n- **Common mitigations**: max-iter",
+      "latency_s": 16.700392246246338
+    },
+    {
+      "agent": "analysis_specialist",
+      "output": "**Reasoning-loop failures vs. circular delegation: key trade-offs**\n\n1. **Detection difficulty**: Reasoning loops (an agent re-deriving the same conclusion) are harder to detect \u2014 they look like productive thinking. Circular delegation (A\u2192B\u2192A) leaves a clear call graph and is trivially caught with cycle detection on the handoff trace.\n\n2. **Containment cost**: Reasoning loops burn tokens inside one context and degrade silently. Circular delegation multiplies cost across agents and often trips timeout/depth guards faster, surfacing the failure earlier but wasting more compute per incident.\n\n3. **Root cause**: Loops stem from weak termination criteria or missing state (\"am I done?\"). Delegation cycles stem from unclear ownership or overlapping agent scopes.\n\n**Which is more common**: Reasoning-loop failures, by a wide margin. Most frameworks ship cycle-detection or max-depth guards on delegation, but termination logic inside a single agent's loop is bespoke per task \u2014 so it fails more of",
+      "latency_s": 15.54557490348816
+    },
+    {
+      "agent": "manager_synthesis",
+      "output": "**Reasoning-loop failures vs. circular delegation**\n\nReasoning loops occur when a single agent repeats the same chain-of-thought, retries failed actions, or oscillates between hypotheses \u2014 typically from missing termination criteria, hallucinated state, or tool errors that fail to update belief. Circular delegation occurs when agents form a handoff cycle (A\u2192B\u2192A or A\u2192B\u2192C\u2192A), driven by overlapping roles, weak routing logic, or each agent assuming another is better suited.\n\n**Reasoning loops are substantially more common.** Three reasons:\n\n1. **Lower threshold to trigger**: a loop needs only one bad feedback signal inside one context, while a delegation cycle requires multiple agents with mis-specified responsibilities to coincide.\n2. **Weaker default guards**: most frameworks ship cycle detection and max-depth limits on delegation, but per-task termination logic inside an agent's reasoning loop is bespoke and frequently underspecified.\n3. **Harder to detect**: loops resemble productive t",
+      "latency_s": 13.846014976501465
+    }
+  ],
+  "total_cost_usd": 0.075315,
+  "total_input_tokens": 721,
+  "total_output_tokens": 860,
+  "n_agents": 3,
+  "wall_clock_s": 46.12071108818054,
+  "error": null
+}

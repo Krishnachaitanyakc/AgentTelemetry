@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-8365",
+  "repo": "pytest-dev/pytest",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1061,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2671,
+      "response_excerpt": "Looking at the issue, I need to find the place where `getpass.getuser()` is used and the directory is created. The issue is that when the username contains characters like backslash (`\\` in `contoso\\john_doe`), the directory creation fails because the backslash is interpreted as a path separator on Windows.\n\nI found the relevant code in `src/_pytest/tmpdir.py`. The current code creates a directory with the format `pytest-of-{user}` and calls `mkdir()` which fails when the user contains illegal p",
+      "latency_s": 137.95356583595276,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "pylint-dev__pylint-7080",
+  "repo": "pylint-dev/pylint",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2146,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 25568,
+      "response_excerpt": "<reasoning>\nThe recursive discovery path checked ignored directories, but when walking a non-package directory it yielded every `.py` file without applying `ignore`, `ignore-patterns`, or `ignore-paths` to those file paths. The fix applies the same ignore predicate before yielding recursive file discoveries, and the regression test now asserts the ignored file is absent from the discovered recursive input list itself.\n\nVerification: `python3 -m py_compile pylint/lint/pylinter.py tests/lint/unitt",
+      "latency_s": 199.95689988136292,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

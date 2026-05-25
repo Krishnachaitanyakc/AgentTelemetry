@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-14365",
+  "repo": "astropy/astropy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2208,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2135,
+      "response_excerpt": "<reasoning>\nThe bug in `astropy/io/ascii/qdp.py` is that the `_line_type` regex used to detect QDP `READ SERR/TERR` commands (and `NO` separator/data tokens) was compiled without `re.IGNORECASE`, so `read serr 1 2` (lowercase) raised `ValueError: Unrecognized QDP line`. QDP itself is case-insensitive, so this was incorrect.\n\nTwo changes are needed in `qdp.py`:\n\n1. Compile the line-type regex with `re.IGNORECASE` so the `READ [TS]ERR`, `NO`, and `nan` tokens match in any case.\n2. In `_get_tables_",
+      "latency_s": 358.347904920578,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

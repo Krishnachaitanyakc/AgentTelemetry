@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13315",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3991,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1079,
+      "response_excerpt": "<reasoning>\nThe duplicate rows come from applying `limit_choices_to` joins directly to the form field queryset. The fix is to keep the outer queryset intact and apply the limit as a correlated `Exists()` subquery on the target model primary key, so joined rows can only decide existence and cannot multiply choices. I verified the regression test with `/private/tmp/django-test-venv/bin/python tests/runtests.py model_forms.tests.LimitChoicesToTests.test_limit_choices_to_no_duplicates`.\n</reasoning>",
+      "latency_s": 423.41245698928833,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

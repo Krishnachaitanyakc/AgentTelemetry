@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-21379",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2983,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2573,
+      "response_excerpt": "<reasoning>\nThe exception comes from hyperbolic realness assumptions using symbolic modulo, e.g. `im % pi`. For the substituted expression, `im` can contain a `Piecewise`, so constructing `Mod` calls polynomial `gcd`, which raises `PolynomialError`.\n\nThe patch replaces those modulo checks with equivalent integer-multiple tests such as `(im/pi).is_integer`, avoiding `Mod` entirely. A regression test covers `sinh`, `cosh`, and `tanh` with the reported `Piecewise(...)/z` expression and `subs({1: 1.",
+      "latency_s": 207.93379306793213,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

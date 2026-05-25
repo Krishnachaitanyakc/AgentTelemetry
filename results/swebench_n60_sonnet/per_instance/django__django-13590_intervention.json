@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13590",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 673,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1684,
+      "response": "The fix is correct. Here's the reasoning and patch:\n\n<reasoning>\nThe bug is in `django/db/models/sql/query.py` in the `resolve_lookup_value` method. The original code:\n\n```python\nreturn type(value)(\n    self.resolve_lookup_value(sub_value, can_reuse, allow_joins)\n    for sub_value in value\n)\n```\n\npasses a **generator object** directly to the type constructor. For regular `list` and `tuple`, this works fine because `list(iterable)` and `tuple(iterable)` both accept a single iterable argument. But...[truncated]",
+      "latency_s": 163.50223898887634,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-23191",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 7419,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2391,
+      "response_excerpt": "<reasoning>\nThe bug is in `PrettyPrinter._print_BasisDependent`. It converts coefficient pretty forms to strings and then manually searches newline/parenthesis positions to insert the basis vector. For multiline coefficients such as fractions, that places `i_C`/`k_C` on a numerator line.\n\nThe fix keeps each term as a `prettyForm`: print the scalar coefficient, wrap it in parentheses, append the basis vector with `stringPict.right(...)`, then combine terms with `prettyForm.__add__`. That preserve",
+      "latency_s": 167.54483675956726,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12308",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 636,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1284,
+      "response": "Given the issue says the fix is needed for `display_for_field` to handle JSONField, and looking at the different versions:\n\n- **Django 3.0** (`django_30`): Has postgres `JSONField` only, and handles it in the else block. But the issue is that `display_for_field` is in the else block and requires postgres to be installed.\n- **Django 3.1** (`django_old`): Already has the fix with `models.JSONField` check.\n\nThe issue must target a version between Django 3.0 and the fix. Since the issue mentions `mo...[truncated]",
+      "latency_s": 219.44193983078003,
+      "error": null
+    }
+  ]
+}

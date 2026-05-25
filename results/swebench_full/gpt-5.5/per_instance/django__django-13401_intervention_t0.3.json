@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13401",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3646,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2028,
+      "response_excerpt": "<reasoning>\nFields inherited from an abstract base keep the same `creation_counter`, so comparing and hashing only on that value makes distinct concrete model fields collapse in sets. The fix adds the owning model to equality and hashing, while keeping `creation_counter` as the primary ordering key to avoid reordering unrelated fields. A regression test covers equality, ordering, and hashing for abstract and concrete inherited fields.\n\nI could not run Django\u2019s test runner in this environment bec",
+      "latency_s": 173.07119822502136,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

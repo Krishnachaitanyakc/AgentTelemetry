@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11848",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3660,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1451,
+      "response": "<reasoning>\nThe fixed cutoff was in `django.utils.http.parse_http_date()`: two-digit years were mapped with a hard-coded `00-69 => 2000-2069` and `70-99 => 1970-1999`. I changed that to anchor the two-digit year in the current century and only roll it back one century if it appears more than 50 years in the future. I also expanded the RFC 850 tests with mocked current years around the boundary.\n\nVerification: `python3 -m py_compile` and `git diff --check` passed. The full Django test runner coul...[truncated]",
+      "latency_s": 169.34846711158752,
+      "error": null
+    }
+  ]
+}

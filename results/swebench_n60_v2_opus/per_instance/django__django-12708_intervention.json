@@ -1,0 +1,37 @@
+{
+  "instance_id": "django__django-12708",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 2,
+  "proposed_patch": false,
+  "patch_len": 0,
+  "total_searches": 1,
+  "unique_queries": 1,
+  "max_query_repeats": 1,
+  "patch_suppressions": 0,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "_delete_composed_index": 1
+  },
+  "error": "timeout after 600s",
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1970,
+      "response": "I'll investigate the codebase to understand the issue with `_delete_composed_index` and how it handles `index_together` deletion when `unique_together` exists on the same fields.\n\n<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"_delete_composed_index\"}}</tool_call>",
+      "latency_s": 13.612802028656006,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 2605,
+      "response": "",
+      "latency_s": 600.0068409442902,
+      "error": "timeout after 600s"
+    }
+  ]
+}

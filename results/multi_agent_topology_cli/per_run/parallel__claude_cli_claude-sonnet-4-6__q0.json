@@ -1,0 +1,29 @@
+{
+  "topology": "parallel",
+  "model": "claude_cli/claude-sonnet-4-6",
+  "question": "What are three concrete ways autonomous AI agents fail in production deployments, and what observability primitives would catch each?",
+  "run_id": "parallel__claude_cli_claude-sonnet-4-6__q0",
+  "transcript": [
+    {
+      "agent": "researcher_a",
+      "output": "**1. Tool call loops / runaway orchestration**\nAgent re-invokes tools with near-identical inputs, burning tokens and time. Catch with: span-level trace trees (OpenTelemetry), loop-detection counters per conversation ID, and token-budget gauges with threshold alerts.\n\n**2. Silent context drift**\nLong-running agents lose track of the original goal as context window fills \u2014 produce plausible but wrong output with no error signal. Catch with: semantic similarity scoring between goal embedding and final output embedding, logged per turn; divergence above threshold triggers a flag.\n\n**3. Tool result hallucination**\nAgent \"uses\" a tool but fabricates the result rather than grounding on actual output \u2014 especially under latency pressure. Catch with: structured output schemas with hash-verified tool response IDs, grounding audit logs that pair each claim to a specific tool call ID, and confidence calibration metrics (predicted vs. actual accuracy).",
+      "latency_s": 15.111668109893799
+    },
+    {
+      "agent": "researcher_b",
+      "output": "**1. Tool call loops** \u2014 Agent retries a failing API indefinitely, burning tokens and budget.\n- *Catch with:* call-count metrics per task, rate-limit alerts, span tracing showing repeated tool invocations.\n\n**2. Context drift / hallucinated state** \u2014 Agent acts on stale or fabricated memory mid-task (e.g., assumes a file exists that it deleted earlier).\n- *Catch with:* structured action logs with pre/post state snapshots, assertion checks on expected vs. actual environment state after each step.\n\n**3. Silent task abandonment** \u2014 Agent encounters an ambiguous branch, returns a plausible-sounding response, but stops pursuing the actual goal.\n- *Catch with:* goal-completion scoring (LLM-as-judge on final output vs. original intent), task-duration P95 alerts, and explicit \"done/blocked/failed\" terminal state enums rather than free-text responses.",
+      "latency_s": 14.583579063415527
+    },
+    {
+      "agent": "writer",
+      "output": "**1. Tool call loops** \u2014 The agent retries a failing tool with near-identical inputs indefinitely, burning tokens and budget. Catch with span-level trace trees (OpenTelemetry), per-task call-count metrics, and token-budget gauges with threshold alerts that fire before costs explode.\n\n**2. Context drift** \u2014 In long-running tasks, the agent loses track of the original goal or acts on stale state (e.g., assuming a file exists that it deleted earlier). Catch with structured action logs that record pre/post environment snapshots after each step, combined with semantic similarity scoring between the original goal embedding and current output \u2014 divergence above threshold triggers a flag.\n\n**3. Silent failure** \u2014 Two related variants: the agent fabricates a tool result rather than grounding on actual output (hallucinated tool response), or it hits an ambiguous branch and returns a plausible-sounding answer while silently abandoning the real goal. Catch both with: hash-verified tool response ID",
+      "latency_s": 20.58702802658081
+    }
+  ],
+  "total_cost_usd": 0.013485,
+  "total_input_tokens": 650,
+  "total_output_tokens": 769,
+  "n_agents": 3,
+  "wall_clock_s": 50.303298234939575,
+  "error": null
+}

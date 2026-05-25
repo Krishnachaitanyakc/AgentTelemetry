@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12284",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1918,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1705,
+      "response": "<reasoning>\n`get_FOO_display()` is installed in `Field.contribute_to_class()` as a `partialmethod` bound to the field object. The old `hasattr()` guard incorrectly sees an inherited generated method from an abstract base class, so a child model overriding the field keeps using the base field\u2019s choices. Checking `cls.__dict__` preserves methods explicitly defined on the current class while allowing a replacement field on a child class to install its own display method.\n\nVerified with: `PYTHONPATH...[truncated]",
+      "latency_s": 175.43790197372437,
+      "error": null
+    }
+  ]
+}

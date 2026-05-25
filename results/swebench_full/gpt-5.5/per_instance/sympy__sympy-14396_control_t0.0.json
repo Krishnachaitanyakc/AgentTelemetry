@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-14396",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4176,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2858,
+      "response_excerpt": "<reasoning>\nThe domain parser already had string handling for polynomial rings, but the construction was hardcoded per ground domain. I changed it to parse the ground domain through `Domain.preprocess()` and then build the polynomial ring, which keeps `RR[y,z]` working and also supports precision-qualified real/complex domains like `RR_100[x,y]`.\n\nI also improved the invalid-domain error message to name the option and quote the bad value. Verified with:\n`pytest sympy/polys/tests/test_polyoptions",
+      "latency_s": 225.48188710212708,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

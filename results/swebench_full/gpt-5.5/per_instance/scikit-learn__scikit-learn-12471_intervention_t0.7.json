@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-12471",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2181,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2951,
+      "response_excerpt": "<reasoning>\nThe bug is in `_BaseEncoder._transform`: for `handle_unknown='ignore'`, unknown values are temporarily replaced with `self.categories_[i][0]` so `_encode` can run. If `Xi` is a fixed-width NumPy string array with a smaller itemsize than the fitted category dtype, that assignment truncates the category string and `_encode` later sees a bogus unknown category. The fix is to widen `Xi` to the fitted string dtype before assigning the sentinel category, while preserving the existing copy ",
+      "latency_s": 179.58780169487,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12856",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3364,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1292,
+      "response": "I have all the information needed. Now I'll propose the patch.\n\n<reasoning>\nThe issue is that `UniqueConstraint` doesn't validate that the field names it references actually exist on the model, while `unique_together` does raise `models.E012` when fields don't exist.\n\n**Root cause:** In `django/db/models/base.py`, the `_check_constraints` method only checks for database feature support (W027 for CheckConstraints), but never calls `_check_local_fields()` to validate `UniqueConstraint.fields` for ...[truncated]",
+      "latency_s": 276.7839391231537,
+      "error": null
+    }
+  ]
+}

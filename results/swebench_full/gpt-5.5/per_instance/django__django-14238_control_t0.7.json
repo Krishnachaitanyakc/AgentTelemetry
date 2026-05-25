@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14238",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2174,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3384,
+      "response_excerpt": "<reasoning>\nThe failing check was in `AutoFieldMeta.__subclasscheck__`: it only accepted `BigAutoField` and `SmallAutoField` themselves, not user subclasses. Replacing tuple membership with `issubclass()` makes `DEFAULT_AUTO_FIELD` accept subclasses of both. I added regression coverage for custom `BigAutoField` and `SmallAutoField` subclasses.\n\nVerified with:\n`/private/tmp/django-delete-venv39/bin/python tests/runtests.py model_options.test_default_pk --verbosity 1`\n`/private/tmp/django-delete-v",
+      "latency_s": 229.93490195274353,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

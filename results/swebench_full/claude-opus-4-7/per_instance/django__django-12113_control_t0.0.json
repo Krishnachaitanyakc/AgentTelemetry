@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12113",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1888,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5568,
+      "response_excerpt": "The fix moves the serialization of test databases to happen AFTER all databases are set up, rather than per-database during `create_test_db()`. This avoids SQLite holding open cursors across databases that cause \"database is locked\" errors.\n\n<patch>\n--- a/django/test/utils.py\n+++ b/django/test/utils.py\n@@ -165,6 +165,7 @@ def setup_databases(verbosity, interactive, *, time_keeper=None, keepdb=False, d\n     test_databases, mirrored_aliases = get_unique_databases_and_mirrors(aliases)\n \n     old_na",
+      "latency_s": 823.6445178985596,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

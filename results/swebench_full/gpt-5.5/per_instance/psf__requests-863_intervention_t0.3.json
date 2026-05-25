@@ -1,0 +1,26 @@
+{
+  "instance_id": "psf__requests-863",
+  "repo": "psf/requests",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 997,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1598,
+      "response_excerpt": "<reasoning>\n1. The hook dispatch path expects each event entry to be an iterable of callables.\n2. `Request.register_hook()` already has the right normalization behavior: a callable is appended, and an iterable of callables is extended.\n3. The regression risk is that `Request(..., hooks={\"response\": [hook1, hook2]})` could store the list as a single hook, causing dispatch to try calling a list.\n4. I added focused coverage that prepares a request with two response hooks, verifies both are stored a",
+      "latency_s": 139.90950202941895,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

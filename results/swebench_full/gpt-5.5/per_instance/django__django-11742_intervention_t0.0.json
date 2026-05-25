@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11742",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4499,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1122,
+      "response_excerpt": "<reasoning>\nThe check belongs in `Field._check_choices()` because it already validates the structure of `choices` and can inspect both flat and grouped choices. The patch tracks the longest string choice value while preserving existing invalid-choice errors, then emits `fields.E009` when `max_length` is set and too small. I verified the relevant test module with `python3 tests/runtests.py invalid_models_tests.test_ordinary_fields --settings=test_sqlite --verbosity=1 --parallel=1`.\n</reasoning>\n\n",
+      "latency_s": 128.2470200061798,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

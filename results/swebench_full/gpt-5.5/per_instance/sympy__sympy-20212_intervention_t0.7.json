@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-20212",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1355,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1258,
+      "response_excerpt": "<reasoning>\nThe bug is in `Zero._eval_power`: in SymPy 1.5.x, `S.NegativeInfinity` is not caught by `expt.is_negative`, so `0**-oo` falls through and simplifies incorrectly. The compatible fix is to special-case `oo` and `-oo` before the ordinary sign checks. I also added a regression test to the existing zero-power test.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/sympy/core/numbers.py b/sympy/core/numbers.py\n--- a/sympy/core/numbers.py\n+++ b/sympy/core/numbers.py\n@@ -2480,14 +2480,20 @@ class Z",
+      "latency_s": 163.6771101951599,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

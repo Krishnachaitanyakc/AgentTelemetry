@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13177",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1023,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1182,
+      "response_excerpt": "<reasoning>\nThe unsafe simplification is the power-modulo zero shortcut: a power `base**exp` can only be declared divisible modulo an integer `q` from `base % q == 0` when `base` itself is known integer. Otherwise symbolic expressions like `x**2 % x` can incorrectly collapse to zero even though substituting `x = 1.5` gives `0.75`.\n\nI tightened that guard and added a regression test for the symbolic and substituted cases. Verified with:\n`/private/tmp/sympy-issue-mod-venv/bin/python -m pytest symp",
+      "latency_s": 218.02632880210876,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

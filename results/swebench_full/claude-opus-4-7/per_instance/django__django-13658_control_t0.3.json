@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13658",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 774,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2031,
+      "response_excerpt": "<reasoning>\nThe issue is straightforward: in Django's `ManagementUtility` class (located at `django/core/management/__init__.py`), the `__init__` method computes `self.prog_name` from the `argv` argument (or `sys.argv` as fallback). However, when it later instantiates `CommandParser` to parse `--pythonpath` and `--settings`, it does not pass `prog=self.prog_name`. This causes argparse to fall back to `sys.argv[0]` for the `%(prog)s` substitution in the usage string, which breaks for users who pa",
+      "latency_s": 30.13981795310974,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

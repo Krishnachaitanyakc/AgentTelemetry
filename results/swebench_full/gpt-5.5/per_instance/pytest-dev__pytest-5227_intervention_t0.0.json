@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-5227",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1095,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1839,
+      "response_excerpt": "<reasoning>\nThe checkout already has the improved default log format in `src/_pytest/logging.py` and the documented default in `doc/en/reference/reference.rst`. To make the behavior explicit and prevent regressions, I added a focused test that runs pytest with default log formatting and asserts captured logs include the logger name before `filename:lineno`.\n\nVerification: `.venv/bin/python -m pytest -c /dev/null -p pytester testing/logging/test_reporting.py::test_default_log_format_includes_logg",
+      "latency_s": 169.66811394691467,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

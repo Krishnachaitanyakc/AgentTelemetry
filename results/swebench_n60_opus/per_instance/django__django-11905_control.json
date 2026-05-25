@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11905",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 500,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1234,
+      "response": "All these are installed packages. The `django_issue` one with version 2.2.1 already has the fix. Let me look more carefully - the fix in `django_issue` was likely applied as part of the issue resolution. Let me check both the unpatched versions.\n\nGiven this is a django/django issue, and the code I can see in the repo versions:\n\n- `django_22` (Django 2.2): No boolean validation in `IsNull.as_sql`\n- `django_30` (Django 3.0): No boolean validation in `IsNull.as_sql`  \n- `django_issue` (Django 2.2.1...[truncated]",
+      "latency_s": 132.47734117507935,
+      "error": null
+    }
+  ]
+}

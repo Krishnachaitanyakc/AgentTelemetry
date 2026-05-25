@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12453",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1007,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3700,
+      "response_excerpt": "<reasoning>\nThe issue describes a clear bug in Django's `BaseDatabaseCreation.deserialize_db_from_string` method. When `TransactionTestCase.serialized_rollback = True`, the test framework serializes the DB contents and later deserializes them. However, the deserialization loop saves objects one-by-one without a transaction wrapper.\n\nThe problem:\n1. `serialize_db_to_string` orders models via `serializers.sort_dependencies`, which only handles natural keys, not foreign keys.\n2. Circular foreign ke",
+      "latency_s": 45.317134141922,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

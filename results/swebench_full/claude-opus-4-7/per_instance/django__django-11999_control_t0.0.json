@@ -1,0 +1,35 @@
+{
+  "instance_id": "django__django-11999",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 2,
+  "proposed_patch": true,
+  "answer_len": 953,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1306,
+      "response_excerpt": "The patch has been proposed. The fix adds a check at `django/db/models/fields/__init__.py` so that `get_FOO_display()` is only auto-generated when the user hasn't defined their own version directly on the class (using `cls.__dict__` rather than `hasattr` so inherited methods are still overridden when choices change in a subclass).",
+      "latency_s": 258.6956720352173,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 1674,
+      "response_excerpt": "<reasoning>\nThe issue is that in Django 2.2+, `Field.contribute_to_class()` unconditionally sets `get_FOO_display` on the model class via `setattr(cls, 'get_%s_display' % self.name, partialmethod(...))`. Because this runs after the user's class body is processed by the metaclass, it overwrites any user-defined `get_foo_bar_display()` method.\n\nThe fix is to only set the auto-generated method when the user hasn't defined one directly on the class. Using `cls.__dict__` (rather than `hasattr`) is im",
+      "latency_s": 30.866817951202393,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12453",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1444,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3700,
+      "response_excerpt": "<reasoning>\n1. `deserialize_db_from_string()` can deserialize rows in an order where FK targets do not exist yet.\n2. A transaction is required so databases with deferred constraint support can validate after all rows are loaded.\n3. For databases with immediate checks, the restore should temporarily disable constraint checks and explicitly validate them after loading.\n4. The local checkout already contains this robust fix and its regression tests pass with:\n`python3 tests/runtests.py backends.bas",
+      "latency_s": 101.79556512832642,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-20154",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 880,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1344,
+      "response_excerpt": "<reasoning>\n`partitions()` in this checkout already yields `ms.copy()` for both normal and `size=True` paths, so the dictionary reuse behavior is fixed in implementation. I added a regression test to make sure `list(partitions(...))` preserves distinct dictionary objects and does the same when `size=True`.\n\nVerified with:\n`/private/tmp/sympy-test-venv/bin/python -m pytest sympy/utilities/tests/test_iterables.py::test_partitions`\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/sympy/utilities/tests/te",
+      "latency_s": 179.53073501586914,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

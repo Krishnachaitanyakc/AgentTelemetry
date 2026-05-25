@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11910",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3339,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1997,
+      "response": "Perfect! Now let me create the final patch. The changes are in the autodetector.py file. Let me generate a unified diff:\n\n<patch>\n--- a/django/db/migrations/autodetector.py\n+++ b/django/db/migrations/autodetector.py\n@@ -969,18 +969,45 @@ class MigrationAutodetector:\n                 # Handle ForeignKey which can only have a single to_field.\n-                remote_field_name = getattr(new_field.remote_field, 'field_name', None)\n+                remote_field_name = getattr(new_field.remote_field,...[truncated]",
+      "latency_s": 176.9210889339447,
+      "error": null
+    }
+  ]
+}

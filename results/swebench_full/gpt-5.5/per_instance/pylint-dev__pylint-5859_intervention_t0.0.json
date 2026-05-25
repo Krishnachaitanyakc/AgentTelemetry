@@ -1,0 +1,26 @@
+{
+  "instance_id": "pylint-dev__pylint-5859",
+  "repo": "pylint-dev/pylint",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1630,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1722,
+      "response_excerpt": "<reasoning>\nThe bug comes from using `\\b` after the configured note tag. A word boundary only works around word characters, so punctuation-only tags like `???` fail before `:` because both sides are non-word characters. Replacing it with an explicit delimiter lookahead for `:`, whitespace, or end-of-comment preserves the intended tag boundary without requiring alphanumeric characters.\n\nVerified with:\n`/private/tmp/pylint-notes-venv39/bin/python -m pytest tests/checkers/unittest_misc.py -q`\n</rea",
+      "latency_s": 213.7753450870514,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

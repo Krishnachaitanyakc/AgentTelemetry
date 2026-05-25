@@ -1,0 +1,21 @@
+{
+  "instance_id": "astropy__astropy-14182",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2435,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2698,
+      "response": "<reasoning>\nThe failure is in `RST.__init__`: `FixedWidth` already supports `header_rows`, but `RST` did not accept or forward it. RST also assumed exactly one header row when duplicating the separator line, so that index needs to depend on `len(header_rows)`. For reading, data starts after the top separator, all header rows, and the middle separator, so `data.start_line` must be `2 + len(header_rows)`.\n\nI added a focused round-trip regression test for `QTable.read/write(..., format=\"ascii.rst\",...[truncated]",
+      "latency_s": 244.80497193336487,
+      "error": null
+    }
+  ]
+}

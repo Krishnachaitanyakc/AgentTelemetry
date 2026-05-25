@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12184",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 393,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1802,
+      "response": "The fix: after extracting `kwargs` from `groupdict()`, filter out entries where the value is `None` before deciding whether to use args or kwargs, and before returning.\n\n<reasoning>\nThe issue is in `django/urls/resolvers.py` in the `RegexPattern.match()` method. \n\nWhen using optional named groups in URL patterns like `(?P<format>(html|json|xml))?`, Python's `re.groupdict()` returns `{'format': None}` when the group doesn't participate in the match. \n\nThe problem is twofold:\n1. Since `kwargs` is ...[truncated]",
+      "latency_s": 140.70983505249023,
+      "error": null
+    }
+  ]
+}

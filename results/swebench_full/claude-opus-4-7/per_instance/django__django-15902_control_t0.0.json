@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15902",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 474,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1235,
+      "response_excerpt": "<reasoning>\nThe issue is that Django's `ManagementForm` (used by formsets to track form counts) triggers the \"default.html\" template deprecation warning, even though it only produces hidden inputs where the template choice is irrelevant.\n\nThe `ManagementForm` is defined in `django/forms/formsets.py`. It inherits from `Form` and only contains hidden input fields (`TOTAL_FORMS`, `INITIAL_FORMS`, `MIN_NUM_FORMS`, `MAX_NUM_FORMS`). When rendered, the template structure doesn't affect the output sinc",
+      "latency_s": 55.2285590171814,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

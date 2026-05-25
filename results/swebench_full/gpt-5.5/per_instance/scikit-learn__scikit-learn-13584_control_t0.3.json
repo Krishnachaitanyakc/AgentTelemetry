@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13584",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1486,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1192,
+      "response_excerpt": "<reasoning>\nThe crash comes from `_changed_params`: with `print_changed_only=True`, it compares each current parameter to its default using `v != default`. For NumPy vector parameters, that returns a boolean array, and Python then raises the ambiguous truth-value `ValueError`.\n\nThe patch compares parameter representations instead. This is appropriate for repr filtering because the goal is to decide whether the displayed value differs from the displayed default, and it avoids evaluating array tru",
+      "latency_s": 166.09813570976257,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

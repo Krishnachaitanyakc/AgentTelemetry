@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-14308",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 5806,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1067,
+      "response_excerpt": "<reasoning>\nThe bug comes from `_print_BasisDependent` flattening each vector term into strings and then manually splicing the basis-vector text into multiline coefficient strings. That loses the coefficient pretty-form baseline, so powers/fractions can get the vector label inserted on the wrong lines. The patch keeps each term as a `prettyForm`, attaches the basis vector with `prettyForm.right`, and combines terms with `stringPict.next`, preserving baseline alignment.\n\nVerified with `python3 -m",
+      "latency_s": 127.54431891441345,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

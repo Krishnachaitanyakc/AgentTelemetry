@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13315",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 574,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1110,
+      "response": "<reasoning>\nThe issue is clear: In `apply_limit_choices_to_to_formfield()` in `django/forms/models.py`, when `limit_choices_to` involves a Q object that causes a JOIN (e.g., filtering through a related model), the resulting queryset can contain duplicate rows. The fix is to add `.distinct()` to the queryset after applying `complex_filter()`.\n\nFor example, if you have:\n```python\nclass MyModel(models.Model):\n    fk = models.ForeignKey(OtherModel, limit_choices_to=Q(related_things__name='foo'))\n```...[truncated]",
+      "latency_s": 257.3523290157318,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11630",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2595,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1454,
+      "response_excerpt": "<reasoning>\nLooking at the code, I can see the current Django 6.1 codebase already has a fix applied in `django/core/checks/model_checks.py`. The fix downgrades the E028 error to a W035 warning when `DATABASE_ROUTERS` is configured, since users with custom routing legitimately may have multiple models with the same table name routed to different databases.\n\nThe fix at lines 41-49 already handles this:\n- If `DATABASE_ROUTERS` is configured \u2192 Warning W035 with hint to verify routing\n- If no `DATAB",
+      "latency_s": 213.71959114074707,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

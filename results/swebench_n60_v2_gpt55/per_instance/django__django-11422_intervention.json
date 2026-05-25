@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-11422",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 1820,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "iter_modules_and_files": 1,
+    "statreloader watched_files": 1,
+    "__main__ __spec__ autoreload manage.py": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1680,
+      "response": "<reasoning>The regression comes from `iter_modules_and_files()` only considering modules with a usable `__spec__`. A script executed as `python manage.py runserver` is `__main__`, and `__main__.__spec__` is commonly `None`, so `manage.py` was skipped by `StatReloader`. The fix is to special-case `__main__`/`__mp_main__` and watch their `__file__` when present, while preserving the existing behavior for modules without specs.</reasoning>\n<patch>diff --git a/django/utils/autoreload.py b/django/utils/autoreload.py\nindex 2f545d6e6b..9d75df18c1 100644\n--- a/django/utils/autoreload.py\n+++ b/django/utils/autoreload.py\n@@ -96,6 +96,14 @@ def iter_modules_and_files(modules, extra_files):\n         # are added to sys.modules, however they are types not modules and so\n         # cause issues here.\n         if not isinstance(module, ModuleType):\n             continue\n+        if module.__name__ in ('__main__', '__mp_main__'):\n+            # __main__ (usually manage.py) doesn't always have a __spec__ set.\n+            # Handle this by falling back to using __file__, resolved below.\n+            # See https://docs.python.org/reference/import.html#main-spec.\n+            # __file__ may not exist, e.g. when running an interactive debugger.\n+            if hasattr(module, '__file__'):\n+                sys_file_paths.append(module.__file__)\n+            continue\n         if getattr(module, '__spec__', None) is None:\n             continue\n         spec = module.__spec__\ndiff --git a/tests/utils_",
+      "latency_s": 67.04092478752136,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4376,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"iter_modules_and_files\"}}</tool_call>",
+      "latency_s": 15.537784814834595,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 4831,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"StatReloader watched_files\"}}</tool_call>",
+      "latency_s": 15.481472969055176,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 5306,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"__main__ __spec__ autoreload manage.py\"}}</tool_call>",
+      "latency_s": 14.914469242095947,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 5841,
+      "response": "<reasoning>The autoreloader builds its watch list from loaded modules, but `python manage.py runserver` executes `manage.py` as `__main__`. In this path `__main__.__spec__` can be `None`, so the current `iter_modules_and_files()` logic skips it before looking at `__file__`. `StatReloader` therefore never watches `manage.py`. The patch keeps the existing skip behavior for ordinary modules without specs, but adds a narrow fallback for `__main__` and `__mp_main__` so script entrypoints with `__file__` are tracked. Tests cover both the positive case and the no-file case.</reasoning>\n<patch>diff --git a/django/utils/autoreload.py b/django/utils/autoreload.py\nindex 2f545d6e6b..9d75df18c1 100644\n--- a/django/utils/autoreload.py\n+++ b/django/utils/autoreload.py\n@@ -96,6 +96,13 @@ def iter_modules_and_files(modules, extra_files):\n         # are added to sys.modules, however they are types not modules and so\n         # cause issues here.\n         if not isinstance(module, ModuleType):\n             continue\n+        if module.__name__ in ('__main__', '__mp_main__'):\n+            # __main__ usually has no __spec__ when running a script such as\n+            # manage.py, but it should still be watched by the autoreloader.\n+            if hasattr(module, '__file__'):\n+                sys_file_paths.append(module.__file__)\n+            continue\n         if getattr(module, '__spec__', None) is None:\n             continue\n         spec = module.__spec__\ndiff --git a/tests/utils_tests/test_auto",
+      "latency_s": 25.485157012939453,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16527",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3273,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1287,
+      "response_excerpt": "<reasoning>\nI found the affected logic in `django/contrib/admin/templatetags/admin_modify.py`: `show_save_as_new` is computed for the submit row. Since \u201cSave as new\u201d creates a new object, the button must require `has_add_permission` in addition to the existing change/save-as conditions.\n\nI added a focused template-tag regression test that renders the change form submit row for a staff user with only change permission and verifies `show_save_as_new` is false, then verifies it is true when the use",
+      "latency_s": 120.50432300567627,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

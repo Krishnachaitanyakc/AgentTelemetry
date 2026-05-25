@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12589",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 924,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3242,
+      "response": "Now I have everything I need. The fix is in `compiler.py`'s `get_group_by` method. After computing `ref_sources` (which correctly tracks which source expressions are already covered by Refs), we need to replace Refs in `expressions` with their sources before compilation. This ensures the GROUP BY clause uses the full expression (e.g., the Subquery SQL) instead of the alias name.\n\n<reasoning>\n**Root cause:**\n\n1. `set_group_by()` calls `annotation.get_group_by_cols(alias=alias)` for each annotatio...[truncated]",
+      "latency_s": 439.82189202308655,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "astropy__astropy-7746",
+  "repo": "astropy/astropy",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 844,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2880,
+      "response": "Let me verify the fix conceptually by reviewing the code changes:\n\n<reasoning>\nThe issue in the GitHub issue is that when empty lists are passed to `wcs_pix2world([], [], 0)`, the code raises an `InconsistentAxisTypesError` from the underlying C function.\n\nThe problem was in the `_return_list_of_arrays` function at line 1296-1297. The original code:\n```python\nif any([x.size == 0 for x in axes]):\n    return axes\n```\n\nThis would just return the input axes directly without any transformation, but w...[truncated]",
+      "latency_s": 68.3700520992279,
+      "error": null
+    }
+  ]
+}

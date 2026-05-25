@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-14396",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 5612,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2858,
+      "response_excerpt": "<reasoning>\nThe fix is in `Domain.preprocess`: polynomial ring domain strings now preserve precision for real/complex ground domains, e.g. `RR_100[x,y]` and `CC_100[x,y]`, while rejecting invalid precision suffixes like `ZZ_100[x]`. The invalid-domain error now quotes the bad input and includes examples. I also added regression coverage for `Poly(..., domain='RR[y,z]')`.\n\nVerified with:\n`python3 -m pytest sympy/polys/tests/test_polyoptions.py sympy/polys/tests/test_polytools.py -q`\n</reasoning>\n",
+      "latency_s": 165.29892015457153,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

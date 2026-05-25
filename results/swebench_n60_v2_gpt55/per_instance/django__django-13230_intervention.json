@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-13230",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 3732,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "item_comments syndication feed add_item": 1,
+    "comments feedgenerator add_item rss": 1,
+    "item_extra_kwargs comments syndication views feed": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1353,
+      "response": "<reasoning>The low-level feed generator already accepts `comments` and serializes it for RSS items, but `django.contrib.syndication.views.Feed.get_feed()` never forwarded the high-level `item_comments` hook. This patch passes `item_comments` into `feed.add_item()`, adds syndication test coverage, and documents the hook.</reasoning>\n<patch>diff --git a/django/contrib/syndication/views.py b/django/contrib/syndication/views.py\nindex 68ffb0bfe0..df97103318 100644\n--- a/django/contrib/syndication/views.py\n+++ b/django/contrib/syndication/views.py\n@@ -212,6 +212,7 @@ class Feed:\n                 author_name=author_name,\n                 author_email=author_email,\n                 author_link=author_link,\n+                comments=self._get_dynamic_attr('item_comments', item),\n                 categories=self._get_dynamic_attr('item_categories', item),\n                 item_copyright=self._get_dynamic_attr('item_copyright', item),\n                 **self.item_extra_kwargs(item)\ndiff --git a/tests/syndication_tests/feeds.py b/tests/syndication_tests/feeds.py\nindex 4e9b1170b1..adc3b2e56c 100644\n--- a/tests/syndication_tests/feeds.py\n+++ b/tests/syndication_tests/feeds.py\n@@ -29,6 +29,9 @@ class TestRss2Feed(views.Feed):\n     def item_updateddate(self, item):\n         return item.updated\n \n+    def item_comments(self, item):\n+        return \"%scomments\" % item.get_absolute_url()\n+\n     item_author_name = 'Sally Smith'\n     item_author_email = 'test@example.com'\n     item_author_link = ",
+      "latency_s": 150.31508612632751,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 5822,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"item_comments syndication Feed add_item\"}}</tool_call>",
+      "latency_s": 17.54944610595703,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 6362,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"comments feedgenerator add_item rss\"}} </tool_call>",
+      "latency_s": 13.469588994979858,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 6883,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"item_extra_kwargs comments syndication views Feed\"}}</tool_call>",
+      "latency_s": 13.360650062561035,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 7473,
+      "response": "<reasoning>The syndication `Feed` view already supports item hooks that map directly to `feed.add_item()` arguments, while the low-level feed generator already accepts `comments`. The missing piece is forwarding `item_comments` from `Feed.get_feed()`. The patch adds that mapping, covers RSS output in the syndication tests, and documents the hook.</reasoning>\n<patch>diff --git a/django/contrib/syndication/views.py b/django/contrib/syndication/views.py\nindex 68ffb0bfe0..df97103318 100644\n--- a/django/contrib/syndication/views.py\n+++ b/django/contrib/syndication/views.py\n@@ -212,6 +212,7 @@ class Feed:\n                 author_name=author_name,\n                 author_email=author_email,\n                 author_link=author_link,\n+                comments=self._get_dynamic_attr(\"item_comments\", item),\n                 categories=self._get_dynamic_attr(\"item_categories\", item),\n                 item_copyright=self._get_dynamic_attr(\"item_copyright\", item),\n                 **self.item_extra_kwargs(item)\ndiff --git a/tests/syndication_tests/feeds.py b/tests/syndication_tests/feeds.py\nindex 4e9b1170b1..adc3b2e56c 100644\n--- a/tests/syndication_tests/feeds.py\n+++ b/tests/syndication_tests/feeds.py\n@@ -29,6 +29,9 @@ class TestRss2Feed(views.Feed):\n     def item_updateddate(self, item):\n         return item.updated\n \n+    def item_comments(self, item):\n+        return \"%scomments\" % item.get_absolute_url()\n+\n     item_author_name = \"Sally Smith\"\n     item_author_email = \"test@example.co",
+      "latency_s": 19.72979974746704,
+      "error": null
+    }
+  ]
+}

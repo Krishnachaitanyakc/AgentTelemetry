@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16400",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2125,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3148,
+      "response_excerpt": "<reasoning>\nThe router call happens while building new `Permission` objects. Assigning `content_type=ct` before the `Permission` instance has `_state.db` set lets Django\u2019s FK descriptor ask the database router which DB to use. Since `migrate --database=...` already provides the target alias, new permission instances should be pinned to that alias before assigning the relation.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/django/contrib/auth/management/__init__.py b/django/contrib/auth/management/_",
+      "latency_s": 402.35369300842285,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

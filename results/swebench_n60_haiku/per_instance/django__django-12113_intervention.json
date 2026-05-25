@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12113",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 536,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5599,
+      "response": "Now I understand the root cause:\n\nWhen `--keepdb` is used with SQLite and multiple persistent test databases (default and other), the issue happens because:\n1. First run creates test_default.sqlite3 and test_other.sqlite3\n2. Second run tries to reuse them with `keepdb=True`\n3. However, when setup_databases is called, it doesn't ensure all previous connections are closed\n4. This causes SQLite \"database is locked\" errors\n\nThe fix is to ensure connections are properly closed before trying to use th...[truncated]",
+      "latency_s": 75.39330983161926,
+      "error": null
+    }
+  ]
+}

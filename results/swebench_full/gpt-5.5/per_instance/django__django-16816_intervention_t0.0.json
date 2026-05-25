@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16816",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1840,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5745,
+      "response_excerpt": "<reasoning>\nThe bug is in `ModelAdminChecks._check_list_display_item()`: it only rejects concrete `ManyToManyField` instances. A reverse foreign key such as `Album._meta.get_field(\"song\")` returns a relation object, so it bypasses validation and later crashes in the changelist renderer. The fix rejects relation fields that are many-to-many or one-to-many, and adds a regression test for the reverse FK case.\n\nVerified with:\n`PYTHONPATH=/private/tmp/django-issue-e108 python3 tests/runtests.py admin",
+      "latency_s": 224.86644506454468,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

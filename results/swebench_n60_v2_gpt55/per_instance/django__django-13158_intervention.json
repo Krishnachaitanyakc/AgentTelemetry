@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-13158",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 1791,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "queryset none combined_queries set_empty": 1,
+    "combined_queries union none tests test_qs_combinators": 1,
+    "query clone combined_queries set_empty nothingnode": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2187,
+      "response": "<reasoning>QuerySet.none() marks the outer query empty, but combined queries compile from their component queries. The fix is to clone combined query components and propagate set_empty() into them, so union().none() is empty while the original union queryset remains unchanged.</reasoning>\n<patch>diff --git a/django/db/models/sql/query.py b/django/db/models/sql/query.py\nindex c913267476..1623263964 100644\n--- a/django/db/models/sql/query.py\n+++ b/django/db/models/sql/query.py\n@@ -305,6 +305,7 @@ class Query(BaseExpression):\n             obj.annotation_select_mask = None\n         else:\n             obj.annotation_select_mask = self.annotation_select_mask.copy()\n+        obj.combined_queries = tuple(query.clone() for query in self.combined_queries)\n         # _annotation_select_cache cannot be copied, as doing so breaks the\n         # (necessary) state in which both annotations and\n         # _annotation_select_cache point to the same underlying objects.\n@@ -1777,6 +1778,8 @@ class Query(BaseExpression):\n \n     def set_empty(self):\n         self.where.add(NothingNode(), AND)\n+        for query in self.combined_queries:\n+            query.set_empty()\n \n     def is_empty(self):\n         return any(isinstance(c, NothingNode) for c in self.where.children)\ndiff --git a/tests/queries/test_qs_combinators.py b/tests/queries/test_qs_combinators.py\nindex 9c6fd474ca..75e2aa2f39 100644\n--- a/tests/queries/test_qs_combinators.py\n+++ b/tests/queries/test_qs_combinators.py\n@@ -51,6 +51,13 @@ c",
+      "latency_s": 92.0210030078888,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4546,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"QuerySet none combined_queries set_empty\"}}</tool_call>",
+      "latency_s": 15.15667200088501,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 5091,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"combined_queries union none tests test_qs_combinators\"}}</tool_call>",
+      "latency_s": 15.998105764389038,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 5701,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"Query clone combined_queries set_empty NothingNode\"}}</tool_call>",
+      "latency_s": 12.45240306854248,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 6296,
+      "response": "<reasoning>QuerySet.none() marks the outer Query as empty, but set operation SQL is produced from the child combined_queries, so union().none() can still evaluate the original union. Propagating set_empty() into cloned combined query children makes the none() clone empty without mutating the original combined queryset. A regression test should also confirm the original union remains usable.</reasoning>\n<patch>diff --git a/django/db/models/sql/query.py b/django/db/models/sql/query.py\nindex c913267476..1623263964 100644\n--- a/django/db/models/sql/query.py\n+++ b/django/db/models/sql/query.py\n@@ -305,6 +305,7 @@ class Query(BaseExpression):\n             obj.annotation_select_mask = None\n         else:\n             obj.annotation_select_mask = self.annotation_select_mask.copy()\n+        obj.combined_queries = tuple(query.clone() for query in self.combined_queries)\n         # _annotation_select_cache cannot be copied, as doing so breaks the\n         # (necessary) state in which both annotations and\n         # _annotation_select_cache point to the same underlying objects.\n@@ -1777,6 +1778,8 @@ class Query(BaseExpression):\n \n     def set_empty(self):\n         self.where.add(NothingNode(), AND)\n+        for query in self.combined_queries:\n+            query.set_empty()\n \n     def is_empty(self):\n         return any(isinstance(c, NothingNode) for c in self.where.children)\ndiff --git a/tests/queries/test_qs_combinators.py b/tests/queries/test_qs_combinators.py\nindex 9c6fd474ca..75e2aa2f",
+      "latency_s": 18.141880750656128,
+      "error": null
+    }
+  ]
+}

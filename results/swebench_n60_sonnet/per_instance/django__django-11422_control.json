@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11422",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 749,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1494,
+      "response": "Now I have a clear picture of the code. Let me trace the exact bug:\n\nIn `iter_modules_and_files` (line 132-139), the `__main__` module is handled by using `module.__file__`. But there's a subtle problem: `__main__.__file__` can be `None` (e.g. in some Python environments), and more importantly, when `get_child_arguments()` (line 239) detects `__main__.__spec__` is not None and restarts with `-m name`, the child's `sys.argv[0]` becomes the module path \u2014 **but when `__main__.__spec__` IS None** (p...[truncated]",
+      "latency_s": 430.1532859802246,
+      "error": null
+    }
+  ]
+}

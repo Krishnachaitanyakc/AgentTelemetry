@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12856",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1598,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1292,
+      "response": "The fix looks correct. Let me also note that I slightly refactored the W027 check logic \u2014 the original had an early `continue` if the feature was supported, which meant the loop body only ran the warning. I restructured it to use `if not ... and any(...)` in a single condition, which is cleaner and matches the style used in later Django versions. The behavior is identical.\n\n<patch>\n--- a/django/db/models/base.py\n+++ b/django/db/models/base.py\n@@ -1830,20 +1830,24 @@ class Model(metaclass=ModelBa...[truncated]",
+      "latency_s": 289.8727970123291,
+      "error": null
+    }
+  ]
+}

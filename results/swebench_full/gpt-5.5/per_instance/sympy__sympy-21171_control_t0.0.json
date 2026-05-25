@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-21171",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2005,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 9183,
+      "response_excerpt": "<reasoning>\nThe failure happens because `LatexPrinter._print_Pow()` passes `exp=...` when the base is a function. `SingularityFunction` has a custom LaTeX printer, but on the affected version it does not accept that keyword, so powers like `SingularityFunction(...)**3` raise `TypeError`.\n\nThe fix is to make `_print_SingularityFunction` accept `exp=None`, matching other function printers such as `DiracDelta` and `Heaviside`, and render the outer exponent when provided.\n\nVerified with:\n`pytest sym",
+      "latency_s": 122.16300988197327,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

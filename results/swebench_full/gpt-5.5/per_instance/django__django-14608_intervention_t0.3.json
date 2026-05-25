@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14608",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4157,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1399,
+      "response_excerpt": "<reasoning>\nI updated `BaseFormSet.full_clean()` so every `ErrorList` used for `non_form_errors()` is constructed with `error_class='nonform'`, covering both management-form errors appended to the initial list and validation errors raised by formset-wide cleaning. I added assertions for rendered HTML in existing formset tests and documented the new class in the formsets guide.\n\nVerification: `git diff --check` passes. The Django test runner could not start in this environment because the only av",
+      "latency_s": 156.38960814476013,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

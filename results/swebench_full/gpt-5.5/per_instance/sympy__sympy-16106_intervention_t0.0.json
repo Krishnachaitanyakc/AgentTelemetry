@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-16106",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2245,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2933,
+      "response_excerpt": "<reasoning>\nAdded explicit Content MathML support for `IndexedBase` and `Indexed`. `IndexedBase` now prints as its label, while indexed expressions print as a Content MathML `selector` application: base followed by indices. This fixes the default `mathml(IndexedBase(a)[b])` path and indexed terms inside larger expressions.\n\nVerified with:\n`/private/tmp/sympy-mathml-verify-venv/bin/python -m pytest sympy/printing/tests/test_mathml.py -q`\n\nResult: `109 passed, 1 xfailed`.\n</reasoning>\n\n<patch>\n```",
+      "latency_s": 213.62361693382263,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

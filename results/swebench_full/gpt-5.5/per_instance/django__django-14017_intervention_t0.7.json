@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14017",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2213,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2063,
+      "response_excerpt": "<reasoning>\nThe bug is in `Q._combine()`: it rejects anything that is not a `Q`, so `Q() & Exists(...)` raises before `Exists` can participate. Conditional expressions already advertise `conditional = True`, and `Exists` is conditional because it has a `BooleanField` output. The fix is to accept any conditional expression in `Q._combine()` while preserving the empty-`Q` behavior only for actual `Q` instances. I verified the focused cases with `python3 tests/runtests.py --parallel=1 ...`; they pa",
+      "latency_s": 175.4325077533722,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

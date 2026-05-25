@@ -1,0 +1,26 @@
+{
+  "instance_id": "pydata__xarray-4094",
+  "repo": "pydata/xarray",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 601,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2398,
+      "response_excerpt": "<reasoning>\nThe failure happens when `to_unstacked_dataset` selects each variable from a stacked DataArray whose MultiIndex has only the variable level. After `.sel(...).squeeze(drop=True)`, the temporary stacked coordinate can remain as a scalar coordinate with different values for each variable, so constructing `Dataset(data_dict)` raises a merge conflict. Dropping that temporary stacked coordinate from each extracted variable preserves the real sample coordinates and avoids the conflict.\n</re",
+      "latency_s": 101.8039128780365,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

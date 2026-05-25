@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12113",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 488,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5599,
+      "response": "<reasoning>\nThe issue was that `User.objects.create_superuser()` was being called without explicitly specifying which database to use via `.using(db)`. \n\nWhile the Router class redirects operations based on `Router.target_db`, relying solely on the router for multi-database operations with persistent SQLite databases can cause locking issues, especially during test setup when operations might overlap or when using `--keepdb`.\n\nThe fix ensures that:\n1. The superuser is explicitly created on the c...[truncated]",
+      "latency_s": 91.03938388824463,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-18189",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2057,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1470,
+      "response_excerpt": "<reasoning>\nThe bug is in the `syms` reordering path. `diophantine()` solves internally using the canonical sorted variable order, but when `syms` differs from that order it built the index map from `syms` and then tried to read results as if they were ordered by `syms`. That drops/misorders solutions when `permute=True`.\n\nThe fix builds the index map from canonical `var`, because recursive `diophantine(eq, ..., permute=permute)` returns tuples in that canonical order, then emits tuple entries i",
+      "latency_s": 45.11935091018677,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14155",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2979,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1347,
+      "response_excerpt": "All 360 tests pass. Here is the final patch summary:\n\n<reasoning>\nThe issue is that `ResolverMatch.__repr__()` for `functools.partial` views just calls `repr(self.func)`, which produces an unhelpful `functools.partial(<function ... at 0x...>, ...)` string. Worse, `_func_path` ends up as `\"functools.partial\"` (the class name) because `partial` instances don't have `__name__`.\n\nFix:\n1. In `__init__`, after handling `view_class`, detect `functools.partial`, save `partial_args`/`partial_kwargs` as i",
+      "latency_s": 267.74517703056335,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

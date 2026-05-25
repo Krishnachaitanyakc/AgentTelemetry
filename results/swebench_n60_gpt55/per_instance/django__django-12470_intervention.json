@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12470",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2941,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1424,
+      "response": "<reasoning>\nThe bug is in `find_ordering_name()`. In multi-table inheritance, `pk` may resolve to a parent-link relation, so the compiler was treating `-pk` as \u201cfollow the related model\u2019s default ordering\u201d. That recursively applied `-pk` with `DESC` as the default order, which flips back to `ASC`.\n\nThe fix is to treat `pk` as a terminal ordering shortcut, like an explicit parent-link attname, and not expand related model default ordering for it. I verified the old behavior produced `ORDER BY ......[truncated]",
+      "latency_s": 219.74260711669922,
+      "error": null
+    }
+  ]
+}

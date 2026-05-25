@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-5221",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4968,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1037,
+      "response_excerpt": "<reasoning>\n`pytest --fixtures` already printed non-function scopes, but omitted the default `function` scope. The fix is to always render `[{fixturedef.scope} scope]` in fixture headers. I updated the exact-output tests for `--fixtures` to expect `[function scope]`.\n\nVerified with:\n`./.venv/bin/python -m pytest -c /dev/null -p pytester testing/python/fixtures.py -k TestShowFixtures`\n`./.venv/bin/python -m pytest -c /dev/null -p pytester testing/test_unittest.py::test_fixtures_setup_setUpClass_i",
+      "latency_s": 106.3910710811615,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

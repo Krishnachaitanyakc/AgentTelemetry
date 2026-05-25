@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13551",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3076,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1397,
+      "response_excerpt": "<reasoning>\nThe checkout at `/private/tmp/django` already contains the intended fix: `PasswordResetTokenGenerator._make_hash_value()` includes the user\u2019s configured email field, and `tests/auth_tests/test_tokens.py` includes regression coverage for normal users, custom email fields, and empty email values. I verified it with `python3 tests/runtests.py auth_tests.test_tokens`, which passed all 11 tests.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/django/contrib/auth/tokens.py b/django/contrib/auth",
+      "latency_s": 72.86286616325378,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

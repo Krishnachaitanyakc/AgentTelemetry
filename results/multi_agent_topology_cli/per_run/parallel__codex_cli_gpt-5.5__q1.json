@@ -1,0 +1,29 @@
+{
+  "topology": "parallel",
+  "model": "codex_cli/gpt-5.5",
+  "question": "Compare reasoning-loop failures versus circular delegation in multi-agent systems. Which is more common, and why?",
+  "run_id": "parallel__codex_cli_gpt-5.5__q1",
+  "transcript": [
+    {
+      "agent": "researcher_a",
+      "output": "Reasoning-loop failures are usually more common.\n\nA reasoning-loop failure is local: an agent keeps re-planning, rechecking, retrying tools, or refining an answer because its termination condition is weak, confidence signal is unstable, or the task remains underspecified. It can happen in single-agent systems and therefore appears frequently inside multi-agent systems too.\n\nCircular delegation is structural: Agent A delegates to B, B delegates to C, and C routes back to A, or agents repeatedly bounce ownership because responsibility boundaries are unclear. This requires a system that permits peer delegation or dynamic routing, so it is less universal.\n\nThe core difference is failure scope. Reasoning loops arise from inference and control-policy uncertainty; circular delegation arises from orchestration topology and ownership ambiguity.\n\nSo in practice: reasoning-loop failures are more common, while circular delegation is rarer but more damaging when autonomy, routing, and delegation ar",
+      "latency_s": 12.808627843856812
+    },
+    {
+      "agent": "researcher_b",
+      "output": "Reasoning-loop failures are usually more common.\n\nA reasoning-loop failure happens when one agent keeps re-planning, re-checking, or retrying without making progress. In deployment, this looks like a coding agent repeatedly running the same failing test, a support agent asking for the same customer context, or an incident bot cycling through \u201cdiagnose \u2192 fetch logs \u2192 summarize \u2192 diagnose\u201d because its stop condition is weak.\n\nCircular delegation is a multi-agent routing failure: Agent A hands work to Agent B, B hands it to C, and C sends it back to A. Example: a customer issue moves from \u201cbilling\u201d to \u201cpolicy\u201d to \u201caccount access\u201d and back to \u201cbilling\u201d because ownership rules overlap.\n\nReasoning loops are more common because they can happen inside any single agent using tools, retries, or reflection. Circular delegation usually requires a less constrained peer-to-peer agent design; many production systems avoid it with orchestrators, DAGs, ownership rules, TTLs, and escalation paths.",
+      "latency_s": 11.989090204238892
+    },
+    {
+      "agent": "writer",
+      "output": "Reasoning-loop failures are usually more common.\n\nA reasoning-loop failure is a local control problem: one agent keeps re-planning, rechecking, retrying tools, or refining an answer without making real progress. This can happen in any tool-using or reflective agent, even in a single-agent setup. In practice, it looks like a coding agent repeatedly running the same failing test, a support agent asking for the same context again, or an incident bot cycling through diagnosis and log fetching because its stop condition is weak or confidence signal is unstable.\n\nCircular delegation is a structural multi-agent routing problem. Agent A delegates to B, B sends work to C, and C routes it back to A, or responsibility keeps bouncing because ownership boundaries overlap. For example, a customer issue might move from billing to policy to account access and back to billing.\n\nReasoning loops are more common because they require only one uncertain agent with weak termination criteria. Circular delegat",
+      "latency_s": 9.806443929672241
+    }
+  ],
+  "total_cost_usd": 0.0,
+  "total_input_tokens": 687,
+  "total_output_tokens": 842,
+  "n_agents": 3,
+  "wall_clock_s": 34.6257221698761,
+  "error": null
+}

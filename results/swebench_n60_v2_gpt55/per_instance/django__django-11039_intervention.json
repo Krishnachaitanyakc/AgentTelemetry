@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-11039",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 2185,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "sqlmigrate output_transaction": 1,
+    "migration.atomic can_rollback_ddl": 1,
+    "test_sqlmigrate non atomic migration": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1890,
+      "response": "<reasoning>sqlmigrate controls BEGIN/COMMIT output through self.output_transaction. It should match migration execution behavior by requiring both an atomic migration and a backend that supports transactional DDL. The added test verifies that an otherwise atomic migration is not wrapped when can_rollback_ddl is False.</reasoning>\n<patch>diff --git a/django/core/management/commands/sqlmigrate.py b/django/core/management/commands/sqlmigrate.py\nindex 550b4f1b80..b8e620ef4a 100644\n--- a/django/core/management/commands/sqlmigrate.py\n+++ b/django/core/management/commands/sqlmigrate.py\n@@ -69,8 +69,10 @@ class Command(BaseCommand):\n             )\n         target = (app_label, migration.name)\n \n-        # Show begin/end around output only for atomic migrations\n-        self.output_transaction = migration.atomic\n+        # Show begin/end around output for atomic migrations, if the database\n+        # supports transactional DDL.\n+        self.output_transaction = (\n+            migration.atomic and connection.features.can_rollback_ddl\n+        )\n \n         # Make a plan that represents just the requested migrations and show\n         # SQL for it\ndiff --git a/tests/migrations/test_commands.py b/tests/migrations/test_commands.py\nindex 4d1b6938c2..6f693f6c8d 100644\n--- a/tests/migrations/test_commands.py\n+++ b/tests/migrations/test_commands.py\n@@ -1059,6 +1059,21 @@ class MigrateTests(MigrationTestBase):\n             self.assertNotIn(connection.ops.start_transaction_sql().lower(), queries",
+      "latency_s": 53.59771203994751,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4685,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"sqlmigrate output_transaction\"}}</tool_call>",
+      "latency_s": 15.382823944091797,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 5175,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"migration.atomic can_rollback_ddl\"}}</tool_call>",
+      "latency_s": 13.745936870574951,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 5685,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"test_sqlmigrate non atomic migration\"}}</tool_call>",
+      "latency_s": 14.731648921966553,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 6210,
+      "response": "<reasoning>sqlmigrate should only emit transaction wrappers when the migration is atomic and the active backend supports rolling back DDL. This matches the migration executor behavior. The regression test covers an atomic migration while mocking `can_rollback_ddl` to `False`, ensuring `BEGIN`/`COMMIT` are omitted.</reasoning>\n<patch>diff --git a/django/core/management/commands/sqlmigrate.py b/django/core/management/commands/sqlmigrate.py\nindex 550b4f1b80..b8e620ef4a 100644\n--- a/django/core/management/commands/sqlmigrate.py\n+++ b/django/core/management/commands/sqlmigrate.py\n@@ -69,8 +69,10 @@ class Command(BaseCommand):\n             )\n         target = (app_label, migration.name)\n \n-        # Show begin/end around output only for atomic migrations\n-        self.output_transaction = migration.atomic\n+        # Show begin/end around output for atomic migrations, if the database\n+        # supports transactional DDL.\n+        self.output_transaction = (\n+            migration.atomic and connection.features.can_rollback_ddl\n+        )\n \n         # Make a plan that represents just the requested migrations and show\n         # SQL for it\ndiff --git a/tests/migrations/test_commands.py b/tests/migrations/test_commands.py\nindex 4d1b6938c2..6f693f6c8d 100644\n--- a/tests/migrations/test_commands.py\n+++ b/tests/migrations/test_commands.py\n@@ -1059,6 +1059,21 @@ class MigrateTests(MigrationTestBase):\n             self.assertNotIn(connection.ops.start_transaction_sql().lower(), queries)\n  ",
+      "latency_s": 17.41336703300476,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12286",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2830,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1535,
+      "response_excerpt": "<reasoning>\nThe bug is in `check_language_settings_consistent()`: Django 3.0.2 checked `LANGUAGE_CODE` by exact membership in `settings.LANGUAGES`, while runtime language resolution uses `get_supported_language_variant()` and falls back from sublanguages like `de-at` to base languages like `de`. The system check should use the same helper so validation matches runtime behavior. I also added regression coverage for sublanguage fallbacks and kept invalid cases covered.\n</reasoning>\n\n<patch>\n```dif",
+      "latency_s": 431.94090509414673,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

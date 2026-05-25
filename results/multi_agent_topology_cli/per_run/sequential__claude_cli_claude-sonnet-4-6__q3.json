@@ -1,0 +1,29 @@
+{
+  "topology": "sequential",
+  "model": "claude_cli/claude-sonnet-4-6",
+  "question": "What are the limitations of using mock LLM clients for benchmarking agent fault detection? Propose two ways to validate against real production traces.",
+  "run_id": "sequential__claude_cli_claude-sonnet-4-6__q3",
+  "transcript": [
+    {
+      "agent": "planner",
+      "output": "1. How do mock LLM clients fail to capture real latency variance, token distribution, and error rate patterns found in production traffic?\n2. What agent fault types (hallucination, tool-call failure, context overflow) are systematically underrepresented or absent in synthetic mock responses?\n3. How does the absence of real provider-side throttling, model versioning drift, and API instability affect benchmark reproducibility?\n\n**Validation approaches:**\n4. Replay captured production traces (sanitized) through the benchmark harness and compare fault detection recall/precision against mock results.\n5. Shadow-deploy the detector alongside a live agent system and correlate benchmark-flagged faults with operator-confirmed production incidents.",
+      "latency_s": 12.876006841659546
+    },
+    {
+      "agent": "researcher",
+      "output": "## Findings: Mock LLM Client Limitations for Agent Fault Detection Benchmarking\n\n**Fidelity Gaps**\n\n1. **Latency variance**: Mocks emit fixed or uniformly random delays; real providers exhibit heavy-tailed distributions, correlated bursts, and time-of-day patterns that stress timeout/retry logic differently.\n2. **Token distribution**: Synthetic responses lack the long-tail completion lengths, mid-stream truncations, and vocabulary drift that occur across model versions.\n3. **Error rate patterns**: Mocks inject errors at configured static rates; production throttling follows bursty, quota-driven patterns with provider-specific backoff semantics.\n\n**Underrepresented Fault Types**\n\n4. **Hallucination**: Mocks return templated plausible outputs; real hallucinations are subtly coherent, making detector recall artificially high in benchmarks.\n5. **Tool-call failure**: Schema mismatches, partial JSON, and argument type drift from model versioning are absent in mocks.\n6. **Context overflow**: ",
+      "latency_s": 16.804964780807495
+    },
+    {
+      "agent": "writer",
+      "output": "## Limitations of Mock LLM Clients for Agent Fault Detection Benchmarking\n\nMock LLM clients introduce several fidelity gaps that undermine benchmark validity. They emit fixed latency distributions rather than the heavy-tailed, bursty patterns of real providers, causing timeout and retry logic to be undertested. Error injection follows static rates, missing the quota-driven burst throttling of production systems. Synthetic responses lack realistic hallucinations \u2014 mocks return templated plausible text, inflating detector recall artificially. Tool-call failures from schema drift and partial JSON, as well as mid-conversation context overflow, are rarely simulated. Finally, frozen mock snapshots become stale as providers silently update models, so benchmarks can pass while production behavior has already shifted.\n\n**Two validation approaches:**\n\n1. **Trace replay** \u2014 Sanitize production request/response logs and replay them through the benchmark harness, then compare fault-detection precis",
+      "latency_s": 14.006363153457642
+    }
+  ],
+  "total_cost_usd": 0.016697999999999998,
+  "total_input_tokens": 836,
+  "total_output_tokens": 946,
+  "n_agents": 3,
+  "wall_clock_s": 43.70087814331055,
+  "error": null
+}

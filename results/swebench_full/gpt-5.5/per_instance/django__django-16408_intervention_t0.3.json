@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16408",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3698,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1894,
+      "response_excerpt": "<reasoning>\nThe wrong object comes from a multi-level reverse-FK `FilteredRelation` selected only at the final alias. `select_related(\"tournament_pool\")` builds the `Pool` instance, but doesn\u2019t also populate the forward FK (`Pool.tournament`) from the already-joined parent alias. Accessing `tournament_pool.tournament` can then reuse an incorrect cached relation.\n\nThe fix detects this multi-level reverse-FK filtered relation path and adds a nested `RelatedPopulator` for the forward FK target usin",
+      "latency_s": 132.70411896705627,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-14365",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2054,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2135,
+      "response_excerpt": "<reasoning>\nThe QDP reader classifies each line with `_line_type()`. Its regex contains literal `READ`, `SERR`, `TERR`, and `NO`, so lower-case commands like `read serr 1 2` fail before command parsing. The command parser already normalizes `serr`/`terr` with `.lower()`, so the main fix is compiling the classifier regex with `re.IGNORECASE`.\n\nBecause QDP is case-insensitive generally, data sentinels like `no` should also be accepted when converting values. The classifier can recognize them after",
+      "latency_s": 136.07615303993225,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

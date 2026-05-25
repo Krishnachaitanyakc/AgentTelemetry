@@ -1,0 +1,35 @@
+{
+  "instance_id": "django__django-12908",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 2,
+  "proposed_patch": true,
+  "answer_len": 1685,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1842,
+      "response_excerpt": "The patch is final. The fix adds `self._not_support_combined_queries(\"distinct\")` to `QuerySet.distinct()` in `django/db/models/query.py:1891`, which raises `NotSupportedError` with message `\"Calling QuerySet.distinct() after union() is not supported.\"` when called on a combined queryset. The accompanying test in `tests/queries/test_qs_combinators.py` verifies the PostgreSQL-style `distinct(\"field\")` form from the original issue raises correctly.",
+      "latency_s": 506.1363880634308,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 2328,
+      "response_excerpt": "<reasoning>\nThe previous turn already identified the fix location and approach. Django's `QuerySet` has a helper `_not_support_combined_queries(operation_name)` that raises `NotSupportedError` when called on a queryset built from `union()`, `intersection()`, or `difference()`. It's already applied to methods like `annotate`, `filter`, `exclude`, etc., but `distinct()` is missing the guard. Adding it makes the misleading silent failure into a clear error, matching the issue's request to \"raise on",
+      "latency_s": 28.289045095443726,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

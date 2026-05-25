@@ -1,0 +1,26 @@
+{
+  "instance_id": "matplotlib__matplotlib-23964",
+  "repo": "matplotlib/matplotlib",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1161,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5109,
+      "response_excerpt": "<reasoning>\nThe PostScript backend builds a glyph stream for TTF text. For an empty text line, `_text_helpers.layout(s, font)` yields no items, leaving `curr_stream` as `None`. The old code appended that `None` to `stream`, then failed when unpacking `for ps_name, xs_names in stream`.\n\nThe fix is to append the final glyph stream only when one exists. I also added a smoke test that saves text containing leading/trailing and internal empty lines to both EPS and PS.\n\nVerification: syntax check pass",
+      "latency_s": 215.40657496452332,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

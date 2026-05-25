@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13773",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1570,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1448,
+      "response_excerpt": "<reasoning>\nExplicit `Matrix` operands already reject scalar `@` in this checkout, but symbolic matrix expressions still allowed `2 @ A` and `A @ 2` by blindly constructing `MatMul`. The patch adds the same matrix-operand guard to `MatrixExpr.__matmul__` and `__rmatmul__`, returning `NotImplemented` for non-matrix operands so Python raises `TypeError`. Matrix-matrix `@` is unchanged.\n\nVerified with:\n`python -m pytest sympy/matrices/tests/test_matrixbase.py::test_matmul sympy/matrices/tests/test_",
+      "latency_s": 220.55684399604797,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

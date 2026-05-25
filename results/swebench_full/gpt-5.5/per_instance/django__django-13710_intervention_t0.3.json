@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13710",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2625,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1714,
+      "response_excerpt": "<reasoning>\nI found the relevant behavior in `InlineModelAdmin.__init__()`. The default plural is assigned before the inline `verbose_name` can influence it, so an inline that sets only `verbose_name` still inherits the model's plural name. The fix is to compute `verbose_name_plural` from the inline `verbose_name` when it is explicitly provided, while preserving the existing model `_meta.verbose_name_plural` fallback when no inline `verbose_name` is set.\n\nI verified the focused admin inline test",
+      "latency_s": 94.9012553691864,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

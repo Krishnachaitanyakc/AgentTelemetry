@@ -1,0 +1,29 @@
+{
+  "topology": "parallel",
+  "model": "claude_cli/claude-opus-4-7",
+  "question": "Summarize the trade-offs between OpenTelemetry GenAI semantic conventions and OpenInference for agent observability.",
+  "run_id": "parallel__claude_cli_claude-opus-4-7__q2",
+  "transcript": [
+    {
+      "agent": "researcher_a",
+      "output": "**OTel GenAI semantic conventions** prioritize vendor neutrality and integration with the broader CNCF observability stack. Attributes like `gen_ai.system`, `gen_ai.request.model`, and `gen_ai.usage.*_tokens` are recognized by every major APM (Datadog, Grafana, Honeycomb), enabling correlation with HTTP/DB spans. Drawbacks: still experimental, churning schema, and agent-loop/tool-call semantics lag behind framework innovation. Message content capture is opt-in and minimally structured, weakening evaluation/replay workflows.\n\n**OpenInference** (Arize) is purpose-built for LLM and agent tracing. Span kinds (`CHAIN`, `AGENT`, `TOOL`, `RETRIEVER`, `EMBEDDING`, `RERANKER`) plus structured `input.value`/`output.value` JSON payloads support eval pipelines, prompt replay, and Phoenix UI out of the box. Auto-instrumentors cover LangChain, LlamaIndex, DSPy, CrewAI, and the OpenAI Agents SDK earlier than OTel. Cost: weaker recognition outside AI-native backends and divergence from emerging standa",
+      "latency_s": 20.733262062072754
+    },
+    {
+      "agent": "researcher_b",
+      "output": "**OpenTelemetry GenAI Semantic Conventions**\n- *Pros:* Vendor-neutral, integrates natively with existing OTel collectors/backends (Jaeger, Tempo, Datadog). Stable spec for LLM spans (`gen_ai.*` attributes) means one pipeline for traces, metrics, logs across services.\n- *Cons:* Still incubating for agents \u2014 multi-step tool calls, retrieval, and agent graphs are under-specified. You'll hand-roll attributes for ReAct loops or LangGraph nodes.\n\n**OpenInference (Arize)**\n- *Pros:* Richer agent-native schema out of the box: spans for `LLM`, `CHAIN`, `RETRIEVER`, `TOOL`, `AGENT`, `RERANKER`, with input/output payload capture. Auto-instrumentors for LangChain, LlamaIndex, DSPy, CrewAI ship today. Best fit if deploying Phoenix or Arize AX.\n- *Cons:* Schema is Arize-driven; backends outside Phoenix/Arize may not parse `openinference.*` semantics, forcing translation shims.\n\n**Deployment heuristic:** Greenfield agent stack on Phoenix \u2192 OpenInference. Existing OTel observability investment \u2192 GenAI",
+      "latency_s": 15.983540296554565
+    },
+    {
+      "agent": "writer",
+      "output": "**OpenTelemetry GenAI Semantic Conventions**\n- *Pros:* Vendor-neutral and recognized by every major APM (Datadog, Grafana, Honeycomb, Jaeger, Tempo). One pipeline correlates `gen_ai.*` spans with HTTP/DB traces, metrics, and logs across services.\n- *Cons:* Still experimental with a churning schema. Agent-loop semantics \u2014 multi-step tool calls, retrieval, LangGraph nodes, ReAct loops \u2014 are under-specified, forcing hand-rolled attributes. Message content capture is opt-in and minimally structured, weakening eval/replay.\n\n**OpenInference (Arize)**\n- *Pros:* Purpose-built for LLM/agent tracing with rich span kinds (`LLM`, `CHAIN`, `AGENT`, `TOOL`, `RETRIEVER`, `EMBEDDING`, `RERANKER`) and structured `input.value`/`output.value` JSON payloads that power eval pipelines, prompt replay, and Phoenix UI. Auto-instrumentors for LangChain, LlamaIndex, DSPy, CrewAI, and the OpenAI Agents SDK ship earlier than OTel equivalents.\n- *Cons:* Arize-driven schema with weaker recognition outside Phoenix/Ar",
+      "latency_s": 13.658727884292603
+    }
+  ],
+  "total_cost_usd": 0.077985,
+  "total_input_tokens": 734,
+  "total_output_tokens": 893,
+  "n_agents": 3,
+  "wall_clock_s": 50.393937826156616,
+  "error": null
+}

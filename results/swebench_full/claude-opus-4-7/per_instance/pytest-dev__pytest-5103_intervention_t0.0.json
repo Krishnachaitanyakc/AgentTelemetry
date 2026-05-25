@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-5103",
+  "repo": "pytest-dev/pytest",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 9914,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3018,
+      "response_excerpt": "<reasoning>\nThe patch addresses the issue by:\n\n1. Adding `_visit_all_any_call` to detect calls to `all(...)` / `any(...)` where the single positional argument is a generator expression (no keyword args, no walrus operator, no async generators).\n2. When detected, generating an inline helper function that loops over the generator's items, evaluates the predicate using pytest's normal assertion-rewriting machinery, and returns `(result, explanation)` where the explanation is the failing element's d",
+      "latency_s": 589.2929289340973,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

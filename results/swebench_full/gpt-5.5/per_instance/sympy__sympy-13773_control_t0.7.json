@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13773",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1462,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1448,
+      "response_excerpt": "<reasoning>\nConcrete `Matrix` scalar `@` is already rejected in this checkout, but symbolic `MatrixExpr` still reused `MatMul` directly, so `2 @ A` and `A @ 2` returned scalar multiplication. The fix is to make `MatrixExpr.__matmul__` and `__rmatmul__` return `NotImplemented` unless the other operand is matrix-like, letting Python raise `TypeError` for scalars. I added regression coverage for symbolic matrix operands and verified the focused test file passes: `40 passed, 2 xfailed`.\n</reasoning>",
+      "latency_s": 119.22187376022339,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

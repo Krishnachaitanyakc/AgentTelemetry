@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-12284",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 1826,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "get_%s_display choices contribute_to_class": 1,
+    "getfielddisplaytests model_fields tests": 1,
+    "get_field_display inherited choices hasattr cls.__dict__": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1891,
+      "response": "<reasoning>The display method is bound to the field instance used when it is installed. Using `hasattr()` skips installation on a subclass because it sees the inherited method from the abstract base, so the child keeps using the base field\u2019s choices. Checking only `cls.__dict__` preserves methods explicitly declared on the class while allowing redeclared child fields to install their own display method.</reasoning>\n<patch>diff --git a/django/db/models/fields/__init__.py b/django/db/models/fields/__init__.py\n--- a/django/db/models/fields/__init__.py\n+++ b/django/db/models/fields/__init__.py\n@@ -767,7 +767,11 @@ class Field(RegisterLookupMixin):\n             if not getattr(cls, self.attname, None):\n                 setattr(cls, self.attname, self.descriptor_class(self))\n         if self.choices is not None:\n-            if not hasattr(cls, 'get_%s_display' % self.name):\n+            # Don't override a get_FOO_display() method defined explicitly on\n+            # this class, but don't check methods derived from inheritance, to\n+            # allow overriding inherited choices. For more complex inheritance\n+            # structures users should override contribute_to_class().\n+            if 'get_%s_display' % self.name not in cls.__dict__:\n                 setattr(\n                     cls,\n                     'get_%s_display' % self.name,\ndiff --git a/tests/model_fields/tests.py b/tests/model_fields/tests.py\n--- a/tests/model_fields/tests.py\n+++ b/tests/model_fields/tests.py\n@",
+      "latency_s": 103.72061371803284,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4489,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"get_%s_display choices contribute_to_class\"}}</tool_call>",
+      "latency_s": 14.66765832901001,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 5044,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"GetFieldDisplayTests model_fields tests\"}}</tool_call>",
+      "latency_s": 14.363221883773804,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 5584,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"get_FIELD_display inherited choices hasattr cls.__dict__\"}}</tool_call>",
+      "latency_s": 13.200700044631958,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 6209,
+      "response": "<reasoning>The subclass redeclares the field with expanded choices, but `Field.contribute_to_class()` skips installing a new `get_FOO_display()` because `hasattr()` sees the inherited method from the abstract base. Checking only `cls.__dict__` keeps explicit methods on the concrete class intact while allowing redeclared inherited fields to bind display methods to the subclass field.</reasoning>\n<patch>diff --git a/django/db/models/fields/__init__.py b/django/db/models/fields/__init__.py\n--- a/django/db/models/fields/__init__.py\n+++ b/django/db/models/fields/__init__.py\n@@ -767,7 +767,10 @@ class Field(RegisterLookupMixin):\n             if not getattr(cls, self.attname, None):\n                 setattr(cls, self.attname, self.descriptor_class(self))\n         if self.choices is not None:\n-            if not hasattr(cls, 'get_%s_display' % self.name):\n+            # Don't override a get_FOO_display() method defined explicitly on\n+            # this class, but allow subclasses to replace inherited display\n+            # methods when overriding inherited fields with different choices.\n+            if 'get_%s_display' % self.name not in cls.__dict__:\n                 setattr(\n                     cls,\n                     'get_%s_display' % self.name,\ndiff --git a/tests/model_fields/tests.py b/tests/model_fields/tests.py\n--- a/tests/model_fields/tests.py\n+++ b/tests/model_fields/tests.py\n@@ -180,6 +180,23 @@ class GetFieldDisplayTests(SimpleTestCase):\n         f = FooBar(foo_bar=1)\n",
+      "latency_s": 17.22459602355957,
+      "error": null
+    }
+  ]
+}

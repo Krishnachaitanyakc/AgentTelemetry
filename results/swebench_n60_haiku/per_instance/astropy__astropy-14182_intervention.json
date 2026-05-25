@@ -1,0 +1,21 @@
+{
+  "instance_id": "astropy__astropy-14182",
+  "repo": "astropy/astropy",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2278,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2698,
+      "response": "Let me now create a comprehensive summary. Based on my analysis, I need to propose the fix that adds header_rows support to the RST class. Even though the code already appears to have it, let me verify what the actual implementation looks like and propose a patch that would fix the issue as described:\n\n<reasoning>\nThe issue states that the user wants to be able to write tables in RST format with the `header_rows` parameter, but they get:\n```\nTypeError: RST.__init__() got an unexpected keyword ar...[truncated]",
+      "latency_s": 105.26736378669739,
+      "error": null
+    }
+  ]
+}

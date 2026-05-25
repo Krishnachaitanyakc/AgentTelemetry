@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-13590",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 717,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 2,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "resolve_lookup_value": 1,
+    "def resolve_lookup_value": 1,
+    "isinstance value list tuple resolve_lookup": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1870,
+      "response": "Found the buggy version. In `django_30_clean_019e`, on lines 1073-1076, the code does:\n\n```python\nreturn type(value)(\n    self.resolve_lookup_value(sub_value, can_reuse, allow_joins, simple_col)\n    for sub_value in value\n)\n```\n\nThis passes a generator expression directly to the named tuple constructor, which doesn't accept iterables \u2014 named tuples expect positional arguments. The fix is to either use `type_._make()` (which accepts iterables) or use `*` unpacking.\n\n<reasoning>\nThe issue is in `django/db/models/sql/query.py` in the `resolve_lookup_value` method. In Django 3.0, when the value is a tuple (or list), the code tries to reconstruct it using `type(value)(generator)`. For regular tuples, this works because `tuple()` accepts an iterable. But for named tuples, the constructor expects individual positional arguments, not a single iterable.\n\nThe fix is to check if the type is a named tuple (using `hasattr(type_, '_make')`) and if so, use the `_make` classmethod which accepts an iterable. This is the standard way to construct a named tuple from an iterable.\n\nThe file to patch is `django_30_clean_019e/django/db/models/sql/query.py` (the Django 3.0 clean version where the bug exists).\n</reasoning>\n\n<patch>\n--- a/django/db/models/sql/query.py\n+++ b/django/db/models/sql/query.py\n@@ -1070,9 +1070,12 @@ class Query(BaseExpression):\n         elif isinstance(value, (list, tuple)):\n             # The items of the iterable may be expressions and therefore need\n             # to be r",
+      "latency_s": 107.75522875785828,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4506,
+      "response": "I need to investigate the codebase first. Let me search for the relevant code.\n\n<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"resolve_lookup_value\"}}</tool_call>",
+      "latency_s": 12.18668508529663,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 5031,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"def resolve_lookup_value\"}}</tool_call>",
+      "latency_s": 12.074380874633789,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 5496,
+      "response": "Now I can see the buggy code clearly. At lines 1073-1076 in the Django 3.0 version:\n\n```python\nreturn type(value)(\n    self.resolve_lookup_value(sub_value, can_reuse, allow_joins, simple_col)\n    for sub_value in value\n)\n```\n\nThis passes a generator directly to `type(value)()`. For named tuples, the constructor expects positional arguments, not a single iterable. The fix is to unpack the resolved values.\n\n<reasoning>\nThe bug is in `django/db/models/sql/query.py` in the `resolve_lookup_value` method at lines 1073-1076. When the value is a tuple (including a named tuple), the code reconstructs it via `type(value)(generator_expression)`. \n\nFor regular tuples, `tuple(generator)` works fine because `tuple.__init__` accepts an iterable. But named tuples expect individual positional arguments \u2014 e.g., `MyTuple(a, b)` not `MyTuple(generator)`.\n\nThe fix needs to handle named tuples differently. Named tuples have a `_make` classmethod that accepts an iterable, which is the standard way to construct a named tuple from an iterable. So we:\n1. Collect the resolved values into a variable\n2. Check if the type has `_make` (indicating it's a named tuple)\n3. If so, use `type_._make(values)` \n4. Otherwise, use the original `type_(values)` path\n\nThe file to patch is `django/db/models/sql/query.py`.\n</reasoning>\n\n<patch>\n--- a/django/db/models/sql/query.py\n+++ b/django/db/models/sql/query.py\n@@ -1070,9 +1070,14 @@ class Query(BaseExpression):\n         elif isinstance(value, (list, tuple)):\n        ",
+      "latency_s": 54.4489049911499,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 7807,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"isinstance value list tuple resolve_lookup\"}}</tool_call>\n\n<reasoning>\nThe bug is in `django/db/models/sql/query.py` in the `resolve_lookup_value` method. When the value is a tuple (including a named tuple), the code reconstructs it via `type(value)(generator_expression)`. \n\nFor regular tuples, `tuple(generator)` works fine because `tuple.__init__` accepts an iterable. But named tuples expect individual positional arguments \u2014 e.g., `MyTuple(a, b)` not `MyTuple(generator)`.\n\nThe fix checks for named tuples via `hasattr(type_, '_make')` and uses `_make()` which accepts an iterable. For regular tuples/lists, the existing path is preserved.\n</reasoning>\n\n<patch>\n--- a/django/db/models/sql/query.py\n+++ b/django/db/models/sql/query.py\n@@ -1070,9 +1070,14 @@ class Query(BaseExpression):\n         elif isinstance(value, (list, tuple)):\n             # The items of the iterable may be expressions and therefore need\n             # to be resolved independently.\n-            return type(value)(\n+            resolved_values = tuple(\n                 self.resolve_lookup_value(sub_value, can_reuse, allow_joins, simple_col)\n                 for sub_value in value\n             )\n+            type_ = type(value)\n+            if hasattr(type_, '_make'):  # namedtuple\n+                return type_._make(resolved_values)\n+            return type_(resolved_values)\n         return value\n \n</patch>",
+      "latency_s": 15.895397186279297,
+      "error": null
+    }
+  ]
+}

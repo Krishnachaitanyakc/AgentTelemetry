@@ -1,0 +1,35 @@
+{
+  "instance_id": "django__django-14730",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 2,
+  "proposed_patch": true,
+  "answer_len": 2362,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1319,
+      "response_excerpt": "The patch is complete. Here's a summary of what it does:\n\n**Changes:**\n1. **`django/db/models/fields/related.py`** \u2014 Added a `ValueError` raise in `ManyToManyField.__init__` that fires immediately when both `symmetrical=True` (or self-referential) and `related_name` are passed. Also removed the now-unreachable `W345` warning from `_check_ignored_options`.\n\n2. **`tests/invalid_models_tests/test_relative_fields.py`** \u2014 Updated the existing `test_many_to_many_with_useless_related_name` test to expe",
+      "latency_s": 935.7183790206909,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 2384,
+      "response_excerpt": "All three cases behave correctly: the `ValueError` is raised both for self-referential and explicit `symmetrical=True` cases, and normal self-referential without `related_name` still works.\n\n<reasoning>\nThe fix replaces the deferred `W345` check warning with an immediate `ValueError` raised in `ManyToManyField.__init__`. The check happens after `symmetrical` is computed (so it catches both `symmetrical=True` and the implicit self-referential case where `to == \"self\"`) and before `contribute_to_c",
+      "latency_s": 89.83972501754761,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

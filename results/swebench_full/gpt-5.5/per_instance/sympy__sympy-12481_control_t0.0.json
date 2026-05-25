@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-12481",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1466,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1199,
+      "response_excerpt": "<reasoning>\nThe constructor should reject repeated elements only for array-form input. For cycle-form input (`list of lists`), duplicates across different cycles are valid because each cycle is composed in order through `Cycle()`. The patch keeps the duplicate check for array form, allows overlapping cycle factors, updates the stale constructor wording, and adds the reported double-transposition regression.\n</reasoning>\n\n<patch>\ndiff --git a/sympy/combinatorics/permutations.py b/sympy/combinator",
+      "latency_s": 170.51017880439758,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

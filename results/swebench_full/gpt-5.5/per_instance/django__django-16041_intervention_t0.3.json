@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16041",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1882,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2046,
+      "response_excerpt": "<reasoning>\nThe crash is caused by constructing `empty_form` with formset-owned kwargs and then also expanding user `form_kwargs`. If `form_kwargs` contains `empty_permitted`, that conflicts with the formset\u2019s own `empty_permitted=True`.\n\nThe fix is to merge user kwargs first, then override the kwargs that `empty_form` must control. This preserves custom kwargs while ignoring `empty_permitted` for `empty_form`.\n\nI also expanded the regression test to cover both `empty_permitted=False` and `empty",
+      "latency_s": 168.5412609577179,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11620",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 590,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1715,
+      "response": "That still shows no changes because the code is already correct. Let me think about what the actual fix should be...\n\nActually, I just realized - maybe the issue is that `Http404` should NOT be allowed to propagate from `RoutePattern.match()`, but should instead be caught and handled specially!\n\nThe issue description says: \"`Http404` should be valid way to tell the resolver 'this is indeed the right path but the current parameter value does not match anything so stop what you are doing and let t...[truncated]",
+      "latency_s": 267.8865427970886,
+      "error": null
+    }
+  ]
+}

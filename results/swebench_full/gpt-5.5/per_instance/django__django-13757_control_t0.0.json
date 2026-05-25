@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13757",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1930,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1732,
+      "response_excerpt": "<reasoning>\nThe fix is to make `key__isnull=True` test key absence, not SQL-null extraction of the key value. On SQLite, `JSON_TYPE(json, path)` returns `'null'` for JSON null and SQL `NULL` only when the path is absent, so it is the right primitive. On Oracle, reuse the has-key expression and only add the base column SQL `IS NULL` case, not the extracted key value.\n\nVerified the focused regression test on SQLite:\n`model_fields.test_jsonfield.TestQuerying.test_isnull_key` passes.\n</reasoning>\n\n<",
+      "latency_s": 225.98237013816833,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

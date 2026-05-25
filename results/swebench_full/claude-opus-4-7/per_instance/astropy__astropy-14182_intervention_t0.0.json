@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-14182",
+  "repo": "astropy/astropy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2997,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2667,
+      "response_excerpt": "I have enough context to propose the fix. The issue is in `astropy/io/ascii/rst.py` where the `RST.__init__()` method didn't accept the `header_rows` parameter. The fix needs to:\n1. Accept `header_rows` in `__init__` and pass it to `super().__init__`\n2. Adjust `write()` to use the proper index based on header rows count\n3. Override `read()` to compute correct data start line\n\n<reasoning>\nThe bug: `RST.__init__(self)` didn't accept `header_rows`, so passing `header_rows=['name', 'unit']` raises `",
+      "latency_s": 160.48483872413635,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

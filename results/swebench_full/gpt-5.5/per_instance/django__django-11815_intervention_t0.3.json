@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11815",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2669,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2395,
+      "response_excerpt": "<reasoning>\nThe affected code path is Django\u2019s migration value serializer. Enum members must be serialized by stable member name, not by `.value`, because `.value` can be lazy translated text and can change by active locale.\n\nIn this workspace, Django 3.2.4 already contains the fixed behavior and regression coverage. I verified the focused suite with:\n\n`PYTHONPATH=/private/tmp/django-src:/private/tmp/django324/test_deps /usr/bin/python3 tests/runtests.py migrations.test_writer -v 2`\n\nResult: 49 ",
+      "latency_s": 289.4447159767151,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

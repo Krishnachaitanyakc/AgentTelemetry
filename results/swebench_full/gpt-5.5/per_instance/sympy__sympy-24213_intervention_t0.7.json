@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-24213",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2090,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1815,
+      "response_excerpt": "<reasoning>\nThe failure happens because `_collect_factor_and_dimension` compares dimensions in an `Add` with raw `Dimension` equality. `Dimension(velocity)` and `Dimension(acceleration*time)` are not structurally equal, but in SI they have the same dimensional dependencies. The fix is to use the active dimension system\u2019s `equivalent_dims` check. I also added a regression test for the reported `a*t + v` case.\n\nVerified with:\n`python3 -m pytest sympy/physics/units/tests/test_quantities.py -k facto",
+      "latency_s": 138.34700107574463,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

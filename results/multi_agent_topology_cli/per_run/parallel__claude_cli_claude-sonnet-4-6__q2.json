@@ -1,0 +1,29 @@
+{
+  "topology": "parallel",
+  "model": "claude_cli/claude-sonnet-4-6",
+  "question": "Summarize the trade-offs between OpenTelemetry GenAI semantic conventions and OpenInference for agent observability.",
+  "run_id": "parallel__claude_cli_claude-sonnet-4-6__q2",
+  "transcript": [
+    {
+      "agent": "researcher_a",
+      "output": "**OpenTelemetry GenAI Semantic Conventions**\n- **Pros:** Vendor-neutral, CNCF-backed standard; integrates natively with existing OTel pipelines (Prometheus, Jaeger, etc.); long-term ecosystem convergence likely.\n- **Cons:** Still maturing for agentic patterns (tool calls, multi-step reasoning, agent handoffs); sparse attributes for LLM-specific metadata (token budgets, prompt templates); requires more manual instrumentation.\n\n**OpenInference (Arize)**\n- **Pros:** Purpose-built for LLM/agent observability; richer span schemas (retrieval documents, embedding vectors, tool call I/O, chain steps); immediate compatibility with Arize, Phoenix, and LangSmith-style UIs.\n- **Cons:** Vendor-influenced; narrower ecosystem adoption; risk of fragmentation if OTel GenAI conventions catch up and diverge in incompatible ways.\n\n**Key trade-off:** OpenInference wins on expressiveness *today* for complex agent traces; OTel GenAI wins on infrastructure integration and long-term standardization. Many teams",
+      "latency_s": 15.332178115844727
+    },
+    {
+      "agent": "researcher_b",
+      "output": "**OpenTelemetry GenAI Semantic Conventions**\n- **Pro:** Vendor-neutral, integrates with existing OTel pipelines (Jaeger, Grafana, Datadog). Standardized across CNCF ecosystem.\n- **Con:** Still maturing for LLM/agent-specific attributes (token counts, tool calls). Requires custom instrumentation for complex agent graphs.\n- **Deployment fit:** Teams already running OTel collectors; polyglot microservices architectures.\n\n**OpenInference (Arize)**\n- **Pro:** Purpose-built for LLM observability \u2014 native span types for retrievals, embeddings, tool calls, agent trajectories. Works out-of-box with LangChain, LlamaIndex.\n- **Con:** Arize-centric ecosystem; less portable. Adds a dependency outside the CNCF stack.\n- **Deployment fit:** ML-first teams prioritizing prompt/response debugging over infrastructure tracing.\n\n**Practical recommendation:** Use OpenInference during development for rich LLM debugging, then export via OTel-compatible bridges (Phoenix supports this) to your production OTel ba",
+      "latency_s": 15.69620394706726
+    },
+    {
+      "agent": "writer",
+      "output": "## OpenTelemetry GenAI vs. OpenInference for Agent Observability\n\n**OpenTelemetry GenAI** is vendor-neutral, CNCF-backed, and integrates naturally with existing pipelines (Prometheus, Jaeger, Grafana, Datadog). It's the clear long-term bet for standardization across polyglot microservices architectures. The cost: it's still maturing for agentic patterns \u2014 tool calls, multi-step reasoning, agent handoffs \u2014 and requires significant manual instrumentation to capture LLM-specific metadata like token budgets and prompt templates.\n\n**OpenInference (Arize)** is purpose-built for LLM observability, offering richer span schemas out of the box: retrieval documents, embedding vectors, tool call I/O, chain steps, agent trajectories. It works immediately with LangChain, LlamaIndex, and UIs like Phoenix and LangSmith. The cost: it's Arize-influenced, has narrower ecosystem adoption, and risks fragmentation if OTel GenAI conventions catch up in incompatible ways.\n\n**Bottom line:** OpenInference wins ",
+      "latency_s": 12.271017789840698
+    }
+  ],
+  "total_cost_usd": 0.015087,
+  "total_input_tokens": 709,
+  "total_output_tokens": 864,
+  "n_agents": 3,
+  "wall_clock_s": 43.320226192474365,
+  "error": null
+}

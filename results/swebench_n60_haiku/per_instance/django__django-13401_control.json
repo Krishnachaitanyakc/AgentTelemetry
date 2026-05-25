@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13401",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1822,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2059,
+      "response": "Perfect! Now let me create a summary of the changes and explain the fix:\n\n## Summary\n\nI've successfully identified and fixed the Django issue with abstract model field equality. Here's what was wrong and how I fixed it:\n\n### The Problem\n\nWhen fields are inherited from an abstract model to concrete models via `copy.deepcopy()`, they preserve the same `creation_counter`. This created a violation of Python's hash/equality contract:\n\n- **`__eq__`** correctly checks both `creation_counter` AND `model...[truncated]",
+      "latency_s": 369.91009306907654,
+      "error": null
+    }
+  ]
+}

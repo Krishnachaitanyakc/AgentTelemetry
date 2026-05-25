@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11964",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 657,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3147,
+      "response_excerpt": "Based on my investigation, I've identified the issue and the fix. Let me analyze:\n\n<reasoning>\nThe issue is a well-known Django bug (ticket #31154). When `Choices` (pre-fix) doesn't override `__str__`, the default `enum.Enum.__str__` returns `'ClassName.MEMBER_NAME'` rather than the value. So `str(MyChoice.FIRST_CHOICE)` returns `'MyChoice.FIRST_CHOICE'` instead of `'first'`.\n\nThis causes inconsistent behavior:\n- A freshly-created instance has `my_str_value` as the `MyChoice.FIRST_CHOICE` enum m",
+      "latency_s": 680.3401207923889,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

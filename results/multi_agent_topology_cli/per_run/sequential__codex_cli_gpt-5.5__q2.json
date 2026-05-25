@@ -1,0 +1,29 @@
+{
+  "topology": "sequential",
+  "model": "codex_cli/gpt-5.5",
+  "question": "Summarize the trade-offs between OpenTelemetry GenAI semantic conventions and OpenInference for agent observability.",
+  "run_id": "sequential__codex_cli_gpt-5.5__q2",
+  "transcript": [
+    {
+      "agent": "planner",
+      "output": "1. What telemetry data models, attributes, and span structures do OpenTelemetry GenAI semantic conventions and OpenInference each define for LLMs, tools, agents, and traces?\n\n2. How do they differ in ecosystem support, backend compatibility, vendor neutrality, and ease of integration with existing observability pipelines?\n\n3. What trade-offs do they create for debugging agent behavior, evaluating quality, tracking costs/latency, and preserving privacy or security?",
+      "latency_s": 9.054526805877686
+    },
+    {
+      "agent": "researcher",
+      "output": "1. **Data model:** OpenTelemetry GenAI defines standardized GenAI span attributes/events: model, provider/system, operation, request parameters, response metadata, token usage, finish reasons, and message/tool-call events. OpenInference defines richer AI-app spans: `LLM`, `AGENT`, `TOOL`, `CHAIN`, `RETRIEVER`, `EMBEDDING`, `RERANKER`, etc., with input/output payloads, messages, tool schemas/results, prompt templates, metadata, session/user IDs, token counts, and nested trace structure.\n\n2. **Ecosystem fit:** OpenTelemetry GenAI fits existing OTel collectors, traces, metrics, and vendor-neutral observability backends best. It is easier to add to conventional production telemetry pipelines. OpenInference also rides on OpenTelemetry transport, but its richer attributes are best supported by AI observability tools such as Phoenix/Arize and OpenInference-specific instrumentations.\n\n3. **Debugging and evaluation:** OpenTelemetry is better for operational questions: latency, errors, provider/",
+      "latency_s": 31.274163007736206
+    },
+    {
+      "agent": "writer",
+      "output": "OpenTelemetry GenAI semantic conventions and OpenInference both use OpenTelemetry-compatible traces, but they optimize for different observability goals.\n\n**OpenTelemetry GenAI** is the better fit for production operations. It standardizes core GenAI telemetry such as provider, model, operation, request parameters, response metadata, token usage, finish reasons, and message or tool-call events. Its main strength is portability: it works naturally with existing OTel collectors, metrics, traces, and vendor-neutral backends. That makes it useful for monitoring latency, errors, cost drivers, provider/model usage, and service dependencies. The trade-off is that it is less expressive for complex agent behavior.\n\n**OpenInference** is better for understanding AI application behavior. It models richer span types such as `LLM`, `AGENT`, `TOOL`, `CHAIN`, `RETRIEVER`, `EMBEDDING`, and `RERANKER`, including prompts, messages, tool schemas/results, retrieval context, metadata, sessions, and nested e",
+      "latency_s": 10.081390857696533
+    }
+  ],
+  "total_cost_usd": 0.0,
+  "total_input_tokens": 700,
+  "total_output_tokens": 841,
+  "n_agents": 3,
+  "wall_clock_s": 50.42119884490967,
+  "error": null
+}

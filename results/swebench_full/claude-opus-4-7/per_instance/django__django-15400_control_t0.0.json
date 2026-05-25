@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15400",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 411,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1554,
+      "response_excerpt": "<reasoning>\nThe issue is in Django's `django/utils/functional.py` file, specifically in the `SimpleLazyObject` class. This class doesn't implement `__radd__`, which means reverse addition (e.g., `something + lazy_object`) doesn't work properly when the left operand doesn't know how to handle the lazy object.\n\nThe fix can't use the standard `new_method_proxy` pattern because:\n1. `operator.radd` doesn't exist\n2. Using `operator.attrgetter(\"__radd__\")` won't work because types may not have that att",
+      "latency_s": 19.779611825942993,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

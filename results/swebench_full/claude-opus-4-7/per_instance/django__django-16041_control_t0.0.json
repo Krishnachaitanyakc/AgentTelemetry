@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16041",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 744,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2046,
+      "response_excerpt": "<reasoning>\nThe bug is in `BaseFormSet.empty_form` in `django/forms/formsets.py`. When `form_kwargs` contains `empty_permitted`, the existing code:\n\n```python\nform = self.form(\n    auto_id=self.auto_id,\n    prefix=self.add_prefix('__prefix__'),\n    empty_permitted=True,\n    use_required_attribute=False,\n    **self.get_form_kwargs(None)\n)\n```\n\npasses `empty_permitted=True` explicitly AND unpacks `empty_permitted` from `get_form_kwargs(None)`, causing a duplicate keyword argument error.\n\nSince `em",
+      "latency_s": 186.6968479156494,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

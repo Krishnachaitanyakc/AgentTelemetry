@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-25500",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1808,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5501,
+      "response_excerpt": "<reasoning>\nThe failure happens because `_CalibratedClassifier.predict_proba` assigns each calibrator\u2019s prediction into a 1D NumPy probability column. Under pandas output configuration, an isotonic calibrator can produce a single-column dataframe-like output, causing a `(n_samples, 1)` into `(n_samples,)` broadcast error.\n\nThe fix normalizes each calibrator prediction with `column_or_1d` before assignment. I also added a regression test covering `CalibratedClassifierCV(..., method=\"isotonic\")` w",
+      "latency_s": 121.56797385215759,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

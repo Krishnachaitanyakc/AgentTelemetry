@@ -1,0 +1,29 @@
+{
+  "topology": "parallel",
+  "model": "claude_cli/claude-sonnet-4-6",
+  "question": "Describe how a closed-loop intervention based on telemetry signals can recover a stuck agent. Give a concrete example using the REASONING span kind.",
+  "run_id": "parallel__claude_cli_claude-sonnet-4-6__q4",
+  "transcript": [
+    {
+      "agent": "researcher_a",
+      "output": "## Closed-Loop Agent Recovery via Telemetry\n\nA **closed-loop intervention** watches streaming telemetry (OpenTelemetry spans) and injects corrective signals back into the agent runtime when anomalies are detected.\n\n**Mechanism:**\n\n1. Each agent step emits a `REASONING` span (kind defined in OpenInference / OTel GenAI semconv) with attributes: `input.value`, `output.value`, `llm.token_count.completion`, duration.\n2. A watchdog process subscribes to the span stream (e.g., via OTLP gRPC export to a collector with a Kafka sink).\n3. Anomaly conditions: span duration > P99 threshold **or** `output.value` contains a repetition fingerprint (rolling hash of last N tokens).\n\n**Concrete recovery:**\n\n```python\nif span.kind == SpanKind.REASONING and is_stuck(span):\n    # Inject a corrective tool call into the agent's message queue\n    agent.inject_message(role=\"user\",\n        content=\"You appear looping. Summarize progress and pick a new approach.\")\n    span.set_attribute(\"intervention.applied\", Tr",
+      "latency_s": 15.435200929641724
+    },
+    {
+      "agent": "researcher_b",
+      "output": "## Closed-Loop Recovery via Telemetry\n\nA closed-loop intervention monitors agent telemetry in real-time and automatically applies corrective actions when anomaly thresholds are breached.\n\n**Pattern:** `detect \u2192 classify \u2192 intervene \u2192 resume`\n\n**Concrete example using `REASONING` span:**\n\nYour orchestrator emits an OpenTelemetry span of kind `REASONING` for each agent reasoning step. A watchdog process tracks:\n\n```python\n# Watchdog rule\nif span.kind == \"REASONING\" and span.duration_ms > 30_000:\n    if span.attributes[\"loop_count\"] > 5:\n        inject_interrupt(agent_id, payload={\n            \"directive\": \"RESET_CONTEXT\",\n            \"hint\": \"Summarize progress and restate goal in one sentence.\"\n        })\n```\n\nWhen the `REASONING` span stalls (duration spike + repeated loop count), the watchdog injects a context-reset directive mid-execution \u2014 forcing the agent to collapse its working memory and re-ground on the original goal \u2014 without terminating the session.\n\n**Result:** Self-healing ",
+      "latency_s": 15.08001708984375
+    },
+    {
+      "agent": "writer",
+      "output": "## Closed-Loop Agent Recovery via Telemetry\n\nA closed-loop intervention follows a **detect \u2192 classify \u2192 intervene \u2192 resume** cycle: a watchdog process subscribes to streaming OpenTelemetry spans and injects corrective signals into the agent runtime when anomalies are detected \u2014 without restarting or losing accumulated context.\n\n**How it works with the `REASONING` span:**\n\nEach agent reasoning step emits a `REASONING` span (per OpenInference/OTel GenAI semconv) carrying attributes like `input.value`, `output.value`, duration, and `loop_count`. The watchdog evaluates two anomaly signals: duration exceeding a P99 threshold, and a repetition fingerprint (rolling hash of recent output tokens).\n\n```python\nif span.kind == \"REASONING\" and span.duration_ms > 30_000:\n    if span.attributes[\"loop_count\"] > 5 or is_stuck(span):\n        agent.inject_message(\n            role=\"user\",\n            content=\"Summarize progress and restate your goal. Pick a new approach.\"\n        )\n        span.set_attri",
+      "latency_s": 13.358574867248535
+    }
+  ],
+  "total_cost_usd": 0.015125999999999999,
+  "total_input_tokens": 742,
+  "total_output_tokens": 860,
+  "n_agents": 3,
+  "wall_clock_s": 43.892104387283325,
+  "error": null
+}

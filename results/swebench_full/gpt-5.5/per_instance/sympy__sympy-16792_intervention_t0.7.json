@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-16792",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1413,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2722,
+      "response_excerpt": "<reasoning>\nThe failure happens when `argument_sequence` contains an unused `MatrixSymbol`: it must still be treated as array-like so the generated C/Cython signature uses pointer/ndarray handling. In this checkout, `codegen.py` already preserves dimensions for redundant `MatrixSymbol` inputs, so the applied patch adds a regression test that locks the Cython wrapper output to `double *x` and `np.ndarray[..., ndim=2]`.\n\nVerification run:\n`python3 -m pytest sympy/utilities/tests/test_autowrap.py -",
+      "latency_s": 103.78856182098389,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

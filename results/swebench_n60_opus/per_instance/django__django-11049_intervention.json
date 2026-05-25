@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11049",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 440,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1531,
+      "response": "I see \u2014 the forms DurationField says \"Enter a valid duration\" without the format specification. The issue mentions that the error should include the format. But looking at the issue description more carefully, it says \"Correct expected format in invalid DurationField error message\" \u2014 meaning the wrong format in the existing error message. Let me check if maybe the issue is for a version of Django before the fix, and I need to apply it now.\n\nLet me look at the issue from the perspective of what n...[truncated]",
+      "latency_s": 182.71891283988953,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-24102",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 342,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2500,
+      "response_excerpt": "The fix is verified. Let me write the final patch.\n\n<reasoning>\nThe bug is in `sympy/parsing/mathematica.py`. The `_literal` regex pattern used by the tokenizer was hardcoded to only match ASCII letters and digits:\n\n```python\n_literal = r\"[A-Za-z][A-Za-z0-9]*\"\n```\n\nWhen parsing input like `'\u03bb'` (a Greek lambda character), the tokenizer's `findall` returns an empty list because `\u03bb` is not in the ASCII letter range. The empty token list then fails to produce a valid AST, resulting in:\n\n```\nSyntaxE",
+      "latency_s": 523.110476732254,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

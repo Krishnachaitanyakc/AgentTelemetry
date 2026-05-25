@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-10914",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 520,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1846,
+      "response": "Now I have a complete picture of the issue and the fix. The issue is in Django 2.2 where `FILE_UPLOAD_PERMISSIONS` defaults to `None` in `global_settings.py`. When it's `None`, `os.chmod` is skipped in `FileSystemStorage._save()`, causing inconsistent file permissions depending on whether the upload used `TemporaryUploadedFile` (gets 0o600 from `tempfile`) or `MemoryUploadedFile` (gets umask-based permissions like 0o644).\n\n<reasoning>\nThe issue is clear:\n\n1. In `django/conf/global_settings.py` (...[truncated]",
+      "latency_s": 299.143758058548,
+      "error": null
+    }
+  ]
+}

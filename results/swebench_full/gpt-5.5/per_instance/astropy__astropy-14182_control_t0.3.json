@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-14182",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2413,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2667,
+      "response_excerpt": "<reasoning>\nThe failure happens before writing because `RST.__init__` does not accept `header_rows`, even though its `FixedWidth` base class already supports them.\n\nThe RST writer also hard-codes the separator row as `lines[1]`, which only works for a single name header. With multiple header rows, the separator produced by `FixedWidth.write()` is at `len(header_rows)`.\n\nFor reads, `SimpleRSTData.start_line = 3` is likewise only correct for one header row. Making it dynamic keeps RST aligned with",
+      "latency_s": 227.97159624099731,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

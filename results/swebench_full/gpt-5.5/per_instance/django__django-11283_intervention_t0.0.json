@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11283",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 11514,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1987,
+      "response_excerpt": "<reasoning>\nThe failure happens because `auth.0011_update_proxy_permissions` bulk-updates permissions from the concrete model content type to the proxy model content type. If the proxy content type already has a permission with the same `(content_type_id, codename)`, for example because the model used to be concrete or a workaround pre-created proxy permissions, the database uniqueness constraint raises `IntegrityError` and aborts the migration.\n\nThe patch wraps each proxy permission update in i",
+      "latency_s": 178.93035912513733,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12125",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1324,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2383,
+      "response_excerpt": "Based on my analysis, the issue is in Django's `Field.deconstruct()` method which uses `__name__` instead of `__qualname__`. This causes inner classes to lose their outer class context in the generated migration paths.\n\n<reasoning>\nThe issue is reproducible from these key facts:\n\n1. `Field.deconstruct()` in `django/db/models/fields/__init__.py` builds a path string like `\"%s.%s\" % (self.__class__.__module__, self.__class__.__name__)`. For an inner class `Outer.Inner`, `__name__` returns `\"Inner\"",
+      "latency_s": 637.971195936203,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

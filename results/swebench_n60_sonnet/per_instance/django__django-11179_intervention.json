@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11179",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 433,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1108,
+      "response": "I've found the bug. In `django_22/django/db/models/deletion.py`, the fast-delete path for a single instance with no dependencies (lines 276-281) returns without setting the PK to `None`, while the normal delete path (lines 325-327) correctly sets PKs to `None` for all instances.\n\n<reasoning>\nThe issue is in `django/db/models/deletion.py` in the `Collector.delete()` method.\n\nThe fast-delete optimization path (when there's a single object with no dependencies) at lines 276-281:\n```python\nif len(se...[truncated]",
+      "latency_s": 81.52192211151123,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "instance_id": "django__django-11905",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 2,
+  "proposed_patch": false,
+  "patch_len": 0,
+  "total_searches": 0,
+  "unique_queries": 0,
+  "max_query_repeats": 0,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {},
+  "error": "timeout after 600s",
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1420,
+      "response": "Now I understand the full picture. Let me write a comprehensive patch that:\n\n1. Adds validation in the `IsNull.get_prep_lookup()` method to validate the value is a boolean early\n2. This will ensure validation happens when the lookup is initialized, not just at SQL compilation time\n\n<reasoning>\nThe issue is that `__isnull` should only accept boolean values (True/False), but currently accepts any truthy/falsey values. While there's already a check in `IsNull.as_sql()` that raises a ValueError for non-boolean values, this only happens when the query is compiled.\n\nThe investigation shows:\n1. The current validation is in `IsNull.as_sql()` (line 663-666)\n2. The related `TupleIsNull` class already validates in `get_prep_lookup()` \n3. Tests expect a ValueError to be raised for non-boolean values\n4. The validation should happen as early as possible (in `__init__` via `get_prep_lookup()`)\n\nThe best solution is to override `get_prep_lookup()` in the `IsNull` class to validate that `self.rhs` is a boolean, similar to what `TupleIsNull` does. This provides:\n- Early validation (happens when the lookup is created)\n- Consistency with other validation patterns in Django\n- Ensures the value can't be a non-boolean from that point on\n</reasoning>\n\n<patch>\n--- a/django/db/models/lookups.py\n+++ b/django/db/models/lookups.py\n@@ -658,6 +658,15 @@ class Range(FieldGetDbPrepValueIterableMixin, BuiltinLookup):\n @Field.register_lookup\n class IsNull(BuiltinLookup):\n     lookup_name = \"isnull\"\n     prepare_rhs = False\n+\n+    def get_prep_lookup(self):\n+        if hasattr(self.rhs, \"resolve_expression\"):\n+            return self.rhs\n+        if not isinstance(self.rhs, bool):\n+            raise ValueError(\n+                \"The QuerySet value for an isnull lookup must be True or False.\"\n+            )\n+        return self.rhs\n \n     def as_sql(self, compiler, connection):\n         if not isinstance(self.rhs, bool):\n</patch>",
+      "latency_s": 74.10201168060303,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 3609,
+      "response": "",
+      "latency_s": 600.0097548961639,
+      "error": "timeout after 600s"
+    }
+  ]
+}

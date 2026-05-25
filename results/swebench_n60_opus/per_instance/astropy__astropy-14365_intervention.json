@@ -1,0 +1,21 @@
+{
+  "instance_id": "astropy__astropy-14365",
+  "repo": "astropy/astropy",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 831,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2166,
+      "response": "Now I have the complete picture. The fix is:\n\n1. **Line 69**: Change `re.compile(_type_re)` to `re.compile(_type_re, re.IGNORECASE)` \n2. **Doctests**: Add lowercase command examples to verify the fix\n\n<reasoning>\nThe bug is in `astropy/io/ascii/qdp.py` in the `_line_type()` function. The regex that classifies QDP lines is compiled without `re.IGNORECASE`, so lowercase commands like `read serr 1 2` don't match the pattern `READ [TS]ERR(\\s+[0-9]+)+` and get rejected as \"Unrecognized QDP line\".\n\nTh...[truncated]",
+      "latency_s": 155.16959881782532,
+      "error": null
+    }
+  ]
+}

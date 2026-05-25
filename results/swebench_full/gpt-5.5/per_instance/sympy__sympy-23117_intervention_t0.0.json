@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-23117",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1513,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2167,
+      "response_excerpt": "<reasoning>\nThe crash comes from `NDimArray._scan_iterable_shape`: for an empty iterable, the recursive list is empty, so `zip(*[])` raises `ValueError`. Empty arrays already have explicit support via `shape=(0,)`, so shape inference should produce the same shape for `Array([])`. I changed the scanner to return `([], (0,))` for empty iterables and added a regression test for `Array([])`.\n\nVerified with:\n`/private/tmp/sympy39-venv/bin/python -m pytest sympy/tensor/array/tests/test_immutable_ndim_",
+      "latency_s": 256.1600739955902,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

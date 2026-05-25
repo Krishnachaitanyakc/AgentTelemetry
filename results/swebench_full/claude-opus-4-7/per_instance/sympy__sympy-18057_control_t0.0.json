@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-18057",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3031,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2528,
+      "response_excerpt": "<reasoning>\nThe bug exists in older sympy versions where `Expr.__eq__` (in `sympy/core/expr.py`) calls `sympify(other)`, which falls back to parsing/eval'ing the `repr` of unknown objects. The canonical fix:\n\n1. Remove the dangerous `__eq__` from `Expr` that calls full `sympify`.\n2. Make `Basic.__eq__` handle non-`Basic` operands via a narrow `_do_eq_sympify` that **only** uses explicit converters (`_external_converter`) or the object's `_sympy_()` method.\n3. If the other object has neither, ret",
+      "latency_s": 504.9643931388855,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

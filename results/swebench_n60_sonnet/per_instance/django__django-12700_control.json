@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12700",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1130,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2528,
+      "response": "Now I have a full understanding of the issue and the fix. The code currently in the repository (Django 4.2.30) already has the fix applied. The issue was that the original `cleanse_setting()` only recursed into `dict` types but treated all other iterables (lists, tuples) as opaque values, returning them unchanged even if they contained sensitive data nested inside dicts.\n\n<reasoning>\nThe original buggy `cleanse_setting()` method only handled `dict` values recursively:\n\n```python\nif is_sensitive:...[truncated]",
+      "latency_s": 226.42706489562988,
+      "error": null
+    }
+  ]
+}

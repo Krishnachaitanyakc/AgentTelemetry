@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11019",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4278,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2595,
+      "response_excerpt": "<reasoning>\nAfter thorough investigation, I found that the current Django codebase already implements the fix for this issue. The implementation in `django/forms/widgets.py`:\n\n1. `Media.__init__` stores media as `_css_lists` and `_js_lists` (lists of lists), preserving each source separately rather than eagerly merging.\n\n2. `Media.__add__` defers merging by appending the other Media's lists to its own `_css_lists`/`_js_lists` instead of immediately merging \u2014 this is the key fix.\n\n3. `Media.merge",
+      "latency_s": 329.54921317100525,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-18189",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1470,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1470,
+      "response_excerpt": "<reasoning>\nThe incomplete result happens only when `syms` differs from SymPy's sorted variable order. In that branch, `diophantine()` recursively solves the equation and then reorders tuple entries, but the recursive call drops the caller's `permute=True`. That means the inner solve returns only the base solution, so the outer reorder has no signed/permuted solutions to reorder.\n\nThe fix is to forward `permute=permute` through that recursive call. I also added the reported fourth-power regressi",
+      "latency_s": 184.25510096549988,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

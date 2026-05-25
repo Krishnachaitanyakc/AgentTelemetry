@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13447",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2389,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1184,
+      "response_excerpt": "<reasoning>\nThe Django issue requests two changes to `django/contrib/admin/sites.py`:\n1. Add the model class to the `app_list` context (so users can manipulate it in custom admin views, instead of working with a serialized dictionary)\n2. Make `_build_app_dict` public (it's used by both `index` and `app_index` views)\n\nLooking at the current state of `/private/tmp/django/django/contrib/admin/sites.py`, the fix is already in place:\n- Line 469: `def build_app_dict(self, request, label=None):` \u2014 rena",
+      "latency_s": 92.09996604919434,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

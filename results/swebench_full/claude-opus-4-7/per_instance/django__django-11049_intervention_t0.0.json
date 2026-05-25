@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11049",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 410,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1500,
+      "response_excerpt": "<reasoning>\nI've found the relevant code. The Django model `DurationField` has the format string in `django/db/models/fields/__init__.py` at line 1947. The fix needed (per the issue) is to change the format string from `[DD] [HH:[MM:]]ss[.uuuuuu]` to `[DD] [[HH:]MM:]ss[.uuuuuu]` to correctly reflect that seconds are mandatory, minutes are optional, and hours are optional only when minutes are present. The patch updates the error message accordingly.\n</reasoning>\n\n<patch>\n--- a/django/db/models/f",
+      "latency_s": 349.1282880306244,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

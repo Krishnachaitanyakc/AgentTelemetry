@@ -1,0 +1,29 @@
+{
+  "topology": "parallel",
+  "model": "claude_cli/claude-opus-4-7",
+  "question": "Compare reasoning-loop failures versus circular delegation in multi-agent systems. Which is more common, and why?",
+  "run_id": "parallel__claude_cli_claude-opus-4-7__q1",
+  "transcript": [
+    {
+      "agent": "researcher_a",
+      "output": "**Reasoning-loop failures** occur when a single agent gets stuck in repetitive thought cycles\u2014re-planning the same step, oscillating between hypotheses, or invoking the same tool with minor variations. Root causes: missing termination conditions, ambiguous success criteria, or context that lacks the information needed to make progress.\n\n**Circular delegation** happens across agents: A delegates to B, B delegates back to A (or A\u2192B\u2192C\u2192A). Root causes: overlapping role definitions, no central coordinator tracking call stacks, and agents trained to \"escalate when unsure\" without knowing what the recipient can actually do.\n\n**Reasoning loops are more common** because they emerge from a single agent's local state\u2014any agent with weak stopping criteria can hit them, and they don't require multiple participants to coordinate failure. Circular delegation needs a topology that permits cycles plus mutual uncertainty, which is rarer. Most production frameworks now cap recursion depth, making delegat",
+      "latency_s": 14.28840708732605
+    },
+    {
+      "agent": "researcher_b",
+      "output": "**Reasoning-loop failures** dominate in production. An agent re-reads the same file, retries a tool with cosmetic variations, or oscillates between two hypotheses without converging \u2014 typically triggered by ambiguous tool errors, missing context, or weak stop conditions. They surface in every deployment because they're a single-agent failure mode that scales with run count.\n\n**Circular delegation** (A\u2192B\u2192A, or A\u2192B\u2192C\u2192A) is rarer because most production systems enforce strict hierarchies: an orchestrator dispatches to workers that cannot delegate back upward. It only emerges in peer-to-peer architectures with symmetric capabilities (e.g., AutoGen-style group chats, swarm frameworks).\n\nFrequency ratio in deployed systems is roughly 10\u201320:1 favoring reasoning loops. However, circular delegation is harder to detect \u2014 token budgets get burned across multiple agents before anyone notices \u2014 so teams instrument depth limits and parent-tracking even when the topology shouldn't permit cycles.",
+      "latency_s": 18.369556188583374
+    },
+    {
+      "agent": "writer",
+      "output": "**Reasoning-loop failures** occur within a single agent: re-reading the same file, retrying tools with cosmetic variations, or oscillating between hypotheses without converging. Root causes include weak stop conditions, ambiguous success criteria, ambiguous tool errors, and missing context needed to make progress.\n\n**Circular delegation** occurs across agents (A\u2192B\u2192A, or A\u2192B\u2192C\u2192A). Root causes include overlapping role definitions, no central coordinator tracking call stacks, and agents trained to \"escalate when unsure\" without knowing recipients' actual capabilities. It typically only emerges in peer-to-peer architectures with symmetric capabilities (AutoGen-style group chats, swarm frameworks).\n\n**Reasoning loops are far more common** \u2014 roughly 10\u201320:1 in deployed systems. Two reasons: (1) they're a single-agent failure mode that scales with every run, requiring no coordination to manifest; (2) most production frameworks enforce strict orchestrator\u2192worker hierarchies and cap recursion d",
+      "latency_s": 15.528932809829712
+    }
+  ],
+  "total_cost_usd": 0.07616999999999999,
+  "total_input_tokens": 698,
+  "total_output_tokens": 876,
+  "n_agents": 3,
+  "wall_clock_s": 48.212713956832886,
+  "error": null
+}

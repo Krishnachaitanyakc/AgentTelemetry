@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13028",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 502,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3664,
+      "response": "Perfect! Now I have a clear understanding. The fix is to check if the value is an instance of `BaseExpression` before checking for the `filterable` attribute. Let me create the patch:\n\n<patch>\n--- a/django/db/models/sql/query.py\n+++ b/django/db/models/sql/query.py\n@@ -1121,7 +1121,7 @@ class Query(tree.Node):\n     def check_filterable(self, expression):\n         \"\"\"Raise an error if expression cannot be used in a WHERE clause.\"\"\"\n-        if not getattr(expression, 'filterable', 'True'):\n+      ...[truncated]",
+      "latency_s": 54.527693033218384,
+      "error": null
+    }
+  ]
+}

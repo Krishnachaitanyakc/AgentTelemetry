@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16229",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2196,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2053,
+      "response_excerpt": "<reasoning>\nThe bug is in `BoundField.as_widget(..., only_initial=True)`. When a bound form is re-rendered and the hidden initial field wasn\u2019t submitted, Django rendered that hidden initial from `self.value()`, which uses bound POST data. That can overwrite the true initial/default value with invalid submitted data, causing a second submission to look unchanged and skip validation for extra inline forms.\n\nThe fix keeps the existing behavior when a hidden initial was submitted, but otherwise rend",
+      "latency_s": 164.99005794525146,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

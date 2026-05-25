@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12284",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1663,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1705,
+      "response": "Based on all my analysis, let me propose the fix. The issue is that when a field with choices is overridden in a child class, the auto-generated `get_FOO_display()` method needs to be updated to use the new field instance. The current check is correct, but we need to ensure it works properly:\n\n<patch>\n--- a/django/db/models/fields/__init__.py\n+++ b/django/db/models/fields/__init__.py\n@@ -770,12 +770,15 @@ class Field(RegisterLookupMixin):\n                 setattr(cls, self.attname, self.descript...[truncated]",
+      "latency_s": 427.88006114959717,
+      "error": null
+    }
+  ]
+}

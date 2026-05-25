@@ -1,0 +1,60 @@
+{
+  "instance_id": "astropy__astropy-14365",
+  "repo": "astropy/astropy",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 1137,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "_line_type function in qdp.py": 1,
+    "_line_type_re = re.compile": 1,
+    "v == no in qdp": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2352,
+      "response": "Now I see the original code. The original had:\n1. `_line_type_re = re.compile(_type_re)` \u2014 no `re.IGNORECASE`\n2. `match = _line_type_re.match(line)` \u2014 no `.upper()`\n3. `if v == \"NO\":` \u2014 exact match, no `.upper()`\n\nThe fix needs:\n1. Add `re.IGNORECASE` to the regex compilation\n2. Fix the `NO` comparison in `_get_tables_from_qdp_file` to be case-insensitive\n3. Add doctest examples for lowercase commands\n\n<reasoning>\nThe issue is that `_line_type()` in `astropy/io/ascii/qdp.py` uses a regex compiled without the `re.IGNORECASE` flag, so QDP commands like `read serr 1 2` (lowercase) fail to match the pattern `READ [TS]ERR(\\s+[0-9]+)+`. Additionally, in `_get_tables_from_qdp_file()`, `NO` values in data lines are compared with exact case (`v == \"NO\"`), which would also fail for lowercase `no`.\n\nThe fix involves:\n1. Adding `re.IGNORECASE` flag to `re.compile(_type_re)` in `_line_type()`\n2. Changing `v == \"NO\"` to `v.upper() == \"NO\"` in `_get_tables_from_qdp_file()`\n3. Adding a doctest for lowercase commands in `_line_type()`\n</reasoning>\n\n<patch>\n--- a/astropy/io/ascii/qdp.py\n+++ b/astropy/io/ascii/qdp.py\n@@ -36,6 +36,8 @@ def _line_type(line, delimiter=None):\n     Examples\n     --------\n     >>> _line_type(\"READ SERR 3\")\n+    'command'\n+    >>> _line_type(\"read serr 3\")\n     'command'\n     >>> _line_type(\" \\\\n    !some gibberish\")\n     'comment'\n@@ -68,7 +70,7 @@ def _line_type(line, delimiter=None):\n     _new_re = rf\"NO({sep}NO)+\"\n     _data_re = rf\"({_decimal_re}|NO|[-+]?nan)({se",
+      "latency_s": 91.72323203086853,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4817,
+      "response": "I'll investigate the codebase first. Let me search for the relevant code.\n\n<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"_line_type function in qdp.py\"}}</tool_call>",
+      "latency_s": 12.793068885803223,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 5384,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"_line_type_re = re.compile\"}}</tool_call>",
+      "latency_s": 11.215306997299194,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 5861,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"v == NO in qdp\"}}</tool_call>",
+      "latency_s": 11.58138394355774,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 6278,
+      "response": "I've completed my investigation. Now I'll propose the fix.\n\n<reasoning>\nThe issue is that `_line_type()` in `astropy/io/ascii/qdp.py` uses a regex compiled without the `re.IGNORECASE` flag, so QDP commands like `read serr 1 2` (lowercase) fail to match the pattern that expects uppercase `READ [TS]ERR`. Additionally, in `_get_tables_from_qdp_file()`, the `NO` placeholder values in data lines are compared with exact case (`v == \"NO\"`), which would also fail for lowercase `no`.\n\nThe fix involves:\n1. Adding `re.IGNORECASE` flag to `re.compile(_type_re)` in `_line_type()`\n2. Changing `v == \"NO\"` to `v.upper() == \"NO\"` in `_get_tables_from_qdp_file()`\n3. Adding a doctest for lowercase commands in `_line_type()`\n</reasoning>\n\n<patch>\n--- a/astropy/io/ascii/qdp.py\n+++ b/astropy/io/ascii/qdp.py\n@@ -36,6 +36,8 @@ def _line_type(line, delimiter=None):\n     Examples\n     --------\n     >>> _line_type(\"READ SERR 3\")\n+    'command'\n+    >>> _line_type(\"read serr 3\")\n     'command'\n     >>> _line_type(\" \\\\n    !some gibberish\")\n     'comment'\n@@ -68,7 +70,7 @@ def _line_type(line, delimiter=None):\n     _new_re = rf\"NO({sep}NO)+\"\n     _data_re = rf\"({_decimal_re}|NO|[-+]?nan)({sep}({_decimal_re}|NO|[-+]?nan))*)\"\n     _type_re = rf\"^\\s*((?P<command>{_command_re})|(?P<new>{_new_re})|(?P<data>{_data_re})?\\s*(\\!(?P<comment>.*))?\\s*$\"\n-    _line_type_re = re.compile(_type_re)\n+    _line_type_re = re.compile(_type_re, re.IGNORECASE)\n     line = line.strip()\n     if not line:\n         return \"commen",
+      "latency_s": 20.883273124694824,
+      "error": null
+    }
+  ]
+}

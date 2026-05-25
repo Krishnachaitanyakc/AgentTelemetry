@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12983",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1094,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1206,
+      "response": "Now I understand the issue fully. The fix is to add `.strip('-_')` at the end of the `slugify` function. Let me propose the patch:\n\n<patch>\n--- a/django/utils/text.py\n+++ b/django/utils/text.py\n@@ -385,9 +385,9 @@ def unescape_string_literal(s):\n @keep_lazy_text\n def slugify(value, allow_unicode=False):\n     \"\"\"\n-    Convert to ASCII if 'allow_unicode' is False. Convert spaces to hyphens.\n-    Remove characters that aren't alphanumerics, underscores, or hyphens.\n-    Convert to lowercase. Also s...[truncated]",
+      "latency_s": 73.21661472320557,
+      "error": null
+    }
+  ]
+}

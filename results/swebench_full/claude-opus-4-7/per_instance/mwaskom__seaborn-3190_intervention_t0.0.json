@@ -1,0 +1,26 @@
+{
+  "instance_id": "mwaskom__seaborn-3190",
+  "repo": "mwaskom/seaborn",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 522,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2623,
+      "response_excerpt": "The fix is minimal and matches the maintainer's resolution: cast vmin/vmax to floats so boolean inputs (`float(True)=1.0`, `float(False)=0.0`) work with the subsequent subtraction.\n\n<patch>\ndiff --git a/seaborn/_core/scales.py b/seaborn/_core/scales.py\nindex 6c9ecbc9..3c215a60 100644\n--- a/seaborn/_core/scales.py\n+++ b/seaborn/_core/scales.py\n@@ -346,7 +346,7 @@ class ContinuousBase(Scale):\n                 vmin, vmax = data.min(), data.max()\n             else:\n                 vmin, vmax = new.",
+      "latency_s": 469.1822872161865,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

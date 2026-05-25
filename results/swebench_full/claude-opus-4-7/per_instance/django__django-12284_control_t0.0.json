@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12284",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1033,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1674,
+      "response_excerpt": "<reasoning>\nThe issue is in `Field.contribute_to_class()` in `django/db/models/fields/__init__.py`. The bug is that the original code used `hasattr(cls, 'get_%s_display' % self.name)` to check if the display method already exists. Because `hasattr()` walks the MRO, it returns `True` when the parent abstract model has already defined `get_field_foo_display` (with the parent's choices). As a result, the child model's overriding field never replaces it, and `get_FOO_display()` keeps using the paren",
+      "latency_s": 365.5177888870239,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

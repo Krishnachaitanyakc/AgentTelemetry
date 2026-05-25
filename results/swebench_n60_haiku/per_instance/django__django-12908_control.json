@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12908",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2244,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1873,
+      "response": "Perfect! The patch matches the code. Let me now verify it's syntactically correct and write the final patch:\n\n<patch>\n--- a/django/db/models/query.py\n+++ b/django/db/models/query.py\n@@ -1077,7 +1077,6 @@ class QuerySet:\n     def distinct(self, *field_names):\n         \"\"\"\n         Return a new QuerySet instance that will select only distinct results.\n         \"\"\"\n-        self._not_support_combined_queries('distinct')\n         assert self.query.can_filter(), \\\n             \"Cannot create distinct...[truncated]",
+      "latency_s": 167.59738969802856,
+      "error": null
+    }
+  ]
+}

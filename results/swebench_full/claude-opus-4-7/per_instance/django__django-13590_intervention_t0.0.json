@@ -1,0 +1,44 @@
+{
+  "instance_id": "django__django-13590",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 3,
+  "proposed_patch": true,
+  "answer_len": 917,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1653,
+      "response_excerpt": "The patch has been proposed. The fix correctly handles named tuples in `Query.resolve_lookup_value` by detecting them via the `_make` classmethod and unpacking the generator with `*values` when constructing the new instance.",
+      "latency_s": 528.036299943924,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 1913,
+      "response_excerpt": "The patch has been applied to `/private/tmp/django-3.0-issue/django/db/models/sql/query.py:1064-1081`. The fix detects namedtuples via the `_make` classmethod and unpacks the generator with `*values` when reconstructing them, while preserving the iterator-based construction for regular tuples and lists.",
+      "latency_s": 372.9552550315857,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 2253,
+      "response_excerpt": "<reasoning>\nThe fix is already in place at `/private/tmp/django-3.0-issue/django/db/models/sql/query.py:1064-1081`. The `resolve_lookup_value` method now distinguishes between namedtuples and regular tuples/lists:\n\n1. For namedtuples (detected via the presence of the `_make` classmethod), it expands the generator with `*values` since namedtuple constructors take individual positional arguments, not an iterable.\n2. For regular tuples and lists, it preserves the original iterator-based constructio",
+      "latency_s": 100.43327116966248,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

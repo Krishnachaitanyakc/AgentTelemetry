@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15320",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 504,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1733,
+      "response_excerpt": "<reasoning>\nThe issue is in `django/db/models/expressions.py` in the `Subquery` class. Looking at line 1873-1881, `Subquery.as_sql` does:\n```python\nsubquery_sql, sql_params = self.query.as_sql(compiler, connection)\ntemplate_params[\"subquery\"] = subquery_sql[1:-1]\n```\n\nIt calls `self.query.as_sql()` and strips the first and last characters (`[1:-1]`), expecting them to be parentheses. The `Query.as_sql()` method only wraps the SQL in parentheses when `query.subquery = True`. If that attribute is ",
+      "latency_s": 86.71965503692627,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

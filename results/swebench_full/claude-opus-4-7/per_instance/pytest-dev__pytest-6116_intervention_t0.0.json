@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-6116",
+  "repo": "pytest-dev/pytest",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1723,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1784,
+      "response_excerpt": "<reasoning>\nThe issue requests a short alias for the `--collect-only` flag in pytest. Based on the pytest codebase structure, the `--collect-only` option is registered in `src/_pytest/main.py`. The standard fix (which was actually adopted upstream) is to add `--co` as a short alias alongside the existing `--collectonly` and `--collect-only` options. This is a minimal, non-breaking change that simply adds another option name to the same `addoption` call.\n</reasoning>\n\n<patch>\n--- a/src/_pytest/ma",
+      "latency_s": 53.36873984336853,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

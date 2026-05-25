@@ -1,0 +1,35 @@
+% Auto-generated threshold sensitivity table
+\begin{table*}[t]
+\centering
+\scriptsize
+\caption{Threshold sensitivity sweep on the 112-instance SWE-bench
+corpus (3{,}060~spans).  Each detector threshold is varied $\pm{}50\%$
+around its paper default (marked $\star$); other thresholds held
+fixed.  \texttt{cost\_threshold} is fully insensitive in the studied
+range (no trace cumulative cost falls between \$0.05 and \$0.15);
+\texttt{max\_retries} and \texttt{token\_growth\_factor} are
+moderately sensitive and should be calibrated to the workload's
+expected noise floor.}
+\label{tab:threshold-sensitivity}
+\begin{tabular}{@{}llrrrrr@{}}
+\toprule
+\textbf{Threshold} & \textbf{Value} & \textbf{InfRetry} & \textbf{Cost} & \textbf{CtxOver} & \textbf{CircDel} & \textbf{Total} \\
+\midrule
+\texttt{max\_retries} & 2 & 12 & 0 & 3 & 0 & 15 \\
+ & 3$\star$ & 4 & 0 & 3 & 0 & 7 \\
+ & 4 & 2 & 0 & 3 & 0 & 5 \\
+ & 5 & 0 & 0 & 3 & 0 & 3 \\
+ & 6 & 0 & 0 & 3 & 0 & 3 \\
+\texttt{cost\_threshold} (\$) & 0.05 & 4 & 0 & 3 & 0 & 7 \\
+ & 0.075 & 4 & 0 & 3 & 0 & 7 \\
+ & 0.10$\star$ & 4 & 0 & 3 & 0 & 7 \\
+ & 0.125 & 4 & 0 & 3 & 0 & 7 \\
+ & 0.15 & 4 & 0 & 3 & 0 & 7 \\
+\texttt{token\_growth\_factor} & 1.15 & 4 & 0 & 21 & 0 & 25 \\
+ & 1.30$\star$ & 4 & 0 & 3 & 0 & 7 \\
+ & 1.45 & 4 & 0 & 0 & 0 & 4 \\
+ & 1.60 & 4 & 0 & 0 & 0 & 4 \\
+ & 2.00 & 4 & 0 & 0 & 0 & 4 \\
+\bottomrule
+\end{tabular}
+\end{table*}

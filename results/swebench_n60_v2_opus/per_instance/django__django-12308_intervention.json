@@ -1,0 +1,67 @@
+{
+  "instance_id": "django__django-12308",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 6,
+  "proposed_patch": true,
+  "patch_len": 1279,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 2,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "display_for_field jsonfield": 1,
+    "def display_for_field": 1,
+    "prepare_value jsonfield json.dumps": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1470,
+      "response": "Now I see the full picture. `EMPTY_VALUES` includes `{}` and `[]`. So for a JSONField value of `{}` or `[]`, the check at line 454 (`value in field.empty_values`) would be `True`, and it would display the `empty_value_display` instead of valid JSON like `{}` or `[]`.\n\nBut more critically: the `and value` check at line 468 means that for falsy JSON values like `0`, `False`, `\"\"`, `[]`, `{}`, and `0.0`, the code falls through to `display_for_value` which calls `str()` \u2014 this would show Python repr instead of JSON.\n\nThe fix should:\n1. Move the JSONField check before the `empty_values` check (so valid JSON like `{}`, `[]` isn't treated as empty)\n2. Remove the `and value` condition (so falsy JSON values like `0`, `False`, `\"\"` are properly formatted)\n3. Use the form field's `prepare_value` method to handle `InvalidJSONInput` properly\n\n<reasoning>\nThe issue is in `django/contrib/admin/utils.py` in the `display_for_field` function. There are two problems:\n\n1. The `value in field.empty_values` check at line 454 catches valid JSON values like `{}` and `[]` (since they're in `EMPTY_VALUES`), displaying them as empty instead of valid JSON.\n\n2. The `and value` condition at line 468 means falsy JSON values (`0`, `False`, `\"\"`, `[]`, `{}`) fall through to `display_for_value` which uses `str()`, producing Python string representations instead of valid JSON.\n\nThe fix should:\n- Move the JSONField handling before the `empty_values` check\n- Remove the `and value` condition so all JSON values ar",
+      "latency_s": 101.65161800384521,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 6315,
+      "response": "Let me investigate the codebase properly before proposing a fix.\n\n<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"display_for_field JSONField\"}}</tool_call>",
+      "latency_s": 13.137317180633545,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 6861,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"def display_for_field\"}}</tool_call>",
+      "latency_s": 11.879143953323364,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 7311,
+      "response": "Now I have the full picture. `EMPTY_VALUES` includes `None`, `\"\"`, `[]`, `()`, `{}`. For JSONField, the `value in field.empty_values` check at line 453 would catch `None`, `\"\"`, `[]`, and `{}` before they reach the JSONField handler at line 467.\n\nBut wait \u2014 the existing test at line 213 tests `([\"a\", \"b\"], '[\"a\", \"b\"]')` and at line 212 tests `({\"a\": {\"b\": \"c\"}}, ...)`. These are non-empty lists/dicts so they pass the empty_values check. The problem is specifically with empty `{}`, `[]`, and `\"\"` \u2014 plus `None` (which should show empty_value_display).\n\nNow let me look at the actual current state of the code more carefully \u2014 this repo may already have a partial fix in place.\n\nLooking at line 467-471, the current code already uses `field.formfield().prepare_value(value)` which is good, but the problem is the ordering \u2014 the `empty_values` check at line 453 catches valid JSON before it reaches line 467. The fix should move the JSONField handling before the empty_values check.\n\n<reasoning>\nThe issue is in `django/contrib/admin/utils.py` in the `display_for_field` function. \n\nThe current code has the JSONField handler at line 467, but the `value in field.empty_values` check at line 453 intercepts valid JSON values like `{}`, `[]`, and `\"\"` before they reach the JSONField handler. `EMPTY_VALUES` is `(None, \"\", [], (), {})`.\n\nThe fix should:\n1. Move the JSONField handling before the `empty_values` check\n2. Only show `empty_value_display` for `None` (SQL NULL), not for valid JSON like ",
+      "latency_s": 73.0123360157013,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 11068,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"prepare_value JSONField json.dumps\"}}</tool_call>",
+      "latency_s": 12.723889827728271,
+      "error": null
+    },
+    {
+      "iteration": 6,
+      "prompt_len": 11583,
+      "response": "Good, now I can see the exact current code. The JSONField handler is at line 467, but the `empty_values` check at line 453 intercepts valid JSON values like `{}`, `[]`, `\"\"` before they ever reach the JSONField branch.\n\n<reasoning>\nThe issue is in `django/contrib/admin/utils.py` in the `display_for_field` function.\n\n**Problem**: The `value in field.empty_values` check at line 453 runs before the JSONField handler at line 467. Since `field.empty_values` includes `None`, `\"\"`, `[]`, `()`, `{}`, valid JSON values like `{}`, `[]`, and `\"\"` are incorrectly caught and displayed as the `empty_value_display` string instead of proper JSON.\n\nAdditionally, for non-empty dict/list values, the existing JSONField handler at line 467 works, but for values like `{\"foo\": \"bar\"}`, Python's `str()` would produce `{'foo': 'bar'}` (with single quotes) if the code fell through to `display_for_value` \u2014 which is the original bug report.\n\n**Fix**: Move the JSONField handling before the `empty_values` check. Add an explicit `value is None` check for SQL NULL (which should still show `empty_value_display`), while all other values (including falsy ones like `0`, `false`, `\"\"`, `[]`, `{}`) are properly serialized as JSON via `prepare_value`.\n</reasoning>\n\n<patch>\n--- a/django/contrib/admin/utils.py\n+++ b/django/contrib/admin/utils.py\n@@ -450,6 +450,12 @@ def display_for_field(value, field, empty_value_display, avoid_link=False):\n     # general null test.\n     elif isinstance(field, models.BooleanField):\n",
+      "latency_s": 24.80291199684143,
+      "error": null
+    }
+  ]
+}

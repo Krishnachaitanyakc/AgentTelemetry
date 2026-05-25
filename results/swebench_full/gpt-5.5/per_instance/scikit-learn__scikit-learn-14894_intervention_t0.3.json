@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-14894",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2041,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2522,
+      "response_excerpt": "<reasoning>\nThe crash happens because `_sparse_fit` computes the CSR `indptr` step as `dual_coef_indices.size / n_class`. When there are zero support vectors, `dual_coef_indices.size` is zero, so the step is zero and NumPy raises `ZeroDivisionError`.\n\nFor an empty sparse dual coefficient matrix, the CSR `indptr` should contain one zero per row plus the terminal pointer. For regression, that gives shape `(1, 0)` and `indptr == [0, 0]`. The patch special-cases `n_SV == 0` and adds a regression tes",
+      "latency_s": 117.29332399368286,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-16792",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1345,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2722,
+      "response_excerpt": "<reasoning>\nThe C generator in this checkout already emits the correct pointer signature for an unused `MatrixSymbol` argument (`double *x`). The missing coverage was at the Cython wrapper layer, where the original issue surfaced. I added a regression test that builds the Cython `.pyx` wrapper for `autowrap`\u2019s relevant routine shape and asserts that the unused matrix argument is typed as a NumPy array in Python and passed to C as `double *`.\n\nVerified with:\n`PYTHONPATH=/private/tmp/sympy-test-de",
+      "latency_s": 239.32759594917297,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

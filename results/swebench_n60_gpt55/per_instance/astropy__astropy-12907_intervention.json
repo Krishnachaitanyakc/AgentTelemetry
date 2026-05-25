@@ -1,0 +1,21 @@
+{
+  "instance_id": "astropy__astropy-12907",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1797,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2073,
+      "response": "<reasoning>\n`CompoundModel` is a `Model`, so `_cstack` can treat a nested compound operand as one opaque model and lose its internal separability. The fix checks `CompoundModel` first, recursively computes its separability matrix, pads it into the left or right output block, then stacks as before. I added regression coverage for the reported `Pix2Sky_TAN() & (Linear1D & Linear1D)` case and direct `_cstack` handling.\n\nVerification: `git diff --check`, `compileall`, and a direct matrix check passe...[truncated]",
+      "latency_s": 230.59293007850647,
+      "error": null
+    }
+  ]
+}

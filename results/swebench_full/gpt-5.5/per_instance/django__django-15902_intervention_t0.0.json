@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15902",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2929,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1235,
+      "response_excerpt": "<reasoning>\n1. `ManagementForm` inherits `Form.template_name`, which delegates to `renderer.form_template_name`.\n2. Rendering a formset includes `{{ formset.management_form }}`, so management-form rendering can trigger warnings tied to the renderer\u2019s default full-form template even though only hidden fields are emitted.\n3. Give `ManagementForm` a dedicated hidden-only template and add templates for both Django and Jinja2 renderers.\n4. Add a regression test with a renderer that raises if `form_te",
+      "latency_s": 145.99923610687256,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

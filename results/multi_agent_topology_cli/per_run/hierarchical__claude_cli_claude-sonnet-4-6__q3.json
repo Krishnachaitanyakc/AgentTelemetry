@@ -1,0 +1,29 @@
+{
+  "topology": "hierarchical",
+  "model": "claude_cli/claude-sonnet-4-6",
+  "question": "What are the limitations of using mock LLM clients for benchmarking agent fault detection? Propose two ways to validate against real production traces.",
+  "run_id": "hierarchical__claude_cli_claude-sonnet-4-6__q3",
+  "transcript": [
+    {
+      "agent": "facts_specialist",
+      "output": "**Limitations of Mock LLM Clients for Benchmarking Agent Fault Detection**\n\n- Mock clients produce deterministic, idealized outputs \u2014 they cannot replicate the stochastic variability, latency spikes, or partial failures of real LLMs\n- They miss emergent failure modes: cascading tool-call errors, context-window edge cases, and token-budget exhaustion that only appear under realistic load\n- Mocks rarely simulate API-level faults (rate limits, 529s, malformed JSON mid-stream), so fault detectors trained on them undercount real error classes\n- Coverage is bounded by the test author's imagination \u2014 unknown unknowns go untested\n- Benchmark scores become inflated proxies; detectors overfit to scripted fault signatures\n\n**Two Validation Approaches Against Real Production Traces**\n\n- **Shadow replay:** Record real agent sessions (inputs, LLM responses, tool calls) and replay them through the fault detector offline, measuring precision/recall against human-labeled ground truth\n- **Canary inserti",
+      "latency_s": 15.302451133728027
+    },
+    {
+      "agent": "analysis_specialist",
+      "output": "## Mock LLM Client Limitations for Fault Detection Benchmarking\n\n**Trade-offs:**\n\n1. **Determinism vs. Realism** \u2014 Mocks return scripted responses, eliminating the stochastic variability (token sampling, latency jitter, context window edge cases) that triggers real faults. Benchmarks pass; production fails.\n\n2. **Coverage vs. Distribution Fidelity** \u2014 Hand-crafted failure scenarios miss the long-tail failure modes (malformed JSON mid-stream, partial tool calls, rate-limit cascades) that only emerge from real traffic patterns at scale.\n\n3. **Speed vs. Ecological Validity** \u2014 Mocks run fast and cheaply but cannot reproduce emergent multi-turn degradation (context drift, compounding hallucinations) that real agents exhibit over extended sessions.\n\n**Validation Against Real Production Traces:**\n\n1. **Trace replay** \u2014 Capture production request/response pairs via a logging proxy, then replay them through the fault detector offline, comparing detected vs. observed ground-truth outcomes.\n\n2. ",
+      "latency_s": 15.691112041473389
+    },
+    {
+      "agent": "manager_synthesis",
+      "output": "Mock LLM clients produce deterministic, scripted outputs that cannot replicate the stochastic variability, latency spikes, or partial failures of real systems. This creates three core problems: fault detectors overfit to scripted signatures and miss long-tail failures; API-level faults (rate limits, malformed JSON mid-stream, token-budget exhaustion) go untested; and emergent multi-turn degradation \u2014 context drift, cascading tool-call errors \u2014 only appears under realistic load. Benchmark scores consequently become inflated proxies for real-world performance.\n\nTwo validation approaches address this gap:\n\n1. **Shadow replay** \u2014 Log real production sessions (inputs, LLM responses, tool calls) and replay them through the fault detector offline, measuring precision and recall against human-labeled ground truth. This is safe, repeatable, and exposes failure modes the test author never anticipated.\n\n2. **Canary insertion** \u2014 Inject known synthetic faults into a small slice of live traffic and",
+      "latency_s": 14.255552768707275
+    }
+  ],
+  "total_cost_usd": 0.015993,
+  "total_input_tokens": 791,
+  "total_output_tokens": 908,
+  "n_agents": 3,
+  "wall_clock_s": 45.264437198638916,
+  "error": null
+}

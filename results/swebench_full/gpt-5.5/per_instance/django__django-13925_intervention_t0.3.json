@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13925",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3832,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4880,
+      "response_excerpt": "<reasoning>\n1. `models.W042` is emitted when `cls._meta.pk.auto_created` is true.\n2. In multi-table inheritance, a child model\u2019s primary key is an auto-created `OneToOneField` parent link, even when the actual parent primary key was explicitly declared.\n3. The check should not warn on that child link. The parent model is the place where Django can correctly decide whether the primary key was explicit or auto-created.\n4. The patch skips `W042` for parent-link primary keys and adds regression cove",
+      "latency_s": 164.3094139099121,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "matplotlib__matplotlib-23299",
+  "repo": "matplotlib/matplotlib",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2661,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2582,
+      "response_excerpt": "<reasoning>\nThe bug is caused by `rc_context.__fallback()` restoring `rcParams['backend']` from the saved original rcParams. When the original backend is the auto-backend sentinel, creating a figure inside the context can resolve it to a real backend, but exiting the context restores the sentinel. A later `get_backend()` then triggers `pyplot.switch_backend(_auto_backend_sentinel)`, whose first action is `close(\"all\")`, clearing `Gcf.figs`.\n\nThe fix is to not save/restore `backend` in `rc_contex",
+      "latency_s": 252.4216911792755,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11742",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1574,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1122,
+      "response_excerpt": "<reasoning>\nThe issue requests adding a Django system check that warns when `Field.max_length` is too small to fit the longest value in `Field.choices`. This prevents the common mistake of choices being truncated/erroring at save time.\n\nThe fix belongs in `django/db/models/fields/__init__.py` in the `Field._check_choices` method, which is the existing place where choice validation happens. The check should:\n\n1. Only run when both `max_length` and `choices` are set (so it applies primarily to Cha",
+      "latency_s": 39.02564787864685,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11848",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 811,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1420,
+      "response_excerpt": "The Django repo isn't available locally. I'll work from my knowledge of the codebase to propose the fix.\n\n<reasoning>\nThe issue is in `django/utils/http.py`, specifically in the `parse_http_date` function. The current implementation hard-codes a cutoff at year 70, treating 0-69 as 2000-2069 and 70-99 as 1970-1999. This violates RFC 7231 section 7.1.1.1, which states:\n\n> Recipients of a timestamp value in rfc850-date format, which uses a two-digit year, MUST interpret a timestamp that appears to ",
+      "latency_s": 78.27691388130188,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

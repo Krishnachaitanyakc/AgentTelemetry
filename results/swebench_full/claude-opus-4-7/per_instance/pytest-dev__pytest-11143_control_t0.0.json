@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-11143",
+  "repo": "pytest-dev/pytest",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1337,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 6050,
+      "response_excerpt": "<reasoning>\nThe bug is in `src/_pytest/assertion/rewrite.py` in the `AssertionRewriter.run` method. When iterating over `mod.body` to find a docstring, the code checks `isinstance(item.value, astStr)` where `astStr = ast.Constant` for Python 3.8+. Since `ast.Constant` covers ALL constant types (including numbers), a file whose first expression is an integer (like `0`) would incorrectly be treated as having a docstring.\n\nThe code then extracts `doc = item.value.value`, which would be an `int`, an",
+      "latency_s": 201.80460000038147,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

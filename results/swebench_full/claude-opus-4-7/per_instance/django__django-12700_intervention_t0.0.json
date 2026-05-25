@@ -1,0 +1,35 @@
+{
+  "instance_id": "django__django-12700",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 2,
+  "proposed_patch": true,
+  "answer_len": 1073,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2497,
+      "response_excerpt": "The patch has been delivered. The fix adds `list` and `tuple` recursion to `SafeExceptionReporterFilter.cleanse_setting()` in `django/views/debug.py`, so sensitive keys nested inside lists/tuples (including lists of lists of dicts) get cleansed instead of being returned as-is.",
+      "latency_s": 681.4376337528229,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 2810,
+      "response_excerpt": "<reasoning>\nThe issue is that `SafeExceptionReporterFilter.cleanse_setting()` only recursed into `dict` values, leaving sensitive keys nested inside `list` and `tuple` containers un-cleansed. Inspecting `/private/tmp/django/django/views/debug.py` shows the current `cleanse_setting()` already includes the list/tuple branches (lines 140-143):\n\n```python\nelif isinstance(value, list):\n    cleansed = [self.cleanse_setting(\"\", v) for v in value]\nelif isinstance(value, tuple):\n    cleansed = tuple([sel",
+      "latency_s": 78.52986192703247,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13220",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3238,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1406,
+      "response_excerpt": "<reasoning>\nImplemented equality by comparing a normalized structural representation of `ValidationError` instead of comparing hashes. The normalized form preserves message/code/params, distinguishes single errors from lists and dicts, ignores ordering for field dictionaries and error lists, and preserves duplicate counts via `Counter`. Added a regression test proving hash collisions do not make unequal errors compare equal.\n\nVerified with: `python3 tests/runtests.py test_exceptions`\n</reasoning",
+      "latency_s": 81.28140687942505,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

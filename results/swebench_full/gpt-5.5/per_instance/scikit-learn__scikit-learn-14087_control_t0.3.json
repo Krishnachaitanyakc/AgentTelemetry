@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-14087",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1912,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3126,
+      "response_excerpt": "<reasoning>\nThe failure is caused by the `refit=False` branch checking `self.multi_class` instead of the resolved local `multi_class`. In 0.21.x the default `self.multi_class` is `\"warn\"`, but `_check_multi_class(...)` resolves binary classification to `\"ovr\"`. The code therefore incorrectly takes the multinomial coefficient indexing path and indexes a 3D OvR coefficient array as if it were 4D.\n\nThe fix is to use the resolved `multi_class` value consistently. I also added a focused regression te",
+      "latency_s": 106.02605891227722,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13028",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 820,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3633,
+      "response_excerpt": "<reasoning>\nThe fix has been applied. The change adds a check `not hasattr(expression, \"_meta\")` to prevent model instances (which all have a `_meta` attribute) from being incorrectly flagged as non-filterable expressions. This is a clean, minimal fix that addresses the specific issue: when a user has a model field named `filterable`, the model instance value being filtered against shouldn't be treated as if it's an expression with `filterable=False`.\n\nLet me provide the final patch.\n</reasoning",
+      "latency_s": 291.6091330051422,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

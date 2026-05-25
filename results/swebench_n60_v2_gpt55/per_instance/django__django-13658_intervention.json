@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-13658",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 2710,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "managementutility commandparser": 1,
+    "execute_from_command_line argv prog_name": 1,
+    "prog=self.prog_name usage subcommand": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2248,
+      "response": "<reasoning>ManagementUtility already computes self.prog_name from the argv argument, but its early parser for --settings/--pythonpath didn't pass that value to CommandParser, so argparse fell back to sys.argv[0]. Passing prog=self.prog_name keeps usage text tied to the provided argv. I added a regression test that patches sys.argv[0] to None while calling execute_from_command_line() with an explicit argv and verifies the help usage uses django-admin. I couldn't run the targeted test in this old checkout because the available Python lacks the removed cgi stdlib module required by this Django version.</reasoning>\n<patch>diff --git a/django/core/management/__init__.py b/django/core/management/__init__.py\nindex adc7d17..f7c963c 100644\n--- a/django/core/management/__init__.py\n+++ b/django/core/management/__init__.py\n@@ -331,7 +331,12 @@ class ManagementUtility:\n         # Preprocess options to extract --settings and --pythonpath.\n         # These options could affect the commands that are available, so they\n         # must be processed early.\n-        parser = CommandParser(usage='%(prog)s subcommand [options] [args]', add_help=False, allow_abbrev=False)\n+        parser = CommandParser(\n+            prog=self.prog_name,\n+            usage='%(prog)s subcommand [options] [args]',\n+            add_help=False,\n+            allow_abbrev=False,\n+        )\n         parser.add_argument('--settings')\n         parser.add_argument('--pythonpath')\n         parser.add_argument('args', nargs='*",
+      "latency_s": 140.6066963672638,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 5860,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"ManagementUtility CommandParser\"}}</tool_call>",
+      "latency_s": 15.633445024490356,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 6360,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"execute_from_command_line argv prog_name\"}}</tool_call>",
+      "latency_s": 12.398836851119995,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 6905,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"prog=self.prog_name usage subcommand\"}}</tool_call>",
+      "latency_s": 14.627048969268799,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 7430,
+      "response": "<reasoning>ManagementUtility computes prog_name from the argv passed to execute_from_command_line(), but the preliminary CommandParser didn\u2019t receive it, so argparse could still consult sys.argv[0]. Passing prog=self.prog_name makes the early parser consistent with the explicit argv. The regression test covers the reported embedded case by setting sys.argv[0] to None while passing a valid argv.</reasoning>\n<patch>diff --git a/django/core/management/__init__.py b/django/core/management/__init__.py\nindex adc7d17..f7c963c 100644\n--- a/django/core/management/__init__.py\n+++ b/django/core/management/__init__.py\n@@ -331,7 +331,12 @@ class ManagementUtility:\n         # Preprocess options to extract --settings and --pythonpath.\n         # These options could affect the commands that are available, so they\n         # must be processed early.\n-        parser = CommandParser(usage='%(prog)s subcommand [options] [args]', add_help=False, allow_abbrev=False)\n+        parser = CommandParser(\n+            prog=self.prog_name,\n+            usage='%(prog)s subcommand [options] [args]',\n+            add_help=False,\n+            allow_abbrev=False,\n+        )\n         parser.add_argument('--settings')\n         parser.add_argument('--pythonpath')\n         parser.add_argument('args', nargs='*')  # catch-all\ndiff --git a/tests/admin_scripts/tests.py b/tests/admin_scripts/tests.py\nindex 1e4477e..5c0b5d3 100644\n--- a/tests/admin_scripts/tests.py\n+++ b/tests/admin_scripts/tests.py\n@@ -18,7 +18,7 @@ im",
+      "latency_s": 18.070642948150635,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-9359",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2918,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4200,
+      "response_excerpt": "<reasoning>\nThe extra `@t` line comes from `get_statement_startend2`: it picks the next statement start as the failing statement's end. On Python versions with `end_lineno`, the failing `assert` already has a precise end line, so the range should be bounded by the smallest AST statement containing the target line. That prevents a later decorated inner function from being included after a blank line.\n\nVerified with:\n`/private/tmp/pytest-dev-pytest-venv/bin/python -m pytest testing/code/test_sourc",
+      "latency_s": 91.43874406814575,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

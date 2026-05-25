@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-5495",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2621,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1537,
+      "response_excerpt": "<reasoning>\nThe confusing `52` comes from treating `bytes` as a generic sequence, where indexing returns integers. Existing mismatch handling already slices bytes to show `b'4'`-style reprs for differing indexes, but the length-mismatch branch still reports the first extra item through generic sequence logic.\n\nThe patch treats `bytes` and `bytearray` as byte-like comparisons and skips the generic \u201ccontains more items\u201d explanation for them. The full diff still shows the meaningful byte-string rep",
+      "latency_s": 96.30085277557373,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

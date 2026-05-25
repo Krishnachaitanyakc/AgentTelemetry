@@ -1,0 +1,26 @@
+{
+  "instance_id": "psf__requests-2317",
+  "repo": "psf/requests",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 308,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1634,
+      "response_excerpt": "<reasoning>\nNow I have enough information. The fix is well-known: `to_native_string()` properly decodes binary strings to native strings, while `builtin_str()` (which is just `str`) would convert `b'GET'` to the literal string `\"b'GET'\"` in Python 3.\n\nThe patch needs to:\n1. Replace `method = builtin_str(method)` with `method = to_native_string(method)` in `requests/sessions.py`\n2. Ensure `to_native_string` is imported (it likely is, since it's already used elsewhere)\n\nLet me write the final patc",
+      "latency_s": 404.42480087280273,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

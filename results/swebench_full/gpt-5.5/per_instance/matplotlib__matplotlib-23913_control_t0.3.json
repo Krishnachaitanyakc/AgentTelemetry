@@ -1,0 +1,26 @@
+{
+  "instance_id": "matplotlib__matplotlib-23913",
+  "repo": "matplotlib/matplotlib",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1791,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1436,
+      "response_excerpt": "<reasoning>\nThe fix is to add `draggable` as a `Legend.__init__` keyword, document it in the shared legend keyword docs, and call the existing `set_draggable(True)` helper after `_draggable` is initialized. `Axes.legend` and `Figure.legend` already forward `**kwargs` to `Legend`, so no wrapper changes are needed.\n\nI could not run pytest because `pytest` is not installed for the available `python3`, but both modified files parse successfully with `ast.parse`.\n</reasoning>\n\n<patch>\n```diff\ndiff --",
+      "latency_s": 58.80405282974243,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

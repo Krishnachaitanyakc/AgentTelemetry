@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-8435",
+  "repo": "sphinx-doc/sphinx",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4932,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1668,
+      "response_excerpt": "<reasoning>\n1. Autodoc already applies `autodoc_type_aliases` for function signatures through Sphinx\u2019s `TypeAliasNamespace`, but variable and attribute annotations were passing the raw config dict to `typing.get_type_hints()`.\n2. With postponed annotations, a raw dict cannot resolve aliases like `String` into Sphinx\u2019s alias placeholder, so `:type:` output stayed as `String`.\n3. The fix is to pass `inspect.TypeAliasNamespace(...)` everywhere data and attribute documenters resolve annotations, the",
+      "latency_s": 125.23596620559692,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

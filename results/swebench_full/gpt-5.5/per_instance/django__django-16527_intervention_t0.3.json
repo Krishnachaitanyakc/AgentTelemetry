@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16527",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3597,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1287,
+      "response_excerpt": "<reasoning>\nThe submit row template context controls whether the \"Save as new\" button is rendered. Since that action creates a new object, it must require add permission in addition to change permission. I added the permission guard and a regression test covering a change-only user and a user with both add and change permissions.\n\nVerification note: I attempted the focused test, but this environment\u2019s Python 3.12 install lacks `distutils`, which this Django branch imports at startup.\n</reasoning",
+      "latency_s": 164.0947141647339,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

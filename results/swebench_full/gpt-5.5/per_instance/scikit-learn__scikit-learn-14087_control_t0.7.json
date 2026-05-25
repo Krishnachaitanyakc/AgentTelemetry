@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-14087",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1798,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3126,
+      "response_excerpt": "<reasoning>\n1. The failure is in `LogisticRegressionCV.fit` when `refit=False`.\n2. For binary classification, `multi_class` is resolved locally to `'ovr'`, but the non-refit branch checks `self.multi_class`.\n3. With the default value in affected versions, `self.multi_class` is still `'warn'`, so the code incorrectly takes the multinomial coefficient indexing path.\n4. That path indexes a 3D OvR `coefs_paths` array as if it were 4D, causing the reported `IndexError`.\n5. The fix is to use the resol",
+      "latency_s": 109.73658990859985,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

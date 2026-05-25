@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11742",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3961,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1122,
+      "response_excerpt": "<reasoning>\nThe existing field validation path is `Field._check_choices()`, so the fix belongs there while choices are already being validated structurally. The patch tracks the longest string choice value for both flat choices and grouped choices, then emits a system check error if `max_length` is smaller. A focused regression test covers both shapes.\n\nVerification: `python3 tests/runtests.py invalid_models_tests.test_ordinary_fields.CharFieldTests.test_choices_in_max_length --verbosity 2` pass",
+      "latency_s": 251.7868640422821,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

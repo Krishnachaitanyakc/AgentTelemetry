@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13448",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3146,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 6005,
+      "response": "<reasoning>\n1. `TEST[\"MIGRATE\"] = False` currently skips `migrate` entirely, so no test database tables are created.\n2. Serialization then walks migrated apps and queries tables such as `django_admin_log`, causing the reported crash.\n3. The fix is to still run `migrate --run-syncdb`, but temporarily set every app\u2019s migration module to `None` so tables are created directly from models.\n4. The regression test now verifies that `migrate` is called with migrations disabled and that `settings.MIGRATI...[truncated]",
+      "latency_s": 117.78958797454834,
+      "error": null
+    }
+  ]
+}

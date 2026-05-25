@@ -1,0 +1,26 @@
+{
+  "instance_id": "psf__requests-3362",
+  "repo": "psf/requests",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1953,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1324,
+      "response_excerpt": "<reasoning>\nThe failure happens because `iter_content(decode_unicode=True)` only decodes when `Response.encoding` is set. In Requests 2.10, `application/json` without an explicit `charset` leaves `encoding` as `None`, so streaming yields bytes while `r.text` falls back to apparent encoding and returns unicode. JSON defaults to UTF-8 per RFC 4627, so `get_encoding_from_headers()` should return UTF-8 for `application/json` when no charset is present.\n\nI verified the patch with `git diff --check`. ",
+      "latency_s": 104.59478402137756,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

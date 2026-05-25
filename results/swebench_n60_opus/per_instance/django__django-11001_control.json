@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11001",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 383,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3045,
+      "response": "The fix is applied. Here's the summary:\n\n**The Bug:** The `ordering_parts` regex in `SQLCompiler` uses `re.MULTILINE | re.DOTALL`. While the comment says \"Multiline ordering SQL clause may appear from RawSQL\", the `re.MULTILINE` flag is actually the *cause* of the problem, not the solution. With `re.MULTILINE`, `^` matches the start of *any* line, which can cause the regex to capture only a partial (last-line) match of multiline SQL expressions. When two different RawSQL expressions share the sa...[truncated]",
+      "latency_s": 134.63946914672852,
+      "error": null
+    }
+  ]
+}

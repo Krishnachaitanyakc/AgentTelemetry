@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-12497",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 2489,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "manytomanyfield recursive relationship hint foreignkey symmetrical through": 1,
+    "fields.e334 through_fields recursive relationship hint": 1,
+    "fields.e335 ambiguous relationship through_fields hint": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1798,
+      "response": "<reasoning>The ambiguous through-model checks are validating a ManyToManyField, so the recursive-relationship hint should recommend ManyToManyField, not ForeignKey. The obsolete symmetrical=False argument is also removed from the hint, and the existing E334/E335 tests are updated to match.</reasoning>\n<patch>diff --git a/django/db/models/fields/related.py b/django/db/models/fields/related.py\n--- a/django/db/models/fields/related.py\n+++ b/django/db/models/fields/related.py\n@@ -1694,7 +1694,7 @@ class ManyToManyField(RelatedField):\n                             % (self, from_model_name),\n                             hint=(\n                                 \"If you want to create a recursive relationship, \"\n-                                'use ForeignKey(\"%s\", symmetrical=False, through=\"%s\").'\n+                                'use ManyToManyField(\"%s\", through=\"%s\").'\n                             )\n                             % (\n                                 RECURSIVE_RELATIONSHIP_CONSTANT,\n@@ -1715,7 +1715,7 @@ class ManyToManyField(RelatedField):\n                             \"through_fields keyword argument.\" % (self, to_model_name),\n                             hint=(\n                                 \"If you want to create a recursive relationship, \"\n-                                'use ForeignKey(\"%s\", symmetrical=False, through=\"%s\").'\n+                                'use ManyToManyField(\"%s\", through=\"%s\").'\n                             )\n                           ",
+      "latency_s": 75.64293217658997,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4869,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"ManyToManyField recursive relationship hint ForeignKey symmetrical through\"}}</tool_call>",
+      "latency_s": 14.014394998550415,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 5584,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"fields.E334 through_fields recursive relationship hint\"}}</tool_call>",
+      "latency_s": 12.765168190002441,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 6199,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"fields.E335 ambiguous relationship through_fields hint\"}}</tool_call>",
+      "latency_s": 14.601832866668701,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 6814,
+      "response": "<reasoning>The ambiguous through-model checks live on `ManyToManyField`, so the hint should point users to `ManyToManyField(...)`, not `ForeignKey(...)`. The obsolete `symmetrical=False` guidance should also be removed, and the expected validation messages in the invalid model tests need the same update.</reasoning>\n<patch>diff --git a/django/db/models/fields/related.py b/django/db/models/fields/related.py\n--- a/django/db/models/fields/related.py\n+++ b/django/db/models/fields/related.py\n@@ -1694,7 +1694,7 @@ class ManyToManyField(RelatedField):\n                             % (self, from_model_name),\n                             hint=(\n                                 \"If you want to create a recursive relationship, \"\n-                                'use ForeignKey(\"%s\", symmetrical=False, through=\"%s\").'\n+                                'use ManyToManyField(\"%s\", through=\"%s\").'\n                             )\n                             % (\n                                 RECURSIVE_RELATIONSHIP_CONSTANT,\n@@ -1715,7 +1715,7 @@ class ManyToManyField(RelatedField):\n                             \"through_fields keyword argument.\" % (self, to_model_name),\n                             hint=(\n                                 \"If you want to create a recursive relationship, \"\n-                                'use ForeignKey(\"%s\", symmetrical=False, through=\"%s\").'\n+                                'use ManyToManyField(\"%s\", through=\"%s\").'\n                             )\n            ",
+      "latency_s": 17.2399320602417,
+      "error": null
+    }
+  ]
+}

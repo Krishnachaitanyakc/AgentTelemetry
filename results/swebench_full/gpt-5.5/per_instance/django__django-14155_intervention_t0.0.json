@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14155",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3784,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1347,
+      "response_excerpt": "<reasoning>\nThe issue is that `ResolverMatch.__init__()` records a partial view\u2019s path as `functools.partial`, so `__repr__()` loses the actual wrapped view and pre-bound arguments. The least invasive fix is to preserve normal `ResolverMatch` behavior while making `__repr__()` use `repr(self.func)` for `functools.partial` instances, because Python\u2019s partial repr already exposes the underlying callable plus bound args/kwargs. I verified the targeted regression test on current Django with `python3",
+      "latency_s": 158.16134881973267,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-20442",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1835,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1523,
+      "response_excerpt": "<reasoning>\nThe bug comes from `_get_conversion_matrix_for_expr` using `solve_least_squares`. For `convert_to(joule*second, joule)`, the target unit does not span the full dimensionality of the expression, but least-squares still invents a fractional exponent solution.\n\nThe fix is to require a unique exact solution with `Matrix.solve`. If the target units cannot exactly represent the expression dimensions, return `None`, preserving the existing `convert_to` fallback that returns the original exp",
+      "latency_s": 153.18196988105774,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

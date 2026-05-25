@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12747",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 658,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1752,
+      "response": "<reasoning>\nThe current `Collector.delete()` implementation already omits zero-count model entries, so the returned shape should consistently be `(0, {})`. I added regression coverage for both relevant paths: a simple fast-deletable model (`Base`) and a model that uses cascade collection (`Avatar`).\n</reasoning>\n\n<patch>\ndiff --git a/tests/delete/tests.py b/tests/delete/tests.py\nindex 664cdfb440..8d02af5065 100644\n--- a/tests/delete/tests.py\n+++ b/tests/delete/tests.py\n@@ -654,6 +654,10 @@ class...[truncated]",
+      "latency_s": 172.33480191230774,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12747",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1196,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1721,
+      "response_excerpt": "<reasoning>\nThe inconsistent zero-count entry comes from `Collector.delete()`\u2019s single-object fast-delete optimization. Other deletion paths only add a model label when rows are actually deleted, but this branch returned `{label: 0}` unconditionally when the SQL delete affected no rows.\n\nI changed that branch to return an empty dict for zero deleted rows, matching the existing QuerySet zero-delete behavior. I added a regression test using a stale fast-deletable instance whose database row was al",
+      "latency_s": 176.03929615020752,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

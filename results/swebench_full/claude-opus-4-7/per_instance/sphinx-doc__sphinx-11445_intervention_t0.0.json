@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-11445",
+  "repo": "sphinx-doc/sphinx",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1795,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2589,
+      "response_excerpt": "I have enough context. The bug is in `sphinx/util/rst.py` in `_prepend_prologue`. Lines that look like field markers (e.g., `:mod:\\`mypackage2\\``) are treated as docinfo, causing the prologue to be inserted between the title and its underline. The fix detects when the next line is a section underline and treats the line as a title instead.\n\n<reasoning>\nThe bug occurs because `_prepend_prologue` uses `_FIELD_NAME_RE` (the docutils field_marker regex) to skip past docinfo fields. However, a sectio",
+      "latency_s": 144.8592231273651,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

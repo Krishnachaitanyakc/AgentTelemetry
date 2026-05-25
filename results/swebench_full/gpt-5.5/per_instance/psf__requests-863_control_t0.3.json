@@ -1,0 +1,26 @@
+{
+  "instance_id": "psf__requests-863",
+  "repo": "psf/requests",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1508,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1598,
+      "response_excerpt": "<reasoning>\nThe current checkout already routes `Request(..., hooks=...)` through `register_hook`, and `register_hook` accepts iterable hook values. I added a focused regression test to ensure a list of response hooks passed to `Request.__init__` is preserved through `prepare()` and dispatched in order.\n\nVerified with:\n`/private/tmp/requests-hook-venv/bin/python -m pytest tests/test_hooks.py tests/test_requests.py::TestRequests::test_request_hooks_accept_lists -q`\n\nResult: `4 passed`.\n</reasonin",
+      "latency_s": 194.83155989646912,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

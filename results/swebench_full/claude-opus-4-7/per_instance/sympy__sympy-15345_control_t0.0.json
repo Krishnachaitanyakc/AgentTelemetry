@@ -1,0 +1,35 @@
+{
+  "instance_id": "sympy__sympy-15345",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 2,
+  "proposed_patch": true,
+  "answer_len": 546,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1061,
+      "response_excerpt": "The patch is complete and verified. The fix adds explicit `_print_Max` and `_print_Min` mappings in `sympy/printing/mathematica.py` so `Max(x, 2)` produces valid Mathematica syntax `Max[2, x]` instead of the buggy `Max(2, x)`. All 16 tests pass, including the two new test assertions for `Max(x, 2)` and `Min(x, 2)`.",
+      "latency_s": 639.3639080524445,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 1413,
+      "response_excerpt": "<reasoning>\nThe issue is in `sympy/printing/mathematica.py`. The `MCodePrinter` class doesn't have explicit handlers for `Max` and `Min`, so they fall back to a default printer that uses parentheses `(...)` instead of Mathematica's required square brackets `[...]`. The fix is to add `_print_Max` and `_print_Min` methods that emit `Max[...]` / `Min[...]`.\n</reasoning>\n\n<patch>\n--- a/sympy/printing/mathematica.py\n+++ b/sympy/printing/mathematica.py\n@@ -106,6 +106,12 @@ def _print_Integral(self, ex",
+      "latency_s": 23.63091802597046,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-11964",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 1175,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "class choices": 1,
+    "textchoices integerchoices tests model_enums": 1,
+    "__str__ self.value enum choices": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3364,
+      "response": "<reasoning>Model choice enum members keep Enum's default string rendering when assigned directly to a model instance, so freshly-created objects can stringify as \"MyChoice.FIRST_CHOICE\" while database-loaded values stringify as \"first\". Adding Choices.__str__() to return str(self.value) makes TextChoices and IntegerChoices behave like their primitive field values in templates, APIs, and direct casts. The regression test covers all built-in choice enum variants.</reasoning>\n<patch>diff --git a/django/db/models/enums.py b/django/db/models/enums.py\n--- a/django/db/models/enums.py\n+++ b/django/db/models/enums.py\n@@ -60,7 +60,13 @@ class ChoicesMeta(enum.EnumMeta):\n \n class Choices(enum.Enum, metaclass=ChoicesMeta):\n     \"\"\"Class for creating enumerated choices.\"\"\"\n-    pass\n+\n+    def __str__(self):\n+        \"\"\"\n+        Use value when cast to str, so that Choices set as model instance\n+        attributes are rendered as expected in templates and similar contexts.\n+        \"\"\"\n+        return str(self.value)\n \n \n class IntegerChoices(int, Choices):\ndiff --git a/tests/model_enums/tests.py b/tests/model_enums/tests.py\n--- a/tests/model_enums/tests.py\n+++ b/tests/model_enums/tests.py\n@@ -143,6 +143,12 @@ class ChoicesTests(SimpleTestCase):\n                 APPLE = 1, 'Apple'\n                 PINEAPPLE = 1, 'Pineapple'\n \n+    def test_str(self):\n+        for test in [Gender, Suit, YearInSchool, Vehicle]:\n+            for member in test:\n+                with self.subTest(member=membe",
+      "latency_s": 92.89042091369629,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 5301,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"class Choices\"}}</tool_call>",
+      "latency_s": 12.458868980407715,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 5711,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"TextChoices IntegerChoices tests model_enums\"}}</tool_call>",
+      "latency_s": 14.120388984680176,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 6276,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"__str__ self.value enum choices\"}}</tool_call>",
+      "latency_s": 14.343378782272339,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 6776,
+      "response": "<reasoning>Choice enum members assigned directly to model fields retain Enum's default string rendering until the object is reloaded from the database. Defining Choices.__str__() to return str(self.value) makes freshly assigned TextChoices and IntegerChoices render like their underlying field values. The test verifies this for the built-in enum choice styles.</reasoning>\n<patch>diff --git a/django/db/models/enums.py b/django/db/models/enums.py\n--- a/django/db/models/enums.py\n+++ b/django/db/models/enums.py\n@@ -60,7 +60,13 @@ class ChoicesMeta(enum.EnumMeta):\n \n class Choices(enum.Enum, metaclass=ChoicesMeta):\n     \"\"\"Class for creating enumerated choices.\"\"\"\n-    pass\n+\n+    def __str__(self):\n+        \"\"\"\n+        Use value when cast to str, so that Choices set as model instance\n+        attributes are rendered as expected in templates and similar contexts.\n+        \"\"\"\n+        return str(self.value)\n \n \n class IntegerChoices(int, Choices):\ndiff --git a/tests/model_enums/tests.py b/tests/model_enums/tests.py\n--- a/tests/model_enums/tests.py\n+++ b/tests/model_enums/tests.py\n@@ -143,6 +143,12 @@ class ChoicesTests(SimpleTestCase):\n                 APPLE = 1, 'Apple'\n                 PINEAPPLE = 1, 'Pineapple'\n \n+    def test_str(self):\n+        for choices in [Gender, Suit, YearInSchool, Vehicle]:\n+            for member in choices:\n+                with self.subTest(member=member):\n+                    self.assertEqual(str(member), str(member.value))\n+\n \n class Separator(byt",
+      "latency_s": 15.989981889724731,
+      "error": null
+    }
+  ]
+}

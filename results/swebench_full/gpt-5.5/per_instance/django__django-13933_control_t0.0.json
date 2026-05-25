@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13933",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3929,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2001,
+      "response_excerpt": "<reasoning>\n`ModelChoiceField.to_python()` already passes `params={\"value\": value}` when raising `invalid_choice`, but its default error message didn\u2019t interpolate `%(value)s`. I updated the default message to match `ModelMultipleChoiceField` and adjusted regression tests to assert both the rendered invalid value and the preserved params.\n\nVerified with:\n`/private/tmp/django-test-venv/bin/python tests/runtests.py model_forms.test_modelchoicefield model_forms.test_uuid --parallel 1`\n\nResult: 29 t",
+      "latency_s": 468.1772470474243,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

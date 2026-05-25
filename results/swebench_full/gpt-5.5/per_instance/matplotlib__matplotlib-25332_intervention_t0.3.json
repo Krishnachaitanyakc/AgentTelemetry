@@ -1,0 +1,26 @@
+{
+  "instance_id": "matplotlib__matplotlib-25332",
+  "repo": "matplotlib/matplotlib",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2218,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1806,
+      "response_excerpt": "<reasoning>\nThe failure comes from `Figure.align_labels()` storing grouped axes in `cbook.Grouper`, whose internal `_mapping` contains `weakref.ref` keys and values. Pickle cannot serialize those weakrefs directly.\n\nThe fix is to make `Grouper` pickle itself as its live grouped objects via `list(self)`, then rebuild the weakref mapping with `join()` on unpickle. This keeps normal runtime weakref behavior while making figures with aligned labels serializable.\n\nI added focused coverage for generic",
+      "latency_s": 124.75064206123352,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

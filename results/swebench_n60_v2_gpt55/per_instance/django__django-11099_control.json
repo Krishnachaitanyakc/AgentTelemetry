@@ -1,0 +1,67 @@
+{
+  "instance_id": "django__django-11099",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 6,
+  "proposed_patch": true,
+  "patch_len": 1596,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 2,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "asciiusernamevalidator": 1,
+    "unicodeusernamevalidator": 1,
+    "usernamevalidatorstests trailingnewline": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1775,
+      "response": "<reasoning>The username validators should use absolute regex anchors so a trailing newline cannot satisfy the pattern. Add regression coverage for both ASCII and Unicode username validators.</reasoning>\n<patch>diff --git a/django/contrib/auth/validators.py b/django/contrib/auth/validators.py\n--- a/django/contrib/auth/validators.py\n+++ b/django/contrib/auth/validators.py\n@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _\n \n @deconstructible\n class ASCIIUsernameValidator(validators.RegexValidator):\n-    regex = r'^[\\w.@+-]+$'\n+    regex = r'\\A[\\w.@+-]+\\Z'\n     message = _(\n         'Enter a valid username. This value may contain only letters, '\n         'numbers, and @/./+/-/_ characters.'\n@@ -17,7 +17,7 @@ class ASCIIUsernameValidator(validators.RegexValidator):\n \n @deconstructible\n class UnicodeUsernameValidator(validators.RegexValidator):\n-    regex = r'^[\\w.@+-]+$'\n+    regex = r'\\A[\\w.@+-]+\\Z'\n     message = _(\n         'Enter a valid username. This value may contain only letters, '\n         'numbers, and @/./+/-/_ characters.'\ndiff --git a/tests/auth_tests/test_validators.py b/tests/auth_tests/test_validators.py\n--- a/tests/auth_tests/test_validators.py\n+++ b/tests/auth_tests/test_validators.py\n@@ -368,6 +368,7 @@ class UsernameValidatorsTests(SimpleTestCase):\n             \"\u0639\u0628\u062f \u0627\u0644\",\n             \"zerowidth\\u200bspace\",\n             \"nonbreaking\\u00a0space\",\n+            \"trailingnewline\\n\",\n         ]\n         v = validators.UnicodeUsernameValidator()\n",
+      "latency_s": 83.43582201004028,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 3852,
+      "response": "<reasoning>The validators already use `\\Z` to prevent trailing newline matches; switching the leading `^` anchor to `\\A` makes both ends absolute and matches Django\u2019s safer regex style for this issue. Existing tests already cover trailing-newline rejection.</reasoning>\n<patch>diff --git a/django/contrib/auth/validators.py b/django/contrib/auth/validators.py\n--- a/django/contrib/auth/validators.py\n+++ b/django/contrib/auth/validators.py\n@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _\n \n @deconstructible\n class ASCIIUsernameValidator(validators.RegexValidator):\n-    regex = r\"^[\\w.@+-]+\\Z\"\n+    regex = r\"\\A[\\w.@+-]+\\Z\"\n     message = _(\n         \"Enter a valid username. This value may contain only unaccented lowercase a-z \"\n         \"and uppercase A-Z letters, numbers, and @/./+/-/_ characters.\"\n@@ -16,7 +16,7 @@ class ASCIIUsernameValidator(validators.RegexValidator):\n \n @deconstructible\n class UnicodeUsernameValidator(validators.RegexValidator):\n-    regex = r\"^[\\w.@+-]+\\Z\"\n+    regex = r\"\\A[\\w.@+-]+\\Z\"\n     message = _(\n         \"Enter a valid username. This value may contain only letters, \"\n         \"numbers, and @/./+/-/_ characters.\"</patch>",
+      "latency_s": 99.93108797073364,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 5301,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"ASCIIUsernameValidator\"}}</tool_call>",
+      "latency_s": 14.28245997428894,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 5756,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"UnicodeUsernameValidator\"}}</tool_call>",
+      "latency_s": 12.935971975326538,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 6221,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"UsernameValidatorsTests trailingnewline\"}}</tool_call>",
+      "latency_s": 17.03785228729248,
+      "error": null
+    },
+    {
+      "iteration": 6,
+      "prompt_len": 6761,
+      "response": "<reasoning>The username validators need absolute anchors so Python regex matching cannot accept strings with trailing newlines. Both ASCII and Unicode username validators should use `\\A` and `\\Z`, and validator tests should include trailing newline rejection.</reasoning>\n<patch>diff --git a/django/contrib/auth/validators.py b/django/contrib/auth/validators.py\n--- a/django/contrib/auth/validators.py\n+++ b/django/contrib/auth/validators.py\n@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _\n \n @deconstructible\n class ASCIIUsernameValidator(validators.RegexValidator):\n-    regex = r'^[\\w.@+-]+$'\n+    regex = r'\\A[\\w.@+-]+\\Z'\n     message = _(\n         'Enter a valid username. This value may contain only letters, '\n         'numbers, and @/./+/-/_ characters.'\n@@ -17,7 +17,7 @@ class ASCIIUsernameValidator(validators.RegexValidator):\n \n @deconstructible\n class UnicodeUsernameValidator(validators.RegexValidator):\n-    regex = r'^[\\w.@+-]+$'\n+    regex = r'\\A[\\w.@+-]+\\Z'\n     message = _(\n         'Enter a valid username. This value may contain only letters, '\n         'numbers, and @/./+/-/_ characters.'\ndiff --git a/tests/auth_tests/test_validators.py b/tests/auth_tests/test_validators.py\n--- a/tests/auth_tests/test_validators.py\n+++ b/tests/auth_tests/test_validators.py\n@@ -368,6 +368,7 @@ class UsernameValidatorsTests(SimpleTestCase):\n             \"\u0639\u0628\u062f \u0627\u0644\",\n             \"zerowidth\\u200bspace\",\n             \"nonbreaking\\u00a0space\",\n+            \"trailingnewli",
+      "latency_s": 16.428898096084595,
+      "error": null
+    }
+  ]
+}

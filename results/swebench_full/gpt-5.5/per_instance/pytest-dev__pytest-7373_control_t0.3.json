@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-7373",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3418,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1830,
+      "response_excerpt": "<reasoning>\nThe bug is caused by `cached_eval` caching only by the condition string, while string marker evaluation also depends on each test item's globals. The fix removes that cross-item cache and compiles/evaluates the string condition at the point where the item globals are available. I added regression tests for both `skipif` and `xfail` with the same condition string resolving differently in separate modules.\n\nVerified with:\n`uv run --python 3.9 ... python -m pytest testing/test_skipping.",
+      "latency_s": 229.47633910179138,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

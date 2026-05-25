@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-20322",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 519,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1459,
+      "response_excerpt": "<reasoning>\nThe current SymPy checkout already preserves `ceiling(x/4 - 3/4)` when simplifying an expression parsed with `evaluate=False`. I added a focused regression test at the `sympify` parsing boundary so this behavior stays consistent with `evaluate=True`.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/sympy/core/tests/test_sympify.py b/sympy/core/tests/test_sympify.py\nindex e03b6da..cb2aeb9 100644\n--- a/sympy/core/tests/test_sympify.py\n+++ b/sympy/core/tests/test_sympify.py\n@@ -448,6 +448,11 ",
+      "latency_s": 217.49188709259033,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

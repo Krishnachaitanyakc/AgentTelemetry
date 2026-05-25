@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13925",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3840,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4880,
+      "response_excerpt": "<reasoning>\nThe warning check treated an auto-created multi-table inheritance parent link as if the child model had received a default primary key. That is incorrect: the child\u2019s `pk` is a generated `OneToOneField(parent_link=True)`, and the actual primary key decision belongs to the parent model.\n\nThe fix skips `models.W042` for inherited parent-link primary keys. Regression tests cover explicit inherited primary keys, explicit parent links, and the case where the parent really did use an auto-",
+      "latency_s": 476.6201705932617,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "pallets__flask-4045",
+  "repo": "pallets/flask",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1471,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1024,
+      "response_excerpt": "<reasoning>\nBlueprint constructor names already reject dots, but the `name=` override used during app registration or nested blueprint registration could still introduce dotted blueprint names. Since nested blueprint routing now treats dots as meaningful separators, registration should reject dotted override names before composing the final dotted nested name. I added that validation in `Blueprint.register` and covered both direct and nested registration paths.\n\nVerified with: `uv run --group te",
+      "latency_s": 114.31592297554016,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

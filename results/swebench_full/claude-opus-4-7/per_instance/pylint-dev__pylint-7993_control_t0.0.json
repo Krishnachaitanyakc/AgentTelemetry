@@ -1,0 +1,26 @@
+{
+  "instance_id": "pylint-dev__pylint-7993",
+  "repo": "pylint-dev/pylint",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 486,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2806,
+      "response_excerpt": "Now I have enough understanding. Let me trace through the bug analysis:\n\nThe bug is in `pylint/reporters/text.py` (around line 203 in the buggy version 2.12.2). The original regex `\\{(.+?)(:.*)?\\}` uses `.+?` which matches ANY characters (including spaces, quotes, etc). For the user's template `{{ \"Category\": \"{category}\" }}`:\n- `re.findall(r\"\\{(.+?)(:.*)?\\}\", template)` returns `[('{ \"Category\"', ': \"{category}\" }')]`\n- The first match incorrectly captures `{ \"Category\"` as an argument name\n- `",
+      "latency_s": 502.5427258014679,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

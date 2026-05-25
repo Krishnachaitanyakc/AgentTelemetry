@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13933",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 462,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2001,
+      "response_excerpt": "<reasoning>\nThe fix is complete. The change updates the `ModelChoiceField`'s default error message for `invalid_choice` to include the `%(value)s` placeholder. The `to_python` method already passes the invalid value as a parameter (`params={\"value\": value}` on line 1601), so this change ensures that the value gets properly interpolated into the error message\u2014matching the behavior of `ChoiceField` and `ModelMultipleChoiceField`.\n</reasoning>\n\n<patch>\n--- a/django/forms/models.py\n+++ b/django/form",
+      "latency_s": 133.63412809371948,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

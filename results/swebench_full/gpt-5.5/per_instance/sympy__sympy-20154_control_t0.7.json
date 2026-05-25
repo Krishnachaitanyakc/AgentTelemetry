@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-20154",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1413,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1344,
+      "response_excerpt": "<reasoning>\n`partitions()` in this checkout already yields copied dictionaries, including the `size=True` path. I added regression coverage for the reported failure mode: materializing `list(partitions(4))` must preserve independent dictionaries. I also removed an old workaround in `test_wester.py` that copied each yielded partition manually.\n\nVerified with:\n`python3 -m pytest sympy/utilities/tests/test_iterables.py sympy/utilities/tests/test_wester.py -k 'test_partitions or test_F6'`\n</reasonin",
+      "latency_s": 173.92085123062134,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

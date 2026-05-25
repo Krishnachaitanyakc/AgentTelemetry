@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12184",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1833,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1771,
+      "response_excerpt": "<reasoning>\nThe crash happens when a regex URL has a named optional group that doesn't match, plus a nested unnamed capture. The resolver must decide to ignore positional captures based on whether the regex defines named groups before filtering out `None` values. In this checkout, `RegexPattern.match()` already has that behavior, so the patch adds regression coverage for the reported `module/(?P<format>(html|json|xml))?` pattern.\n\nVerified with: `python3 tests/runtests.py urlpatterns --parallel ",
+      "latency_s": 108.03240084648132,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

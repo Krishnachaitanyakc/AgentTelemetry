@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13321",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1881,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5216,
+      "response_excerpt": "<reasoning>\nThe crash happens because `decode()` falls back to `_legacy_decode()` after `signing.loads()` rejects invalid session data. `_legacy_decode()` tries `base64.b64decode()` before entering its `try`, so malformed base64 raises `binascii.Error` instead of returning an empty session.\n\nThe patch moves legacy base64 decoding into the existing exception handling, logs malformed base64 as a suspicious session, and adds a regression test for invalid legacy base64. I verified it with `tests/run",
+      "latency_s": 219.67875289916992,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

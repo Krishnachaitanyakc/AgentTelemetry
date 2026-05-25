@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13658",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 709,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2062,
+      "response": "The fix adds `prog=self.prog_name` to the `CommandParser(...)` call on line 314 of `django/core/management/__init__.py`. This ensures the parser uses the already-computed `self.prog_name` (derived from the user-supplied `argv`) instead of defaulting to `sys.argv[0]`.\n\n<patch>\n--- a/django/core/management/__init__.py\n+++ b/django/core/management/__init__.py\n@@ -311,7 +311,7 @@ class ManagementUtility:\n         # Preprocess options to extract --settings and --pythonpath.\n         # These options c...[truncated]",
+      "latency_s": 34.20450019836426,
+      "error": null
+    }
+  ]
+}

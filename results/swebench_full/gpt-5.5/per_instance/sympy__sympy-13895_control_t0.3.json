@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13895",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 949,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1337,
+      "response_excerpt": "<reasoning>\nThe bad simplification happens because `simplify()` normalizes subexpressions with `as_numer_denom()`. For a power like `((-3*x - 1)/12)**x`, `Pow.as_numer_denom()` was allowed to split this into `(-3*x - 1)**x/12**x` even though the exponent is not known to be an integer and the numerator is not known nonnegative. That can change branch behavior after substituting a rational value for `x`.\n\nThe patch keeps denominator extraction for integer exponents and for known-safe nonnegative n",
+      "latency_s": 574.2823979854584,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

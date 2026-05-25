@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11422",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1921,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1463,
+      "response_excerpt": "<reasoning>\n1. `StatReloader` watches files yielded by `BaseReloader.watched_files()`, which includes `iter_all_python_module_files()`.\n2. In Django 2.2, `iter_modules_and_files()` skips modules without `__spec__`.\n3. When running `python manage.py runserver`, `manage.py` is loaded as `__main__`, and `__main__.__spec__` can be `None`.\n4. That means `manage.py` is skipped and never watched by `StatReloader`.\n5. The fix is to special-case `__main__` and `__mp_main__`, falling back to `__file__` be",
+      "latency_s": 155.92666387557983,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

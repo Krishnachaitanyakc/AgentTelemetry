@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-7738",
+  "repo": "sphinx-doc/sphinx",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3964,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1868,
+      "response_excerpt": "<reasoning>\nNapoleon was escaping parsed field names before the attributes section decided how to render them. That is correct for parameter-style field lists such as `:ivar arg\\_:`, but wrong when rendering `.. attribute:: arg_`, where the directive argument should remain the raw attribute name. The patch keeps escaping as the default, but lets the attributes parser disable it when it emits `.. attribute::`.\n\nVerified with:\n` .venv/bin/python -m pytest -q tests/test_ext_napoleon/test_ext_napole",
+      "latency_s": 119.7094841003418,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

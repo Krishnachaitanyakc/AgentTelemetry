@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-17139",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1497,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2708,
+      "response_excerpt": "<reasoning>\nThe crash happens in `_TR56`: it tries relational comparisons like `rv.exp < 0` on exponents that may be complex, such as `I`. The narrow fix is to leave powers with non-real exponents unchanged before those comparisons. Regression coverage should check both the helper transform and the public `simplify(cos(x)**I)` path.\n\nThe local checkout already contains this fix and the focused tests pass:\n`python -m pytest sympy/simplify/tests/test_fu.py::test__TR56 sympy/simplify/tests/test_sim",
+      "latency_s": 173.19300985336304,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

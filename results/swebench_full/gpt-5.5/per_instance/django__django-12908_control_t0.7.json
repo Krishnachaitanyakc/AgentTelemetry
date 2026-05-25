@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12908",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1229,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1842,
+      "response_excerpt": "<reasoning>\n`QuerySet.distinct()` already calls `_not_support_combined_queries(\"distinct\")` in this checkout, so combined querysets raise `NotSupportedError` before any `distinct()` state can be applied. The missing coverage was the reported form: `distinct(\"field\")` after `union()`. I added a focused regression test for field-specific `distinct()` across supported combinators.\n\nVerified with:\n`python3 tests/runtests.py queries.test_qs_combinators.QuerySetSetOperationTests.test_distinct_fields_u",
+      "latency_s": 91.64105892181396,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

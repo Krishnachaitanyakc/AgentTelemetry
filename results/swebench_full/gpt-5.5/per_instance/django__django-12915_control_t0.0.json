@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12915",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1814,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1680,
+      "response_excerpt": "<reasoning>\n1. I inspected `django/contrib/staticfiles/handlers.py` and found the failure mode: `ASGIStaticFilesHandler.get_response_async()` delegates to `super().get_response_async()`, so the mixin must provide the async static-file response path before resolution reaches `ASGIHandler.get_response_async()`.\n2. The fix is to add `StaticFilesHandlerMixin.get_response_async()` mirroring the sync `get_response()`, wrapping the blocking static file serving and 404 exception conversion with `sync_to",
+      "latency_s": 70.74252104759216,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

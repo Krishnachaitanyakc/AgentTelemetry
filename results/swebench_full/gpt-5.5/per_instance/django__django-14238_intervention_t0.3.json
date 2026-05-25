@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14238",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1759,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3384,
+      "response_excerpt": "<reasoning>\nThe failing check is `issubclass(pk_class, AutoField)` in `Options._get_default_pk_class()`. `AutoFieldMeta` already treats `BigAutoField` and `SmallAutoField` as virtual `AutoField` subclasses, but its `_subclasses` tuple didn\u2019t include custom subclasses of those two classes. Expanding that tuple with current direct subclasses lets `DEFAULT_AUTO_FIELD` accept custom `BigAutoField` and `SmallAutoField` subclasses.\n\nVerification: `python3 tests/runtests.py model_options.test_default_p",
+      "latency_s": 122.43649101257324,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

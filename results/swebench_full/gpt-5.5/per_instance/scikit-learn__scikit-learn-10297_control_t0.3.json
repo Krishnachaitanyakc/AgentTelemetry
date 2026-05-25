@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-10297",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2363,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2325,
+      "response_excerpt": "<reasoning>\n`RidgeClassifierCV` already delegates fitting through `_BaseRidgeCV`, and `_BaseRidgeCV` already implements `store_cv_values` for `cv=None` plus the incompatibility check for explicit `cv`. The bug is that `RidgeClassifierCV.__init__` did not expose or forward that parameter. The patch adds the parameter, documents it, forwards it to `_BaseRidgeCV`, and adds regression coverage for both storing values and rejecting `cv != None`.\n\nVerification note: I attempted the focused pytest, but",
+      "latency_s": 162.91709995269775,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

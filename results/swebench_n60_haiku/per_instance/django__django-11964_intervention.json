@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11964",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 625,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3178,
+      "response": "Good! Now I have a clear picture. The `IntegerField.to_python()` converts values to integers using `int(value)`, and since `IntegerChoices` subclasses `int`, `int(IntegerChoices.MEMBER)` will return the underlying integer value.\n\nSimilarly, for `CharField.to_python()`, it converts to strings using `str(value)`, which will convert the enum to its string value.\n\nNow let me create the proper patch. The fix should be in the `DeferredAttribute` class to add a `__set__` method:\n\n<patch>\n--- a/django/d...[truncated]",
+      "latency_s": 162.01050400733948,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "astropy__astropy-12907",
+  "repo": "astropy/astropy",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1199,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2073,
+      "response": "Let me just directly compare the files to understand the exact fix needed:\n\n<reasoning>\nBased on my analysis, the issue is in the `_cstack` function in `/private/tmp/astropy51_src/astropy/modeling/separable.py`. \n\nThe bug occurs when handling `CompoundModel` instances in the `_cstack` function (which handles the `&` operator). The original code does:\n\n```python\nif isinstance(left, CompoundModel):\n    cleft = np.zeros((noutp, left.n_inputs))\n    cleft[: left.n_outputs, : left.n_inputs] = _separab...[truncated]",
+      "latency_s": 133.10737109184265,
+      "error": null
+    }
+  ]
+}

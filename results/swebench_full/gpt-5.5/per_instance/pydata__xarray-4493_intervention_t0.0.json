@@ -1,0 +1,26 @@
+{
+  "instance_id": "pydata__xarray-4493",
+  "repo": "pydata/xarray",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2304,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3169,
+      "response_excerpt": "<reasoning>\nThe eager computation happens in `as_variable()` when handling `(dims, data[, attrs])` tuples. If `data` is a `DataArray`, passing the whole `DataArray` into `Variable(...)` can force conversion through array protocols. Extracting `data_.data` preserves the underlying duck array, including dask arrays.\n\nAdded regression coverage for both `Dataset({\"a\": (dims, data_array)})` and `Dataset.update(...)`.\n\nVerification:\n`PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -o addop",
+      "latency_s": 238.3759491443634,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

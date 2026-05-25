@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-21612",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 917,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1473,
+      "response_excerpt": "<reasoning>\nThe bug occurs in `convert_frac` in `sympy/parsing/latex/_parse_latex_antlr.py`.\n\nIn the buggy version (sympy 1.6/1.8), the code unconditionally wraps the result in a `Mul(expr_top, Pow(expr_bot, -1, evaluate=False), evaluate=False)`:\n\n```python\nreturn sympy.Mul(\n    expr_top, sympy.Pow(expr_bot, -1, evaluate=False), evaluate=False)\n```\n\nFor nested fractions like `\\frac{\\frac{a^3+b}{c}}{\\frac{1}{c^2}}`, parsing the inner `\\frac{1}{c^2}` produces `Mul(1, Pow(c**2, -1), evaluate=False)",
+      "latency_s": 331.13522505760193,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

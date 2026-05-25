@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13448",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4161,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5974,
+      "response_excerpt": "<reasoning>\n`TEST[\"MIGRATE\"] = False` disables migrations while creating the test database, but serialization later built a normal `MigrationLoader`, so it treated migrated apps as migrated again and attempted to read tables that may not exist. The fix makes serialization use the same disabled-migrations view as test DB creation. I also added a regression test verifying that serialization temporarily disables migration modules and restores the previous setting.\n\nVerified with:\n`PYTHONPATH=.. pyt",
+      "latency_s": 246.85622310638428,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

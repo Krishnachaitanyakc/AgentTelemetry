@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13496",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2598,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2177,
+      "response_excerpt": "<reasoning>\nIsolationForest inherits warm_start support from BaseBagging, but its public constructor did not expose the parameter. The patch adds warm_start=False to IsolationForest.__init__, forwards it to BaseBagging, documents it with the same wording used by forest estimators, and adds a regression test that fits 5 trees, increases n_estimators to 10, and verifies the resulting warm-start forest matches a fresh 10-tree fit with the same random_state.\n\nVerification: both modified files parse ",
+      "latency_s": 140.5049180984497,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

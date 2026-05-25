@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14999",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1102,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1056,
+      "response_excerpt": "<reasoning>\nThe issue describes that `RenameModel` should be a noop when `db_table` is explicitly defined on the model (so the database table name doesn't actually change). \n\nCurrently, `database_forwards` proceeds to call `schema_editor.alter_db_table`, alter related fields, and rename M2M tables \u2014 even when `old_db_table == new_db_table`. On Postgres this drops/recreates FK constraints; on SQLite it recreates the table.\n\nThe fix is to detect that the database table name didn't actually change ",
+      "latency_s": 205.87419605255127,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

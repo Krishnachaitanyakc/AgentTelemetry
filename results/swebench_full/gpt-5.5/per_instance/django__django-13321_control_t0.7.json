@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13321",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1379,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5216,
+      "response_excerpt": "<reasoning>\nThe crash happens because `_legacy_decode()` calls `base64.b64decode()` before entering its `try` block. Invalid legacy session data such as `\"invalid\"` raises `binascii.Error: Incorrect padding`, bypassing Django\u2019s existing \u201creturn empty session\u201d fallback. Moving the base64 decode inside the existing `try` makes malformed legacy data behave like other corrupted session payloads.\n\nI added a regression test for invalid legacy session data. `python3 -m py_compile` passed for the edited",
+      "latency_s": 138.27599620819092,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

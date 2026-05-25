@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14608",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4090,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1399,
+      "response_excerpt": "<reasoning>\nThe bug is that `BaseFormSet.full_clean()` creates non-form `ErrorList` instances without an `error_class`, unlike `Form.non_field_errors()` which uses `nonfield`. Passing `error_class='nonform'` at both construction points makes default rendering distinguish formset-wide errors. I added assertions for max/min validation and custom `clean()` errors, plus documentation for the rendered class.\n\nVerification: a minimal formset rendering check passed and produced `<ul class=\"errorlist no",
+      "latency_s": 306.1536030769348,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15996",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3324,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1384,
+      "response_excerpt": "<reasoning>\nThe bug is in `EnumSerializer`: it always serializes enum values through `value.name`, but combined `Flag`/`IntFlag` values often have synthetic names such as `\"IGNORECASE|UNICODE\"` or `None`, which are not valid `EnumClass[...]` lookups.\n\nThe fix keeps the existing named-member behavior, then adds a `Flag` path that decomposes the value into concrete members and serializes them as an OR expression. If the flag contains bits that cannot be represented by named members, it falls back ",
+      "latency_s": 103.0536539554596,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

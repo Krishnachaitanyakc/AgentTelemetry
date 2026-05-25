@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15347",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1538,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2207,
+      "response_excerpt": "<reasoning>\nThe bug is in `MessageEncoder.default()`: it decides whether to serialize `extra_tags` using truthiness, so `\"\"` is omitted from the serialized list and the decoder reconstructs the message with the constructor default `extra_tags=None`. The fix is to serialize `extra_tags` whenever it is not `None`, preserving the API distinction between `None` and the default empty string. I added a regression test that round-trips `\"\"`, `None`, and a non-empty tag.\n\nVerified with:\n`python3 tests/r",
+      "latency_s": 137.32242608070374,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

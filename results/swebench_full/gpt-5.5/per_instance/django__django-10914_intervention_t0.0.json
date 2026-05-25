@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-10914",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2879,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1815,
+      "response_excerpt": "<reasoning>\nThe storage implementation already applies `os.chmod()` when `FILE_UPLOAD_PERMISSIONS` is not `None`, so the fix is to make the default explicit and non-`None`. Setting it to `0o644` makes files saved from both in-memory uploads and temporary-file uploads converge on the same permission mode.\n\nIn the checkout I inspected, `FILE_UPLOAD_PERMISSIONS = 0o644` and the docs were already present, so I added regression coverage for both save paths and verified it with:\n\n`python3 ./tests/runt",
+      "latency_s": 143.3189868927002,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

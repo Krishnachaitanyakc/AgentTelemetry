@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13584",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2472,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1192,
+      "response_excerpt": "<reasoning>\nThe bug is in `_changed_params`: with `print_changed_only=True`, it compares each runtime parameter to its constructor default using `v != default`. For NumPy arrays this produces a boolean array, and using that in an `if` raises the reported ambiguous truth-value `ValueError`.\n\nThe patch centralizes parameter equality in `_is_param_equal`, preserving the existing scalar-NaN behavior while using `np.array_equal` when equality produces an ndarray. I added a regression test with an arr",
+      "latency_s": 91.11567211151123,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

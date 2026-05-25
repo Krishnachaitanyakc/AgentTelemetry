@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16527",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2153,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1287,
+      "response_excerpt": "<reasoning>\n`Save as new` creates a new object, so the submit-row context must require both change permission for the source object and add permission for the new object. I patched `show_save_as_new` to include `has_add_permission` and added a regression test for `submit_row()` covering both denied and allowed cases.\n\nVerified with:\n`/private/tmp/django-delete-venv39/bin/python ./tests/runtests.py admin_views.test_templatetags`\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/django/contrib/admin/temp",
+      "latency_s": 172.1673710346222,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

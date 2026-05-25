@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15996",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 838,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1384,
+      "response_excerpt": "<reasoning>\nThe issue describes that when serializing a combination of Enum flags (e.g., `re.UNICODE | re.IGNORECASE`), Django's migration serializer was incorrectly producing `re.RegexFlag[None]` because it relied on the `.name` attribute of the enum value. For a combined Flag value, `.name` is `None` because there's no single member with that combined value.\n\nThe fix is to detect when the enum class is a subclass of `enum.Flag`, and in that case:\n1. Decompose the combined value into its consti",
+      "latency_s": 240.70882892608643,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

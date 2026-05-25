@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-25638",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2992,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2404,
+      "response_excerpt": "<reasoning>\n`unique_labels` fails because `type_of_target` sees pandas nullable `Series` as `object` after `np.asarray`, then classifies it as `unknown`. The patch detects pandas nullable numeric/boolean dtypes before the generic conversion and converts them to their backing NumPy dtype, so `\"Int64\"`, `\"Float64\"`, and `\"boolean\"` follow the same path as regular NumPy numeric dtypes.\n\nVerification: `python3 -m py_compile` passed for the edited files. Targeted runtime tests could not be run becaus",
+      "latency_s": 224.87239384651184,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

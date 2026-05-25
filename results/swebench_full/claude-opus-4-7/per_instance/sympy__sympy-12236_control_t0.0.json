@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-12236",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 411,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2662,
+      "response_excerpt": "<reasoning>\nThe bug occurs in `sympy/polys/partfrac.py` in the `apart()` function. When the polynomial `P` is multivariate (contains both `a` and `t`) and the user has specified `x=t`, the old code calls `f.cancel()` (which performs multivariate cancellation across all variables). This incorrectly cancels parts of the expression that should be preserved when treating `a` as a constant parameter.\n\nThe fix is to call `cancel(f, x, **_options)` instead, which only cancels with respect to the specif",
+      "latency_s": 416.96317076683044,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

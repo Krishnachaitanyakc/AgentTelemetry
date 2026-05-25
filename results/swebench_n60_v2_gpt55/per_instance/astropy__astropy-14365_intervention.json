@@ -1,0 +1,60 @@
+{
+  "instance_id": "astropy__astropy-14365",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": true,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 1914,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "qdp line type parser": 1,
+    "_line_type qdp": 1,
+    "read serr qdp tests": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2352,
+      "response": "<reasoning>The QDP line classifier should treat QDP keywords case-insensitively. Compiling the parser regex with `re.IGNORECASE` fixes lowercase `read serr`, and checking `NO` via `v.upper()` keeps lowercase `no` masked correctly once the parser accepts lowercase data markers. The regression test lowercases non-comment QDP lines and verifies roundtrip behavior still works.</reasoning>\n<patch>\ndiff --git a/astropy/io/ascii/qdp.py b/astropy/io/ascii/qdp.py\n--- a/astropy/io/ascii/qdp.py\n+++ b/astropy/io/ascii/qdp.py\n@@ -68,7 +68,7 @@ def _line_type(line, delimiter=None):\n     _new_re = rf\"NO({sep}NO)+\"\n     _data_re = rf\"({_decimal_re}|NO|[-+]?nan)({sep}({_decimal_re}|NO|[-+]?nan))*)\"\n     _type_re = rf\"^\\s*((?P<command>{_command_re})|(?P<new>{_new_re})|(?P<data>{_data_re})?\\s*(\\!(?P<comment>.*))?\\s*$\"\n-    _line_type_re = re.compile(_type_re)\n+    _line_type_re = re.compile(_type_re, re.IGNORECASE)\n     line = line.strip()\n     if not line:\n         return \"comment\"\n@@ -306,7 +306,7 @@ def _get_tables_from_qdp_file(qdp_file, input_colnames=None, delimiter=None):\n \n             values = []\n             for v in line.split(delimiter):\n-                if v == \"NO\":\n+                if v.upper() == \"NO\":\n                     values.append(np.ma.masked)\n                 else:\n                     # Understand if number is int or float\ndiff --git a/astropy/io/ascii/tests/test_qdp.py b/astropy/io/ascii/tests/test_qdp.py\n--- a/astropy/io/ascii/tests/test_qdp.py\n+++ b/astropy/io/ascii/",
+      "latency_s": 96.80161380767822,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 5528,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"qdp line type parser\"}}</tool_call>",
+      "latency_s": 18.11650800704956,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 5975,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"_line_type qdp\"}}</tool_call>",
+      "latency_s": 11.783720970153809,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 6392,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"READ SERR qdp tests\"}}</tool_call>",
+      "latency_s": 13.832433938980103,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 6834,
+      "response": "<reasoning>QDP parsing classifies command lines with a regex that only accepts uppercase keywords, so lowercase `read serr` is rejected before table parsing. Making the line-type regex case-insensitive matches QDP behavior. Since that also permits lowercase `no` values, masked-value handling should compare `NO` case-insensitively. A regression test covers the reported lowercase command path.</reasoning>\n<patch>\ndiff --git a/astropy/io/ascii/qdp.py b/astropy/io/ascii/qdp.py\n--- a/astropy/io/ascii/qdp.py\n+++ b/astropy/io/ascii/qdp.py\n@@ -68,7 +68,7 @@ def _line_type(line, delimiter=None):\n     _new_re = rf\"NO({sep}NO)+\"\n     _data_re = rf\"({_decimal_re}|NO|[-+]?nan)({sep}({_decimal_re}|NO|[-+]?nan))*)\"\n     _type_re = rf\"^\\s*((?P<command>{_command_re})|(?P<new>{_new_re})|(?P<data>{_data_re})?\\s*(\\!(?P<comment>.*))?\\s*$\"\n-    _line_type_re = re.compile(_type_re)\n+    _line_type_re = re.compile(_type_re, re.IGNORECASE)\n     line = line.strip()\n     if not line:\n         return \"comment\"\n@@ -306,7 +306,7 @@ def _get_tables_from_qdp_file(qdp_file, input_colnames=None, delimiter=None):\n \n             values = []\n             for v in line.split(delimiter):\n-                if v == \"NO\":\n+                if v.upper() == \"NO\":\n                     values.append(np.ma.masked)\n                 else:\n                     # Understand if number is int or float\ndiff --git a/astropy/io/ascii/tests/test_qdp.py b/astropy/io/ascii/tests/test_qdp.py\n--- a/astropy/io/ascii/tests/test_qdp.py\n+++ ",
+      "latency_s": 19.90600085258484,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-17087",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1433,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1929,
+      "response_excerpt": "<reasoning>\nThe migration serializer special-cases bound class methods. For nested classes, using `klass.__name__` drops the containing class (`Profile`) and produces `app.models.Capability.default`. Using `klass.__qualname__` preserves the full importable dotted path (`Profile.Capability`). I added a regression test for a nested `TextChoices` class method and verified the focused migration writer tests pass.\n</reasoning>\n\n<patch>\ndiff --git a/django/db/migrations/serializer.py b/django/db/migra",
+      "latency_s": 112.90567398071289,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

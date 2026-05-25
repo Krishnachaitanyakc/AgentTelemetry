@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-17087",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1785,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1929,
+      "response_excerpt": "<reasoning>\nThe callable serializer has a special branch for bound class methods. It currently serializes the owning class with `klass.__name__`, which drops outer class names for nested classes. For `Profile.Capability.default`, that produces `app.models.Capability.default` instead of `app.models.Profile.Capability.default`.\n\nUsing `klass.__qualname__` preserves the full dotted nested class path, matching the existing handling for nested classes and enums. I added a regression test for a classm",
+      "latency_s": 127.50084090232849,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

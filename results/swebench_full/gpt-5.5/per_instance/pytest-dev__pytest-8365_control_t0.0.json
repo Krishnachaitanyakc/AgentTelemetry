@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-8365",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1931,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2671,
+      "response_excerpt": "<reasoning>\nThe failure happens before pytest can create its numbered base temp directory: `getpass.getuser()` is interpolated directly into `pytest-of-{user}`. On Windows, a username such as `contoso\\john_doe` is interpreted as a nested path, so `mkdir(exist_ok=True)` fails because the intermediate `pytest-of-contoso` directory does not exist. Other platform-invalid characters can fail similarly.\n\nThe patch keeps the existing user-specific directory when it works, but catches `OSError` from cre",
+      "latency_s": 85.44523119926453,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

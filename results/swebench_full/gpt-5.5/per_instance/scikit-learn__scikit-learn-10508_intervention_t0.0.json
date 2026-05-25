@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-10508",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1553,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2452,
+      "response_excerpt": "<reasoning>\nThe bug comes from `column_or_1d([])` producing an empty `float64` array. For string-fitted `LabelEncoder`, `np.searchsorted(self.classes_, y)` then attempts an unsafe cast from `float64` to string dtype. The fix is to return an empty integer index array immediately after fitted validation and shape normalization. This preserves the unfitted error behavior because `check_is_fitted` still runs first.\n\nI added regression coverage for both numeric and string classes, including dtype che",
+      "latency_s": 106.8570499420166,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

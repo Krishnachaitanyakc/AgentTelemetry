@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16229",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2408,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2053,
+      "response_excerpt": "<reasoning>\nThe bug is in `BoundField.as_widget(only_initial=True)`. If a bound form doesn\u2019t include the hidden initial input, Django falls back to `self.value()`. On bound forms, `self.value()` uses submitted data, so an invalid inline can re-render with the user\u2019s entered value as the hidden initial. On the next submit, the extra form appears unchanged and validation can be skipped.\n\nThe fix is to render the field\u2019s prepared initial value when rendering a hidden initial input and no hidden ini",
+      "latency_s": 269.8266770839691,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

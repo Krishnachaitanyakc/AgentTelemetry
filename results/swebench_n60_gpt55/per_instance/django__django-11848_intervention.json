@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11848",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2971,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1451,
+      "response": "<reasoning>\nUpdated `parse_http_date()` to compute two-digit years relative to the current UTC year, per RFC 7231, instead of using the fixed `70` cutoff. Added regression tests for the 50-year boundary and a future century case.\n\nVerification:\n- `python3 -m py_compile django/utils/http.py tests/utils_tests/test_http.py` passed.\n- Focused import-level assertions passed.\n- Full Django 2.2 test runner could not start on this Python because stdlib `cgi` is missing.\n</reasoning>\n\n<patch>\ndiff --git ...[truncated]",
+      "latency_s": 222.06853103637695,
+      "error": null
+    }
+  ]
+}

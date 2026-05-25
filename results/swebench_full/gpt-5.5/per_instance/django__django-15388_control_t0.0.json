@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15388",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2498,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1593,
+      "response_excerpt": "<reasoning>\nThe template autoreloader treats any non-`.py` file under a template directory as a template change and suppresses a full server reload. When `BASE_DIR` is added to `TEMPLATES[0][\"DIRS\"]`, IDE safe-save temp files such as `settings.py.tmp`, `settings.py.swp`, or `settings.py___jb_tmp___` are under that template directory but don\u2019t have a plain `.py` suffix, so they can be swallowed as template changes instead of triggering the dev server restart.\n\nThe patch recognizes Python source t",
+      "latency_s": 366.35933899879456,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

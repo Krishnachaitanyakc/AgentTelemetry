@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13230",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 600,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1136,
+      "response_excerpt": "<reasoning>\nI inspected `django/contrib/syndication/views.py`, `django/utils/feedgenerator.py`, and the syndication tests. This checkout already contains the requested fix: `Feed.get_feed()` passes `item_comments` directly as `comments=` to `feed.add_item()`, and the RSS2 tests assert that `<comments>` is emitted. I verified with `/private/tmp/django-test-venv/bin/python tests/runtests.py syndication_tests`; all 35 tests pass.\n</reasoning>\n\n<patch>\nNo patch is needed for this checkout; the issue",
+      "latency_s": 430.0409059524536,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

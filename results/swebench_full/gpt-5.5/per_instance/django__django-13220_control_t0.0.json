@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13220",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3238,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1406,
+      "response_excerpt": "<reasoning>\nI found that `ValidationError` equality in the checked-out Django source was implemented by comparing hashes. That gives the intended order-insensitive behavior, but it is logically incorrect because distinct errors with colliding hashes compare equal. I changed equality to compare a normalized structural representation instead, preserving order-insensitive comparison for field errors and non-field error lists while keeping `__hash__` aligned with the same representation. I added a r",
+      "latency_s": 191.80140280723572,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

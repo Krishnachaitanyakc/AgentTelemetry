@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-10949",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1639,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2284,
+      "response_excerpt": "I have enough understanding now. Let me produce the final patch.\n\n<reasoning>\nThe bug is in `sklearn/utils/validation.py` in the `check_array` function. When the input is a pandas DataFrame, the check at the start of the function does:\n\n```python\ndtype_orig = getattr(array, \"dtype\", None)\n```\n\nPandas DataFrames don't have a `.dtype` attribute (only `.dtypes` \u2014 plural \u2014 which is a Series of per-column dtypes). So `dtype_orig` becomes `None`, and the subsequent `warn_on_dtype` check at the end of ",
+      "latency_s": 435.6085970401764,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

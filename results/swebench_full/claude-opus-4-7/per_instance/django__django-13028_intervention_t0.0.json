@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13028",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 593,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3633,
+      "response_excerpt": "<reasoning>\nThe bug in Django 3.0.7 is in `check_filterable()` in `django/db/models/sql/query.py`. The original buggy code was:\n\n```python\ndef check_filterable(self, expression):\n    \"\"\"Raise an error if expression cannot be used in a WHERE clause.\"\"\"\n    if not getattr(expression, 'filterable', True):\n        raise NotSupportedError(\n            expression.__class__.__name__ + ' is disallowed in the filter '\n            'clause.'\n        )\n```\n\nWhen a model instance has a field named `filterabl",
+      "latency_s": 232.16475677490234,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

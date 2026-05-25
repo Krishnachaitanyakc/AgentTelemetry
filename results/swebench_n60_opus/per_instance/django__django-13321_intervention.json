@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13321",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 597,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5247,
+      "response": "That's different - the messages cookie one doesn't use base64. \n\nOK, I think I understand now. The issue says \"Repository: django/django\" and the fix needs to be applied to the `decode` and `_legacy_decode` methods. Since `django_old` is the Django 3.1 transitional version, and the code there already has the try/except fix, this means one of two things:\n\n1. The `django_old` represents the already-fixed code, or  \n2. The fix needs to go elsewhere\n\nLet me look at the `decode` method in `django_old...[truncated]",
+      "latency_s": 232.65145802497864,
+      "error": null
+    }
+  ]
+}

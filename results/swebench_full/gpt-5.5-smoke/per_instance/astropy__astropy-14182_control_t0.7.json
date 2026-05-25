@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-14182",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1715,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2667,
+      "response_excerpt": "<reasoning>\nThe RST writer subclasses `FixedWidth`, whose constructor already supports `header_rows`. The failure happens because `RST.__init__` does not accept or forward that keyword. After forwarding it, `RST.write()` also has to pick the separator line after all header rows, not always `lines[1]`, because `FixedWidthData.write()` emits all requested header rows before the position/separator row.\n\nI could not run the full pytest target because `pytest` is not installed for the available Pytho",
+      "latency_s": 72.45859503746033,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

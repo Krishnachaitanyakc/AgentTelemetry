@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-11133",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1702,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1720,
+      "response": "<reasoning>\n`memoryview` is bytes-like, but `HttpResponse.content` treated it as a generic iterable and `make_bytes()` stringified it when reached directly. The fix is to route `memoryview` through the same conversion path as `bytes` and exclude it from iterator consumption. I added a regression test for `HttpResponse(memoryview(...))`.\n\nVerification: `git diff --check` and `py_compile` passed. The full `httpwrappers` test runner could not run in this environment because this old Django checkout...[truncated]",
+      "latency_s": 153.0952320098877,
+      "error": null
+    }
+  ]
+}

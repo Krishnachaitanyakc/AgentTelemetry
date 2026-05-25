@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13895",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1080,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1337,
+      "response_excerpt": "<reasoning>\nThe unsafe rewrite happens in `Pow.as_numer_denom()` during `simplify()`'s `normal()` pass. It splits `((-3*x - 1)/12)**x` into `(-3*x - 1)**x/12**x` even though the numerator has unknown sign and the exponent is symbolic, which can change branch behavior after substitution.\n\nThe patch keeps existing rational/integer exponent behavior, but prevents denominator extraction for non-rational symbolic exponents when the numerator sign is unknown. Added a regression test that the reported ",
+      "latency_s": 312.89047408103943,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

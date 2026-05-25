@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15213",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1276,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1533,
+      "response_excerpt": "<reasoning>\n`~Q(pk__in=[])` compiles to `FullResultSet`. `ExpressionWrapper.as_sql()` delegated directly to the wrapped expression, so that sentinel could escape instead of becoming a concrete boolean expression. The fix makes `ExpressionWrapper` compile `FullResultSet` as `Value(True)`, matching the SELECT-list behavior for always-true predicates.\n\nVerified with:\n`/private/tmp/django-test-venv/bin/python tests/runtests.py annotations.tests.NonAggregateAnnotationTestCase.test_empty_expression_an",
+      "latency_s": 185.15555572509766,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

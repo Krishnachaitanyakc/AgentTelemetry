@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-17139",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 954,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2708,
+      "response_excerpt": "<reasoning>\nThe crash happens in `_TR56`, shared by `TR5` and `TR6`. It compares `rv.exp < 0` and `rv.exp > max`, but those comparisons are invalid for non-real exponents like `I`. The transformation only makes sense for real ordered exponents, so the helper should leave non-real or unknown-realness exponents unchanged before doing ordered comparisons. I added a direct regression test through `simplify(cos(x)**I)`, matching the reported failure path.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/sy",
+      "latency_s": 157.22773909568787,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

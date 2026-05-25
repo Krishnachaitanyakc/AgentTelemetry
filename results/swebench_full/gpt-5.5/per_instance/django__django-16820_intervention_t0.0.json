@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16820",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3046,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1182,
+      "response_excerpt": "<reasoning>\nThe squashed migration shape is `CreateModel(options={\"index_together\": ...})` followed by `RenameIndex(old_fields=...)`. The optimizer didn\u2019t fold that rename into the model creation, so the squashed migration kept deprecated `index_together`. This patch converts the matching `index_together` tuple into a named `Index` during `CreateModel.reduce()` and adds a regression test.\n\nVerified with:\n`python3 tests/runtests.py migrations.test_optimizer`\n</reasoning>\n\n<patch>\ndiff --git a/dja",
+      "latency_s": 219.71804809570312,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

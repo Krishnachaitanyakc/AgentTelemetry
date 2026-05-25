@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13315",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3449,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1079,
+      "response_excerpt": "<reasoning>\n1. `limit_choices_to` was applied with `queryset.complex_filter()`.\n2. When the filter traverses a join, one target object can appear once per matching joined row.\n3. Wrapping the condition in a correlated `Exists` subquery preserves filtering semantics while returning each target row only once.\n4. Added a regression test where one `Writer` has two matching `Article` rows and appears only once in the generated form choices.\n5. Verified with: `/private/tmp/django_w042_py39_venv/bin/py",
+      "latency_s": 204.42828798294067,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "psf__requests-1963",
+  "repo": "psf/requests",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1537,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1466,
+      "response_excerpt": "<reasoning>\n1. `resolve_redirects` builds each next request by copying `req`.\n2. After a `303`, `rebuild_method()` correctly mutates that copied request from `POST` to `GET`.\n3. The bug is that the next loop can still use the original `req`, so a later `307/308` preserves the original `POST` instead of the redirected `GET`.\n4. The fix is to make the newly prepared request become the base request for the next redirect iteration.\n5. Add a regression test for `POST -> 303 -> GET -> 307`, asserting ",
+      "latency_s": 160.07123613357544,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11964",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1960,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3147,
+      "response_excerpt": "<reasoning>\nThe issue is caused by enum choice members stringifying as the enum member name instead of the underlying value on freshly assigned model instances. Database-loaded instances already contain the primitive DB value, so making `Choices.__str__()` explicitly return `str(self.value)` aligns fresh and retrieved behavior. I added regression coverage for both `TextChoices` on `CharField` and `IntegerChoices` on `IntegerField`.\n\nVerified with:\n`python3 tests/runtests.py --parallel=1 model_en",
+      "latency_s": 233.95405173301697,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

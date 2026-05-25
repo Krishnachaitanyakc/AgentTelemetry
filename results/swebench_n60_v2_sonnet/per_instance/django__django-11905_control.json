@@ -1,0 +1,77 @@
+{
+  "instance_id": "django__django-11905",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 8,
+  "proposed_patch": false,
+  "patch_len": 0,
+  "total_searches": 0,
+  "unique_queries": 0,
+  "max_query_repeats": 0,
+  "patch_suppressions": 8,
+  "intervention_triggers": 0,
+  "query_counts": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1420,
+      "response": "<reasoning>\nThe issue requests that `__isnull` lookup validation for non-boolean values happen **early** (at filter-construction time), not deferred to SQL compilation time. \n\nCurrently, the validation is in `as_sql()`, meaning the `ValueError` is only raised when the queryset is actually evaluated (e.g., `.exists()`, `.all()`). The test confirms this by wrapping `qs.exists()` in `assertRaisesMessage`, not the `filter()` call itself.\n\nThe fix is to:\n1. Add `get_prep_lookup()` to `IsNull` which validates `rhs` is a `bool`. This method is called from `Lookup.__init__()`, so the error fires immediately when the filter is constructed.\n2. Remove the now-redundant `isinstance` check from `as_sql()`.\n3. Update the test to wrap the `filter()` call (not `qs.exists()`) with the expected error.\n</reasoning>\n\n<patch>\n--- a/django/db/models/lookups.py\n+++ b/django/db/models/lookups.py\n@@ -460,13 +460,17 @@ class IsNull(BuiltinLookup):\n     lookup_name = 'isnull'\n     prepare_rhs = False\n \n+    def get_prep_lookup(self):\n+        if not isinstance(self.rhs, bool):\n+            raise ValueError(\n+                'The QuerySet value for an isnull lookup must be True or '\n+                'False.'\n+            )\n+        return super().get_prep_lookup()\n+\n     def as_sql(self, compiler, connection):\n-        if not isinstance(self.rhs, bool):\n-            raise ValueError(\n-                'The QuerySet value for an isnull lookup must be True or '\n-                'False.'\n-            )\n    ",
+      "latency_s": 123.86750102043152,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 4189,
+      "response": "I now have enough information to propose a patch. The fix is to move the boolean validation into `get_prep_lookup()` (called from `Lookup.__init__`), so the error fires at `filter()` time rather than query-execution time, and update the test accordingly.\n\n<reasoning>\n`Lookup.__init__` calls `self.get_prep_lookup()` immediately, so overriding that method in `IsNull` will raise the `ValueError` the moment `.filter(alias__isnull=1)` is called rather than waiting until `.exists()` evaluates the queryset. The `as_sql` check becomes redundant and should be removed. The test must be updated to assert the error is raised on `.filter()` instead of `.exists()`.\n</reasoning>\n\n<patch>\n--- a/django/db/models/lookups.py\n+++ b/django/db/models/lookups.py\n@@ -460,13 +460,17 @@ class IsNull(BuiltinLookup):\n     lookup_name = 'isnull'\n     prepare_rhs = False\n \n+    def get_prep_lookup(self):\n+        if not isinstance(self.rhs, bool):\n+            raise ValueError(\n+                'The QuerySet value for an isnull lookup must be True or '\n+                'False.'\n+            )\n+        return super().get_prep_lookup()\n+\n     def as_sql(self, compiler, connection):\n-        if not isinstance(self.rhs, bool):\n-            raise ValueError(\n-                'The QuerySet value for an isnull lookup must be True or '\n-                'False.'\n-            )\n         sql, params = compiler.compile(self.lhs)\n         if self.rhs:\n             return \"%s IS NULL\" % sql, params\n         else:\n     ",
+      "latency_s": 85.34644198417664,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 6823,
+      "response": "Both changes are correct. Here's a summary of what was done:\n\n**`django/db/models/lookups.py`** \u2014 Added `get_prep_lookup()` to `IsNull` that validates `rhs` is a `bool`. Since `Lookup.__init__` (line 22) immediately calls `self.rhs = self.get_prep_lookup()`, the `ValueError` now fires at `.filter()` construction time rather than being deferred until query evaluation (`.exists()`, `.all()`, etc.). The redundant check in `as_sql()` was removed.\n\n**`tests/lookup/tests.py`** \u2014 Restructured the test so that the `.filter(**kwargs)` call itself is inside `assertRaisesMessage`, since the error now fires on filter construction, not on queryset evaluation.\n\n<reasoning>\n`Lookup.__init__` calls `self.rhs = self.get_prep_lookup()` immediately, so overriding `get_prep_lookup()` in `IsNull` makes the boolean check happen the moment `filter(alias__isnull=1)` is evaluated \u2014 not deferred to SQL compilation time. This is consistent with the issue request to raise early and avoid confusion. The `as_sql()` check becomes dead code once `get_prep_lookup()` guards it, so it's removed. The test must wrap `.filter()` (not `.exists()`) in the error assertion, since the error fires earlier now.\n</reasoning>\n\n<patch>\n--- a/django/db/models/lookups.py\n+++ b/django/db/models/lookups.py\n@@ -474,11 +474,17 @@ class IsNull(BuiltinLookup):\n     lookup_name = 'isnull'\n     prepare_rhs = False\n \n+    def get_prep_lookup(self):\n+        if not isinstance(self.rhs, bool):\n+            raise ValueError(\n+          ",
+      "latency_s": 100.60606718063354,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 10105,
+      "response": "I have enough information. Let me now propose the patch.\n\n<reasoning>\nThe `IsNull.as_sql` method currently validates the `rhs` is a `bool` only when the SQL query is compiled (i.e., when the queryset is evaluated). Since `Lookup.__init__` (line 22) immediately calls `self.rhs = self.get_prep_lookup()`, overriding `get_prep_lookup()` in `IsNull` moves validation to `.filter()` construction time \u2014 raising the `ValueError` earlier and preventing any confusion. The test must then assert the error on `.filter()` instead of on `.exists()`.\n</reasoning>\n\n<patch>\n--- a/django/db/models/lookups.py\n+++ b/django/db/models/lookups.py\n@@ -461,11 +461,17 @@ class IsNull(BuiltinLookup):\n     lookup_name = 'isnull'\n     prepare_rhs = False\n \n+    def get_prep_lookup(self):\n+        if not isinstance(self.rhs, bool):\n+            raise ValueError(\n+                'The QuerySet value for an isnull lookup must be True or '\n+                'False.'\n+            )\n+        return super().get_prep_lookup()\n+\n     def as_sql(self, compiler, connection):\n-        if not isinstance(self.rhs, bool):\n-            raise ValueError(\n-                'The QuerySet value for an isnull lookup must be True or '\n-                'False.'\n-            )\n         sql, params = compiler.compile(self.lhs)\n         if self.rhs:\n             return \"%s IS NULL\" % sql, params\n         else:\n             return \"%s IS NOT NULL\" % sql, params\n--- a/tests/lookup/tests.py\n+++ b/tests/lookup/tests.py\n@@ -973,10 +973,10",
+      "latency_s": 62.26301908493042,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 12554,
+      "response": "Now I have all the information I need to write the patch.\n\n**Summary of findings:**\n- `Lookup.__init__` (line 35) calls `self.rhs = self.get_prep_lookup()` immediately on construction, before any SQL is compiled.\n- `IsNull.as_sql()` currently validates `rhs` is a bool \u2014 but `as_sql` only runs at query evaluation time (e.g., `.exists()`), not at `.filter()` construction time.\n- The fix: add `get_prep_lookup()` to `IsNull` that validates the bool, then remove the redundant check from `as_sql()`.\n- The test must be updated to assert the error fires on `.filter()`, not `.exists()`.\n\n<reasoning>\n`Lookup.__init__` at line 35 immediately calls `self.rhs = self.get_prep_lookup()`, so overriding `get_prep_lookup()` in `IsNull` makes the ValueError fire the moment `.filter(alias__isnull=1)` is evaluated \u2014 not deferred to SQL compilation. This is the earliest possible point, prevents confusion from silently accepting non-boolean values, and is consistent with how other lookups (e.g., `Exact`, `In`) use `get_prep_lookup()` for validation.\n\nThe test list currently constructs all 4 querysets before the loop runs \u2014 after the fix, those 4 constructions would all raise at list-build time. We must restructure so each `.filter()` is inside its own `assertRaisesMessage` context.\n</reasoning>\n\n<patch>\n--- a/django/db/models/lookups.py\n+++ b/django/db/models/lookups.py\n@@ -658,13 +658,17 @@ class IsNull(BuiltinLookup):\n     lookup_name = \"isnull\"\n     prepare_rhs = False\n \n+    def get_prep_lookup",
+      "latency_s": 82.23763084411621,
+      "error": null
+    },
+    {
+      "iteration": 6,
+      "prompt_len": 15896,
+      "response": "Good, `rhs_is_direct_value()` exists. Now I have all the information needed to propose the patch. The fix:\n\n1. In `django/db/models/lookups.py`: Add `get_prep_lookup()` to `IsNull` that validates `rhs` is a bool at filter-construction time (since `Lookup.__init__` calls `self.rhs = self.get_prep_lookup()` immediately). Remove the redundant check from `as_sql()`.\n2. In `tests/lookup/tests.py`: Add `test_isnull_non_boolean_value` asserting the error fires on `.filter()`, not `.exists()`.\n\n<reasoning>\n- `Lookup.__init__` (line 20 of `django_issue/django/db/models/lookups.py`) immediately calls `self.rhs = self.get_prep_lookup()`, so overriding `get_prep_lookup()` in `IsNull` makes the ValueError fire the moment `.filter(alias__isnull=1)` is called \u2014 not deferred to SQL compilation.\n- The existing bool check in `as_sql()` only fires when the queryset is evaluated (e.g., `.exists()`), which is too late and surprising.\n- The `rhs_is_direct_value()` guard in `get_prep_lookup()` ensures we don't validate subqueries or expressions passed as `rhs` (they don't need to be booleans yet).\n- `can_use_none_as_rhs` guard allows `None` to pass through for advanced use cases.\n- The test uses `manager.filter(**{lookup: 1})` inside `assertRaisesMessage` since the error now fires at construction time.\n</reasoning>\n\n<patch>\n--- a/django/db/models/lookups.py\n+++ b/django/db/models/lookups.py\n@@ -447,13 +447,22 @@ class IsNull(BuiltinLookup):\n     lookup_name = 'isnull'\n     prepare_rhs = False\n \n+  ",
+      "latency_s": 268.03942680358887,
+      "error": null
+    },
+    {
+      "iteration": 7,
+      "prompt_len": 19437,
+      "response": "Now I have all the information needed. The issue is clear:\n\n- `IsNull.as_sql()` currently validates `rhs` is a bool, but `as_sql()` only runs at query-evaluation time (e.g., `.exists()`), not at `.filter()` construction time\n- `Lookup.__init__` (line 20) immediately calls `self.rhs = self.get_prep_lookup()`, so overriding `get_prep_lookup()` in `IsNull` moves validation to `.filter()` construction time\n\n<reasoning>\nThe fix is to:\n1. Extract the bool check into a `_check_rhs_is_bool()` helper in `IsNull`\n2. Add `get_prep_lookup()` to `IsNull` that calls this helper (with guards for `None` and non-direct RHS values like subqueries), so the error fires at `.filter()` construction time via `Lookup.__init__` calling `self.rhs = self.get_prep_lookup()`\n3. Update `as_sql()` to use the same helper (for extra safety)\n\nThe `rhs_is_direct_value()` guard is needed so subqueries/expressions aren't wrongly rejected. The `can_use_none_as_rhs` guard handles the `None` edge case.\n</reasoning>\n\n<patch>\n--- a/django/db/models/lookups.py\n+++ b/django/db/models/lookups.py\n@@ -447,12 +447,25 @@ class IsNull(BuiltinLookup):\n     lookup_name = 'isnull'\n     prepare_rhs = False\n \n+    def _check_rhs_is_bool(self):\n+        if not isinstance(self.rhs, bool):\n+            raise ValueError(\n+                'The QuerySet value for an isnull lookup must be True or '\n+                'False.'\n+            )\n+\n+    def get_prep_lookup(self):\n+        if self.rhs is None and self.can_use_none_as_rhs:\n+     ",
+      "latency_s": 157.36496901512146,
+      "error": null
+    },
+    {
+      "iteration": 8,
+      "prompt_len": 21819,
+      "response": "Now I have all the information needed. Let me generate the final patch.\n\n<reasoning>\nThe issue requests that `__isnull` lookup with non-boolean values raises a ValueError **eagerly** (at `.filter()` construction time), not deferred to SQL compilation time. \n\nIn the clean version (`django_30_clean_019e`):\n- `IsNull.as_sql()` contains the bool check, which only runs when the queryset is evaluated (e.g., `.exists()`)\n- The test wraps `qs.exists()` inside `assertRaisesMessage`\n\nThe fix (as shown in `django_issue_31377`):\n1. Move the boolean check from `as_sql()` into a new `get_prep_lookup()` method on `IsNull`. Since `Lookup.__init__` (line 22) immediately calls `self.rhs = self.get_prep_lookup()`, this makes the check fire at `.filter()` construction time.\n2. Remove the now-redundant bool check from `as_sql()`.\n3. Update the test to assert the error fires when calling `.filter()`, not `.exists()`. The test also adds more diverse model cases (Article, Season, Freebie) for better coverage.\n</reasoning>\n\n<patch>\n--- a/django/db/models/lookups.py\n+++ b/django/db/models/lookups.py\n@@ -458,15 +458,17 @@ class IsNull(BuiltinLookup):\n     lookup_name = 'isnull'\n     prepare_rhs = False\n \n+    def get_prep_lookup(self):\n+        if not isinstance(self.rhs, bool):\n+            raise ValueError(\n+                'The QuerySet value for an isnull lookup must be True or '\n+                'False.'\n+            )\n+        return super().get_prep_lookup()\n+\n     def as_sql(self, compiler, con",
+      "latency_s": 71.23277616500854,
+      "error": null
+    }
+  ]
+}

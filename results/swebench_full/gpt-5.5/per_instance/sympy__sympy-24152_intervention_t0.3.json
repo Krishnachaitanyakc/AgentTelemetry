@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-24152",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1565,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3126,
+      "response_excerpt": "<reasoning>\n1. `TensorProduct.__new__` can return `Mul(scalar, TensorProduct(...))` when a tensor factor has a commutative scalar coefficient.\n2. `_eval_expand_tensorproduct` only recursed when the temporary value was directly a `TensorProduct`, so scalar-prefixed tensor products stopped after one factor expansion.\n3. The fix separates commutative and noncommutative parts with `args_cnc()`, recursively expands the single noncommutative `TensorProduct` part when present, then rebuilds the term wi",
+      "latency_s": 184.4688959121704,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

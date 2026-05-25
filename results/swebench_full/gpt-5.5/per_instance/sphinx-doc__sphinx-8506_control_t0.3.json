@@ -1,0 +1,26 @@
+{
+  "instance_id": "sphinx-doc__sphinx-8506",
+  "repo": "sphinx-doc/sphinx",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2964,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1979,
+      "response_excerpt": "<reasoning>\n1. The warning comes from `Cmdoption.handle_signature()`, which skips option descriptions that do not match `option_desc_re`.\n2. `[enable=]PATTERN` starts with `[`, so Sphinx split it into an option name and argument instead of preserving it as the documented option spelling.\n3. The fix keeps existing parsing for normal command-line options, but falls back to accepting the whole string as the option name when the strict parser does not apply.\n4. I added/updated coverage for `[enable=",
+      "latency_s": 98.60519075393677,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

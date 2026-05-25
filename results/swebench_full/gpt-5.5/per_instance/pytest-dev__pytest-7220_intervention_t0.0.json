@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-7220",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4114,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3439,
+      "response_excerpt": "<reasoning>\n1. The failure path was formatted relative to `Path.cwd()` inside `FormattedExcinfo._makepath`.\n2. A fixture can change cwd before pytest renders the traceback, producing paths like `../test_path_error.py`.\n3. I added an explicit `path_relative_to` base for traceback formatting.\n4. `Node._repr_failure_py` now passes `config.invocation_params.dir`, preserving paths relative to the original invocation directory.\n5. The regression test now expects `test_*.py` and rejects `../test_*.py`.",
+      "latency_s": 284.20333075523376,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

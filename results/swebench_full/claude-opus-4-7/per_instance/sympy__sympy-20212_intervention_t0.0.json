@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-20212",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 422,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1258,
+      "response_excerpt": "Based on my exploration, I've identified the bug and the correct fix. The issue is in `Zero._eval_power` in `sympy/core/numbers.py`. The buggy version uses `is_positive`/`is_negative` which return `False` for `-oo` (since `-oo` is not a finite negative number). The fix is to use `is_extended_positive`/`is_extended_negative`, which correctly return `True` for `-oo`.\n\n<reasoning>\nThe bug: For `0**-oo`, the `Zero._eval_power(expt=-oo)` method checks `expt.is_negative`. Since `-oo` is an infinity (n",
+      "latency_s": 797.6555998325348,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

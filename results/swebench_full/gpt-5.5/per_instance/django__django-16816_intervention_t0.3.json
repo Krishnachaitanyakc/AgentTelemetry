@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-16816",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1790,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5745,
+      "response_excerpt": "<reasoning>\n`list_display` validation used `model._meta.get_field()`, which can resolve reverse query names like `song`/`choice` even though admin rendering later rejects them through `_get_non_gfk_field()`. The fix is to make the check use the same resolver as `label_for_field()`, while preserving valid `<foreign_key>_id` list display entries.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/django/contrib/admin/checks.py b/django/contrib/admin/checks.py\n--- a/django/contrib/admin/checks.py\n+++ b/dja",
+      "latency_s": 201.18361592292786,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

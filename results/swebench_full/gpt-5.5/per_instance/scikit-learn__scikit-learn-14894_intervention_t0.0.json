@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-14894",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2041,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2522,
+      "response_excerpt": "<reasoning>\nThe sparse SVM fit path builds `dual_coef_indptr` using `dual_coef_indices.size / n_class`. When `support_vectors_` is empty, `n_SV == 0`, so the step becomes zero and raises `ZeroDivisionError`. The fix is to create an all-zero CSR `indptr` of length `n_class + 1` for the empty-support case, which represents an empty sparse coefficient matrix with the expected shape. I also add a regression test using the issue reproducer and compare sparse SVR output against dense SVR.\n\nI could not",
+      "latency_s": 118.88560318946838,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

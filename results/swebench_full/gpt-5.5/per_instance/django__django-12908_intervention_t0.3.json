@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12908",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 984,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1842,
+      "response_excerpt": "<reasoning>\n`QuerySet.distinct()` was missing the same combined-query guard used by other unsupported post-combinator operations. Adding `_not_support_combined_queries('distinct')` makes `qs1.union(qs2).distinct()` and `distinct('field')` fail consistently instead of silently producing ineffective SQL. I also added `distinct` to the existing combinator unsupported-operation test matrix.\n\nVerified with:\n`/private/tmp/django_w042_py39_venv/bin/python tests/runtests.py queries.test_qs_combinators.Q",
+      "latency_s": 190.80140209197998,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

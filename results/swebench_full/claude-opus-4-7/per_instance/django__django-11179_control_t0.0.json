@@ -1,0 +1,35 @@
+{
+  "instance_id": "django__django-11179",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 2,
+  "proposed_patch": true,
+  "answer_len": 1470,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1077,
+      "response_excerpt": "The patch has been proposed. The fix adds `setattr(instance, model._meta.pk.attname, None)` to the fast-delete path in `Collector.delete()` so that single-object deletes without dependencies properly clear the instance's primary key, matching the behavior of the regular delete path.",
+      "latency_s": 548.083952665329,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 1396,
+      "response_excerpt": "<reasoning>\nThe issue is in `django/db/models/deletion.py` in the `Collector.delete()` method. When deleting a model instance that has no dependencies, the fast-delete path doesn't clear the PK on the instance after deletion. The regular delete path does this at the end via `setattr(instance, model._meta.pk.attname, None)`, but the fast-delete optimization bypasses this.\n\nThe fix is to add an explicit optimization branch for the single-object-no-dependencies case that performs the fast delete AN",
+      "latency_s": 47.96558618545532,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

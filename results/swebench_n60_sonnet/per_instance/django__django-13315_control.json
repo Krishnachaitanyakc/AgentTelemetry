@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13315",
+  "repo": "django/django",
+  "model": "claude-sonnet-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 500,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1110,
+      "response": "Now I have the full picture:\n- **Django 2.2.1** (`django_issue`): had `.distinct()` \u2014 working correctly\n- **Django 3.1** (`django_old`): `.distinct()` was removed \u2014 **the bug**\n- **Django 4.2.30** (`django_src`): uses `Exists()` subquery approach \u2014 alternative fix\n\nThe bug is in `django/forms/models.py` where `apply_limit_choices_to_to_formfield` applies a `complex_filter()` without `.distinct()`, causing duplicates when the Q object involves a join.\n\n<reasoning>\nThe issue is clear:\n\n**Root caus...[truncated]",
+      "latency_s": 252.9833300113678,
+      "error": null
+    }
+  ]
+}

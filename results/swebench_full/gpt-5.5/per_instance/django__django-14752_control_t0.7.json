@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14752",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3288,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3641,
+      "response_excerpt": "<reasoning>\n1. Located `AutocompleteJsonView` and confirmed the issue is best solved by extracting result serialization from `get()`.\n2. Kept the default JSON payload unchanged: `id` from `to_field_name`, `text` from `str(obj)`.\n3. Added `serialize_result()` as the override point so subclasses can append extra fields without replacing `get()`.\n4. Added a focused admin autocomplete test proving a subclass can add an extra `posted` field.\n5. Verified with `python3 tests/runtests.py admin_views.tes",
+      "latency_s": 102.75087523460388,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

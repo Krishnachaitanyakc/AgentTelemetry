@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13480",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1213,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1222,
+      "response_excerpt": "<reasoning>\nThe crash is caused by a typo in `coth.eval`: the periodic-addition branch computes `cothm` but then checks `cotm`, which is undefined. Substituting integers into `coth(log(tan(x)))` can rewrite the logarithm with an added `I*pi`, reaching that branch and raising `NameError`.\n\nThe fix is to check `cothm`. I also added regression coverage for the integer values listed in the issue. In the local checkout, the typo was already corrected, so I added and verified the regression test with ",
+      "latency_s": 177.4545648097992,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

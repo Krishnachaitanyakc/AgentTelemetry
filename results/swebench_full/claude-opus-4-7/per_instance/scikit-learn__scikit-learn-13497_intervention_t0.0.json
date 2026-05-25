@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13497",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2648,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1112,
+      "response_excerpt": "I have enough to produce the patch. The fix needs to guard the string comparison with an `isinstance` check (so it short-circuits when `discrete_features` is an array), and add a test that exercises the array/mask path.\n\n<reasoning>\nThe issue is in `_estimate_mi` at `sklearn/feature_selection/mutual_info_.py`. The original code does:\n\n```python\nif discrete_features == 'auto':\n    discrete_features = issparse(X)\n```\n\nWhen `discrete_features` is an array (of indices or a boolean mask), comparing i",
+      "latency_s": 219.66600275039673,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

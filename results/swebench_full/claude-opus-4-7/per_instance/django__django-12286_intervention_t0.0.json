@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12286",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 835,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1535,
+      "response_excerpt": "<reasoning>\nI have enough context. The fix is to import `get_supported_language_variant` and use it in `check_language_settings_consistent` to properly handle sublanguage fallback. When a sublanguage like \"de-at\" is requested, `get_supported_language_variant` will return the base \"de\" if available, only raising LookupError if neither is found.\n</reasoning>\n\n<patch>\n--- a/django/core/checks/translation.py\n+++ b/django/core/checks/translation.py\n@@ -1,4 +1,5 @@\n from django.conf import settings\n+f",
+      "latency_s": 253.63601684570312,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

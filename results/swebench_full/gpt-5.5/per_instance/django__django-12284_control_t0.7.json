@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12284",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1988,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1674,
+      "response_excerpt": "<reasoning>\nThe bug comes from `Field.contribute_to_class()` using `hasattr()` before installing the generated `get_FOO_display()` method. `hasattr()` sees methods inherited from an abstract parent, so when a child model replaces the field with expanded `choices`, Django keeps the parent field-bound display method. Checking only `cls.__dict__` preserves methods explicitly defined on the child while allowing inherited generated methods to be replaced for the child field.\n\nI added a regression tes",
+      "latency_s": 347.39049077033997,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

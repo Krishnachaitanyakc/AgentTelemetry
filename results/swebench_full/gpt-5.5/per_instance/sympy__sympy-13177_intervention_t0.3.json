@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13177",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1046,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1182,
+      "response_excerpt": "<reasoning>\nThe bad simplification comes from treating `q**n % q` as zero for any symbolic base `q`. That is only valid when `q` is known to be integer. The fix keeps the existing shortcut for integer bases, but prevents `x**2 % x` from collapsing to zero when `x.is_integer` is unknown. I added a regression test that substitutes `x = 3/2`, which would fail if the symbolic expression had eagerly become `0`, and kept coverage for an integer symbol.\nVerification was blocked in the old checkout beca",
+      "latency_s": 300.8310010433197,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

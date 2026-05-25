@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13028",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 972,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3664,
+      "response": "Now I understand the issue completely. The bug is:\n\n1. **Line 1123** has the wrong default value: `getattr(expression, 'filterable', 'True')` should be `getattr(expression, 'filterable', True)` (boolean, not string)\n2. **The check should only be done on expression objects**, not on arbitrary Python objects like model instances\n\nThe proper fix is to check if the object is an expression-like object (has `get_source_expressions` method or is a BaseExpression instance) before checking for the `filte...[truncated]",
+      "latency_s": 196.38406491279602,
+      "error": null
+    }
+  ]
+}

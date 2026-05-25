@@ -1,0 +1,26 @@
+{
+  "instance_id": "astropy__astropy-14182",
+  "repo": "astropy/astropy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4347,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2667,
+      "response_excerpt": "<reasoning>\nThe RST writer inherits fixed-width output generation, but its constructor rejected `header_rows`, causing the reported `TypeError`. The fix is to let fixed-width data output multiple column-info header rows, pass `header_rows` through the RST writer, and choose the RST separator line after however many header rows were emitted. I added a focused regression test for `QTable.write(..., format=\"ascii.rst\", header_rows=[\"name\", \"unit\"])`.\n\nVerification: `git diff --check` passed, and `p",
+      "latency_s": 197.90472793579102,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

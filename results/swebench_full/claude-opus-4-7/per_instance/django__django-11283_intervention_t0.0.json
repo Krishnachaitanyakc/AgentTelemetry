@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11283",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1939,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1987,
+      "response_excerpt": "<reasoning>\nLooking at the issue, the migration `auth.0011_update_proxy_permissions` was failing with an `IntegrityError` when migrating proxy model permissions. The error occurs when:\n\n1. A model was originally a concrete model with permissions like `(concrete_content_type_id, \"add_agency\")`\n2. The model was later converted to a proxy model\n3. New permissions were created for the proxy model with the proxy content type: `(proxy_content_type_id, \"add_agency\")`\n4. When the migration runs, it trie",
+      "latency_s": 271.33445405960083,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

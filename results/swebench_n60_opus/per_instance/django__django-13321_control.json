@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13321",
+  "repo": "django/django",
+  "model": "claude-opus-4-6",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 599,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5247,
+      "response": "The fix is clean. Here's the summary:\n\n<reasoning>\nThe bug is in `django/contrib/sessions/backends/base.py` in the `_legacy_decode` method. When Django 3.1 tries to decode session data, it first tries `signing.loads()` in `decode()`. If that fails (e.g., with `BadSignature` for old-format sessions), it falls back to `_legacy_decode()`.\n\nIn `_legacy_decode`, the line `base64.b64decode(session_data.encode('ascii'))` was **outside** the `try/except` block. When the session data has incorrect base64...[truncated]",
+      "latency_s": 91.02656888961792,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12453",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1054,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3731,
+      "response": "Perfect! I found the unfixed version. In Django 2.2, the `deserialize_db_from_string` method (lines 126-133) lacks the `transaction.atomic()` wrapper. This is the version that needs the fix.\n\n<patch>\n--- a/django/db/backends/base/creation.py\n+++ b/django/db/backends/base/creation.py\n@@ -5,7 +5,7 @@ import sys\n from io import StringIO\n from django.apps import apps\n from django.conf import settings\n from django.core import serializers\n-from django.db import router\n+from django.db import router, tr...[truncated]",
+      "latency_s": 24.980515003204346,
+      "error": null
+    }
+  ]
+}

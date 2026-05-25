@@ -1,0 +1,29 @@
+{
+  "topology": "hierarchical",
+  "model": "codex_cli/gpt-5.5",
+  "question": "What are the limitations of using mock LLM clients for benchmarking agent fault detection? Propose two ways to validate against real production traces.",
+  "run_id": "hierarchical__codex_cli_gpt-5.5__q3",
+  "transcript": [
+    {
+      "agent": "facts_specialist",
+      "output": "- Mock LLM clients often underrepresent real model variability: nondeterminism, latency spikes, refusals, partial outputs, tool-call schema drift, and context-window effects.\n\n- They can bake in benchmark assumptions, causing fault detectors to overfit to synthetic error patterns instead of detecting messy production failures.\n\n- Mock clients usually miss multi-turn dynamics: cascading mistakes, recovery attempts, user ambiguity, tool side effects, and failures caused by prior hidden state.\n\n- Validation path 1: replay anonymized production traces through the detector in shadow mode, comparing detections against human-reviewed incident labels or postmortem outcomes.\n\n- Validation path 2: sample real agent sessions with known tool/model/user outcomes, inject only controlled perturbations where needed, and measure precision/recall against production observability signals such as retries, escalations, rollbacks, and user corrections.",
+      "latency_s": 10.046497821807861
+    },
+    {
+      "agent": "analysis_specialist",
+      "output": "- **Control vs realism:** Mock LLM clients make benchmarks repeatable and cheap, but they miss real model variance, latency spikes, refusals, malformed outputs, tool-call drift, and context-sensitive failures.\n\n- **Coverage vs representativeness:** Synthetic faults can target known failure modes, but may overfit detectors to clean, labeled scenarios that do not match messy production traces, partial failures, retries, or user-specific workflows.\n\n- **Safety vs fidelity:** Mocks avoid privacy and operational risk, but cannot fully capture production distributions.\n\nTwo validations:\n1. Replay sampled, anonymized production traces through the detector and compare alerts against human-reviewed fault labels.\n2. Run shadow evaluation in production: detector observes live traces without acting, then measure precision/recall against incident reports, user escalations, and post-hoc audits.",
+      "latency_s": 14.639071941375732
+    },
+    {
+      "agent": "manager_synthesis",
+      "output": "Mock LLM clients are useful for cheap, repeatable benchmarks, but they are a weak proxy for production agent behavior. They often miss real model variability: nondeterminism, latency spikes, refusals, partial or malformed outputs, tool-call schema drift, and context-window effects. They also tend to encode benchmark assumptions, which can make fault detectors overfit to clean synthetic failures rather than messy production incidents. Most importantly, mocks rarely capture multi-turn dynamics such as cascading mistakes, recovery attempts, ambiguous user intent, hidden prior state, tool side effects, retries, and user-specific workflows.\n\nTwo stronger validation paths are:\n\n1. Replay sampled, anonymized production traces through the detector in shadow mode, then compare detections with human-reviewed incident labels, postmortems, or audit outcomes.\n\n2. Evaluate on real agent sessions with known model, tool, and user outcomes, injecting only controlled perturbations where needed. Measure ",
+      "latency_s": 10.14612889289856
+    }
+  ],
+  "total_cost_usd": 0.0,
+  "total_input_tokens": 671,
+  "total_output_tokens": 748,
+  "n_agents": 3,
+  "wall_clock_s": 34.84891486167908,
+  "error": null
+}

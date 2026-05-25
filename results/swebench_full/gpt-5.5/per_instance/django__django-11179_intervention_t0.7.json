@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11179",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1285,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1077,
+      "response_excerpt": "<reasoning>\nThe fast-delete shortcut in `Collector.delete()` bypasses the normal cleanup loop that clears deleted instances\u2019 primary keys. The fix is to clear the concrete PK attribute before returning from that shortcut. I added a regression test using a fast-deletable model instance and verified the focused test with `python3 tests/runtests.py delete.tests.FastDeleteTests.test_fast_delete_instance_set_pk_none --verbosity 2`.\n</reasoning>\n\n<patch>\ndiff --git a/django/db/models/deletion.py b/dja",
+      "latency_s": 144.77373504638672,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

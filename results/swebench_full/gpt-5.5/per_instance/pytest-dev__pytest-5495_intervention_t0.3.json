@@ -1,0 +1,26 @@
+{
+  "instance_id": "pytest-dev__pytest-5495",
+  "repo": "pytest-dev/pytest",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2735,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1537,
+      "response_excerpt": "<reasoning>\nThe confusing `52` comes from treating bytes-like values as generic sequences, where indexing returns integers. The existing bytes path avoids this for differing bytes by slicing so reprs stay byte-oriented. I extended that same bytes-like handling to `bytearray` and added regression tests for length-only differences so pytest shows only the full diff, not \u201cfirst extra item: 52\u201d.\n\nVerification: direct formatter checks passed for `b\"\" == b\"42\"` and `bytearray(b\"\") == bytearray(b\"42\")`",
+      "latency_s": 293.07306385040283,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

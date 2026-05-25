@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13658",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 763,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2062,
+      "response": "Perfect! Now I have confirmed:\n\n1. **`django_old`** version (lines 175-179) has the `__init__` method that computes `self.prog_name` from `argv`\n2. **`django_old`** version (line 334) is missing the `prog=self.prog_name` argument when creating `CommandParser`\n\nThis is exactly the bug described in the issue. Let me now create the fix:\n\n<patch>\n--- a/django/core/management/__init__.py\n+++ b/django/core/management/__init__.py\n@@ -331,7 +331,11 @@ class ManagementUtility:\n         # Preprocess optio...[truncated]",
+      "latency_s": 51.09298896789551,
+      "error": null
+    }
+  ]
+}

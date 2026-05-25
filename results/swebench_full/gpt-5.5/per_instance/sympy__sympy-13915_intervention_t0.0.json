@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13915",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1276,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1472,
+      "response_excerpt": "<reasoning>\nThe substitution makes both numerator and denominator contain infinite terms. During `Mul.flatten`, SymPy was treating a gathered factor with exponent zero as removable via `x**0 -> 1`, which incorrectly cancels expressions containing `zoo`, `oo`, or `-oo`. That turns an undefined expression into `1`. The fix is to return `NaN` instead when the zero-exponent base is an `Add` or `Mul` containing an infinity.\n\nI verified the focused regression test with:\n`.venv/bin/python -m pytest sym",
+      "latency_s": 168.94743394851685,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

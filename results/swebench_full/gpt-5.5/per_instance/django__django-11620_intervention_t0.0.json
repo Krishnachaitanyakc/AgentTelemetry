@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11620",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1683,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1684,
+      "response_excerpt": "<reasoning>\n1. `Http404` raised by a path converter bubbles out during URL resolving, before a successful `resolver_match` exists.\n2. The technical 404 renderer should handle that path as a resolved 404 and render the exception message.\n3. I made `technical_404_response()` robust when `request.resolver_match` is absent or still `None`.\n4. I strengthened the regression test to assert the technical 404 page includes the converter\u2019s `Http404` message.\n5. Verified with:\n`python3 tests/runtests.py vi",
+      "latency_s": 206.43612217903137,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

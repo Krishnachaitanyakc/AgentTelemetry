@@ -1,0 +1,26 @@
+{
+  "instance_id": "psf__requests-3362",
+  "repo": "psf/requests",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1965,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1324,
+      "response_excerpt": "<reasoning>\n1. `iter_content(decode_unicode=True)` only decodes when `Response.encoding` is set.\n2. Adapters set `Response.encoding` via `get_encoding_from_headers`.\n3. In Requests 2.10.0, `Content-Type: application/json` without `charset` returned `None`, so streamed chunks stayed as bytes.\n4. JSON defaults to UTF-8 when no charset is supplied, so `get_encoding_from_headers` should return `utf-8` for `application/json`.\n5. Added tests for header detection and the original streaming behavior.\n\nV",
+      "latency_s": 184.7422218322754,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

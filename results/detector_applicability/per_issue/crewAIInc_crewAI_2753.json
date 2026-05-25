@@ -1,0 +1,24 @@
+{
+  "issue": {
+    "title": "[BUG] memory=True causes embedding model token limit error with large input in CrewAI",
+    "body": "### Description\n\nWhen enabling memory (memory=True) in CrewAI and running it with a large input, the system crashes with a token limit error from the embedding model. This seems to stem from a failure to chunk or truncate large inputs before passing them to the embedding model, leading to prompt sizes far exceeding the model's context window  (e.g., 30k+ tokens vs. an 8k token limit).\n\n### Steps to Reproduce\n\nSteps to Reproduce\n1. Initialize CrewAI with memory=True\n2. Provide a large input (e.g., a long text file or extended conversation history)\n3. Run the agent/task\n4. Observe the error during memory search\n\n### Expected behavior\n\nThe input should be automatically truncated, chunked, or summarized to ensure that it fits within the model\u2019s maximum context length (e.g., 8192 tokens). Memory operations should be handled gracefully, even for large inputs.\n\n### Screenshots/Code snippets\n\n![Image](https://github.com/user-attachments/assets/8a6d13e3-5ce7-4f50-b237-06572e80b632)\n\n### Operating System\n\nUbuntu 20.04\n\n### Python Version\n\n3.11\n\n### crewAI Version\n\n0.118.0\n\n### crewAI Tools Version\n\n0.43.0\n\n### Virtual Environment\n\nVenv\n\n### Evidence\n\n1. Error occurs only when memory=True\n2. Error is triggered when large content (e.g., >20,000 tokens) is processed\n3. Disabling memory or reducing input size avoids the error\n\n### Possible Solution\n\n1. Implement automatic chunking, summarization, or truncation logic before passing content to the embedding model\n2. Add pre-checks or warnings for token length when memory is enabled\n3. Allow user configuration of max tokens to align with the model in use\n\n### Additional context\n\nModel in use: Azure OpenAI text-embedding-3-small model with 8k token limit",
+    "state": "closed",
+    "comments": [
+      "for context I am providing Embedder in Crew as such\nembedder={\n        \"provider\": \"azure\",\n        \"config\": {\n            \"api_key\": AZURE_OPENAI_EMBEDDINGS_API_KEY,\n            \"api_base\": AZURE_OPENAI_EMBEDDINGS_ENDPOINT,\n            \"api_version\": AZURE_OPENAI_EMBEDDINGS_API_VERSION,\n            \"model_name\": AZURE_OPENAI_EMBEDDINGS_DEPLOYMENT,\n            \"deployment_id\": AZURE_OPENAI_EMBEDDINGS_DEPLOYMENT,\n        },\n    }",
+      "I think this has been fixed in one of the recent PR's.\n",
+      "Can you try to install the latest main branch \n`pip install git+https://github.com/crewAIInc/crewAI.git@main`",
+      "@Kevv-J thanks for reporting! Some clarification questions:\n1. Are you using any Tool?\n2. Does the long file text is a plain/text file or some binary data?",
+      "Hi @Vidit-Ostwal I'll try it out and let you know\n\n@lucasgomide  Yes I am using FileReadTool and some CustomTools I have written. The text is large plain text which equates to around 45k tokens but the text-embedding-small only supports 8k tokens"
+    ],
+    "labels": [
+      "bug"
+    ],
+    "url": "https://github.com/crewAIInc/crewAI/issues/2753"
+  },
+  "evidence": {
+    "has_evidence": true,
+    "evidence_type": "narrative_only",
+    "reconstructible_signal": true,
+    "notes": "memory_keywords"
+  }
+}

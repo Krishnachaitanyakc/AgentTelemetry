@@ -1,0 +1,26 @@
+{
+  "instance_id": "pylint-dev__pylint-6506",
+  "repo": "pylint-dev/pylint",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 903,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2496,
+      "response_excerpt": "<reasoning>\nThe current `main` implementation already exits cleanly through argparse with status `32` for unknown command-line options. The missing coverage was the reported short-option case (`-Q`), so I added a regression test that asserts the usage error is shown, the option is named, no traceback is printed, and the exit code remains `32`.\n\nVerified with:\n`./.venv/bin/python -m pytest tests/lint/test_run_pylint.py -q`\n</reasoning>\n\n<patch>\ndiff --git a/tests/lint/test_run_pylint.py b/tests/l",
+      "latency_s": 226.97393774986267,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

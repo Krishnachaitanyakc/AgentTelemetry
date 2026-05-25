@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-14016",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1467,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1432,
+      "response_excerpt": "<reasoning>\nThe crash comes from `Q._combine()` using `copy.deepcopy()` when either side is an empty `Q()`. `dict_keys` objects can\u2019t be deep-copied because deepcopy falls back to pickling them.\n\nA shallow clone of the `Q` node is enough here: the result should be a distinct `Q` container, but its lookup values don\u2019t need to be recursively copied. `Node._new_instance()` already creates that kind of clone and copies the children list.\n\nVerification: a focused runtime check passes for both `Q() | ",
+      "latency_s": 542.8087198734283,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

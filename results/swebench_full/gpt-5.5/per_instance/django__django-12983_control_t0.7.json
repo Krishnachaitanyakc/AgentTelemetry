@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12983",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1633,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1175,
+      "response_excerpt": "<reasoning>\nThe checkout already contains the intended fix: `django.utils.text.slugify()` ends with `.strip(\"-_\")`, and the focused tests cover leading/trailing underscores, dashes, and mixed separators. I verified the focused test with `python3 -m tests.utils_tests.test_text TextTests.test_slugify`, which passed.\n</reasoning>\n\n<patch>\ndiff --git a/django/utils/text.py b/django/utils/text.py\n--- a/django/utils/text.py\n+++ b/django/utils/text.py\n@@ -471,7 +471,8 @@ def slugify(value, allow_unicod",
+      "latency_s": 48.22075915336609,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

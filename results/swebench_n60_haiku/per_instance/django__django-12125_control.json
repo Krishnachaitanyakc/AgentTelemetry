@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12125",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1839,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2414,
+      "response": "Perfect! Now let me write the final patch in unified diff format:\n\n<patch>\n--- a/django/db/migrations/serializer.py\n+++ b/django/db/migrations/serializer.py\n@@ -95,14 +95,40 @@ class DeconstructableSerializer(BaseSerializer):\n \n     @staticmethod\n     def _serialize_path(path):\n-        module, name = path.rsplit(\".\", 1)\n+        # Handle nested classes by finding the actual module vs the qualified name.\n+        # For a path like \"test1.models.Outer.Inner\", we need to:\n+        # - Import \"test...[truncated]",
+      "latency_s": 457.65520095825195,
+      "error": null
+    }
+  ]
+}

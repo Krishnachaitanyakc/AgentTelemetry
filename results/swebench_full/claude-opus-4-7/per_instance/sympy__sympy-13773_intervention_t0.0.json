@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-13773",
+  "repo": "sympy/sympy",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2155,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1448,
+      "response_excerpt": "The sympy 1.1.1 codebase is too old for my Python 3.14, but the fix matches the modern pattern in `matrixbase.py`. Let me provide the final patch.\n\n<reasoning>\nThe issue is that `__matmul__` (and `__rmatmul__`) in `sympy/matrices/common.py` simply delegate to `__mul__`/`__rmul__` without checking that the other operand is a matrix. This allows `2 @ B` to succeed, which is incorrect \u2014 matrix multiplication should only work between two matrices, matching NumPy's behavior.\n\nThe fix:\n1. In `__matmul",
+      "latency_s": 606.2268671989441,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

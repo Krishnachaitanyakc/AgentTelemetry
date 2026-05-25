@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-13033",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2326,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 4526,
+      "response_excerpt": "<reasoning>\nThe bug is in `SQLCompiler.find_ordering_name()`. For `order_by(\"author__editor_id\")`, Django resolves `editor_id` as the final relation field attname, but the old guard compares `field.attname` to the entire path (`\"author__editor_id\"`). That fails, so Django treats the lookup like ordering by the relation itself and applies the related model\u2019s default ordering, producing the extra join and reversed direction.\n\nThe fix is to compare `field.attname` with the final lookup component (`",
+      "latency_s": 452.0879020690918,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

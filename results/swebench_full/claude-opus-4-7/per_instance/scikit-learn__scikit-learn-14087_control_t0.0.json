@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-14087",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 556,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3126,
+      "response_excerpt": "Fix applied. The bug was at `sklearn/linear_model/logistic.py:2189`: the `refit=False` branch was checking `self.multi_class` (which can be `'auto'`, the default) instead of the resolved local variable `multi_class` (which is always `'ovr'` or `'multinomial'`). \n\nFor binary classification with default `multi_class='auto'`, the local `multi_class` resolves to `'ovr'`, and `coefs_paths` becomes a 3D array `(n_folds, n_Cs * n_l1_ratios, n_features)`. But because `self.multi_class != 'ovr'`, the wro",
+      "latency_s": 149.70027780532837,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

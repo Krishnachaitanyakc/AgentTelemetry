@@ -1,0 +1,26 @@
+{
+  "instance_id": "mwaskom__seaborn-2848",
+  "repo": "mwaskom/seaborn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2328,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1761,
+      "response_excerpt": "<reasoning>\nThe failure happens when `PairGrid` delegates hue handling to axes-level seaborn functions like `scatterplot`/`histplot`: omitted hue levels remain in the data vector even though they are absent from `hue_order`. The fix records whether `hue_order` was explicitly provided and filters delegated diagonal/off-diagonal data to those hue levels before plotting. Existing iterative hue paths already skip unlisted levels.\n\nVerified with the iris repro and targeted `PairGrid` tests in the pro",
+      "latency_s": 194.22756791114807,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

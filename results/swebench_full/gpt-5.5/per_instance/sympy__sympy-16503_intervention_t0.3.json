@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-16503",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2276,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1045,
+      "response_excerpt": "<reasoning>\nThe Sum printer builds a multi-line sigma picture and then composes it with the summand using baselines. In the failing case, the unicode odd-height adjustment is subtracted while positioning the summand, so the `x` is placed one row above the final Sum baseline. When `+ 3` is later added, it aligns to the Sum baseline instead of the misplaced `x`.\n\nThe fix is to stop subtracting that adjustment from the summand baseline. The final Sum baseline remains centered through the sign, with",
+      "latency_s": 445.9031801223755,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-18532",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2334,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1116,
+      "response_excerpt": "<reasoning>\n`Basic.atoms()` in this checkout already uses `not node.args` for the no-argument case, so I kept that behavior and added a regression test covering a no-args non-`Atom` leaf and an `Atom` subclass with args.\n\nThe remaining stale behavior was in matrix `atoms()` overrides, which still converted no-argument calls into `.atoms(Atom)`. I changed those overrides to delegate the empty-type case through unchanged, preserving the leaf-by-no-args semantics.\n\nVerified with:\n`/private/tmp/symp",
+      "latency_s": 412.35430669784546,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

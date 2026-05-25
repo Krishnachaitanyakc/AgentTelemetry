@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-10949",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3732,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2284,
+      "response_excerpt": "<reasoning>\n`check_array` stores the original dtype via `array.dtype`, but a pandas `DataFrame` does not expose a single NumPy dtype there. As a result, `dtype_orig` becomes `None`, the object DataFrame is later converted to `float64`, and the existing `warn_on_dtype` comparison is skipped. The fix is to also record `array.dtypes` for DataFrame-like inputs before conversion and compare those original column dtypes with the final NumPy array dtype.\n</reasoning>\n\n<patch>\ndiff --git a/sklearn/utils",
+      "latency_s": 161.68486404418945,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

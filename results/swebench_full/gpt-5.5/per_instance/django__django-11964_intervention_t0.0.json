@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11964",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2347,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3147,
+      "response_excerpt": "<reasoning>\n1. `TextChoices`/`IntegerChoices` members can remain on freshly created model instances before `refresh_from_db()`.\n2. The stable contract should be that stringification uses the enum member\u2019s underlying database value, matching retrieved instances.\n3. Adding `Choices.__str__()` centralizes that behavior for both text and integer choices.\n4. Added regressions for fresh `CharField` and `IntegerField` assignments from choice enums.\n5. Verified with: `python3 tests/runtests.py model_enu",
+      "latency_s": 351.77649998664856,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

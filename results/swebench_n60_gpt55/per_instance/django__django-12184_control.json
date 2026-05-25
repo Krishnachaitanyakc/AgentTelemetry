@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12184",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2240,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1802,
+      "response": "<reasoning>\nThe crash happens when Django drops `None` named captures before deciding whether the regex has named groups. For an optional named group like `(?P<format>(html|json|xml))?`, the missing match becomes `{}` after filtering, so Django incorrectly falls back to `match.groups()` and passes positional `None` values to the view.\n\nThe fix is to decide positional-vs-keyword handling from the original `groupdict()`, then remove `None` keyword values afterward so view defaults still apply. I v...[truncated]",
+      "latency_s": 209.4667990207672,
+      "error": null
+    }
+  ]
+}

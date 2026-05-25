@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12908",
+  "repo": "django/django",
+  "model": "claude-opus-4-7",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 449,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1842,
+      "response_excerpt": "<reasoning>\nThe issue is that calling `.distinct()` on a union queryset (created with `.union()`) silently does nothing instead of raising an error. Other operations like `filter()`, `exclude()`, `annotate()`, etc. already raise `NotSupportedError` for combined queries via `self._not_support_combined_queries('operation_name')`.\n\nLooking at `/private/tmp/django324/extract/django/db/models/query.py`, I see that:\n- Operations like `filter` (line 940), `exclude` (line 948), `select_related` (line 10",
+      "latency_s": 105.97036099433899,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

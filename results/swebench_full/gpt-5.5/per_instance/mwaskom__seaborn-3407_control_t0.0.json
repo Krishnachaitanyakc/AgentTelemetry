@@ -1,0 +1,26 @@
+{
+  "instance_id": "mwaskom__seaborn-3407",
+  "repo": "mwaskom/seaborn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2245,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3618,
+      "response_excerpt": "<reasoning>\nThe failure comes from treating tuple column labels as iterable variable lists. For a MultiIndex column like `(\"A\", \"1\")`, PairGrid needs to keep the tuple as one column key, not split it into `\"A\"` and `\"1\"`. The patch adds a small normalization helper that first checks whether the provided variable spec is an actual DataFrame column label before deciding to listify it. I also updated the MultiIndex pairplot regression test to match the reported duplicate lower-level labels and to c",
+      "latency_s": 351.9128930568695,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

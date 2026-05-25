@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-13315",
+  "repo": "django/django",
+  "model": "claude-haiku-4-5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 378,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1110,
+      "response": "Based on my analysis of the code and the test, the issue is that when `limit_choices_to` involves joins (like `jokes__funny=True, jokes_today__funny=True`), the `Exists()` subquery correctly identifies matching records, but the outer queryset can still return duplicates if there are multiple matching joins.\n\nThe fix is to add `.distinct()` to eliminate duplicates. Let me create the patch:\n\n<patch>\n--- a/django/forms/models.py\n+++ b/django/forms/models.py\n@@ -135,6 +135,7 @@ def apply_limit_choic...[truncated]",
+      "latency_s": 220.75761103630066,
+      "error": null
+    }
+  ]
+}

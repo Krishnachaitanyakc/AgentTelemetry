@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-12113",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1355,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5568,
+      "response_excerpt": "<reasoning>\nThe failure is caused by SQLite test database signature deduplication. When two aliases have no `NAME` but distinct `TEST[\"NAME\"]` values, the old SQLite signature only included the original `NAME` (`None`/empty) for non-memory databases. The test runner could therefore treat `default` and `other` as the same underlying test database, configure one as a mirror, and both aliases would contend for the same SQLite file. Including the resolved test database name in the non-memory signatu",
+      "latency_s": 304.74669194221497,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

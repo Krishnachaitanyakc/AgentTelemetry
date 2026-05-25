@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11019",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2559,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2595,
+      "response_excerpt": "<reasoning>\n1. The bug comes from `Media.__add__` eagerly merging two media lists, which turns independent files from separate widgets into false ordering constraints.\n2. The fix is to preserve each widget\u2019s original media list and only topologically merge all lists when `_css` or `_js` is rendered/accessed.\n3. This lets a later explicit dependency list override incidental pairwise order without emitting `MediaOrderConflictWarning`.\n4. I verified the focused media tests with `python3 tests/runte",
+      "latency_s": 206.49033975601196,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-11422",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2114,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1463,
+      "response_excerpt": "<reasoning>\nThe regression is in `iter_modules_and_files()`: Django 2.2.1 skips every module whose `__spec__` is `None`. When running `python manage.py runserver`, `manage.py` is `__main__`, and on affected Python versions `__main__.__spec__` is `None`, so StatReloader never watches it. The fix is to special-case `__main__` and use `__file__` when available, while preserving the existing skip behavior for other spec-less modules.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/django/utils/autoreload",
+      "latency_s": 84.59887385368347,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

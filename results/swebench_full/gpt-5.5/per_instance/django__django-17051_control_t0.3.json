@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-17051",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2693,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1964,
+      "response_excerpt": "<reasoning>\n`bulk_create(update_conflicts=True)` can safely request `RETURNING` because `ON CONFLICT DO UPDATE ... RETURNING` returns one row for each inserted or updated row on backends that support returning rows from bulk inserts. The existing restriction should only exclude `ignore_conflicts`, where ignored rows may not return IDs. I also added a regression test that checks the conflicting object receives the existing row's primary key and a newly inserted object receives a generated primary",
+      "latency_s": 149.20025396347046,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

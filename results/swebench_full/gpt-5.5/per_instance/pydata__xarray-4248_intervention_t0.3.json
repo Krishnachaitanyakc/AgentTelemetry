@@ -1,0 +1,26 @@
+{
+  "instance_id": "pydata__xarray-4248",
+  "repo": "pydata/xarray",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 4975,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1665,
+      "response_excerpt": "<reasoning>\n1. Located xarray\u2019s text repr formatter in `xarray/core/formatting.py` and HTML repr formatter in `xarray/core/formatting_html.py`.\n2. Added a shared helper that appends `, in <units>` when a variable or coordinate has a non-empty `attrs[\"units\"]`.\n3. Updated text repr column-width calculation so longer unit-annotated names still align.\n4. Reused the same helper in HTML repr, preserving HTML escaping.\n5. Added focused text and HTML tests for coordinate and data variable units.\n6. Ver",
+      "latency_s": 167.1847789287567,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

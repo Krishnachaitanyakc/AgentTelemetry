@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15498",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1024,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1144,
+      "response_excerpt": "<reasoning>\nThe crash is in `was_modified_since()`: `re.match()` returns `None` for an empty `If-Modified-Since` header, then `matches[1]` raises `TypeError`. Invalid headers should be ignored by treating the resource as modified, matching the existing `ValueError` path. The patch explicitly raises `ValueError` when the regex doesn't match and adds a regression test for an empty string.\n</reasoning>\n\n<patch>\ndiff --git a/django/views/static.py b/django/views/static.py\n--- a/django/views/static.p",
+      "latency_s": 147.51966094970703,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "instance_id": "django__django-12286",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3054,
+  "tool_pattern": {},
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1566,
+      "response": "<reasoning>\nThe system check was doing its own direct membership check against `LANGUAGES`, so `LANGUAGE_CODE='de-at'` failed when only `('de', 'German')` was configured. Django already has `get_supported_language_variant()` for this exact fallback behavior, so the check should delegate to it. I also added regression coverage for unsupported languages still raising `translation.E004` and supported sublanguage/base-language fallbacks passing.\n</reasoning>\n\n<patch>\n```diff\ndiff --git a/django/core...[truncated]",
+      "latency_s": 127.5419249534607,
+      "error": null
+    }
+  ]
+}

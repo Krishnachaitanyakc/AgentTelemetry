@@ -1,0 +1,26 @@
+{
+  "instance_id": "django__django-15202",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1571,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1311,
+      "response_excerpt": "<reasoning>\n1. `forms.URLField.clean()` normalizes `////]@N.AN` to `https:////]@N.AN`, then runs `URLValidator`.\n2. `urllib.parse.urlsplit()` and derived URL attributes can raise `ValueError` for malformed IPv6-like netlocs.\n3. `URLValidator` should translate parser failures into Django `ValidationError`, never leak `ValueError` from form cleaning.\n4. The patch defensively catches `ValueError` when resolving `splitted_url.hostname` and re-raises the standard invalid URL `ValidationError`.\n5. Add",
+      "latency_s": 166.4465970993042,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

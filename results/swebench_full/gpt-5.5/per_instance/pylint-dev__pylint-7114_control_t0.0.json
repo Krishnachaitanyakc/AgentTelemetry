@@ -1,0 +1,26 @@
+{
+  "instance_id": "pylint-dev__pylint-7114",
+  "repo": "pylint-dev/pylint",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 3203,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2490,
+      "response_excerpt": "<reasoning>\nThe failure comes from `expand_modules()` treating an implicit namespace directory `a/` as the module `a/a.py` when a same-name module exists. That leads Pylint to queue the nonexistent `a/__init__.py` for parsing and also lets `a/a.py` shadow namespace package `a` during import resolution.\n\nThe patch preserves \u201cthis argument is an implicit namespace directory\u201d even if astroid resolves `a` to `a/a.py`, so Pylint expands `a/` into `a.a` and `a.b` instead of parsing `a/__init__.py`. It",
+      "latency_s": 246.62864089012146,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

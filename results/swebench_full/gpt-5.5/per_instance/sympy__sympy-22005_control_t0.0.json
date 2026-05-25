@@ -1,0 +1,26 @@
+{
+  "instance_id": "sympy__sympy-22005",
+  "repo": "sympy/sympy",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.0,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1245,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2301,
+      "response_excerpt": "<reasoning>\nThe bad result happens because a Groebner basis with one polynomial like `y - 1` is treated as solvable even though the requested generator set is `(x, y)`, so `x` remains free and the solution set is infinite.\n\nThe solver should reject systems whose Groebner basis is smaller than the number of generators before trying the univariate recursive solve. This preserves valid zero-dimensional triangular systems, unlike requiring `len(gens) == 1` at the univariate branch, which would rejec",
+      "latency_s": 104.16215014457703,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

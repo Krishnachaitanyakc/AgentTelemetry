@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-13321",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 1298,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "django.contrib.sessions.backends.base decode _legacy_decode": 1,
+    "sessiontestsmixin decode corrupted session data": 1,
+    "base64.b64decode legacy_decode binascii error incorrect padding": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 5433,
+      "response": "<reasoning>\nThe crash happens because `decode()` falls back to `_legacy_decode()` after `signing.loads()` rejects invalid modern session data. `_legacy_decode()` then performs `base64.b64decode()` before its exception handling block, so malformed legacy data raises `binascii.Error` instead of returning an empty session. Moving the base64 decode into the existing `try` makes invalid session data harmless, matching the documented behavior for corrupt sessions.\n</reasoning>\n<patch>\ndiff --git a/django/contrib/sessions/backends/base.py b/django/contrib/sessions/backends/base.py\nindex b5453160a5..caf6da85f4 100644\n--- a/django/contrib/sessions/backends/base.py\n+++ b/django/contrib/sessions/backends/base.py\n@@ -123,8 +123,8 @@ class SessionBase:\n \n     def _legacy_decode(self, session_data):\n         # RemovedInDjango40Warning: pre-Django 3.1 format will be invalid.\n-        encoded_data = base64.b64decode(session_data.encode('ascii'))\n         try:\n+            encoded_data = base64.b64decode(session_data.encode('ascii'))\n             # could produce ValueError if there is no ':'\n             hash, serialized = encoded_data.split(b':', 1)\n             expected_hash = self._hash(serialized)\ndiff --git a/tests/sessions_tests/tests.py b/tests/sessions_tests/tests.py\nindex 6c6d7dd3f2..c99275f665 100644\n--- a/tests/sessions_tests/tests.py\n+++ b/tests/sessions_tests/tests.py\n@@ -330,6 +330,9 @@ class SessionTestsMixin:\n         # The failed decode is logged.\n         self.assertIn('corr",
+      "latency_s": 142.71993803977966,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 7559,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"django.contrib.sessions.backends.base decode _legacy_decode\"}}</tool_call>",
+      "latency_s": 13.413632154464722,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 8199,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"SessionTestsMixin decode corrupted session data\"}}</tool_call>",
+      "latency_s": 14.618070125579834,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 8779,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"base64.b64decode legacy_decode binascii Error Incorrect padding\"}}</tool_call>",
+      "latency_s": 13.029465913772583,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 9439,
+      "response": "<reasoning>\nInvalid session data can fail before `_legacy_decode()` reaches its existing exception handling because `base64.b64decode()` is executed outside the `try` block. Moving that decode into the `try` makes malformed legacy session payloads return `{}` instead of crashing, matching the existing corrupt-session behavior.\n</reasoning>\n<patch>\ndiff --git a/django/contrib/sessions/backends/base.py b/django/contrib/sessions/backends/base.py\n--- a/django/contrib/sessions/backends/base.py\n+++ b/django/contrib/sessions/backends/base.py\n@@ -123,8 +123,8 @@ class SessionBase:\n \n     def _legacy_decode(self, session_data):\n         # RemovedInDjango40Warning: pre-Django 3.1 format will be invalid.\n-        encoded_data = base64.b64decode(session_data.encode('ascii'))\n         try:\n+            encoded_data = base64.b64decode(session_data.encode('ascii'))\n             # could produce ValueError if there is no ':'\n             hash, serialized = encoded_data.split(b':', 1)\n             expected_hash = self._hash(serialized)\ndiff --git a/tests/sessions_tests/tests.py b/tests/sessions_tests/tests.py\n--- a/tests/sessions_tests/tests.py\n+++ b/tests/sessions_tests/tests.py\n@@ -330,6 +330,9 @@ class SessionTestsMixin:\n         # The failed decode is logged.\n         self.assertIn('corrupted', cm.output[0])\n \n+    def test_decode_invalid_legacy_data(self):\n+        self.assertEqual({}, self.session.decode('not_base64'))\n+\n     def test_actual_expiry(self):\n         # this doesn't work wit",
+      "latency_s": 23.583653688430786,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-12471",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.3,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2181,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 2951,
+      "response_excerpt": "<reasoning>\nThe failure happens because `handle_unknown='ignore'` temporarily replaces unknown values with a known category before encoding. For fixed-width NumPy string arrays, assigning a longer known category into a shorter transform array truncates the string, so `_encode` later sees a bogus unknown value.\n\nThe fix is to widen the temporary copy of the transform column when both arrays are fixed-width string dtypes and the fitted category dtype has a larger itemsize. This preserves the exist",
+      "latency_s": 144.47685885429382,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

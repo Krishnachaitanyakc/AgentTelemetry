@@ -1,0 +1,26 @@
+{
+  "instance_id": "mwaskom__seaborn-2848",
+  "repo": "mwaskom/seaborn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": false,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 2328,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1761,
+      "response_excerpt": "<reasoning>\n1. The failing path is `PairGrid` delegating to seaborn axes-level functions such as `scatterplot`, which receive the full hue vector even when `hue_order` intentionally omits some levels.\n2. Those omitted levels are not in the categorical lookup table, causing the ugly downstream color-mapping error.\n3. The fix tracks whether `hue_order` was user-supplied and filters diagonal/bivariate delegated calls down to rows whose hue value is in that order.\n4. Existing iterative hue paths alr",
+      "latency_s": 114.28539800643921,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}

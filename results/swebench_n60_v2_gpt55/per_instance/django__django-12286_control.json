@@ -1,0 +1,60 @@
+{
+  "instance_id": "django__django-12286",
+  "repo": "django/django",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "min_searches": 3,
+  "min_repeats": 3,
+  "intervention_enabled": false,
+  "iterations": 5,
+  "proposed_patch": true,
+  "patch_len": 3107,
+  "total_searches": 3,
+  "unique_queries": 3,
+  "max_query_repeats": 1,
+  "patch_suppressions": 1,
+  "intervention_triggers": 0,
+  "query_counts": {
+    "check_language_settings_consistent": 1,
+    "translation.e004": 1,
+    "get_supported_language_variant": 1
+  },
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 1752,
+      "response": "<reasoning>\n`translation.E004` was using exact `LANGUAGE_CODE` membership in `LANGUAGES`, which bypassed Django\u2019s normal language fallback logic. Using `get_supported_language_variant()` makes the system check match runtime behavior, including falling back from `de-at` to `de` when available.\n</reasoning>\n<patch>\ndiff --git a/django/core/checks/translation.py b/django/core/checks/translation.py\n--- a/django/core/checks/translation.py\n+++ b/django/core/checks/translation.py\n@@ -1,4 +1,5 @@\n from django.conf import settings\n+from django.utils.translation import get_supported_language_variant\n from django.utils.translation.trans_real import language_code_re\n \n from . import Error, Tags, register\n@@ -56,7 +57,9 @@ def check_setting_languages_bidi(app_configs, **kwargs):\n @register(Tags.translation)\n def check_language_settings_consistent(app_configs, **kwargs):\n     \"\"\"Error if language settings are not consistent with each other.\"\"\"\n-    available_tags = {i for i, _ in settings.LANGUAGES} | {'en-us'}\n-    if settings.LANGUAGE_CODE not in available_tags:\n+    try:\n+        get_supported_language_variant(settings.LANGUAGE_CODE)\n+    except LookupError:\n         return [E004]\n-    return []\n+    else:\n+        return []\ndiff --git a/tests/check_framework/test_translation.py b/tests/check_framework/test_translation.py\n--- a/tests/check_framework/test_translation.py\n+++ b/tests/check_framework/test_translation.py\n@@ -3,7 +3,7 @@ from django.core.checks.translation import (\n     check",
+      "latency_s": 129.8288221359253,
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "prompt_len": 5446,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"check_language_settings_consistent\"}}</tool_call>",
+      "latency_s": 15.314677000045776,
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "prompt_len": 5961,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"translation.E004\"}}</tool_call>",
+      "latency_s": 15.171162843704224,
+      "error": null
+    },
+    {
+      "iteration": 4,
+      "prompt_len": 6386,
+      "response": "<tool_call>{\"name\": \"search_code\", \"arguments\": {\"query\": \"get_supported_language_variant\"}}</tool_call>",
+      "latency_s": 12.875123023986816,
+      "error": null
+    },
+    {
+      "iteration": 5,
+      "prompt_len": 6881,
+      "response": "<reasoning>\n`translation.E004` currently checks `LANGUAGE_CODE` by exact membership in `settings.LANGUAGES`, so a configured sublanguage like `de-at` is rejected even though Django's runtime language selection can fall back to the base `de` language. The system check should use the same supported-language variant resolution path and only raise `E004` when no supported variant or base language can be found.\n</reasoning>\n<patch>\ndiff --git a/django/core/checks/translation.py b/django/core/checks/translation.py\n--- a/django/core/checks/translation.py\n+++ b/django/core/checks/translation.py\n@@ -1,4 +1,5 @@\n from django.conf import settings\n+from django.utils.translation import get_supported_language_variant\n from django.utils.translation.trans_real import language_code_re\n \n from . import Error, Tags, register\n@@ -56,7 +57,9 @@ def check_setting_languages_bidi(app_configs, **kwargs):\n @register(Tags.translation)\n def check_language_settings_consistent(app_configs, **kwargs):\n     \"\"\"Error if language settings are not consistent with each other.\"\"\"\n-    available_tags = {i for i, _ in settings.LANGUAGES} | {'en-us'}\n-    if settings.LANGUAGE_CODE not in available_tags:\n+    try:\n+        get_supported_language_variant(settings.LANGUAGE_CODE)\n+    except LookupError:\n         return [E004]\n-    return []\n+    else:\n+        return []\ndiff --git a/tests/check_framework/test_translation.py b/tests/check_framework/test_translation.py\n--- a/tests/check_framework/test_translation.py\n+++",
+      "latency_s": 19.818944931030273,
+      "error": null
+    }
+  ]
+}

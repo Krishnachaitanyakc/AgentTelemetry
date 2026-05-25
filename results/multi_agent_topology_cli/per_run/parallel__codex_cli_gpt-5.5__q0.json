@@ -1,0 +1,29 @@
+{
+  "topology": "parallel",
+  "model": "codex_cli/gpt-5.5",
+  "question": "What are three concrete ways autonomous AI agents fail in production deployments, and what observability primitives would catch each?",
+  "run_id": "parallel__codex_cli_gpt-5.5__q0",
+  "transcript": [
+    {
+      "agent": "researcher_a",
+      "output": "1. **Runaway execution loops**: the agent repeats tool calls, retries failed subtasks, or keeps decomposing goals until cost/latency explodes. Catch with per-run traces, tool-call spans, step counters, token/cost metrics, timeout events, and loop detectors keyed on repeated action signatures.\n\n2. **Unsafe or incorrect tool use**: the agent calls real systems with malformed parameters, stale assumptions, missing authorization context, or non-idempotent side effects. Catch with structured tool-call logs, request/response payload capture, policy-decision events, idempotency keys, state-diff snapshots before/after actions, and anomaly metrics for unusual write volume or target selection.\n\n3. **Silent task-quality failure**: the agent completes successfully at the infrastructure layer but produces wrong, incomplete, injected, or unverifiable work. Catch with outcome evaluations, provenance traces for retrieved context, citation coverage metrics, guardrail verdicts, human override labels, re",
+      "latency_s": 14.654167175292969
+    },
+    {
+      "agent": "researcher_b",
+      "output": "1. **Tool misuse or unsafe action selection**: agent refunds the wrong customer, runs a broad SQL update, or calls a paid API in a loop.  \n   **Catch with**: structured tool-call traces, argument logging, policy violation counters, allowlist/denylist audit events, and per-action approval logs.\n\n2. **Goal drift across long workflows**: support agent starts solving a billing issue but pivots into account changes after irrelevant context enters memory.  \n   **Catch with**: step-level traces, task-state snapshots, intent classification per turn, memory read/write logs, and \u201cgoal consistency\u201d evals on completed runs.\n\n3. **Silent quality degradation from upstream change**: model, prompt, retrieval index, or API schema changes cause worse answers without hard failures.  \n   **Catch with**: versioned prompt/model/retrieval metadata, golden-task regression suites, outcome metrics, user correction rates, fallback rates, and latency/error dashboards by dependency version.",
+      "latency_s": 13.589740991592407
+    },
+    {
+      "agent": "writer",
+      "output": "1. **Runaway or costly execution loops**  \n   Agents repeatedly retry failed tools, decompose tasks endlessly, or call paid APIs in loops.  \n   **Catch with:** per-run traces, tool-call spans, step counters, timeout events, token/cost metrics, repeated-action loop detectors, and dependency-level latency/error dashboards.\n\n2. **Unsafe or incorrect tool use**  \n   Agents take bad actions in real systems: refunding the wrong customer, running broad SQL updates, using stale parameters, or making non-idempotent writes without approval.  \n   **Catch with:** structured tool-call logs, full argument/request/response capture, policy-decision events, allowlist/denylist audit logs, idempotency keys, per-action approval records, and before/after state-diff snapshots.\n\n3. **Silent task-quality or goal failure**  \n   The run \u201csucceeds\u201d technically but produces wrong, incomplete, drifted, injected, or degraded work after prompt/model/retrieval/API changes.  \n   **Catch with:** step-level traces, task",
+      "latency_s": 9.951382160186768
+    }
+  ],
+  "total_cost_usd": 0.0,
+  "total_input_tokens": 709,
+  "total_output_tokens": 824,
+  "n_agents": 3,
+  "wall_clock_s": 38.225666999816895,
+  "error": null
+}

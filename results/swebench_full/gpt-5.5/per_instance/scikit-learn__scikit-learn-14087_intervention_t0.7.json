@@ -1,0 +1,26 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-14087",
+  "repo": "scikit-learn/scikit-learn",
+  "model": "gpt-5.5",
+  "max_iterations": 8,
+  "intervention_enabled": true,
+  "seed_temperature": 0.7,
+  "iterations": 1,
+  "proposed_patch": true,
+  "answer_len": 1947,
+  "tool_pattern": {},
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "error": null,
+  "history": [
+    {
+      "iteration": 1,
+      "prompt_len": 3126,
+      "response_excerpt": "<reasoning>\nThe failure happens because `refit=False` uses `self.multi_class` to choose the coefficient-path indexing branch. In affected versions, `self.multi_class` can still be the public/default value `'warn'`, while the resolved local `multi_class` is `'ovr'`. That sends binary OvR paths through the multinomial indexing branch and indexes a 3D array as 4D.\n\nThe fix is to branch on resolved `multi_class`. I also added a regression test matching the reported non-refit binary CV case.\n\nVerific",
+      "latency_s": 139.00204205513,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error": null
+    }
+  ]
+}
