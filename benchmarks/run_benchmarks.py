@@ -57,6 +57,12 @@ from benchmarks.apps.otel_genai.app import (
     GENAI_OPERATION_NAME, GENAI_REQUEST_MODEL, GENAI_USAGE_INPUT_TOKENS,
     GENAI_USAGE_OUTPUT_TOKENS, GENAI_TOOL_NAME, GENAI_DATA_SOURCE_ID,
 )
+from benchmarks.apps.openinference.app import (
+    run_openinference_agent,
+    OI_SPAN_KIND, OI_LLM_MODEL_NAME,
+    OI_LLM_TOKEN_COUNT_PROMPT, OI_LLM_TOKEN_COUNT_COMPLETION,
+    OI_TOOL_NAME,
+)
 
 
 # ---------------------------------------------------------------------------
@@ -86,6 +92,7 @@ CONDITIONS = [
     "no_telemetry",
     "vanilla_otel",
     "otel_genai",
+    "openinference",
     "metadata_only",
     "full_capture",
 ]
@@ -440,30 +447,33 @@ def _analyze_traces_vanilla(
 # ---------------------------------------------------------------------------
 
 def _classify_genai_span(span: Dict[str, Any]) -> Optional[str]:
-    """Classify a span using OTel GenAI semantic conventions.
+    """Classify a span using current OTel GenAI semantic conventions.
 
-    The GenAI conventions define 4 span types:
-      - Inference:    gen_ai.operation.name == "chat" (CLIENT)
-      - Embeddings:   gen_ai.operation.name == "embeddings" (CLIENT)
-      - Retrievals:   gen_ai.operation.name == "retrieve" (CLIENT)
-      - Execute Tool: gen_ai.tool.name is present (INTERNAL)
+    The GenAI conventions define typed operations via gen_ai.operation.name:
+      - chat / text_completion / generate_content -> "INFERENCE" (CLIENT)
+      - embeddings                                -> "EMBEDDINGS" (CLIENT)
+      - retrieval                                 -> "RETRIEVALS" (CLIENT)
+      - execute_tool (or gen_ai.tool.name set)    -> "EXECUTE_TOOL" (INTERNAL)
+      - create_agent                              -> "CREATE_AGENT" (CLIENT)
+      - invoke_agent / invoke_workflow            -> "INVOKE_AGENT" (CLIENT)
 
-    Returns:
-        "INFERENCE", "EMBEDDINGS", "RETRIEVALS", "EXECUTE_TOOL", or None.
+    Returns one of those literals, or None.
     """
     attrs = span.get("attributes", {})
 
-    # Execute Tool: has gen_ai.tool.name attribute
-    if attrs.get(GENAI_TOOL_NAME):
-        return "EXECUTE_TOOL"
-
     op_name = attrs.get(GENAI_OPERATION_NAME, "")
-    if op_name == "chat":
+    if op_name == "execute_tool" or attrs.get(GENAI_TOOL_NAME):
+        return "EXECUTE_TOOL"
+    if op_name in ("chat", "text_completion", "generate_content"):
         return "INFERENCE"
     if op_name == "embeddings":
         return "EMBEDDINGS"
-    if op_name == "retrieve":
+    if op_name == "retrieval":
         return "RETRIEVALS"
+    if op_name == "create_agent":
+        return "CREATE_AGENT"
+    if op_name in ("invoke_agent", "invoke_workflow"):
+        return "INVOKE_AGENT"
 
     return None
 
@@ -654,8 +664,135 @@ def _analyze_traces_genai(
 
 
 # ---------------------------------------------------------------------------
-# Trace analysis
+# OpenInference trace analysis (uses openinference.span.kind attribute)
 # ---------------------------------------------------------------------------
+
+OI_SPAN_KIND_KEY = "openinference.span.kind"
+OI_TOOL_NAME_KEY = "tool.name"
+OI_PROMPT_TOKENS_KEY = "llm.token_count.prompt"
+OI_COMPLETION_TOKENS_KEY = "llm.token_count.completion"
+OI_LLM_MODEL_KEY = "llm.model_name"
+
+
+def _classify_openinference_span(span: Dict[str, Any]) -> Optional[str]:
+    """Classify a span using OpenInference (Arize) typed kinds.
+
+    OpenInference defines ten typed kinds: LLM, EMBEDDING, CHAIN, RETRIEVER,
+    RERANKER, TOOL, AGENT, GUARDRAIL, EVALUATOR, PROMPT.
+    """
+    return span.get("attributes", {}).get(OI_SPAN_KIND_KEY)
+
+
+def _analyze_traces_openinference(
+    exported_spans: List[Dict[str, Any]],
+    fault_type: FaultType,
+    ground_truth: List[Dict[str, Any]],
+) -> Tuple[bool, bool, float, int]:
+    """Analyze traces using OpenInference semantic conventions.
+
+    Detectable (6 of 14) -- the same six surface for vanilla OTel via simpler
+    attributes; OpenInference's typed LLM/TOOL/RETRIEVER kinds let detectors
+    target spans precisely:
+      - wrong_tool, infinite_loop, tool_failure, timeout,
+        context_overflow, cost_explosion.
+
+    NOT detectable (8 of 14): hallucination, circular_delegation,
+    stale_retrieval, guardrail_bypass, planning_failure, reasoning_loop,
+    agent_misroute, memory_corruption.
+    """
+    if not exported_spans:
+        return False, False, 0.0, 0
+
+    analysis_start = time.time()
+    fault_detected = False
+
+    if fault_type == FaultType.WRONG_TOOL:
+        wrong_tool_names = set()
+        for gt in ground_truth:
+            name = gt.get("details", {}).get("wrong_tool")
+            if name:
+                wrong_tool_names.add(name)
+        if wrong_tool_names:
+            for s in exported_spans:
+                if _classify_openinference_span(s) == "TOOL":
+                    name = s.get("attributes", {}).get(OI_TOOL_NAME_KEY, "")
+                    if name in wrong_tool_names:
+                        fault_detected = True
+                        break
+
+    elif fault_type == FaultType.INFINITE_LOOP:
+        from collections import Counter
+        cnt = Counter()
+        for s in exported_spans:
+            if _classify_openinference_span(s) == "TOOL":
+                cnt[s.get("attributes", {}).get(OI_TOOL_NAME_KEY, "?")] += 1
+        if any(c >= 3 for c in cnt.values()):
+            fault_detected = True
+
+    elif fault_type == FaultType.TOOL_FAILURE:
+        for s in exported_spans:
+            if _classify_openinference_span(s) == "TOOL":
+                if s.get("status", {}).get("code") == "ERROR":
+                    fault_detected = True
+                    break
+
+    elif fault_type == FaultType.TIMEOUT:
+        for s in exported_spans:
+            st = s.get("status", {})
+            if st.get("code") == "ERROR" and "timeout" in (st.get("description", "") or "").lower():
+                fault_detected = True
+                break
+            for ev in s.get("events", []):
+                ea = ev.get("attributes", {})
+                if "timeout" in str(ea.get("exception.type", "")).lower() or \
+                   "timeout" in str(ea.get("exception.message", "")).lower():
+                    fault_detected = True
+                    break
+            if fault_detected:
+                break
+
+    elif fault_type == FaultType.CONTEXT_OVERFLOW:
+        llm_spans = sorted(
+            [s for s in exported_spans if _classify_openinference_span(s) == "LLM"],
+            key=lambda s: s.get("start_time_ns", 0) or 0,
+        )
+        seq = [s.get("attributes", {}).get(OI_PROMPT_TOKENS_KEY, 0) for s in llm_spans]
+        seq = [t for t in seq if t and t > 0]
+        if len(seq) >= 3:
+            growth = 0
+            for i in range(1, len(seq)):
+                if seq[i] > seq[i - 1] * 1.3:
+                    growth += 1
+                else:
+                    growth = 0
+                if growth >= 2:
+                    fault_detected = True
+                    break
+
+    elif fault_type == FaultType.COST_EXPLOSION:
+        total_cost = 0.0
+        for s in exported_spans:
+            if _classify_openinference_span(s) == "LLM":
+                a = s.get("attributes", {})
+                model = a.get(OI_LLM_MODEL_KEY, "")
+                in_t = a.get(OI_PROMPT_TOKENS_KEY, 0) or 0
+                out_t = a.get(OI_COMPLETION_TOKENS_KEY, 0) or 0
+                if model and (in_t or out_t):
+                    total_cost += estimate_cost(model, in_t, out_t)
+        if total_cost > 0.10:
+            fault_detected = True
+
+    # All eight remaining faults are not detectable: OpenInference defines
+    # AGENT and GUARDRAIL kinds but exposes no typed delegation source/target,
+    # no constrained guardrail outcome, no staleness, no memory, and CHAIN is
+    # an undifferentiated planning/reasoning wrapper.
+
+    ttrc_ms = (time.time() - analysis_start) * 1000
+    faults_injected = 1 if ground_truth else 0
+    faults_found = 1 if fault_detected else 0
+    detection_correct = (fault_detected == bool(ground_truth))
+
+    return fault_detected, detection_correct, ttrc_ms, faults_found
 
 def _analyze_traces(
     exported_spans: List[Dict[str, Any]],
@@ -912,6 +1049,8 @@ def _analyze_all_detectors(
             detected, _, _, _ = _analyze_traces_vanilla(exported_spans, ft, [])
         elif condition == "otel_genai":
             detected, _, _, _ = _analyze_traces_genai(exported_spans, ft, [])
+        elif condition == "openinference":
+            detected, _, _, _ = _analyze_traces_openinference(exported_spans, ft, [])
         else:
             detected, _, _, _ = _analyze_traces(exported_spans, ft, [])
         results[ft.value] = detected
@@ -976,6 +1115,14 @@ def run_single_benchmark(
         )
         json_exporter = provider.add_json_exporter(os.devnull)
         provider.setup(set_global=False)
+    elif condition == "openinference":
+        # OpenInference (Arize) typed span kinds
+        provider = AgentTelemetryProvider(
+            service_name=f"bench-{framework}",
+            privacy_level=PrivacyLevel.METADATA_ONLY,
+        )
+        json_exporter = provider.add_json_exporter(os.devnull)
+        provider.setup(set_global=False)
     elif condition == "metadata_only":
         provider = AgentTelemetryProvider(
             service_name=f"bench-{framework}",
@@ -991,11 +1138,13 @@ def run_single_benchmark(
         json_exporter = provider.add_json_exporter(os.devnull)
         provider.setup(set_global=False)
 
-    # Get app runner (vanilla_otel and otel_genai always use their own runners)
+    # Get app runner (vanilla_otel, otel_genai, and openinference always use their own runners)
     if condition == "vanilla_otel":
         app_runner = run_vanilla_agent
     elif condition == "otel_genai":
         app_runner = run_otel_genai_agent
+    elif condition == "openinference":
+        app_runner = run_openinference_agent
     else:
         app_runner = _get_app_runner(framework)
     if app_runner is None:
@@ -1044,6 +1193,10 @@ def run_single_benchmark(
         )
     elif condition == "otel_genai":
         fault_detected, detection_correct, ttrc_ms, faults_found = _analyze_traces_genai(
+            exported_spans, fault_type, ground_truth,
+        )
+    elif condition == "openinference":
+        fault_detected, detection_correct, ttrc_ms, faults_found = _analyze_traces_openinference(
             exported_spans, fault_type, ground_truth,
         )
     else:

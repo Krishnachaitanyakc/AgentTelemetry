@@ -1,34 +1,28 @@
-"""OTel + GenAI semantic conventions agent.
+"""OpenInference (Arize) semantic conventions agent.
 
-Instruments the same research agent using the current OpenTelemetry GenAI
-semantic conventions, exercising the agent-related operation names defined
-by the spec:
+Instruments the same research agent using the OpenInference span-kind taxonomy
+defined by Arize AI (https://github.com/Arize-ai/openinference). OpenInference
+defines ten typed span kinds; this app exercises six of them as they apply to
+our research-agent workload:
 
-  - create_agent       (CLIENT)  -- agent lifecycle root
-  - invoke_agent       (CLIENT)  -- inter-agent delegation/handoff
-  - chat               (CLIENT)  -- LLM inference
-  - embeddings         (CLIENT)  -- embedding generation
-  - retrieval          (CLIENT)  -- RAG fetch with gen_ai.data_source.id
-  - execute_tool       (INTERNAL) -- tool execution
+  - AGENT      -- root agent lifecycle
+  - LLM        -- model invocation
+  - TOOL       -- tool execution
+  - CHAIN      -- planning / reasoning step (the OpenInference "intermediate
+                  step" kind covers both)
+  - RETRIEVER  -- RAG fetch
+  - GUARDRAIL  -- safety / policy check
 
-The purpose is to measure what fraction of faults can be detected with
-OTel + GenAI semantic conventions, which provide structured LLM, retrieval,
-tool, and agent-invocation attributes, vs. the full agent-specific span kinds
-in AgentTelemetry.
+Detectable faults (6 of 14): wrong_tool, infinite_loop, tool_failure, timeout,
+context_overflow, cost_explosion.
 
-Detectable faults (6 of 14):
-  - wrong_tool       (via gen_ai.tool.name)
-  - infinite_loop    (via repeated gen_ai.tool.name)
-  - tool_failure     (via OTel ERROR status on execute_tool span)
-  - timeout          (via OTel ERROR status)
-  - context_overflow (via gen_ai.usage.input_tokens growth)
-  - cost_explosion   (via gen_ai.usage tokens + model pricing)
-
-NOT detectable (8 of 14): hallucination, circular_delegation, stale_retrieval,
-guardrail_bypass, planning_failure, reasoning_loop, agent_misroute,
-memory_corruption -- the GenAI conventions provide invoke_agent as a typed
-operation but expose no source/target identifiers, no planning/reasoning
-sub-operations, no guardrail outcome, no staleness, and no memory operations.
+NOT detectable (8 of 14): hallucination (RETRIEVER span carries no
+output-grounding signal), circular_delegation (no typed delegation source/
+target identifiers), stale_retrieval (no staleness attribute), guardrail_bypass
+(GUARDRAIL kind exists but no constrained pass/fail/warn outcome attribute),
+planning_failure (CHAIN is undifferentiated planning vs reasoning),
+reasoning_loop (same), agent_misroute (no inter-agent topology),
+memory_corruption (no memory kind).
 """
 
 from __future__ import annotations
@@ -51,29 +45,26 @@ if _ROOT_DIR not in sys.path:
     sys.path.insert(0, _ROOT_DIR)
 
 from agenttelemetry import AgentTelemetryProvider
-from agenttelemetry.core.spans import estimate_cost
 
 # Re-use mock tools from the custom agent
 from benchmarks.apps.custom_agent.app import AVAILABLE_TOOLS, _execute_tool
 
 # ---------------------------------------------------------------------------
-# OTel GenAI Semantic Convention attribute keys
-# (from https://opentelemetry.io/docs/specs/semconv/gen-ai/)
+# OpenInference attribute keys
+# (from https://github.com/Arize-ai/openinference/blob/main/spec/semantic_conventions.md)
 # ---------------------------------------------------------------------------
-GENAI_OPERATION_NAME = "gen_ai.operation.name"
-GENAI_REQUEST_MODEL = "gen_ai.request.model"
-GENAI_RESPONSE_MODEL = "gen_ai.response.model"
-GENAI_SYSTEM = "gen_ai.system"
-GENAI_USAGE_INPUT_TOKENS = "gen_ai.usage.input_tokens"
-GENAI_USAGE_OUTPUT_TOKENS = "gen_ai.usage.output_tokens"
-GENAI_TOOL_NAME = "gen_ai.tool.name"
-GENAI_TOOL_CALL_ID = "gen_ai.tool.call.id"
-GENAI_DATA_SOURCE_ID = "gen_ai.data_source.id"
-GENAI_AGENT_NAME = "gen_ai.agent.name"
-GENAI_AGENT_ID = "gen_ai.agent.id"
+OI_SPAN_KIND = "openinference.span.kind"
+OI_INPUT_VALUE = "input.value"
+OI_OUTPUT_VALUE = "output.value"
+OI_LLM_MODEL_NAME = "llm.model_name"
+OI_LLM_TOKEN_COUNT_PROMPT = "llm.token_count.prompt"
+OI_LLM_TOKEN_COUNT_COMPLETION = "llm.token_count.completion"
+OI_TOOL_NAME = "tool.name"
+OI_TOOL_PARAMETERS = "tool.parameters"
+OI_RETRIEVAL_DOCUMENTS = "retrieval.documents"
 
 
-def run_otel_genai_agent(
+def run_openinference_agent(
     task: str = "Research the latest developments in quantum computing",
     mock_client: Any = None,
     provider: Optional[AgentTelemetryProvider] = None,
@@ -81,59 +72,47 @@ def run_otel_genai_agent(
     max_iterations: int = 5,
     fault_injector: Any = None,
 ) -> Dict[str, Any]:
-    """Run a research agent with OTel GenAI semantic convention instrumentation.
-
-    Uses the 4 GenAI span types (Inference, Embeddings, Retrievals, Execute Tool)
-    but does NOT use any agenttelemetry-specific span kinds.
-
-    The fault_injector parameter is accepted to match the custom_agent interface
-    and to trigger span-attribute faults that this instrumentation may or may
-    not be able to detect.
-    """
-    tracer = provider.get_tracer("otel-genai") if provider else trace.get_tracer("otel-genai")
+    """Run the research agent with OpenInference semantic-convention instrumentation."""
+    tracer = provider.get_tracer("openinference") if provider else trace.get_tracer("openinference")
 
     results: Dict[str, Any] = {"steps": [], "final_answer": None, "iterations": 0}
 
-    _active_fault = getattr(fault_injector, "fault_type", None)
-    _ft_val = getattr(_active_fault, "value", None)
-
-    # Root span: GenAI create_agent (current OTel GenAI agent-spans convention)
-    with tracer.start_as_current_span("create_agent researcher", kind=SpanKind.CLIENT, attributes={
-        GENAI_OPERATION_NAME: "create_agent",
-        GENAI_AGENT_NAME: "researcher",
-        GENAI_AGENT_ID: "agent-researcher-1",
-        "agent.framework": "otel_genai",
-        "agent.task": task,
-    }):
-
-        # 1. Planning step -- GenAI has no planning span type.
-        # We still create a generic span for the operation.
-        with tracer.start_as_current_span("plan", attributes={
-            "planning.strategy": "sequential",
-        }):
+    # Root: AGENT span
+    with tracer.start_as_current_span(
+        "researcher",
+        kind=SpanKind.INTERNAL,
+        attributes={
+            OI_SPAN_KIND: "AGENT",
+            "agent.name": "researcher",
+            "agent.framework": "openinference",
+            OI_INPUT_VALUE: task,
+        },
+    ):
+        # 1. Planning -- CHAIN span (OpenInference does not differentiate
+        #    planning vs reasoning; both go under CHAIN).
+        with tracer.start_as_current_span(
+            "plan",
+            attributes={OI_SPAN_KIND: "CHAIN"},
+        ):
             plan = ["search for information", "analyze results", "synthesize answer"]
             results["steps"].append({"type": "planning", "plan": plan})
 
-        # 2. Memory check -- GenAI has no memory span type.
+        # 2. Memory check -- OpenInference has no memory kind. Generic span.
         with tracer.start_as_current_span("check-memory"):
             results["steps"].append({"type": "memory_read", "found": False})
 
-        # 2b. Retrieval step -- GenAI HAS a retrieval operation type
-        # Always emit a retrieval span (like a RAG retrieval step).
-        # When stale_retrieval fault is active, we still can't detect it
-        # because GenAI retrieval has no staleness attribute.
+        # 2b. Retrieval -- RETRIEVER span
         with tracer.start_as_current_span(
-            "retrieval knowledge_base_v1",
+            "retrieve-context",
             kind=SpanKind.CLIENT,
             attributes={
-                GENAI_OPERATION_NAME: "retrieval",
-                GENAI_SYSTEM: "custom_rag",
-                GENAI_DATA_SOURCE_ID: "knowledge_base_v1",
+                OI_SPAN_KIND: "RETRIEVER",
+                "retrieval.source": "knowledge_base_v1",
             },
         ):
             results["steps"].append({"type": "retrieval", "source": "knowledge_base_v1"})
 
-        # 3. Agent loop: LLM call -> maybe tool -> repeat
+        # 3. Agent loop
         messages: List[Dict[str, Any]] = [{"role": "user", "content": task}]
         iteration = 0
         current_agent = "researcher"
@@ -141,18 +120,20 @@ def run_otel_genai_agent(
         while iteration < max_iterations:
             iteration += 1
 
-            # Reasoning step -- GenAI has no reasoning span type.
-            with tracer.start_as_current_span(f"reason-{iteration}"):
+            # Reasoning step -- CHAIN (same kind as planning)
+            with tracer.start_as_current_span(
+                f"reason-{iteration}",
+                attributes={OI_SPAN_KIND: "CHAIN"},
+            ):
                 results["steps"].append({"type": "reasoning", "iteration": iteration})
 
-            # LLM call -- GenAI Inference span (CLIENT kind)
+            # LLM call -- LLM span
             with tracer.start_as_current_span(
-                f"chat {model}",
+                f"llm {model}",
                 kind=SpanKind.CLIENT,
                 attributes={
-                    GENAI_OPERATION_NAME: "chat",
-                    GENAI_REQUEST_MODEL: model,
-                    GENAI_SYSTEM: "anthropic" if "claude" in model else "openai",
+                    OI_SPAN_KIND: "LLM",
+                    OI_LLM_MODEL_NAME: model,
                 },
             ) as llm_span:
                 if mock_client:
@@ -166,34 +147,34 @@ def run_otel_genai_agent(
                     except TimeoutError as e:
                         llm_span.set_status(StatusCode.ERROR, f"Timeout: {e}")
                         llm_span.record_exception(e)
-                        llm_span.set_attribute(GENAI_USAGE_INPUT_TOKENS, 0)
-                        llm_span.set_attribute(GENAI_USAGE_OUTPUT_TOKENS, 0)
+                        llm_span.set_attribute(OI_LLM_TOKEN_COUNT_PROMPT, 0)
+                        llm_span.set_attribute(OI_LLM_TOKEN_COUNT_COMPLETION, 0)
                         results["steps"].append({"type": "llm_timeout", "error": str(e)})
                         break
 
                     input_tokens = response.usage.input_tokens
                     output_tokens = response.usage.output_tokens
-                    llm_span.set_attribute(GENAI_USAGE_INPUT_TOKENS, input_tokens)
-                    llm_span.set_attribute(GENAI_USAGE_OUTPUT_TOKENS, output_tokens)
-                    llm_span.set_attribute(GENAI_RESPONSE_MODEL, model)
+                    llm_span.set_attribute(OI_LLM_TOKEN_COUNT_PROMPT, input_tokens)
+                    llm_span.set_attribute(OI_LLM_TOKEN_COUNT_COMPLETION, output_tokens)
 
-                    # Process response
                     has_tool_use = False
                     for block in response.content:
                         if block.type == "tool_use":
                             has_tool_use = True
 
                             if block.name == "delegate_task":
-                                # GenAI defines invoke_agent as a typed operation
-                                # but exposes no source/target IDs in the conventions.
+                                # OpenInference AGENT kind exists but lacks
+                                # typed source/target identifiers, so we wrap
+                                # the delegation as a generic AGENT child span
+                                # with free-form attributes.
                                 target_agent = block.input.get("agent", "unknown")
                                 with tracer.start_as_current_span(
-                                    f"invoke_agent {target_agent}",
-                                    kind=SpanKind.CLIENT,
+                                    f"agent {target_agent}",
+                                    kind=SpanKind.INTERNAL,
                                     attributes={
-                                        GENAI_OPERATION_NAME: "invoke_agent",
-                                        GENAI_AGENT_NAME: target_agent,
-                                        GENAI_AGENT_ID: f"agent-{target_agent}",
+                                        OI_SPAN_KIND: "AGENT",
+                                        "delegation.source_agent": current_agent,
+                                        "delegation.target_agent": target_agent,
                                     },
                                 ):
                                     results["steps"].append({
@@ -210,15 +191,14 @@ def run_otel_genai_agent(
                                 })
                                 continue
 
-                            # Execute Tool -- GenAI execute_tool span (INTERNAL kind)
+                            # TOOL span
                             tool_start = time.time()
                             with tracer.start_as_current_span(
-                                f"execute_tool {block.name}",
+                                f"tool {block.name}",
                                 kind=SpanKind.INTERNAL,
                                 attributes={
-                                    GENAI_OPERATION_NAME: "execute_tool",
-                                    GENAI_TOOL_NAME: block.name,
-                                    GENAI_TOOL_CALL_ID: block.id,
+                                    OI_SPAN_KIND: "TOOL",
+                                    OI_TOOL_NAME: block.name,
                                 },
                             ) as tool_span:
                                 try:
@@ -256,18 +236,21 @@ def run_otel_genai_agent(
                         results["steps"].append({"type": "final_answer", "text": final_text[:100]})
                         break
                 else:
-                    llm_span.set_attribute(GENAI_USAGE_INPUT_TOKENS, 500)
-                    llm_span.set_attribute(GENAI_USAGE_OUTPUT_TOKENS, 200)
+                    llm_span.set_attribute(OI_LLM_TOKEN_COUNT_PROMPT, 500)
+                    llm_span.set_attribute(OI_LLM_TOKEN_COUNT_COMPLETION, 200)
                     results["final_answer"] = "Demo response without mock client."
                     break
 
         results["iterations"] = iteration
 
-        # 4. Guard rail check -- GenAI has no guardrail span type.
-        with tracer.start_as_current_span("content-safety"):
+        # 4. Guardrail -- GUARDRAIL span (free-form attribute, no constrained outcome)
+        with tracer.start_as_current_span(
+            "content-safety",
+            attributes={OI_SPAN_KIND: "GUARDRAIL"},
+        ):
             results["steps"].append({"type": "guardrail", "result": "pass"})
 
-        # 5. Store to memory -- GenAI has no memory span type.
+        # 5. Memory write -- no OpenInference kind
         with tracer.start_as_current_span("store-memory"):
             results["steps"].append({"type": "memory_write"})
 
