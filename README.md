@@ -132,7 +132,7 @@ must detect and classify the injected fault, scored deterministically against
 the injected-fault ground truth (no model judge, no sandbox).
 
 ```bash
-uv sync
+uv sync --extra anthropic   # or --extra openai etc.; the model provider's SDK is needed at eval time
 uv run inspect eval src/agenttelemetry_inspect/agenttelemetry_inspect.py@agent_telemetry \
   --model anthropic/claude-haiku-4-5 --limit 10
 ```
