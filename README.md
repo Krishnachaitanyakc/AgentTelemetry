@@ -2,7 +2,7 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/agenttelemetry.svg)](https://pypi.org/project/agenttelemetry/)
 [![Python versions](https://img.shields.io/pypi/pyversions/agenttelemetry.svg)](https://pypi.org/project/agenttelemetry/)
-[![License](https://img.shields.io/pypi/l/agenttelemetry.svg)](https://github.com/agenttelemetry/agenttelemetry/blob/main/LICENSE)
+[![License](https://img.shields.io/pypi/l/agenttelemetry.svg)](https://github.com/Krishnachaitanyakc/AgentTelemetry/blob/master/LICENSE)
 
 OpenTelemetry-based observability for AI agent systems. Provides 9 agent-specific span kinds, 7 framework adapters, privacy controls, and analysis tools for fault detection in autonomous agents.
 
@@ -124,6 +124,44 @@ PYTHONPATH=src:. python benchmarks/compute_fpr.py \
 
 Pinned environment in `requirements.lock`. Numbers reproduce verbatim.
 
+## Inspect eval (model-as-detector)
+
+The benchmark is also available as an [Inspect](https://inspect.aisi.org.uk/)
+eval: the model under evaluation is shown one exported trace per sample and
+must detect and classify the injected fault, scored deterministically against
+the injected-fault ground truth (no model judge, no sandbox).
+
+```bash
+uv sync
+uv run inspect eval src/agenttelemetry_inspect/agenttelemetry_inspect.py@agent_telemetry \
+  --model anthropic/claude-haiku-4-5 --limit 10
+```
+
+Task parameters select the telemetry vocabulary and slice:
+
+```bash
+# baseline vocabularies (paper Table 2: rule-based ceiling 6/14 each)
+uv run inspect eval src/agenttelemetry_inspect/agenttelemetry_inspect.py@agent_telemetry \
+  -T condition=vanilla_otel --model anthropic/claude-haiku-4-5
+
+# reference adapter only (rule-based ceiling 14/14)
+uv run inspect eval src/agenttelemetry_inspect/agenttelemetry_inspect.py@agent_telemetry \
+  -T frameworks=custom --model anthropic/claude-haiku-4-5
+```
+
+The frozen dataset (170 samples: 140 fault-injected, 30 fault-free controls)
+ships at `src/agenttelemetry_inspect/data/traces_v1.jsonl` and regenerates
+deterministically from the harness via
+`PYTHONPATH=src:. python -m agenttelemetry_inspect.generate_dataset`.
+Reported metrics: `accuracy`, `fdr` (fault detection rate), `fpr`
+(false alarms on controls), `classification_accuracy`, and `fdr_detectable`
+(FDR restricted to samples the paper's rule-based reference detects, so its
+ceiling is 1.0 under every condition). Model FDR per condition is bounded by
+what each vocabulary can express: on this dataset the rule-based reference
+detects 60/98 fault samples for the full DSM across the seven adapters
+(14/14 on the reference adapter), and 6/14 under each baseline vocabulary,
+matching the table above. `tests/inspect/` enforces that closure.
+
 ## Privacy Controls
 
 ```python
@@ -178,7 +216,7 @@ If you use AgentTelemetry in your research, please cite:
   title     = {AgentTelemetry: OpenTelemetry-Based Observability for AI Agent Systems},
   author    = {Balusu, Krishna Chaitanya},
   year      = {2025},
-  url       = {https://github.com/agenttelemetry/agenttelemetry},
+  url       = {https://github.com/Krishnachaitanyakc/AgentTelemetry},
   license   = {Apache-2.0},
 }
 ```

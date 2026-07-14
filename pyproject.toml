@@ -4,11 +4,11 @@ build-backend = "hatchling.build"
 
 [project]
 name = "agenttelemetry"
-version = "0.1.0"
+version = "0.2.0"
 description = "OpenTelemetry-based observability for autonomous AI agent systems"
 readme = "README.md"
 license = "Apache-2.0"
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 authors = [
     { name = "Krishna Chaitanya Balusu" },
 ]
@@ -18,8 +18,6 @@ classifiers = [
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
@@ -43,11 +41,26 @@ autogen = ["autogen-agentchat >= 0.4.0"]
 anthropic = ["anthropic >= 0.20.0"]
 openai = ["openai >= 1.0.0"]
 llamaindex = ["llama-index-core >= 0.10.0"]
+inspect = ["inspect-ai >= 0.3.246"]
 all = ["agenttelemetry[langchain,crewai,autogen,anthropic,openai,llamaindex]"]
 dev = ["pytest >= 8.0", "pytest-asyncio", "pytest-mock"]
 
+# PEP 735 groups: `uv sync` installs the dev group by default, which is how
+# the inspect_evals register expects `uv sync` to yield a runnable eval.
+[dependency-groups]
+dev = [
+    "pytest >= 8.0",
+    "pytest-asyncio",
+    "pytest-mock",
+    "inspect-ai >= 0.3.246",
+    "langchain-core >= 0.2.0",
+]
+
+[project.entry-points.inspect_ai]
+agenttelemetry_inspect = "agenttelemetry_inspect"
+
 [tool.hatch.build.targets.wheel]
-packages = ["src/agenttelemetry"]
+packages = ["src/agenttelemetry", "src/agenttelemetry_inspect"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

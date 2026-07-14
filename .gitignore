@@ -35,6 +35,11 @@ htmlcov/
 # Telemetry output
 agent_traces.jsonl
 *.jsonl
+# ...except the frozen Inspect eval dataset
+!src/agenttelemetry_inspect/data/*.jsonl
+
+# Inspect eval logs
+logs/
 
 # Experiment traces (large, contain API responses)
 results/*/traces/

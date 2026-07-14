@@ -2,27 +2,33 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
-    branches: [main]
+    branches: [master]
 
 jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.11", "3.12"]
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
         with:
           python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
-        run: pip install -e ".[dev]"
+        run: uv sync
 
-      - name: Run unit and benchmark tests
-        run: pytest tests/unit/ tests/benchmarks/ -v
+      - name: Run tests
+        run: uv run pytest tests/ -v
+
+      - name: Inspect eval smoke test
+        run: >
+          uv run inspect eval
+          src/agenttelemetry_inspect/agenttelemetry_inspect.py@agent_telemetry
+          --model mockllm/model --limit 5 --display plain

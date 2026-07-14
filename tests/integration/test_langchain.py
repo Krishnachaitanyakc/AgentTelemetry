@@ -51,10 +51,20 @@ class TestLangChainCallbackSpans:
         from agenttelemetry.adapters.langchain import LangChainInstrumentor
         return LangChainInstrumentor
 
+    def _instrumented(self, cls, tracer_provider):
+        instrumentor = cls(tracer_provider=tracer_provider)
+        try:
+            # skip_dep_check so a missing langchain-core raises ImportError
+            # here instead of silently no-op instrumenting.
+            instrumentor.instrument(tracer_provider=tracer_provider, skip_dep_check=True)
+        except ImportError:
+            pytest.skip("langchain-core not installed")
+        return instrumentor
+
     def test_on_llm_start_creates_span(self, fresh_tracer_provider, memory_exporter):
         cls = self._get_instrumentor()
-        instrumentor = cls(tracer_provider=fresh_tracer_provider)
-        handler = getattr(instrumentor, "get_callback_handler", lambda: instrumentor)()
+        instrumentor = self._instrumented(cls, fresh_tracer_provider)
+        handler = instrumentor.get_callback_handler()
 
         if hasattr(handler, "on_llm_start"):
             # Simulate LangChain calling on_llm_start
@@ -89,8 +99,8 @@ class TestLangChainCallbackSpans:
 
     def test_on_tool_start_creates_tool_span(self, fresh_tracer_provider, memory_exporter):
         cls = self._get_instrumentor()
-        instrumentor = cls(tracer_provider=fresh_tracer_provider)
-        handler = getattr(instrumentor, "get_callback_handler", lambda: instrumentor)()
+        instrumentor = self._instrumented(cls, fresh_tracer_provider)
+        handler = instrumentor.get_callback_handler()
 
         if hasattr(handler, "on_tool_start"):
             serialized = {"name": "search_tool"}

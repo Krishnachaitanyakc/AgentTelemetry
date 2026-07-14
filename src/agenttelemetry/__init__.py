@@ -1,6 +1,6 @@
 """AgentTelemetry — OpenTelemetry-based observability for AI agent systems."""
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 from agenttelemetry.core.spans import (
     AgentSpanKind,
