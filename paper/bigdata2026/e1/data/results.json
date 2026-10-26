@@ -1,0 +1,1815 @@
+{
+  "content_capture": {
+    "custom/oi/library_only": 1.0,
+    "custom/oi/with_sdk": 1.0,
+    "custom/ollm/library_only": 1.0,
+    "custom/ollm/with_sdk": 1.0,
+    "custom/otel/library_only": 0.0,
+    "custom/otel/with_sdk": 0.0,
+    "custom/ref/library_only": 0.0,
+    "custom/ref/with_sdk": 0.0,
+    "custom/sdk/library_only": 0.0,
+    "custom/sdk/with_sdk": 0.0,
+    "langgraph/oi/library_only": 1.0,
+    "langgraph/oi/with_sdk": 1.0,
+    "langgraph/ollm/library_only": 1.0,
+    "langgraph/ollm/with_sdk": 1.0,
+    "langgraph/otel/library_only": 0.0,
+    "langgraph/otel/with_sdk": 0.0,
+    "langgraph/ref/library_only": 0.0,
+    "langgraph/ref/with_sdk": 0.0,
+    "langgraph/sdk/library_only": 0.0,
+    "langgraph/sdk/with_sdk": 0.0
+  },
+  "details": {
+    "custom/oi/library_only": {
+      "failed_tool": {
+        "no tool span": 49
+      },
+      "guard_decision": {
+        "absent": 9
+      },
+      "prov_link": {
+        "no tool span": 165
+      }
+    },
+    "custom/oi/with_sdk": {
+      "failed_tool": {
+        "no tool span": 49
+      },
+      "guard_decision": {
+        "absent": 9
+      },
+      "prov_link": {
+        "no tool span": 165
+      }
+    },
+    "custom/ollm/library_only": {
+      "failed_tool": {
+        "no tool span": 49
+      },
+      "guard_decision": {
+        "absent": 9
+      },
+      "prov_link": {
+        "no tool span": 165
+      }
+    },
+    "custom/ollm/with_sdk": {
+      "failed_tool": {
+        "no tool span": 49
+      },
+      "guard_decision": {
+        "absent": 9
+      },
+      "prov_link": {
+        "no tool span": 165
+      }
+    },
+    "custom/otel/library_only": {
+      "failed_tool": {
+        "no tool span": 49
+      },
+      "guard_decision": {
+        "absent": 9
+      },
+      "prov_link": {
+        "no tool span": 165
+      }
+    },
+    "custom/otel/with_sdk": {
+      "failed_tool": {
+        "no tool span": 49
+      },
+      "guard_decision": {
+        "absent": 9
+      },
+      "prov_link": {
+        "no tool span": 165
+      }
+    },
+    "custom/ref/library_only": {
+      "failed_tool": {
+        "error visible": 49
+      },
+      "guard_decision": {
+        "standard": 9
+      },
+      "prov_link": {
+        "order": 165
+      }
+    },
+    "custom/ref/with_sdk": {
+      "failed_tool": {
+        "error visible": 49
+      },
+      "guard_decision": {
+        "standard": 9
+      },
+      "prov_link": {
+        "order": 165
+      }
+    },
+    "custom/sdk/library_only": {
+      "failed_tool": {
+        "no tool span": 49
+      },
+      "guard_decision": {
+        "absent": 9
+      },
+      "prov_link": {
+        "no tool span": 165
+      }
+    },
+    "custom/sdk/with_sdk": {
+      "failed_tool": {
+        "no tool span": 49
+      },
+      "guard_decision": {
+        "absent": 9
+      },
+      "prov_link": {
+        "no tool span": 165
+      }
+    },
+    "langgraph/oi/library_only": {
+      "failed_tool": {
+        "error visible": 50
+      },
+      "guard_decision": {
+        "content": 9
+      },
+      "prov_link": {
+        "unlinked": 161
+      }
+    },
+    "langgraph/oi/with_sdk": {
+      "failed_tool": {
+        "error visible": 50
+      },
+      "guard_decision": {
+        "content": 9
+      },
+      "prov_link": {
+        "unlinked": 161
+      }
+    },
+    "langgraph/ollm/library_only": {
+      "failed_tool": {
+        "error visible": 50
+      },
+      "guard_decision": {
+        "content": 9
+      },
+      "prov_link": {
+        "order": 161
+      }
+    },
+    "langgraph/ollm/with_sdk": {
+      "failed_tool": {
+        "error visible": 50
+      },
+      "guard_decision": {
+        "content": 9
+      },
+      "prov_link": {
+        "order": 161
+      }
+    },
+    "langgraph/otel/library_only": {
+      "failed_tool": {
+        "error visible": 50
+      },
+      "guard_decision": {
+        "absent": 9
+      },
+      "prov_link": {
+        "order": 161
+      }
+    },
+    "langgraph/otel/with_sdk": {
+      "failed_tool": {
+        "error visible": 50
+      },
+      "guard_decision": {
+        "absent": 9
+      },
+      "prov_link": {
+        "order": 161
+      }
+    },
+    "langgraph/ref/library_only": {
+      "failed_tool": {
+        "error visible": 50
+      },
+      "guard_decision": {
+        "standard": 9
+      },
+      "prov_link": {
+        "order": 161
+      }
+    },
+    "langgraph/ref/with_sdk": {
+      "failed_tool": {
+        "error visible": 50
+      },
+      "guard_decision": {
+        "standard": 9
+      },
+      "prov_link": {
+        "order": 161
+      }
+    },
+    "langgraph/sdk/library_only": {
+      "failed_tool": {
+        "no tool span": 50
+      },
+      "guard_decision": {
+        "absent": 9
+      },
+      "prov_link": {
+        "no tool span": 161
+      }
+    },
+    "langgraph/sdk/with_sdk": {
+      "failed_tool": {
+        "no tool span": 50
+      },
+      "guard_decision": {
+        "absent": 9
+      },
+      "prov_link": {
+        "no tool span": 161
+      }
+    }
+  },
+  "instances": {},
+  "levels": {
+    "custom/oi/library_only": {
+      "Deleg.": {
+        "none": 13
+      },
+      "Guard": {
+        "none": 9
+      },
+      "Loops": {
+        "none": 7
+      },
+      "Memory": {
+        "none": 88
+      },
+      "Plan": {
+        "none": 44
+      },
+      "Retr.": {
+        "none": 63
+      },
+      "Tokens": {
+        "standard": 223
+      },
+      "Tool prov.": {
+        "none": 165
+      }
+    },
+    "custom/oi/with_sdk": {
+      "Deleg.": {
+        "none": 13
+      },
+      "Guard": {
+        "none": 9
+      },
+      "Loops": {
+        "none": 7
+      },
+      "Memory": {
+        "none": 88
+      },
+      "Plan": {
+        "none": 44
+      },
+      "Retr.": {
+        "none": 63
+      },
+      "Tokens": {
+        "standard": 223
+      },
+      "Tool prov.": {
+        "none": 165
+      }
+    },
+    "custom/ollm/library_only": {
+      "Deleg.": {
+        "none": 13
+      },
+      "Guard": {
+        "none": 9
+      },
+      "Loops": {
+        "none": 7
+      },
+      "Memory": {
+        "none": 88
+      },
+      "Plan": {
+        "none": 44
+      },
+      "Retr.": {
+        "none": 63
+      },
+      "Tokens": {
+        "standard": 223
+      },
+      "Tool prov.": {
+        "none": 165
+      }
+    },
+    "custom/ollm/with_sdk": {
+      "Deleg.": {
+        "none": 13
+      },
+      "Guard": {
+        "none": 9
+      },
+      "Loops": {
+        "none": 7
+      },
+      "Memory": {
+        "none": 88
+      },
+      "Plan": {
+        "none": 44
+      },
+      "Retr.": {
+        "none": 63
+      },
+      "Tokens": {
+        "standard": 223
+      },
+      "Tool prov.": {
+        "none": 165
+      }
+    },
+    "custom/otel/library_only": {
+      "Deleg.": {
+        "none": 13
+      },
+      "Guard": {
+        "none": 9
+      },
+      "Loops": {
+        "none": 7
+      },
+      "Memory": {
+        "none": 88
+      },
+      "Plan": {
+        "none": 44
+      },
+      "Retr.": {
+        "none": 63
+      },
+      "Tokens": {
+        "standard": 223
+      },
+      "Tool prov.": {
+        "none": 165
+      }
+    },
+    "custom/otel/with_sdk": {
+      "Deleg.": {
+        "none": 13
+      },
+      "Guard": {
+        "none": 9
+      },
+      "Loops": {
+        "none": 7
+      },
+      "Memory": {
+        "none": 88
+      },
+      "Plan": {
+        "none": 44
+      },
+      "Retr.": {
+        "none": 63
+      },
+      "Tokens": {
+        "standard": 223
+      },
+      "Tool prov.": {
+        "none": 165
+      }
+    },
+    "custom/ref/library_only": {
+      "Deleg.": {
+        "standard": 13
+      },
+      "Guard": {
+        "standard": 9
+      },
+      "Loops": {
+        "standard": 7
+      },
+      "Memory": {
+        "standard": 88
+      },
+      "Plan": {
+        "standard": 44
+      },
+      "Retr.": {
+        "standard": 63
+      },
+      "Tokens": {
+        "standard": 223
+      },
+      "Tool prov.": {
+        "app": 165
+      }
+    },
+    "custom/ref/with_sdk": {
+      "Deleg.": {
+        "standard": 13
+      },
+      "Guard": {
+        "standard": 9
+      },
+      "Loops": {
+        "standard": 7
+      },
+      "Memory": {
+        "standard": 88
+      },
+      "Plan": {
+        "standard": 44
+      },
+      "Retr.": {
+        "standard": 63
+      },
+      "Tokens": {
+        "standard": 223
+      },
+      "Tool prov.": {
+        "app": 165
+      }
+    },
+    "custom/sdk/library_only": {
+      "Deleg.": {
+        "none": 13
+      },
+      "Guard": {
+        "none": 9
+      },
+      "Loops": {
+        "none": 7
+      },
+      "Memory": {
+        "none": 88
+      },
+      "Plan": {
+        "none": 44
+      },
+      "Retr.": {
+        "none": 63
+      },
+      "Tokens": {
+        "none": 223
+      },
+      "Tool prov.": {
+        "none": 165
+      }
+    },
+    "custom/sdk/with_sdk": {
+      "Deleg.": {
+        "none": 13
+      },
+      "Guard": {
+        "none": 9
+      },
+      "Loops": {
+        "none": 7
+      },
+      "Memory": {
+        "none": 88
+      },
+      "Plan": {
+        "none": 44
+      },
+      "Retr.": {
+        "none": 63
+      },
+      "Tokens": {
+        "standard": 223
+      },
+      "Tool prov.": {
+        "none": 165
+      }
+    },
+    "langgraph/oi/library_only": {
+      "Deleg.": {
+        "app": 11
+      },
+      "Guard": {
+        "app": 9
+      },
+      "Loops": {
+        "standard": 10
+      },
+      "Memory": {
+        "app": 88
+      },
+      "Plan": {
+        "app": 44
+      },
+      "Retr.": {
+        "standard": 63
+      },
+      "Tokens": {
+        "standard": 218
+      },
+      "Tool prov.": {
+        "none": 161
+      }
+    },
+    "langgraph/oi/with_sdk": {
+      "Deleg.": {
+        "app": 11
+      },
+      "Guard": {
+        "app": 9
+      },
+      "Loops": {
+        "standard": 10
+      },
+      "Memory": {
+        "app": 88
+      },
+      "Plan": {
+        "app": 44
+      },
+      "Retr.": {
+        "standard": 63
+      },
+      "Tokens": {
+        "standard": 218
+      },
+      "Tool prov.": {
+        "none": 161
+      }
+    },
+    "langgraph/ollm/library_only": {
+      "Deleg.": {
+        "standard": 11
+      },
+      "Guard": {
+        "app": 9
+      },
+      "Loops": {
+        "standard": 10
+      },
+      "Memory": {
+        "app": 88
+      },
+      "Plan": {
+        "app": 44
+      },
+      "Retr.": {
+        "app": 63
+      },
+      "Tokens": {
+        "standard": 218
+      },
+      "Tool prov.": {
+        "app": 161
+      }
+    },
+    "langgraph/ollm/with_sdk": {
+      "Deleg.": {
+        "standard": 11
+      },
+      "Guard": {
+        "app": 9
+      },
+      "Loops": {
+        "standard": 10
+      },
+      "Memory": {
+        "app": 88
+      },
+      "Plan": {
+        "app": 44
+      },
+      "Retr.": {
+        "app": 63
+      },
+      "Tokens": {
+        "standard": 218
+      },
+      "Tool prov.": {
+        "app": 161
+      }
+    },
+    "langgraph/otel/library_only": {
+      "Deleg.": {
+        "none": 11
+      },
+      "Guard": {
+        "none": 9
+      },
+      "Loops": {
+        "standard": 10
+      },
+      "Memory": {
+        "none": 88
+      },
+      "Plan": {
+        "none": 44
+      },
+      "Retr.": {
+        "standard": 63
+      },
+      "Tokens": {
+        "standard": 218
+      },
+      "Tool prov.": {
+        "app": 161
+      }
+    },
+    "langgraph/otel/with_sdk": {
+      "Deleg.": {
+        "none": 11
+      },
+      "Guard": {
+        "none": 9
+      },
+      "Loops": {
+        "standard": 10
+      },
+      "Memory": {
+        "none": 88
+      },
+      "Plan": {
+        "none": 44
+      },
+      "Retr.": {
+        "standard": 63
+      },
+      "Tokens": {
+        "standard": 218
+      },
+      "Tool prov.": {
+        "app": 161
+      }
+    },
+    "langgraph/ref/library_only": {
+      "Deleg.": {
+        "standard": 11
+      },
+      "Guard": {
+        "standard": 9
+      },
+      "Loops": {
+        "standard": 10
+      },
+      "Memory": {
+        "standard": 88
+      },
+      "Plan": {
+        "standard": 44
+      },
+      "Retr.": {
+        "standard": 63
+      },
+      "Tokens": {
+        "standard": 218
+      },
+      "Tool prov.": {
+        "app": 161
+      }
+    },
+    "langgraph/ref/with_sdk": {
+      "Deleg.": {
+        "standard": 11
+      },
+      "Guard": {
+        "standard": 9
+      },
+      "Loops": {
+        "standard": 10
+      },
+      "Memory": {
+        "standard": 88
+      },
+      "Plan": {
+        "standard": 44
+      },
+      "Retr.": {
+        "standard": 63
+      },
+      "Tokens": {
+        "standard": 218
+      },
+      "Tool prov.": {
+        "app": 161
+      }
+    },
+    "langgraph/sdk/library_only": {
+      "Deleg.": {
+        "none": 11
+      },
+      "Guard": {
+        "none": 9
+      },
+      "Loops": {
+        "none": 10
+      },
+      "Memory": {
+        "none": 88
+      },
+      "Plan": {
+        "none": 44
+      },
+      "Retr.": {
+        "none": 63
+      },
+      "Tokens": {
+        "none": 218
+      },
+      "Tool prov.": {
+        "none": 161
+      }
+    },
+    "langgraph/sdk/with_sdk": {
+      "Deleg.": {
+        "none": 11
+      },
+      "Guard": {
+        "none": 9
+      },
+      "Loops": {
+        "none": 10
+      },
+      "Memory": {
+        "none": 88
+      },
+      "Plan": {
+        "none": 44
+      },
+      "Retr.": {
+        "none": 63
+      },
+      "Tokens": {
+        "standard": 218
+      },
+      "Tool prov.": {
+        "none": 161
+      }
+    }
+  },
+  "n_runs": {
+    "custom/oi/library_only": 44,
+    "custom/oi/with_sdk": 44,
+    "custom/ollm/library_only": 44,
+    "custom/ollm/with_sdk": 44,
+    "custom/otel/library_only": 44,
+    "custom/otel/with_sdk": 44,
+    "custom/ref/library_only": 44,
+    "custom/ref/with_sdk": 44,
+    "custom/sdk/library_only": 44,
+    "custom/sdk/with_sdk": 44,
+    "langgraph/oi/library_only": 44,
+    "langgraph/oi/with_sdk": 44,
+    "langgraph/ollm/library_only": 44,
+    "langgraph/ollm/with_sdk": 44,
+    "langgraph/otel/library_only": 44,
+    "langgraph/otel/with_sdk": 44,
+    "langgraph/ref/library_only": 44,
+    "langgraph/ref/with_sdk": 44,
+    "langgraph/sdk/library_only": 44,
+    "langgraph/sdk/with_sdk": 44
+  },
+  "recall": {
+    "custom/oi/library_only": {
+      "Deleg.": {
+        "any": 0.0,
+        "n": 13,
+        "standard": 0.0
+      },
+      "Guard": {
+        "any": 0.0,
+        "n": 9,
+        "standard": 0.0
+      },
+      "Loops": {
+        "any": 0.0,
+        "n": 7,
+        "standard": 0.0
+      },
+      "Memory": {
+        "any": 0.0,
+        "n": 88,
+        "standard": 0.0
+      },
+      "Plan": {
+        "any": 0.0,
+        "n": 44,
+        "standard": 0.0
+      },
+      "Retr.": {
+        "any": 0.0,
+        "n": 63,
+        "standard": 0.0
+      },
+      "Tokens": {
+        "any": 1.0,
+        "n": 223,
+        "standard": 1.0
+      },
+      "Tool prov.": {
+        "any": 0.0,
+        "n": 165,
+        "standard": 0.0
+      }
+    },
+    "custom/oi/with_sdk": {
+      "Deleg.": {
+        "any": 0.0,
+        "n": 13,
+        "standard": 0.0
+      },
+      "Guard": {
+        "any": 0.0,
+        "n": 9,
+        "standard": 0.0
+      },
+      "Loops": {
+        "any": 0.0,
+        "n": 7,
+        "standard": 0.0
+      },
+      "Memory": {
+        "any": 0.0,
+        "n": 88,
+        "standard": 0.0
+      },
+      "Plan": {
+        "any": 0.0,
+        "n": 44,
+        "standard": 0.0
+      },
+      "Retr.": {
+        "any": 0.0,
+        "n": 63,
+        "standard": 0.0
+      },
+      "Tokens": {
+        "any": 1.0,
+        "n": 223,
+        "standard": 1.0
+      },
+      "Tool prov.": {
+        "any": 0.0,
+        "n": 165,
+        "standard": 0.0
+      }
+    },
+    "custom/ollm/library_only": {
+      "Deleg.": {
+        "any": 0.0,
+        "n": 13,
+        "standard": 0.0
+      },
+      "Guard": {
+        "any": 0.0,
+        "n": 9,
+        "standard": 0.0
+      },
+      "Loops": {
+        "any": 0.0,
+        "n": 7,
+        "standard": 0.0
+      },
+      "Memory": {
+        "any": 0.0,
+        "n": 88,
+        "standard": 0.0
+      },
+      "Plan": {
+        "any": 0.0,
+        "n": 44,
+        "standard": 0.0
+      },
+      "Retr.": {
+        "any": 0.0,
+        "n": 63,
+        "standard": 0.0
+      },
+      "Tokens": {
+        "any": 1.0,
+        "n": 223,
+        "standard": 1.0
+      },
+      "Tool prov.": {
+        "any": 0.0,
+        "n": 165,
+        "standard": 0.0
+      }
+    },
+    "custom/ollm/with_sdk": {
+      "Deleg.": {
+        "any": 0.0,
+        "n": 13,
+        "standard": 0.0
+      },
+      "Guard": {
+        "any": 0.0,
+        "n": 9,
+        "standard": 0.0
+      },
+      "Loops": {
+        "any": 0.0,
+        "n": 7,
+        "standard": 0.0
+      },
+      "Memory": {
+        "any": 0.0,
+        "n": 88,
+        "standard": 0.0
+      },
+      "Plan": {
+        "any": 0.0,
+        "n": 44,
+        "standard": 0.0
+      },
+      "Retr.": {
+        "any": 0.0,
+        "n": 63,
+        "standard": 0.0
+      },
+      "Tokens": {
+        "any": 1.0,
+        "n": 223,
+        "standard": 1.0
+      },
+      "Tool prov.": {
+        "any": 0.0,
+        "n": 165,
+        "standard": 0.0
+      }
+    },
+    "custom/otel/library_only": {
+      "Deleg.": {
+        "any": 0.0,
+        "n": 13,
+        "standard": 0.0
+      },
+      "Guard": {
+        "any": 0.0,
+        "n": 9,
+        "standard": 0.0
+      },
+      "Loops": {
+        "any": 0.0,
+        "n": 7,
+        "standard": 0.0
+      },
+      "Memory": {
+        "any": 0.0,
+        "n": 88,
+        "standard": 0.0
+      },
+      "Plan": {
+        "any": 0.0,
+        "n": 44,
+        "standard": 0.0
+      },
+      "Retr.": {
+        "any": 0.0,
+        "n": 63,
+        "standard": 0.0
+      },
+      "Tokens": {
+        "any": 1.0,
+        "n": 223,
+        "standard": 1.0
+      },
+      "Tool prov.": {
+        "any": 0.0,
+        "n": 165,
+        "standard": 0.0
+      }
+    },
+    "custom/otel/with_sdk": {
+      "Deleg.": {
+        "any": 0.0,
+        "n": 13,
+        "standard": 0.0
+      },
+      "Guard": {
+        "any": 0.0,
+        "n": 9,
+        "standard": 0.0
+      },
+      "Loops": {
+        "any": 0.0,
+        "n": 7,
+        "standard": 0.0
+      },
+      "Memory": {
+        "any": 0.0,
+        "n": 88,
+        "standard": 0.0
+      },
+      "Plan": {
+        "any": 0.0,
+        "n": 44,
+        "standard": 0.0
+      },
+      "Retr.": {
+        "any": 0.0,
+        "n": 63,
+        "standard": 0.0
+      },
+      "Tokens": {
+        "any": 1.0,
+        "n": 223,
+        "standard": 1.0
+      },
+      "Tool prov.": {
+        "any": 0.0,
+        "n": 165,
+        "standard": 0.0
+      }
+    },
+    "custom/ref/library_only": {
+      "Deleg.": {
+        "any": 1.0,
+        "n": 13,
+        "standard": 1.0
+      },
+      "Guard": {
+        "any": 1.0,
+        "n": 9,
+        "standard": 1.0
+      },
+      "Loops": {
+        "any": 1.0,
+        "n": 7,
+        "standard": 1.0
+      },
+      "Memory": {
+        "any": 1.0,
+        "n": 88,
+        "standard": 1.0
+      },
+      "Plan": {
+        "any": 1.0,
+        "n": 44,
+        "standard": 1.0
+      },
+      "Retr.": {
+        "any": 1.0,
+        "n": 63,
+        "standard": 1.0
+      },
+      "Tokens": {
+        "any": 1.0,
+        "n": 223,
+        "standard": 1.0
+      },
+      "Tool prov.": {
+        "any": 1.0,
+        "n": 165,
+        "standard": 0.0
+      }
+    },
+    "custom/ref/with_sdk": {
+      "Deleg.": {
+        "any": 1.0,
+        "n": 13,
+        "standard": 1.0
+      },
+      "Guard": {
+        "any": 1.0,
+        "n": 9,
+        "standard": 1.0
+      },
+      "Loops": {
+        "any": 1.0,
+        "n": 7,
+        "standard": 1.0
+      },
+      "Memory": {
+        "any": 1.0,
+        "n": 88,
+        "standard": 1.0
+      },
+      "Plan": {
+        "any": 1.0,
+        "n": 44,
+        "standard": 1.0
+      },
+      "Retr.": {
+        "any": 1.0,
+        "n": 63,
+        "standard": 1.0
+      },
+      "Tokens": {
+        "any": 1.0,
+        "n": 223,
+        "standard": 1.0
+      },
+      "Tool prov.": {
+        "any": 1.0,
+        "n": 165,
+        "standard": 0.0
+      }
+    },
+    "custom/sdk/library_only": {
+      "Deleg.": {
+        "any": 0.0,
+        "n": 13,
+        "standard": 0.0
+      },
+      "Guard": {
+        "any": 0.0,
+        "n": 9,
+        "standard": 0.0
+      },
+      "Loops": {
+        "any": 0.0,
+        "n": 7,
+        "standard": 0.0
+      },
+      "Memory": {
+        "any": 0.0,
+        "n": 88,
+        "standard": 0.0
+      },
+      "Plan": {
+        "any": 0.0,
+        "n": 44,
+        "standard": 0.0
+      },
+      "Retr.": {
+        "any": 0.0,
+        "n": 63,
+        "standard": 0.0
+      },
+      "Tokens": {
+        "any": 0.0,
+        "n": 223,
+        "standard": 0.0
+      },
+      "Tool prov.": {
+        "any": 0.0,
+        "n": 165,
+        "standard": 0.0
+      }
+    },
+    "custom/sdk/with_sdk": {
+      "Deleg.": {
+        "any": 0.0,
+        "n": 13,
+        "standard": 0.0
+      },
+      "Guard": {
+        "any": 0.0,
+        "n": 9,
+        "standard": 0.0
+      },
+      "Loops": {
+        "any": 0.0,
+        "n": 7,
+        "standard": 0.0
+      },
+      "Memory": {
+        "any": 0.0,
+        "n": 88,
+        "standard": 0.0
+      },
+      "Plan": {
+        "any": 0.0,
+        "n": 44,
+        "standard": 0.0
+      },
+      "Retr.": {
+        "any": 0.0,
+        "n": 63,
+        "standard": 0.0
+      },
+      "Tokens": {
+        "any": 1.0,
+        "n": 223,
+        "standard": 1.0
+      },
+      "Tool prov.": {
+        "any": 0.0,
+        "n": 165,
+        "standard": 0.0
+      }
+    },
+    "langgraph/oi/library_only": {
+      "Deleg.": {
+        "any": 1.0,
+        "n": 11,
+        "standard": 0.0
+      },
+      "Guard": {
+        "any": 1.0,
+        "n": 9,
+        "standard": 0.0
+      },
+      "Loops": {
+        "any": 1.0,
+        "n": 10,
+        "standard": 1.0
+      },
+      "Memory": {
+        "any": 1.0,
+        "n": 88,
+        "standard": 0.0
+      },
+      "Plan": {
+        "any": 1.0,
+        "n": 44,
+        "standard": 0.0
+      },
+      "Retr.": {
+        "any": 1.0,
+        "n": 63,
+        "standard": 1.0
+      },
+      "Tokens": {
+        "any": 1.0,
+        "n": 218,
+        "standard": 1.0
+      },
+      "Tool prov.": {
+        "any": 0.0,
+        "n": 161,
+        "standard": 0.0
+      }
+    },
+    "langgraph/oi/with_sdk": {
+      "Deleg.": {
+        "any": 1.0,
+        "n": 11,
+        "standard": 0.0
+      },
+      "Guard": {
+        "any": 1.0,
+        "n": 9,
+        "standard": 0.0
+      },
+      "Loops": {
+        "any": 1.0,
+        "n": 10,
+        "standard": 1.0
+      },
+      "Memory": {
+        "any": 1.0,
+        "n": 88,
+        "standard": 0.0
+      },
+      "Plan": {
+        "any": 1.0,
+        "n": 44,
+        "standard": 0.0
+      },
+      "Retr.": {
+        "any": 1.0,
+        "n": 63,
+        "standard": 1.0
+      },
+      "Tokens": {
+        "any": 1.0,
+        "n": 218,
+        "standard": 1.0
+      },
+      "Tool prov.": {
+        "any": 0.0,
+        "n": 161,
+        "standard": 0.0
+      }
+    },
+    "langgraph/ollm/library_only": {
+      "Deleg.": {
+        "any": 1.0,
+        "n": 11,
+        "standard": 1.0
+      },
+      "Guard": {
+        "any": 1.0,
+        "n": 9,
+        "standard": 0.0
+      },
+      "Loops": {
+        "any": 1.0,
+        "n": 10,
+        "standard": 1.0
+      },
+      "Memory": {
+        "any": 1.0,
+        "n": 88,
+        "standard": 0.0
+      },
+      "Plan": {
+        "any": 1.0,
+        "n": 44,
+        "standard": 0.0
+      },
+      "Retr.": {
+        "any": 1.0,
+        "n": 63,
+        "standard": 0.0
+      },
+      "Tokens": {
+        "any": 1.0,
+        "n": 218,
+        "standard": 1.0
+      },
+      "Tool prov.": {
+        "any": 1.0,
+        "n": 161,
+        "standard": 0.0
+      }
+    },
+    "langgraph/ollm/with_sdk": {
+      "Deleg.": {
+        "any": 1.0,
+        "n": 11,
+        "standard": 1.0
+      },
+      "Guard": {
+        "any": 1.0,
+        "n": 9,
+        "standard": 0.0
+      },
+      "Loops": {
+        "any": 1.0,
+        "n": 10,
+        "standard": 1.0
+      },
+      "Memory": {
+        "any": 1.0,
+        "n": 88,
+        "standard": 0.0
+      },
+      "Plan": {
+        "any": 1.0,
+        "n": 44,
+        "standard": 0.0
+      },
+      "Retr.": {
+        "any": 1.0,
+        "n": 63,
+        "standard": 0.0
+      },
+      "Tokens": {
+        "any": 1.0,
+        "n": 218,
+        "standard": 1.0
+      },
+      "Tool prov.": {
+        "any": 1.0,
+        "n": 161,
+        "standard": 0.0
+      }
+    },
+    "langgraph/otel/library_only": {
+      "Deleg.": {
+        "any": 0.0,
+        "n": 11,
+        "standard": 0.0
+      },
+      "Guard": {
+        "any": 0.0,
+        "n": 9,
+        "standard": 0.0
+      },
+      "Loops": {
+        "any": 1.0,
+        "n": 10,
+        "standard": 1.0
+      },
+      "Memory": {
+        "any": 0.0,
+        "n": 88,
+        "standard": 0.0
+      },
+      "Plan": {
+        "any": 0.0,
+        "n": 44,
+        "standard": 0.0
+      },
+      "Retr.": {
+        "any": 1.0,
+        "n": 63,
+        "standard": 1.0
+      },
+      "Tokens": {
+        "any": 1.0,
+        "n": 218,
+        "standard": 1.0
+      },
+      "Tool prov.": {
+        "any": 1.0,
+        "n": 161,
+        "standard": 0.0
+      }
+    },
+    "langgraph/otel/with_sdk": {
+      "Deleg.": {
+        "any": 0.0,
+        "n": 11,
+        "standard": 0.0
+      },
+      "Guard": {
+        "any": 0.0,
+        "n": 9,
+        "standard": 0.0
+      },
+      "Loops": {
+        "any": 1.0,
+        "n": 10,
+        "standard": 1.0
+      },
+      "Memory": {
+        "any": 0.0,
+        "n": 88,
+        "standard": 0.0
+      },
+      "Plan": {
+        "any": 0.0,
+        "n": 44,
+        "standard": 0.0
+      },
+      "Retr.": {
+        "any": 1.0,
+        "n": 63,
+        "standard": 1.0
+      },
+      "Tokens": {
+        "any": 1.0,
+        "n": 218,
+        "standard": 1.0
+      },
+      "Tool prov.": {
+        "any": 1.0,
+        "n": 161,
+        "standard": 0.0
+      }
+    },
+    "langgraph/ref/library_only": {
+      "Deleg.": {
+        "any": 1.0,
+        "n": 11,
+        "standard": 1.0
+      },
+      "Guard": {
+        "any": 1.0,
+        "n": 9,
+        "standard": 1.0
+      },
+      "Loops": {
+        "any": 1.0,
+        "n": 10,
+        "standard": 1.0
+      },
+      "Memory": {
+        "any": 1.0,
+        "n": 88,
+        "standard": 1.0
+      },
+      "Plan": {
+        "any": 1.0,
+        "n": 44,
+        "standard": 1.0
+      },
+      "Retr.": {
+        "any": 1.0,
+        "n": 63,
+        "standard": 1.0
+      },
+      "Tokens": {
+        "any": 1.0,
+        "n": 218,
+        "standard": 1.0
+      },
+      "Tool prov.": {
+        "any": 1.0,
+        "n": 161,
+        "standard": 0.0
+      }
+    },
+    "langgraph/ref/with_sdk": {
+      "Deleg.": {
+        "any": 1.0,
+        "n": 11,
+        "standard": 1.0
+      },
+      "Guard": {
+        "any": 1.0,
+        "n": 9,
+        "standard": 1.0
+      },
+      "Loops": {
+        "any": 1.0,
+        "n": 10,
+        "standard": 1.0
+      },
+      "Memory": {
+        "any": 1.0,
+        "n": 88,
+        "standard": 1.0
+      },
+      "Plan": {
+        "any": 1.0,
+        "n": 44,
+        "standard": 1.0
+      },
+      "Retr.": {
+        "any": 1.0,
+        "n": 63,
+        "standard": 1.0
+      },
+      "Tokens": {
+        "any": 1.0,
+        "n": 218,
+        "standard": 1.0
+      },
+      "Tool prov.": {
+        "any": 1.0,
+        "n": 161,
+        "standard": 0.0
+      }
+    },
+    "langgraph/sdk/library_only": {
+      "Deleg.": {
+        "any": 0.0,
+        "n": 11,
+        "standard": 0.0
+      },
+      "Guard": {
+        "any": 0.0,
+        "n": 9,
+        "standard": 0.0
+      },
+      "Loops": {
+        "any": 0.0,
+        "n": 10,
+        "standard": 0.0
+      },
+      "Memory": {
+        "any": 0.0,
+        "n": 88,
+        "standard": 0.0
+      },
+      "Plan": {
+        "any": 0.0,
+        "n": 44,
+        "standard": 0.0
+      },
+      "Retr.": {
+        "any": 0.0,
+        "n": 63,
+        "standard": 0.0
+      },
+      "Tokens": {
+        "any": 0.0,
+        "n": 218,
+        "standard": 0.0
+      },
+      "Tool prov.": {
+        "any": 0.0,
+        "n": 161,
+        "standard": 0.0
+      }
+    },
+    "langgraph/sdk/with_sdk": {
+      "Deleg.": {
+        "any": 0.0,
+        "n": 11,
+        "standard": 0.0
+      },
+      "Guard": {
+        "any": 0.0,
+        "n": 9,
+        "standard": 0.0
+      },
+      "Loops": {
+        "any": 0.0,
+        "n": 10,
+        "standard": 0.0
+      },
+      "Memory": {
+        "any": 0.0,
+        "n": 88,
+        "standard": 0.0
+      },
+      "Plan": {
+        "any": 0.0,
+        "n": 44,
+        "standard": 0.0
+      },
+      "Retr.": {
+        "any": 0.0,
+        "n": 63,
+        "standard": 0.0
+      },
+      "Tokens": {
+        "any": 1.0,
+        "n": 218,
+        "standard": 1.0
+      },
+      "Tool prov.": {
+        "any": 0.0,
+        "n": 161,
+        "standard": 0.0
+      }
+    }
+  },
+  "structure": {
+    "custom/oi/library_only": {
+      "agent_spans": 0,
+      "attributes": 11185,
+      "final_text_captured": 44,
+      "roots": 223,
+      "spans": 223,
+      "spurious_agent_spans": 0,
+      "traces": 223
+    },
+    "custom/oi/with_sdk": {
+      "agent_spans": 0,
+      "attributes": 16760,
+      "final_text_captured": 44,
+      "roots": 223,
+      "spans": 446,
+      "spurious_agent_spans": 0,
+      "traces": 223
+    },
+    "custom/ollm/library_only": {
+      "agent_spans": 0,
+      "attributes": 3524,
+      "final_text_captured": 44,
+      "roots": 223,
+      "spans": 223,
+      "spurious_agent_spans": 0,
+      "traces": 223
+    },
+    "custom/ollm/with_sdk": {
+      "agent_spans": 0,
+      "attributes": 9099,
+      "final_text_captured": 44,
+      "roots": 446,
+      "spans": 446,
+      "spurious_agent_spans": 0,
+      "traces": 446
+    },
+    "custom/otel/library_only": {
+      "agent_spans": 0,
+      "attributes": 2620,
+      "final_text_captured": 0,
+      "roots": 223,
+      "spans": 223,
+      "spurious_agent_spans": 0,
+      "traces": 223
+    },
+    "custom/otel/with_sdk": {
+      "agent_spans": 0,
+      "attributes": 8195,
+      "final_text_captured": 0,
+      "roots": 223,
+      "spans": 446,
+      "spurious_agent_spans": 0,
+      "traces": 223
+    },
+    "custom/ref/library_only": {
+      "agent_spans": 57,
+      "attributes": 3739,
+      "final_text_captured": 0,
+      "roots": 44,
+      "spans": 841,
+      "spurious_agent_spans": 0,
+      "traces": 44
+    },
+    "custom/ref/with_sdk": {
+      "agent_spans": 57,
+      "attributes": 9314,
+      "final_text_captured": 0,
+      "roots": 44,
+      "spans": 1064,
+      "spurious_agent_spans": 0,
+      "traces": 44
+    },
+    "custom/sdk/library_only": {
+      "agent_spans": 0,
+      "attributes": 0,
+      "final_text_captured": 0,
+      "roots": 0,
+      "spans": 0,
+      "spurious_agent_spans": 0,
+      "traces": 0
+    },
+    "custom/sdk/with_sdk": {
+      "agent_spans": 0,
+      "attributes": 5575,
+      "final_text_captured": 0,
+      "roots": 223,
+      "spans": 223,
+      "spurious_agent_spans": 0,
+      "traces": 223
+    },
+    "langgraph/oi/library_only": {
+      "agent_spans": 365,
+      "attributes": 16921,
+      "final_text_captured": 44,
+      "roots": 262,
+      "spans": 1149,
+      "spurious_agent_spans": 321,
+      "traces": 262
+    },
+    "langgraph/oi/with_sdk": {
+      "agent_spans": 365,
+      "attributes": 22371,
+      "final_text_captured": 44,
+      "roots": 262,
+      "spans": 1367,
+      "spurious_agent_spans": 321,
+      "traces": 262
+    },
+    "langgraph/ollm/library_only": {
+      "agent_spans": 99,
+      "attributes": 22204,
+      "final_text_captured": 44,
+      "roots": 44,
+      "spans": 1204,
+      "spurious_agent_spans": 0,
+      "traces": 44
+    },
+    "langgraph/ollm/with_sdk": {
+      "agent_spans": 99,
+      "attributes": 27654,
+      "final_text_captured": 44,
+      "roots": 44,
+      "spans": 1422,
+      "spurious_agent_spans": 0,
+      "traces": 44
+    },
+    "langgraph/otel/library_only": {
+      "agent_spans": 191,
+      "attributes": 4020,
+      "final_text_captured": 0,
+      "roots": 44,
+      "spans": 633,
+      "spurious_agent_spans": 147,
+      "traces": 44
+    },
+    "langgraph/otel/with_sdk": {
+      "agent_spans": 191,
+      "attributes": 9470,
+      "final_text_captured": 0,
+      "roots": 44,
+      "spans": 851,
+      "spurious_agent_spans": 147,
+      "traces": 44
+    },
+    "langgraph/ref/library_only": {
+      "agent_spans": 55,
+      "attributes": 3660,
+      "final_text_captured": 0,
+      "roots": 44,
+      "spans": 823,
+      "spurious_agent_spans": 0,
+      "traces": 44
+    },
+    "langgraph/ref/with_sdk": {
+      "agent_spans": 55,
+      "attributes": 9110,
+      "final_text_captured": 0,
+      "roots": 44,
+      "spans": 1041,
+      "spurious_agent_spans": 0,
+      "traces": 44
+    },
+    "langgraph/sdk/library_only": {
+      "agent_spans": 0,
+      "attributes": 0,
+      "final_text_captured": 0,
+      "roots": 0,
+      "spans": 0,
+      "spurious_agent_spans": 0,
+      "traces": 0
+    },
+    "langgraph/sdk/with_sdk": {
+      "agent_spans": 0,
+      "attributes": 5450,
+      "final_text_captured": 0,
+      "roots": 218,
+      "spans": 218,
+      "spurious_agent_spans": 0,
+      "traces": 218
+    }
+  }
+}
