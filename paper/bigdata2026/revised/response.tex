@@ -1,0 +1,181 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{enumitem}
+\usepackage{microtype}
+\setlist{nosep,leftmargin=*}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{0pt}
+\newcommand{\rc}[1]{\par\medskip\textbf{#1}\par}
+\newcommand{\resp}{\par\emph{Response.} }
+
+\begin{document}
+
+\begin{center}
+{\large\textbf{Summary of Revisions}}\\[2pt]
+Trace Data Quality for LLM-Agent Observability (BigD260, transferred to AAI-BD 2026)
+\end{center}
+
+We thank the four reviewers. Their central concern was that the main
+results followed from how the schema projections were defined. We agree.
+In response we added a new experiment that measures what real
+instrumentation libraries emit, reframed the projection study as a
+specification-level analysis, and removed results that came from prior
+work or did not test the paper's question. Section and table numbers
+refer to the revised paper.
+
+\section*{Main changes}
+\begin{enumerate}
+\item \textbf{New experiment E1 (Sec.~IV-C, V-C; Figs.~2--3; Tables IV, V,
+  VIII, IX).} One orchestration-heavy agent with planning, memory, a
+  guardrail and delegation runs 44 tickets, both as plain SDK code and as a
+  LangGraph application. Each execution is recorded once and replayed
+  identically under OpenInference, OpenLLMetry, the official OTel GenAI
+  instrumentation, the Anthropic SDK's own spans and an agent-aware
+  reference, then scored instance by instance against independent ground
+  truth. The protocol was committed before any run; the one later
+  addition is disclosed in Sec.~IV-C.
+\item \textbf{Projection study reframed (Sec.~I, IV-B, V-A).} We state
+  that its answerability follows from the mapping rules and use E1 to
+  test it. We also found that our OTel GenAI anchor was stale: the cited
+  commit was in the main semantic-conventions repository after the GenAI
+  conventions had moved to their own repository, which already defined
+  \texttt{invoke\_agent}, \texttt{plan} and memory operations. The view is
+  relabeled \emph{GenAI model/tool}, and the paper says it understates the
+  conventions.
+\item \textbf{Removed or condensed.} The controlled fault-matrix results
+  (former Tables XIV--XVI), the diagnostic-proxy table (XIII), the
+  per-corpus table (VIII), the denominator table (VI) and the three
+  $\tau$-bench tables (IX--XI) are removed or condensed into text.
+  Sections II-B (boundary) and VI-C (why BigData) are replaced by one
+  positioning paragraph.
+\item \textbf{Presentation.} Sixteen tables became nine, plus three
+  figures: a pipeline diagram, a projected-versus-measured heatmap and a
+  side-by-side of one delegation as stored by each library.
+\item \textbf{Related work} adds trace-data systems (Canopy, Sifter,
+  Hindsight), log data (Loghub), schema evolution (PRISM), data
+  validation (Deequ), and the current GenAI conventions.
+\item \textbf{AI Usage Disclosure} added before the references, and E1's
+  code and data are supplied as anonymized supplementary material.
+\end{enumerate}
+
+\section*{Reviewer 1}
+\rc{1. Results are determined by the projection definitions; validate with
+traces natively emitted by OTel, OpenInference and OpenLLMetry.}
+\resp Agreed. The projection study is now presented as a specification-level
+analysis, and E1 does exactly the suggested validation (Fig.~2). Some
+predictions hold (no standard planning, memory or guardrail semantics)
+and some fail in both directions (tool provenance, guardrail kinds, retry
+loops, delegation in OpenLLMetry).
+
+\rc{2. Executable mappings, ambiguous fields, schema versions; OTel+custom
+0\% kinds but 100\% recall.}
+\resp Sec.~IV-B states each anchor and discloses the stale GenAI anchor.
+Table V lists every attribute accepted as standard when scoring E1, and
+all library versions are pinned. Sec.~III now defines kind coverage as a
+dedicated kind field, which explains the OTel+custom result.
+
+\rc{3. Independent validation is limited; missing-action proxy F1 is near
+the always-fail baseline.}
+\resp E1 adds an independent, orchestration-heavy workload with its own
+ground truth. We agree on the proxy: it does not discriminate between
+schemas, and it is no longer used as schema evidence (Sec.~V-A).
+
+\rc{4. Too many tables; add figures.}
+\resp Done as suggested: a pipeline diagram (Fig.~1) and a schema-by-query
+heatmap (Fig.~2). The ablation stays a table because its failed-family
+column carries information a bar chart would lose.
+
+\section*{Reviewer 2}
+\rc{Not of interest to the BigData audience.}
+\resp The revision frames the problem as data quality in a telemetry
+pipeline: fitness for use of trace stores fed by evolving producer
+schemas. It also adds a data-validation angle, using recorded replays as
+regression tests for telemetry pipelines (Sec.~VI). We removed the
+section that argued for the framing.
+
+\section*{Reviewer 3}
+\begin{enumerate}[label=\arabic*.]
+\setcounter{enumi}{1}
+\item \emph{External validity} and \emph{5. projected $\neq$ implemented},
+  \emph{9. real telemetry validation}: E1 (Sec.~IV-C, V-C).
+\item \emph{Deterministic recall, no uncertainty}: E1 scores 1,216
+  ground-truth instances per condition. Every instance in a family behaved the same, and
+  we report 95\% Wilson bounds (Sec.~V-C) and instance counts (Fig.~2).
+\item \emph{How much AI-generated content}: see the AI Usage Disclosure.
+  Generative AI was used substantively for code, experiments, analysis,
+  figures and text. The authors verified all of it.
+\item \emph{Modest scale}: acknowledged under Threats (Scale). The study
+  concerns which semantics reach a store, which does not depend on volume.
+\item \emph{Structure does not produce strong diagnosis}: agreed. We
+  removed the diagnostic-proxy and fault-matrix claims and limit the
+  claims to answerability, which is a precondition for diagnosis.
+\item \emph{Novelty versus AgentTelemetry}: Sec.~II states the boundary.
+  E1's agent, traces, conditions and scoring are new, and the reused
+  fault matrix is removed.
+\item[10.] \emph{Independent orchestration-heavy dataset; OpenSearch or
+  ClickHouse}: the dataset is provided by E1. A production backend was
+  not feasible in the revision window and is listed as a limitation.
+\item[11.] \emph{Actual diagnostic performance}: out of the revised scope;
+  see 7.
+\item[12.] \emph{Storage and query cost}: Sec.~IV-B keeps the backend cost
+  figures, and Sec.~V-C reports attribute rows per execution for each
+  library.
+\item[13.] \emph{Content minimization versus privacy}: Sec.~VI (Privacy) and
+  E1's findings that two libraries capture content by default and that
+  explicit tool provenance currently requires capturing content.
+\item[14.] \emph{Evolving standards}: Sec.~II gives the current conventions
+  with dates, and related work is expanded.
+\end{enumerate}
+
+\section*{Reviewer 4}
+\rc{Major 1. Results by construction.}
+\resp Agreed (see Reviewer 1, point 1). E1 implements the second remedy you
+proposed: projections replaced by telemetry from actual instrumented
+executions.
+
+\rc{Major 2. Projections may understate conventions (\texttt{invoke\_agent},
+OpenInference \texttt{AGENT}/\texttt{CHAIN}).}
+\resp Correct, and more than we realized: our GenAI anchor was stale
+(Sec.~IV-B). E1 shows what is emitted. OTel GenAI emits
+\texttt{invoke\_agent} for the top-level graph but not for the delegated
+sub-agent. OpenLLMetry emits it for both. OpenInference marks any run
+whose name contains ``agent'' as \texttt{AGENT}, including a router. No library emits the
+\texttt{plan} or memory operations the conventions now define
+(Table IX).
+
+\rc{Major 3 (a--c) and Q3--Q4. Hallucination 71.4\% under structure-only;
+identical structure-only and full capture; recurring 14.3\%.}
+\resp These came from the prior artifact's controlled matrix. There,
+detecting a semantic class depended on whether a framework's adapter
+emitted the spans the detector needed. The detectors read no payload,
+which is why structure-only and full capture coincide, and 14.3\% is one
+of seven frameworks. That contradicted our text about hallucination and
+content. These results do not test this paper's question, so we removed
+them.
+
+\rc{Major 3 (d--e). $\tau$-bench F1 does not discriminate; 66.2\% action
+visibility conflates behavior with loss.}
+\resp Agreed on both. The text now says the proxy does not discriminate
+and that missing expected actions are actions the agent did not take.
+
+\rc{Major 4. Limited Big Data contribution.}
+\resp Partly addressed through the data-quality framing and the
+replay-based validation of telemetry pipelines (Sec.~VI). Production
+volume remains a limitation (Sec.~VII).
+
+\rc{Major 5. Thin increment over AgentTelemetry.}
+\resp E1 is entirely new, joinability is now measured rather than assessed
+qualitatively, and the reused fault matrix and proxies are removed.
+
+\rc{Minor points.}
+\resp Kind coverage is defined (Sec.~III). Table XIII and its 66.8\% were
+removed. The reference recall being 100\% by definition is now stated
+(Sec.~V-A). Related work is expanded. Sections II-B and VI-C are
+condensed.
+
+\rc{Q1. Handling of \texttt{invoke\_agent}/\texttt{create\_agent} in the
+GenAI view.} \resp They were not mapped; see Major 2.
+\rc{Q2. Results on traces from the actual instrumentation libraries.}
+\resp E1, Sec.~V-C.
+
+\end{document}
